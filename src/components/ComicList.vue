@@ -87,7 +87,7 @@
 
 					<div style="width: 40%; display: flex; flex-direction: row; justify-content: space-between;">
 									<div class="one-searchbox" id="mainSearchBox">
-											<input type="text" name="someName" placeholder="name or artist" />
+											<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" />
 									</div>
 
 									<div id="keywordSearchWrapper">
@@ -111,9 +111,21 @@
 
 					<table class="button-row">
 							<tr>
-									<td class="button-selected">Recently updated</td>
-									<td>User rating</td>
-									<td>Your rating</td>
+									<td
+										v-bind:class="{'button-selected': sorting === 'updated'}"
+										v-on:click="onSortingButtonClick('updated')">
+										Recently updated
+									</td>
+									<td
+										v-bind:class="{'button-selected': sorting === 'userRating'}"
+										v-on:click="onSortingButtonClick('userRating')">
+										User rating
+									</td>
+									<td
+										v-bind:class="{'button-selected': sorting === 'yourRating'}"
+										v-on:click="onSortingButtonClick('yourRating')">
+										Your rating
+									</td>
 							</tr>
 					</table>
 
@@ -129,19 +141,12 @@
 					<table class="pagination-table">
 							<tr>
 									<td style="padding-bottom: 6px">&larr;</td>
-									<td class="button-selected">1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td>5</td>
-									<td>6</td>
-									<td>7</td>
-									<td>8</td>
-									<td>9</td>
-									<td>10</td>
-									<td>11</td>
-									<td>12</td>
-									<td>13</td>
+									<td v-for="pageNo in Math.ceil(totalNumberOfComics/config.comicsPerPage)" 
+											v-bind:key="pageNo"
+											v-bind:class="{'button-selected': pageNumber===pageNo}"
+											v-on:click="paginate(pageNo)">
+											{{pageNo}}
+									</td>
 									<td style="padding-bottom: 6px">&rarr;</td>
 							</tr>
 					</table>
@@ -149,7 +154,7 @@
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in comicList" v-bind:key="comic.id" v-bind:comic="comic">
+			<comic-card v-for="comic in displayComics" v-bind:key="comic.id" v-bind:comic="comic">
 			</comic-card>
 		</div>
 	</div>
@@ -157,6 +162,7 @@
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
+import config from '@/config.json'
 
 export default {
 	name: 'comic-list',
@@ -172,6 +178,7 @@ export default {
 				if ( this.filters[typeOfFilter].indexOf('All') >= 0 ) { this.filters[typeOfFilter] = [filterItem] }
 				else { this.filters[typeOfFilter].push( filterItem ) }
 			}
+			this.paginate()
 		},
 		resetFilter: function ( typeOfFilter ) { this.filters[typeOfFilter] = ['All'] },
 		onSortingButtonClick: function ( sortButtonName ) {
@@ -181,11 +188,33 @@ export default {
 		},
 		sortComicList: function () {
 			this.comicList.sort( (c1, c2) => {
-				if ( c1[this.sorting] > c2[this.sorting] ) { return 1 }
-				else if ( c1[this.sorting] < c2[this.sorting] ) { return -1 }
+				if ( c1[this.sorting] < c2[this.sorting] ) { return 1 }
+				else if ( c1[this.sorting] > c2[this.sorting] ) { return -1 }
 				else { return 0 }
 			})
+			this.paginate()
 		},
+		paginate: function ( pageNumber ) {
+			if ( pageNumber ) { this.pageNumber = pageNumber }
+			this.displayComics = this.comicList.filter( this.filterComicByTag )
+				.filter( this.filterComicByCategory )
+				.filter( this.filterComicByNameOrArtist )
+				.slice( (this.pageNumber-1) * config.comicsPerPage, (this.pageNumber) * config.comicsPerPage )
+		},
+
+		filterComicByTag: function ( comicObject ) {
+			return this.filters.category.indexOf('All') === 0 || this.filters.category.indexOf(comicObject.tag) >= 0
+		},
+		filterComicByCategory: function ( comicObject ) {
+			return this.filters.tag.indexOf('All') === 0 || this.filters.tag.indexOf(comicObject.cat) >= 0
+		},
+		filterComicByNameOrArtist: function ( comicObject ) {
+			return comicObject.name.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0 
+				|| comicObject.artist.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0
+		}
+	},
+	watch: {
+		searchFiltering: function () { this.paginate() }
 	},
   data: function () {
     return {
@@ -198,31 +227,21 @@ export default {
 			selectedKeywords: [],
 			searchInput: '',
 			pageNumber: 1,
-      comicList: [{"id":343,"name":"Dress to Undress","cat":"MM","tag":"Furry","artist":"Seth-Iova","updated":"2017-10-24T11:04:46.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":21,"userRating":7.881,"yourRating":0},
-				{"id":813,"name":"Lost and Found","cat":"MM","tag":"Furry","artist":"Edesk","updated":"2018-06-18T20:11:22.000Z","finished":0,"created":"2018-02-10T15:40:44.000Z","numberOfPages":52,"userRating":8.8226,"yourRating":0},
-				{"id":24,"name":"Critical Success","cat":"I","tag":"Furry","artist":"Roanoak","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":47,"userRating":8.7143,"yourRating":0},
-				{"id":773,"name":"Double Trouble","cat":"MF","tag":"Furry","artist":"Kabier","updated":"2018-06-30T22:14:50.000Z","finished":0,"created":"2017-11-30T13:51:37.000Z","numberOfPages":27,"userRating":8.8452,"yourRating":0},
-				{"id":301,"name":"The Valet and the Vixen 1","cat":"MF","tag":"Furry","artist":"Meesh","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":11,"userRating":8.6,"yourRating":0},
-				{"id":570,"name":"Outside the Box","cat":"MM","tag":"Furry","artist":"Tokifuji","updated":"2018-08-03T23:41:18.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":67,"userRating":9.0282,"yourRating":0},
-				{"id":22,"name":"Comic Relief","cat":"MM","tag":"MLP","artist":"Braeburned","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":43,"userRating":8.975,"yourRating":0},
-				{"id":498,"name":"May the Best Man Win","cat":"MM","tag":"Furry","artist":"SigmaX","updated":"2018-06-10T11:43:18.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":41,"userRating":8.9688,"yourRating":0},
-				{"id":740,"name":"Wishes","cat":"MF","tag":"Furry","artist":"Zummeng","updated":"2018-02-07T02:22:37.000Z","finished":1,"created":"2017-08-30T00:00:00.000Z","numberOfPages":31,"userRating":8.873,"yourRating":0},
-				{"id":11,"name":"A Taste of the Order","cat":"FF","tag":"Furry","artist":"Wolfy-Nail","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":7,"userRating":7.7188,"yourRating":0},
-				{"id":464,"name":"No Pain, No Gain","cat":"MM","tag":"Furry","artist":"Powfooo","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":20,"userRating":8.6716,"yourRating":0},
-				{"id":731,"name":"Our Secret","cat":"MM","tag":"Furry","artist":"Blackmailz","updated":"2017-08-25T10:27:13.000Z","finished":1,"created":"2017-08-25T00:00:00.000Z","numberOfPages":25,"userRating":8.6,"yourRating":0},
-				{"id":289,"name":"Moving Day","cat":"FF","tag":"Furry","artist":"Kadath","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":23,"userRating":8.525,"yourRating":0},
-				{"id":61,"name":"Night Mares 4","cat":"I","tag":"MLP","artist":"Slypon","updated":"2015-01-01T00:00:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":25,"userRating":8.375,"yourRating":0},
-				{"id":793,"name":"Motion of the Ocean","cat":"MM","tag":"Furry","artist":"Fluke","updated":"2017-12-31T16:25:39.000Z","finished":1,"created":"2017-12-31T16:25:39.000Z","numberOfPages":20,"userRating":8.4359,"yourRating":0},
-				{"id":750,"name":"A Tale of Tails - Chapter 3","cat":"I","tag":"Furry","artist":"Feretta","updated":"2017-09-06T05:28:04.000Z","finished":1,"created":"2017-09-06T05:28:04.000Z","numberOfPages":62,"userRating":8.125,"yourRating":0},
-				{"id":688,"name":"Furry University","cat":"MM","tag":"Furry","artist":"Tenaflux","updated":"2017-07-29T19:59:00.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":28,"userRating":8.0909,"yourRating":0},
-				{"id":28,"name":"Daddy Issues","cat":"MM","tag":"Furry","artist":"Black-Kitten","updated":"2018-06-18T20:11:30.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":16,"userRating":7.7692,"yourRating":0},
-				{"id":582,"name":"Safeword","cat":"MF","tag":"Furry","artist":"Roanoak","updated":"2017-10-24T11:10:12.000Z","finished":1,"created":"2017-07-01T00:00:00.000Z","numberOfPages":67,"userRating":8.9802,"yourRating":0},
-				{"id":875,"name":"The Feast of Nero","cat":"MF+","tag":"Furry","artist":"DelKon","updated":"2018-08-03T22:59:41.000Z","finished":0,"created":"2018-06-02T17:14:20.000Z","numberOfPages":34,"userRating":8.6111,"yourRating":0}]
+			comicList: [],
+			displayComics: [],
+			totalNumberOfComics: 0,
+			config: config,
+			searchFiltering: ''
     }
-  },
+	},
   created: function() {
+		setTimeout( () => {
+			this.comicList = this.config.comicList
+			this.totalNumberOfComics = 950
+			this.paginate()
+		}, 800)
   }
-};
+}
 </script>
 
 <style lang="sass">
