@@ -1,20 +1,49 @@
 <template>
-	<div class="comic-card" v-bind:class="{ 'comic-card-dark': darkTheme }">
-	</div>
+	<span>
+		<div>
+			<h1>{{$route.params.comicName}}</h1>
+		</div>
+		<div v-if="comic">
+			<h2>by <a href="#">{{comic.artist}}</a></h2>
+			<div class="normal-button-row">
+				<button v-on:click="setPageFit('height')" class="y-button">Fit screen H</button>
+				<button v-on:click="setPageFit('width')" class="y-button">Fit screen W</button>
+				<button v-on:click="setPageFit('big')" class="y-button">Big</button>
+				<button v-on:click="setPageFit('thumb')" class="y-button">Thumb</button>
+			</div>
+			<button v-if="userIsDonator" class="y-button-important">Download comic</button>
+			<p>You must log in to vote. <a href="#">Log in</a></p>
+		</div>
+
+		<div v-else-if="!comicNotFound">
+			Loading comic
+		</div>
+
+		<div v-else>
+			Comic not found
+		</div>
+	</span>
 </template>
 
 <script>
 export default {
 	name: 'comic',
 	props: {
-		comic: Object
+		userInfo: Object
 	},
 	data: function () {
 		return {
-			darkTheme: window.darkTheme
+			comic: this.$store.state.clickedComic || undefined,
+			userIsDonator: false,
+			comicNotFound: false,
 		}
 	},
 	methods: {
+	},
+	created: function () {
+		if ( !this.comic ) {
+			console.log('fetching comic lol')
+		}
 	}
 }
 </script>

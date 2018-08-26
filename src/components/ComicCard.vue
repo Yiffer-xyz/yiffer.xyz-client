@@ -1,7 +1,11 @@
 <template>
-	<div class="comic-card" v-bind:class="{ 'comic-card-dark': darkTheme }">
-		<a href="#"><img :src="'comics/'+comic.name+'/s.jpg'"></a>
-		<a href="#"><p class="comic-card-comic-title"><b>{{comic.name}}</b></p></a>
+	<div class="comic-card">
+		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+			<img :src="`comics/${comic.name}/s.jpg`" v-on:click="storeClickedComicData()">
+		</router-link>
+		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+			<p class="comic-card-comic-title"><b>{{comic.name}}</b></p>
+		</router-link>
 		<p><a href="#" class="comic-card-artist">{{comic.artist}}</a></p>
 
 		<div class="horiz-card-row">
@@ -22,14 +26,15 @@ export default {
 		comic: Object
 	},
 	data: function () {
-		return {
-			darkTheme: window.darkTheme
-		}
+		return {}
 	},
 	methods: {
 		formatRating: function (number) {
 			if (number > 8.5) { return Math.round(number * 100) / 100 }
 			else { return Math.round(number * 10) / 10 }
+		},
+		storeClickedComicData: function () {
+			this.$store.commit('clickComic', this.comic)
 		}
 	}
 }
