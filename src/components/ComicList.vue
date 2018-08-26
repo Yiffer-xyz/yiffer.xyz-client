@@ -234,6 +234,11 @@ $linkColor: #3984d4
 	flex-direction: column
 	align-items: center
 	background: linear-gradient(to top right, #009fff, #ec2f4b)
+	color: white
+	h1, h2, td, p, div, span, a
+		color: white
+	h2
+		margin: 45px 0px
 
 .buttons-container
 	width: 100%
