@@ -66,7 +66,7 @@ export default {
 }
 
 async function mockGetComic () {
-	let x = await new Promise( (resolve, reject) => {
+	let x = await new Promise( (resolve) => {
 		setTimeout(() => {
 			resolve({"id":343,"name":"Dress to Undress","cat":"MM","tag":"Furry","artist":"Seth-Iova","updated":"2017-10-24T11:04:46.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":21,"userRating":7.881,"yourRating":0})
 		}, 500)
