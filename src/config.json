@@ -1,5 +1,5 @@
 {
-	"comicsPerPage": 10,
+	"comicsPerPage": 50,
 	"comicList": [
 		{"id":343,"name":"Dress to Undress","cat":"MM","tag":"Furry","artist":"Seth-Iova","updated":"2017-10-24T11:04:46.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":21,"userRating":7.881,"yourRating":0},
 		{"id":813,"name":"Lost and Found","cat":"MM","tag":"Furry","artist":"Edesk","updated":"2018-06-18T20:11:22.000Z","finished":0,"created":"2018-02-10T15:40:44.000Z","numberOfPages":52,"userRating":8.8226,"yourRating":0},

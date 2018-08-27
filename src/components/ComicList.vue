@@ -112,17 +112,17 @@
 					<table class="button-row">
 							<tr>
 									<td
-										v-bind:class="{'button-selected': sorting === 'updated'}"
+										v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
 										v-on:click="onSortingButtonClick('updated')">
 										Recently updated
 									</td>
 									<td
-										v-bind:class="{'button-selected': sorting === 'userRating'}"
+										v-bind:class="{'button-selected': $store.state.sorting === 'userRating'}"
 										v-on:click="onSortingButtonClick('userRating')">
 										User rating
 									</td>
 									<td
-										v-bind:class="{'button-selected': sorting === 'yourRating'}"
+										v-bind:class="{'button-selected': $store.state.sorting === 'yourRating'}"
 										v-on:click="onSortingButtonClick('yourRating')">
 										Your rating
 									</td>
@@ -143,7 +143,7 @@
 									<td style="padding-bottom: 6px">&larr;</td>
 									<td v-for="pageNo in Math.ceil(totalNumberOfComics/config.comicsPerPage)" 
 											v-bind:key="pageNo"
-											v-bind:class="{'button-selected': pageNumber===pageNo}"
+											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
 											v-on:click="paginate(pageNo)">
 											{{pageNo}}
 									</td>
@@ -154,7 +154,7 @@
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in displayComics" v-bind:key="comic.id" v-bind:comic="comic">
+			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic">
 			</comic-card>
 		</div>
 	</div>
@@ -168,38 +168,27 @@ export default {
 	name: 'comic-list',
 	components: { 'comic-card': ComicCard },
 	methods: {
-		onFilterClick: function ( typeOfFilter, filterItem ) {
-			if (filterItem === 'All') { this.resetFilter( typeOfFilter ) }
-			else if ( this.filters[typeOfFilter].indexOf(filterItem) >= 0 ) {
-				if ( this.filters[typeOfFilter].length === 1 ) { this.resetFilter( typeOfFilter ) }
-				else { this.filters[typeOfFilter].splice( this.filters[typeOfFilter].indexOf(filterItem), 1 ) }
-			}
-			else {
-				if ( this.filters[typeOfFilter].indexOf('All') >= 0 ) { this.filters[typeOfFilter] = [filterItem] }
-				else { this.filters[typeOfFilter].push( filterItem ) }
-			}
+		onFilterClick ( filterType, selectedFilter ) {
+			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
 			this.paginate()
 		},
-		resetFilter: function ( typeOfFilter ) { this.filters[typeOfFilter] = ['All'] },
 		onSortingButtonClick: function ( sortButtonName ) {
-			if ( this.sorting === sortButtonName ) { return }
-			this.sorting = sortButtonName
-			this.sortComicList()
+			this.$store.commit('setSorting', sortButtonName)
+			this.paginate()
 		},
 		sortComicList: function () {
-			this.comicList.sort( (c1, c2) => {
-				if ( c1[this.sorting] < c2[this.sorting] ) { return 1 }
-				else if ( c1[this.sorting] > c2[this.sorting] ) { return -1 }
-				else { return 0 }
-			})
+			this.$state.store.sorting
 			this.paginate()
 		},
 		paginate: function ( pageNumber ) {
-			if ( pageNumber ) { this.pageNumber = pageNumber }
-			this.displayComics = this.comicList.filter( this.filterComicByTag )
+			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
+			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
 				.filter( this.filterComicByNameOrArtist )
-				.slice( (this.pageNumber-1) * config.comicsPerPage, (this.pageNumber) * config.comicsPerPage )
+				.slice(
+					(this.$store.state.pageNumber-1) * config.comicsPerPage,
+					(this.$store.state.pageNumber) * config.comicsPerPage )
+				)
 		},
 
 		filterComicByTag: function ( comicObject ) {
@@ -214,28 +203,26 @@ export default {
 		}
 	},
 	watch: {
-		searchFiltering: function () { this.paginate() }
+		searchFiltering: function () {
+			this.$store.commit('setSearchFiltering', this.searchFiltering)
+			this.paginate()
+		}
 	},
   data: function () {
-    return {
-			keywordList: [],
-      filters: {
-				category: ['All'],
-        tag: ['All']
-			},
-			sorting: 'updated',
-			selectedKeywords: [],
-			searchInput: '',
-			pageNumber: 1,
-			comicList: [],
-			displayComics: [],
-			totalNumberOfComics: 0,
+		return {
 			config: config,
-			searchFiltering: ''
+			keywordList: [],
+      filters: this.$store.state.filters,
+			selectedKeywords: this.$store.state.selectedKeywords,
+			comicList: this.$store.state.comicList,
+			displayComics: this.$store.state.displayComics,
+			totalNumberOfComics: this.$store.state.totalNumberOfComics,
+			searchFiltering: this.$store.state.searchFiltering,
     }
 	},
   created: function() {
 		setTimeout( () => {
+			this.$store.commit('setComicList', config.comicList)
 			this.comicList = this.config.comicList
 			this.totalNumberOfComics = 950
 			this.paginate()
