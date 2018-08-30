@@ -1,39 +1,40 @@
 <template>
-	<span class="text-align-center">
-		<div>
+	<span>
+		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
-		</div>
-		<div v-if="comic">
-			<h2>by <a href="#">{{comic.artist}}</a></h2>
-			<button v-if="userIsDonator" class="y-button-important">Download comic</button>
-			<p>You must log in to vote. <a href="#">Log in</a></p>
-			<router-link :to="'/'">← back to index</router-link>	
+			<div v-if="comic">
+				<h2>by <a href="#">{{comic.artist}}</a></h2>
+				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
+				<p style="margin: 10px 0;">You must log in to vote. <a href="#">Log in</a></p>
+				<router-link :to="'/'"><button class="y-button">← back to index</button></router-link>
 
-			<div class="normal-button-row">
-				<button v-on:click="setAllImagesFit('height')" class="y-button">Fit screen H</button>
-				<button v-on:click="setAllImagesFit('width')"  class="y-button">Fit screen W</button>
-				<button v-on:click="setAllImagesFit('big')"    class="y-button">Big</button>
-				<button v-on:click="setAllImagesFit('thumb')"  class="y-button">Thumb</button>
+				<div class="normal-button-row">
+					<button v-on:click="setAllImagesFit('height')" class="y-button">Fit screen H</button>
+					<button v-on:click="setAllImagesFit('width')"  class="y-button">Fit screen W</button>
+					<button v-on:click="setAllImagesFit('big')"    class="y-button">Big</button>
+					<button v-on:click="setAllImagesFit('thumb')"  class="y-button">Thumb</button>
+				</div>
+
 			</div>
 
-			<div id="comic-page-container">
-				<img 
-					v-for="pageNumber in comic.numberOfPages" 
-					:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
-					:alt="`${comic.name} page ${pageNumber}`"
-					:id="'page' + (pageNumber-1)"
-					v-bind:key="pageNumber"
-					v-bind:class="['img-fit-height', 'comic-page']"
-					v-on:click="cycleImageFit(pageNumber-1)"/>
-				</div>
-		</div>
+			<div v-else-if="!comicNotFound">
+				Loading comic
+			</div>
 
-		<div v-else-if="!comicNotFound">
-			Loading comic
+			<div v-else>
+				Comic not found
+			</div>
 		</div>
-
-		<div v-else>
-			Comic not found
+	
+		<div v-if="comic" id="comic-page-container">
+			<img 
+				v-for="pageNumber in comic.numberOfPages" 
+				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+				:alt="`${comic.name} page ${pageNumber}`"
+				:id="'page' + (pageNumber-1)"
+				v-bind:key="pageNumber"
+				v-bind:class="['img-fit-height', 'comic-page']"
+				v-on:click="cycleImageFit(pageNumber-1)"/>
 		</div>
 	</span>
 </template>
@@ -107,8 +108,15 @@ $linkColor: #3984d4
 $cardBgColorLight: #f1f1f1
 $cardBgColorDark: #222426
 
-.text-align-center
+.upper-body-div-comic
+	width: 100%
+	display: flex
+	flex-direction: column
+	align-items: center
 	text-align: center
+
+a
+	text-decoration: none
 
 #comic-page-container
 	display: flex
@@ -119,12 +127,17 @@ $cardBgColorDark: #222426
 		margin-bottom: 15px
 
 .img-fit-height
-	max-height: 22px
+	max-height: 100vh
 
 .img-fit-width
-	max-width: 95px
+	max-width: 97vw
 
 .img-fit-thumb
 	max-height: 90px
+
+.normal-button-row
+	margin-top: 10px
+	.y-button
+		margin: 0px 2px
 
 </style>

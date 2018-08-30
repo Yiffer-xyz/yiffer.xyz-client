@@ -37,6 +37,10 @@ $linkColor: #3984d4
 div, table, span, img, body, h1, h2, h3, p
 	margin: 0px
 
+router-link, p, td
+	font-weight: 300
+	font-size: 17px
+
 h1, h2, h3, h4, p, div, span
 	color: #111
 
@@ -57,7 +61,20 @@ a
 	top: 0
 	right: 10px
 
+.y-button
+	border: 0.8px solid $linkColor
+	border-radius: 5px
+	color: $linkColor
+	background: rgba(0,0,0,0)
+	padding: 4px 9px
+
+	&:hover
+		background-color: $linkColor
+		color: white
+		cursor: pointer
+
 .dark
-	color: #ddd
 	background-color: #091014
+	p, h1, h2, div, td, h3, span
+		color: #ddd
 </style>
