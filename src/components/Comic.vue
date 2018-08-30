@@ -21,13 +21,10 @@
 					v-for="pageNumber in comic.numberOfPages" 
 					:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
 					:alt="`${comic.name} page ${pageNumber}`"
+					:id="'page' + (pageNumber+1)"
 					v-bind:key="pageNumber"
-					v-bind:class="{
-						'img-fit-height': imageFit==='height', 
-						'img-fit-width':  imageFit==='width',
-						'img-fit-thumb':  imageFit==='thumb'
-					}"
-					v-on:click=""/>
+					v-bind:class="'img-fit-' + imageFitArray[pageNumber]"
+					v-on:click="cycleOneImageFit(pageNumber)"/>
 				</div>
 		</div>
 
@@ -52,11 +49,20 @@ export default {
 			comic: this.$store.state.clickedComic || undefined,
 			userIsDonator: false,
 			comicNotFound: false,
-			imageFit: undefined,
+			imageFitArray: this.initializeImageFitArray(),
 		}
 	},
 	methods: {
 		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+		cycleImageStyle ( pageNumber ) {
+			let oldStyle = 'TODO'
+		},
+		initializeImageFitArray () {
+			if ( !this.comic ) { return [] }
+			let initialArray = []
+			for (var i=0; i<this.comic.numberOfPages; i++) { initialArray.push('height') }
+			return initialArray
+		}
 	},
 	created: async function () {
 		if ( !this.comic ) {
@@ -74,6 +80,7 @@ async function mockGetComic () {
 	return x
 }
 
+let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 </script>
 

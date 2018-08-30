@@ -141,7 +141,7 @@
 					<table class="pagination-table">
 							<tr>
 									<td style="padding-bottom: 6px">&larr;</td>
-									<td v-for="pageNo in Math.ceil(totalNumberOfComics/config.comicsPerPage)" 
+									<td v-for="pageNo in Math.ceil($store.state.totalNumberOfComics/config.comicsPerPage)" 
 											v-bind:key="pageNo"
 											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
 											v-on:click="paginate(pageNo)">
@@ -223,8 +223,8 @@ export default {
   created: function() {
 		setTimeout( () => {
 			this.$store.commit('setComicList', config.comicList)
-			this.comicList = this.config.comicList
-			this.totalNumberOfComics = 950
+			this.$store.commit('setComicList', this.config.comicList)
+			this.$store.commit('setTotalNumberOfComics', 950)
 			this.paginate()
 		}, 800)
   }
