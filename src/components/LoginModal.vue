@@ -23,10 +23,20 @@
 				<p class="modal-header">Sign up</p>
 				<form class="login-register-form">
 					<label for="signupUsername">Username</label>
-					<input v-model="signupUsername" name="signupUsername" type="text"/>
+					<input 
+						v-model="signupUsername"
+						v-bind:class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
+						name="signupUsername"
+						type="text"
+					/>
 
 					<label for="signupPassword">Password</label>
-					<input v-model="signupPassword" name="signupPassword" type="password"/>
+					<input
+						v-bind:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
+						v-model="signupPassword"
+						name="signupPassword"
+						type="password"
+					/>
 
 					<label for="signupEmail">Email</label>
 					<input v-model="signupEmail" name="signupEmail" type="email"/>
@@ -56,6 +66,7 @@ export default {
 		},
 		singupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
+			console.log (this.usernameValidity, this.passwordValidity)
 			alert('signup placeholder')
 		},
 		emptyInputFields () {
@@ -77,6 +88,15 @@ export default {
     }
 	},
 	computed: {
+		usernameValidity () {
+			let validUsernamePattern = /^[a-zA-Z][\w\d_-]{1,19}$/
+			if ( this.signupUsername.length === 0 ) { return undefined }
+			else { return validUsernamePattern.test( this.signupUsername ) }
+		},
+		passwordValidity () {
+			if ( this.signupPassword.length === 0 ) { return undefined }
+			else { return this.signupPassword.length >= 6 }
+		}
 	}
 }
 </script>
@@ -91,7 +111,7 @@ $linkColor: #3984d4
 	position: fixed
 	top: 0
 	left: 0
-	background: rgba(255, 255, 255, 0.98)
+	background: rgba(255, 255, 255, 0.95)
 	z-index: 5
 </style>
 
@@ -135,11 +155,24 @@ $linkColor: #3984d4;
 		color: #555;
 	}
 	input {
+		outline: none;
 		margin-bottom: 17px;
 		margin-top: 3px;
-		border: 0.5px solid #555;
+		border-width: 2px;
+		border-style: solid;
+		border-color: #555;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		border-right-color: transparent;
 		color: #333;
 		padding: 5px 4px;
+	}
+
+	.invalid-input {
+		border: 2px solid #ec2f4b;
+	}
+	.valid-input {
+		border: 2px solid #009fff;
 	}
 }
 
