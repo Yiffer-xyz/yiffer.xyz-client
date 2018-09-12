@@ -39,7 +39,6 @@ div, table, span, img, body, h1, h2, h3, p
 
 router-link, p, td
 	font-weight: 300
-	font-size: 17px
 
 h1, h2, h3, h4, p, div, span
 	color: #111

@@ -3,14 +3,14 @@
 		<div class="upper-body-div">
 			<h1>Lalala overskrift</h1>
 
-			<h2>A collection of high-quality comics</h2>
+			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p><a href="#">Log in</a> to vote</p>
 
 			<p style="margin-top: 10px;"><a href="#">Donate?</a></p>
 
 			<div class="buttons-container">
-					<table class="button-row">
+					<table class="button-row upper-body-width">
 							<tr>
 									<td 
 										v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
@@ -40,7 +40,7 @@
 							</tr>
 					</table>
 
-					<table class="button-row">
+					<table class="button-row upper-body-width">
 							<tr>
 									<td
 										v-bind:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
@@ -85,31 +85,37 @@
 							</tr>
 					</table>
 
-					<div style="width: 40%; display: flex; flex-direction: row; justify-content: space-between;">
-									<div class="one-searchbox" id="mainSearchBox">
-											<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" />
-									</div>
+					<div class="two-search-row upper-body-width">
+							<div class="search-wrapper">
+								<div class="one-searchbox-container" id="mainSearchBox">
+										<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+								</div>
+							</div>
 
-									<div id="keywordSearchWrapper">
-											<div class="one-searchbox keyword-searching">
-													<input type="text" name="someName" placeholder="keywords" id="keywordSearch" />
-											</div>
-											<div id="keywordResults">
-													<div class="keyword-result">asdasd (235)</div>
-													<div class="keyword-result">asdasd (114)</div>
-													<div class="keyword-result">asdasd (4)</div>
-													<div class="keyword-result">asdasd (2)</div>
+							<div class="search-wrapper">
+									<input type="text" name="someName" placeholder="keywords" id="keywordSearch" class="upper-body-searchbox" v-model="keywordSearch"/>
+									<div id="keywordResults" v-if="keywordSearchFocused">
+											<div 
+												v-for="keyword in $store.allKeywords" 
+												v-bind:key="keyword.name"
+												v-on:click="addSelectedKeyword(keyword.name)"
+												class="keyword-result">
+													{{keyword.name}} ({{keyword.count}})
 											</div>
 									</div>
+							</div>
 					</div>
 
 					<div id="selectedKeywords">
-							<div class="selected-keyword">asdsd</div>
-							<div class="selected-keyword">qe werwe</div>
-
+							<div 
+								v-for="keyword in $store.selectedKeywords" 
+								v-bind:key="keyword"
+								class="selected-keyword">
+									{{keyword}}
+							</div>
 					</div>
 
-					<table class="button-row">
+					<table class="button-row upper-body-width">
 							<tr>
 									<td
 										v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
@@ -138,7 +144,7 @@
 						</table>
 
 
-					<table class="pagination-table">
+					<table class="pagination-table upper-body-width">
 							<tr>
 									<td style="padding-bottom: 6px">&larr;</td>
 									<td v-for="pageNo in Math.ceil($store.state.totalNumberOfComics/config.comicsPerPage)" 
@@ -157,16 +163,19 @@
 			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic">
 			</comic-card>
 		</div>
+
+		<login-modal></login-modal>
 	</div>
 </template>
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
+import LoginModal from '@/components/LoginModal.vue'
 import config from '@/config.json'
 
 export default {
 	name: 'comic-list',
-	components: { 'comic-card': ComicCard },
+	components: { 'comic-card': ComicCard, 'login-modal': LoginModal },
 	methods: {
 		onFilterClick ( filterType, selectedFilter ) {
 			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
@@ -190,17 +199,26 @@ export default {
 					(this.$store.state.pageNumber) * config.comicsPerPage )
 				)
 		},
+		addSelectedKeyword ( keywordName ) {
+			this.$store.commit('addSelectedKeyword', keywordName)
+		},
 
-		filterComicByTag: function ( comicObject ) {
+		filterComicByTag ( comicObject ) {
 			return this.filters.category.indexOf('All') === 0 || this.filters.category.indexOf(comicObject.tag) >= 0
 		},
-		filterComicByCategory: function ( comicObject ) {
+		filterComicByCategory ( comicObject ) {
 			return this.filters.tag.indexOf('All') === 0 || this.filters.tag.indexOf(comicObject.cat) >= 0
 		},
-		filterComicByNameOrArtist: function ( comicObject ) {
+		filterComicByNameOrArtist ( comicObject ) {
 			return comicObject.name.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0 
 				|| comicObject.artist.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0
-		}
+		},
+		filterComicByKeywords ( comicObject ) {
+			for (var keyword of this.$store.state.selectedKeywords) {
+				if (comicObject.keywords.indexOf(keyword) === -1) { return false }
+			}
+			return true
+		},
 	},
 	watch: {
 		searchFiltering: function () {
@@ -218,6 +236,7 @@ export default {
 			displayComics: this.$store.state.displayComics,
 			totalNumberOfComics: this.$store.state.totalNumberOfComics,
 			searchFiltering: this.$store.state.searchFiltering,
+			keywordSearch: ''
     }
 	},
   created: function() {
@@ -226,10 +245,17 @@ export default {
 			this.$store.commit('setComicList', this.config.comicList)
 			this.$store.commit('setTotalNumberOfComics', 950)
 			this.paginate()
+			this.$store.commit('setAllKeywords', config.demoKeywordList)
 		}, 800)
-  }
+	},
+	computed: {
+		keywordSearchFocused () {
+			return (this.keywordSearch != '') || document.getElementById('keywordSearch') === document.activeElement 
+		}
+	}
 }
 </script>
+
 
 <style lang="sass">
 $linkColor: #3984d4
@@ -245,6 +271,8 @@ $linkColor: #3984d4
 		color: white
 	h2
 		margin: 45px 0px
+	a 
+		text-decoration: underline
 
 .buttons-container
 	width: 100%
@@ -259,7 +287,6 @@ $linkColor: #3984d4
 
 .button-row
 	table-layout: fixed
-	width: 40%
 	border-collapse: collapse
 	border-radius: 20px
 	td
@@ -274,11 +301,30 @@ $linkColor: #3984d4
 .button-selected
 	background: rgba(255, 255, 255, 0.32) !important
 
+.upper-body-searchbox
+	background: rgba(0, 0, 0, 0.1)
+	box-sizing: border-box
+	padding: 7px
+	text-align: center
+	background: rgba(255, 255, 255, 0.0)
+	border: 0.5px solid white
+	outline: none
+	color: white
+	width: 100%
+
+.search-wrapper
+	width: 47%
+	position: relative
+
+.two-search-row
+	display: flex
+	flex-direction: row
+	justify-content: space-between
+
 .pagination-table
 	table-layout: fixed
 	margin-top: 30px
 	border-collapse: collapse
-	width: 40%
 	td
 		padding: 5px 6px
 		border: 0.5px solid white
@@ -287,7 +333,7 @@ $linkColor: #3984d4
 
 #keywordResults
 	position: absolute
-	display: none
+	min-width: 100%
 	flex-direction: column
 	justify-content: center
 	box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2)
@@ -295,18 +341,17 @@ $linkColor: #3984d4
 .keyword-result 
 	width: 100%
 	text-align: center
-	background-color: white
-	color: #444
+	color: #444 !important
 	font-size: 12px
 	padding: 3px 0px
 	background: rgba(255, 255, 255, 0.9)
 	&:hover
 		background-color: #e3e3e3
-		color: $linkColor
+		color: $linkColor !important
 		cursor: pointer
 
 #keywordSearch
-	width: 100%
+	min-width: 100%
 	box-sizing: border-box
 
 ::placeholder
@@ -328,7 +373,7 @@ $linkColor: #3984d4
 		border: 1px solid rgba(0,0,0,0)
 	.button-selected
 		background: $linkColor !important
-	.one-searchbox input
+	.one-searchbox-container input
 		border-color: Black
 		background: rgba(0, 0, 0, 0.1)
 	.keyword, .selected-keyword
@@ -343,5 +388,13 @@ $linkColor: #3984d4
 	.button-row td:hover, .pagination-table td:hover
 		cursor: pointer
 		background: rgba(255, 255, 255, 0.1)
+	
+.upper-body-width
+	width: 50%
+</style>
 
+<style>
+	@media (max-width: 795px) {
+		.button-row {}
+	}
 </style>

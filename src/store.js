@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { stat } from 'fs';
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
 		searchFiltering: '',
 		totalNumberOfComics: 0,
 		selectedKeywords: [],
+		keywordList: [],
   },
   mutations: {
 		clickComic ( state, comic ) { state.clickedComic = comic },
@@ -45,8 +47,10 @@ export default new Vuex.Store({
 		setPageNumber ( state, pageNumber ) { state.pageNumber = pageNumber },
 		setSearchFiltering ( state, searchFiltering ) { state.searchFiltering = searchFiltering },
 		setTotalNumberOfComics ( state, num ) { state.totalNumberOfComics = num },
-		setSelectedKeywords ( state, keywordList ) { state.selectedKeywords = keywordList },
-		setDisplayComics ( state, comicList ) { state.displayComics = comicList }
+		addSelectedKeyword ( state, keyword ) { state.selectedKeywords.push(keyword) },
+		removeSelectedKeyword ( state, keyword ) { state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1) },
+		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
+		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
   },
   actions: {}
 })
