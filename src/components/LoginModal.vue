@@ -1,22 +1,42 @@
 <template>
 	<div id="modalAndBackdropWrapper">
 		<span class="modal-backdrop"></span>
-		<div id="loginModal">
-			<div id="loginModalInnerWrapper">
-				<h3>Log in</h3>
+		<div class="loginModal">
+
+			<div v-if="loginMode" class="loginModalInnerWrapper">
+				<p class="modal-header">Log in</p>
 				<form class="login-register-form">
 					<label for="loginUsername">Username</label>
-					<input type="text"/>
+					<input v-model="loginUsername" name="loginUsername" type="text"/>
 
 					<label for="loginPassword">Password</label>
-					<input type="password"/>
+					<input v-model="loginPassword" name="loginPassword" type="password"/>
 
-					<button type="submit" class="y-button">Log in</button>
-
+					<button v-on:click="loginConfirmClicked" type="submit" class="y-button login-button">Log in</button>
 				</form>
-				<p class="link-text register-button"><u>Forgotten</u> login details?</p>
-				<p class="link-text register-button">Click here to <u>register</u></p>
+
+				<button v-on:click="toggleLoginModal()" class="text-button">Click here to <u>sign up</u></button>
+				<router-link :to="'/forgottenpassword'" class="register-button" style="text-align: center;"><u>Forgot</u> login details?</router-link>
 			</div>
+
+			<div v-if="!loginMode" class="loginModalInnerWrapper">
+				<p class="modal-header">Sign up</p>
+				<form class="login-register-form">
+					<label for="signupUsername">Username</label>
+					<input v-model="signupUsername" name="signupUsername" type="text"/>
+
+					<label for="signupPassword">Password</label>
+					<input v-model="signupPassword" name="signupPassword" type="password"/>
+
+					<label for="signupEmail">Email</label>
+					<input v-model="signupEmail" name="signupEmail" type="email"/>
+
+					<button v-on:click="singupConfirmClicked" type="submit" class="y-button login-button">Sign up</button>
+				</form>
+
+				<button v-on:click="toggleLoginModal()" class="text-button">Click here to <u>log in</u></button>
+			</div>
+
 		</div>
 	</div>
 </template>
@@ -26,9 +46,34 @@
 export default {
 	name: 'login-modal',
 	methods: {
+		toggleLoginModal () {
+			this.loginMode = !this.loginMode
+			this.emptyInputFields()
+		},
+		loginConfirmClicked ( buttonEvent ) {
+			buttonEvent.preventDefault()
+			alert('log in placeholder')
+		},
+		singupConfirmClicked ( buttonEvent ) {
+			buttonEvent.preventDefault()
+			alert('signup placeholder')
+		},
+		emptyInputFields () {
+			this.loginUsername = ''
+			this.loginPassword = ''
+			this.signupUsername = ''
+			this.signupPassword = ''
+			this.signupEmail = ''
+		},
 	},
   data: function () {
 		return {
+			loginMode: true,
+			loginUsername: '',
+			loginPassword: '',
+			signupUsername: '',
+			signupPassword: '',
+			signupEmail: '',
     }
 	},
 	computed: {
@@ -46,17 +91,19 @@ $linkColor: #3984d4
 	position: fixed
 	top: 0
 	left: 0
-	background: rgba(255, 255, 255, 0.5)
+	background: rgba(255, 255, 255, 0.98)
 	z-index: 5
 </style>
 
 <style lang="scss">
 $linkColor: #3984d4;
-#loginModalInnerWrapper {
+.loginModalInnerWrapper {
 	width: 240px;
+	display: flex;
+	flex-direction: column;
 }
 
-#loginModal {
+.loginModal {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -66,8 +113,17 @@ $linkColor: #3984d4;
 	justify-content: center;
 	padding: 40px 180px;
 	background-color: white;
-	border-top: 6px solid $linkColor;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+}
+.loginModal:before {
+	height: 10px;
+	width: 100%;
+
+	position: absolute;
+	content: "";
+	background: linear-gradient(to right, rgb(0, 159, 255), rgb(236, 47, 75));
+	top: -3px;
+
 }
 
 .login-register-form {
@@ -82,10 +138,19 @@ $linkColor: #3984d4;
 		margin-bottom: 17px;
 		margin-top: 3px;
 		border: 0.5px solid #555;
+		color: #333;
+		padding: 5px 4px;
 	}
 }
 
-.link-text {
+.text-button {
+	font-size: 14px;
+	text-align: center;
+	margin-top: 20px;
+	font-weight: 300;
+	font-family: 'Open Sans', sans-serif;
+	background: transparent;
+	border: none;
 	color: $linkColor;
 	&:hover {
 		cursor: pointer;
@@ -94,8 +159,18 @@ $linkColor: #3984d4;
 
 .register-button {
 	font-size: 14px;
-	text-align: center;
-	margin-top: 20px;
+	font-weight: 300;
+	margin-top: 10px;
+}
+
+.login-button {
+	padding: 6px 30px;
+	align-self: center;
+}
+
+.modal-header {
+	font-size: 35px;
+	font-weight: 400;
 }
 </style>
 
