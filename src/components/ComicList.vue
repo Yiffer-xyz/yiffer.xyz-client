@@ -164,7 +164,7 @@
 			</comic-card>
 		</div>
 
-		<login-modal v-if="showModal"></login-modal>
+		<login-modal v-if="$store.state.modalVisibility"></login-modal>
 	</div>
 </template>
 
@@ -187,7 +187,6 @@ export default {
 			totalNumberOfComics: this.$store.state.totalNumberOfComics,
 			searchFiltering: this.$store.state.searchFiltering,
 			keywordSearch: '',
-			showModal: true,
 		}
 	},
 	methods: {
@@ -235,7 +234,7 @@ export default {
 		},
 		showLoginModal ( clickEvent ) {
 			clickEvent.preventDefault()
-			this.showModal = true
+			this.$store.commit('setModalVisibility', true)
 		}
 	},
 	watch: {
@@ -407,6 +406,8 @@ $themeRed: #ec2f4b
 
 <style>
 	@media (max-width: 795px) {
-		.button-row {}
+		.button-row {
+			
+		}
 	}
 </style>

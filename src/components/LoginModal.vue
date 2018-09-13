@@ -6,14 +6,14 @@
 			<div v-if="loginMode" class="loginModalInnerWrapper">
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
-				<form class="login-register-form">
+				<form @submit="loginConfirmClicked" class="login-register-form">
 					<label for="loginUsername">Username or email</label>
 					<input v-model="loginUsername" name="loginUsername" type="text"/>
 
 					<label for="loginPassword">Password</label>
 					<input v-model="loginPassword" name="loginPassword" type="password"/>
 
-					<button v-on:click="loginConfirmClicked" v-if="!loginLoading" type="submit" class="y-button login-button">Log in</button>
+					<button v-if="!loginLoading" type="submit" class="y-button login-button">Log in</button>
 					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
@@ -24,7 +24,7 @@
 			<div v-if="!loginMode" class="loginModalInnerWrapper">
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
-				<form class="login-register-form">
+				<form @click="signupConfirmClicked" class="login-register-form">
 					<label for="signupUsername">Username</label>
 					<input 
 						v-model="signupUsername"
@@ -46,14 +46,14 @@
 						v-model="signupEmail" 
 						v-bind:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
 						name="signupEmail" 
-						type="email" 
+						type="text" 
 						style="margin-bottom: 5px;"
 					/>
 					<p class="modal-input-explanation">Email required only for recovery purposes. By default, 
 						<u>no</u> emails will be sent, except for a "welcome" message. If you wish to be notified 
 						of new comics or updates to existing ones, you may turn this on in your account settings.</p>
 
-					<button v-on:click="singupConfirmClicked" v-if="!signupLoading" type="submit" class="y-button login-button">Sign up</button>
+					<button v-if="!signupLoading" type="submit" class="y-button login-button">Sign up</button>
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
@@ -103,7 +103,7 @@ export default {
 				this.loginErrorMessage = mockApiResponse.message
 			}
 		},
-		singupConfirmClicked ( buttonEvent ) {
+		signupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
 			this.signupLoading = true
 			let mockApiResponse = this.mockSignupSuccess()
@@ -168,22 +168,21 @@ export default {
 </script>
 
 
-<style lang="sass">
-$linkColor: #3984d4
-
-.modal-backdrop
-	width: 100%
-	height: 100%
-	position: fixed
-	top: 0
-	left: 0
-	background: rgba(255, 255, 255, 0.95)
-	z-index: 5
-</style>
-
 <style lang="scss">
 $linkColor: #3984d4;
 $themeRed: #ec2f4b;
+.modal-backdrop {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.95);
+	z-index: 5;
+	&:hover {
+		cursor: pointer;
+	}
+}
 
 .loginModalInnerWrapper {
 	width: 240px;
@@ -270,7 +269,7 @@ $themeRed: #ec2f4b;
 
 .modal-error-message {
 	margin-top: 5px;
-	color: $themeRed;
+	color: $themeRed !important;
 	font-weight: 400;
 }
 

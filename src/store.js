@@ -52,7 +52,7 @@ export default new Vuex.Store({
 		removeSelectedKeyword ( state, keyword ) { state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1) },
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
-		setModalVisibility ( state, isVisible ) { state.modalVisibility = isVisible },
+		setModalVisibility ( state, isVisible ) { state.modalVisibility = isVisible; },
   },
   actions: {}
 })
