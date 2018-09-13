@@ -13,7 +13,8 @@
 					<label for="loginPassword">Password</label>
 					<input v-model="loginPassword" name="loginPassword" type="password"/>
 
-					<button v-on:click="loginConfirmClicked" type="submit" class="y-button login-button">Log in</button>
+					<button v-on:click="loginConfirmClicked" v-if="!loginLoading" type="submit" class="y-button login-button">Log in</button>
+					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
 				<button v-on:click="toggleLoginModal()" class="text-button">Click here to <u>sign up</u></button>
@@ -52,7 +53,8 @@
 						<u>no</u> emails will be sent, except for a "welcome" message. If you wish to be notified 
 						of new comics or updates to existing ones, you may turn this on in your account settings.</p>
 
-					<button v-on:click="singupConfirmClicked" type="submit" class="y-button login-button">Sign up</button>
+					<button v-on:click="singupConfirmClicked" v-if="!signupLoading" type="submit" class="y-button login-button">Sign up</button>
+					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
 				<button v-on:click="toggleLoginModal()" class="text-button">Click here to <u>log in</u></button>
@@ -75,7 +77,9 @@ export default {
 			signupPassword: '',
 			signupEmail: '',
 			signupErrorMessage: '',
-			loginErrorMessage: ''
+			loginErrorMessage: '',
+			loginLoading: false,
+			signupLoading: false,
 		}
 	},
 	methods: {
@@ -86,8 +90,10 @@ export default {
 		},
 		loginConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
+			this.loginLoading = true
 			let mockApiResponse = this.mockLoginError()
 
+			this.loginLoading = false
 			if ( mockApiResponse.success ) {
 				this.$store.commit('setUsername', mockApiResponse.username)
 				this.closeModal()
@@ -99,8 +105,10 @@ export default {
 		},
 		singupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
+			this.signupLoading = true
 			let mockApiResponse = this.mockSignupSuccess()
 
+			this.signupLoading = false
 			if ( mockApiResponse.success ) {
 				this.$store.commit('setUsername', mockApiResponse.username)
 				this.closeModal()
@@ -151,7 +159,7 @@ export default {
 			else { return this.signupPassword.length >= 6 }
 		},
 		emailValidity() {
-			let validEmailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			let validEmailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			if ( this.signupEmail.length === 0 ) { return undefined }
 			else { return validEmailPattern.test( this.signupEmail ) }
 		}
@@ -264,6 +272,15 @@ $themeRed: #ec2f4b;
 	margin-top: 5px;
 	color: $themeRed;
 	font-weight: 400;
+}
+
+.pleasewait-button {
+	background-color: $linkColor;
+	color: white;
+	cursor: pointer;
+	&:hover {
+		cursor: default !important;
+	}
 }
 
 .dark {
