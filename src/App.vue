@@ -77,3 +77,21 @@ a
 	p, h1, h2, div, td, h3, span
 		color: #ddd
 </style>
+
+<style lang="scss">
+$linkColor: #3984d4;
+.text-button {
+	font-size: 14px;
+	text-align: center;
+	font-weight: 300;
+	font-family: 'Open Sans', sans-serif;
+	background: transparent;
+	border: none;
+	color: $linkColor;
+	padding: 0px;
+	margin: 0px;
+	&:hover {
+		cursor: pointer;
+	}
+}
+</style>

@@ -75,7 +75,6 @@ export default {
 		},
 		singupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
-			console.log (this.usernameValidity, this.passwordValidity)
 			alert('signup placeholder')
 		},
 		emptyInputFields () {
@@ -148,6 +147,10 @@ $linkColor: #3984d4;
 	padding: 40px 180px;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+
+	.text-button {
+		margin-top: 30px;
+	}
 }
 .loginModal:before {
 	height: 10px;
@@ -175,32 +178,17 @@ $linkColor: #3984d4;
 		border: 0.5px solid #555;
 		border-color: transparent transparent #555 transparent;
 		color: #333;
+		background: transparent;
 		padding: 6px 4px;
 	}
 
 	.invalid-input {
-		border: 2px solid #ec2f4b;
-		padding-top: 4.5px;
-		padding-bottom: 4.5px;
+		border: 2px solid #ec2f4b !important;
+		padding: 4.5px 2.5px;
 	}
 	.valid-input {
-		border: 2px solid #009fff;
-		padding-top: 4.5px;
-		padding-bottom: 4.5px;
-	}
-}
-
-.text-button {
-	font-size: 14px;
-	text-align: center;
-	margin-top: 20px;
-	font-weight: 300;
-	font-family: 'Open Sans', sans-serif;
-	background: transparent;
-	border: none;
-	color: $linkColor;
-	&:hover {
-		cursor: pointer;
+		border: 2px solid #009fff !important;
+		padding: 4.5px 2.5px;
 	}
 }
 
@@ -223,6 +211,24 @@ $linkColor: #3984d4;
 .modal-input-explanation {
 	font-size: 11px;
 	margin-bottom: 16px;
+}
+
+.dark {
+	.loginModal {
+		background-color: #222426;
+		color: white;
+		input {
+			color: #ccc;
+			border-bottom-color: #ccc;
+		}
+		label {
+			color: #ccc;
+		}
+	}
+
+	.modal-backdrop {
+		background-color: rgba(255, 255, 255, 0.2);
+	}
 }
 </style>
 

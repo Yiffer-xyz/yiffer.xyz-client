@@ -1,11 +1,11 @@
 <template>
 	<div style="width: 100%">
 		<div class="upper-body-div">
-			<h1>Lalala overskrift</h1>
+			<h1>Yiffer.xyz</h1>
 
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
-			<p><a href="#">Log in</a> to vote</p>
+			<p style="margin-top: 10px;"><button class="text-button" v-on:click="showLoginModal">Log in</button> to vote</p>
 
 			<p style="margin-top: 10px;"><a href="#">Donate?</a></p>
 
@@ -164,7 +164,7 @@
 			</comic-card>
 		</div>
 
-		<login-modal></login-modal>
+		<login-modal v-if="showModal"></login-modal>
 	</div>
 </template>
 
@@ -219,6 +219,10 @@ export default {
 			}
 			return true
 		},
+		showLoginModal ( clickEvent ) {
+			clickEvent.preventDefault()
+			this.showModal = true
+		}
 	},
 	watch: {
 		searchFiltering: function () {
@@ -236,7 +240,8 @@ export default {
 			displayComics: this.$store.state.displayComics,
 			totalNumberOfComics: this.$store.state.totalNumberOfComics,
 			searchFiltering: this.$store.state.searchFiltering,
-			keywordSearch: ''
+			keywordSearch: '',
+			showModal: false,
     }
 	},
   created: function() {
@@ -259,13 +264,15 @@ export default {
 
 <style lang="sass">
 $linkColor: #3984d4
+$themeBlue: #009fff
+$themeRed: #ec2f4b 
 
 .upper-body-div
 	width: 100%
 	display: flex
 	flex-direction: column
 	align-items: center
-	background: linear-gradient(to top right, #009fff, #ec2f4b)
+	background: linear-gradient(to top right, $themeBlue, $themeRed)
 	color: white
 	h1, h2, td, p, div, span, a
 		color: white
@@ -273,6 +280,10 @@ $linkColor: #3984d4
 		margin: 45px 0px
 	a 
 		text-decoration: underline
+	.text-button
+		color: white
+		text-decoration: underline
+		font-size: 16px
 
 .buttons-container
 	width: 100%
