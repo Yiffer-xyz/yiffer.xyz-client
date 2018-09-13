@@ -6,7 +6,7 @@
 				<h2>by <a href="#">{{comic.artist}}</a></h2>
 				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
 				<p><button class="text-button" v-on:click="showLoginModal" style="margin: 15px 0 10px 0; font-size: 16px;">Log in</button> to vote</p>
-				<router-link :to="'/'"><button class="y-button">← back to index</button></router-link>
+				<back-to-index></back-to-index>
 
 				<div class="normal-button-row">
 					<button v-on:click="setAllImagesFit('height')" class="y-button">Fit screen H</button>
@@ -42,13 +42,14 @@
 
 <script>
 import LoginModal from '@/components/LoginModal.vue'
+import BackToIndex from '@/components/BackToIndex.vue'
 
 export default {
 	name: 'comic',
 	props: {
 		userInfo: Object
 	},
-	components: { 'login-modal': LoginModal },
+	components: { 'login-modal': LoginModal, 'back-to-index': BackToIndex },
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
