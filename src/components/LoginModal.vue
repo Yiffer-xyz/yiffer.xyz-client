@@ -6,7 +6,7 @@
 			<div v-if="loginMode" class="loginModalInnerWrapper">
 				<p class="modal-header">Log in</p>
 				<form class="login-register-form">
-					<label for="loginUsername">Username</label>
+					<label for="loginUsername">Username or email</label>
 					<input v-model="loginUsername" name="loginUsername" type="text"/>
 
 					<label for="loginPassword">Password</label>
@@ -32,14 +32,23 @@
 
 					<label for="signupPassword">Password</label>
 					<input
-						v-bind:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
 						v-model="signupPassword"
+						v-bind:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
 						name="signupPassword"
 						type="password"
 					/>
 
-					<label for="signupEmail">Email</label>
-					<input v-model="signupEmail" name="signupEmail" type="email"/>
+					<label for="signupEmail">Email <span style="font-size: 10px">(no spam!)</span></label>
+					<input 
+						v-model="signupEmail" 
+						v-bind:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
+						name="signupEmail" 
+						type="email" 
+						style="margin-bottom: 5px;"
+					/>
+					<p class="modal-input-explanation">Email required only for recovery purposes. By default, 
+						<u>no</u> emails will be sent, except for a "welcome" message. If you wish to be notified 
+						of new comics or updates to existing ones, you may turn this on in your account settings.</p>
 
 					<button v-on:click="singupConfirmClicked" type="submit" class="y-button login-button">Sign up</button>
 				</form>
@@ -96,6 +105,11 @@ export default {
 		passwordValidity () {
 			if ( this.signupPassword.length === 0 ) { return undefined }
 			else { return this.signupPassword.length >= 6 }
+		},
+		emailValidity() {
+			let validEmailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			if ( this.signupEmail.length === 0 ) { return undefined }
+			else { return validEmailPattern.test( this.signupEmail ) }
 		}
 	}
 }
@@ -111,7 +125,7 @@ $linkColor: #3984d4
 	position: fixed
 	top: 0
 	left: 0
-	background: rgba(255, 255, 255, 0.95)
+	background: rgba(255, 255, 255, 0.7)
 	z-index: 5
 </style>
 
@@ -158,21 +172,21 @@ $linkColor: #3984d4;
 		outline: none;
 		margin-bottom: 17px;
 		margin-top: 3px;
-		border-width: 2px;
-		border-style: solid;
-		border-color: #555;
-		border-top-color: transparent;
-		border-left-color: transparent;
-		border-right-color: transparent;
+		border: 0.5px solid #555;
+		border-color: transparent transparent #555 transparent;
 		color: #333;
-		padding: 5px 4px;
+		padding: 6px 4px;
 	}
 
 	.invalid-input {
 		border: 2px solid #ec2f4b;
+		padding-top: 4.5px;
+		padding-bottom: 4.5px;
 	}
 	.valid-input {
 		border: 2px solid #009fff;
+		padding-top: 4.5px;
+		padding-bottom: 4.5px;
 	}
 }
 
@@ -204,6 +218,11 @@ $linkColor: #3984d4;
 .modal-header {
 	font-size: 35px;
 	font-weight: 400;
+}
+
+.modal-input-explanation {
+	font-size: 11px;
+	margin-bottom: 16px;
 }
 </style>
 
