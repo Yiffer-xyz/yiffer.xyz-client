@@ -1,10 +1,11 @@
 <template>
 	<div id="modalAndBackdropWrapper">
-		<span class="modal-backdrop"></span>
+		<span class="modal-backdrop" v-on:click="closeModal()"></span>
 		<div class="loginModal">
 
 			<div v-if="loginMode" class="loginModalInnerWrapper">
 				<p class="modal-header">Log in</p>
+				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form class="login-register-form">
 					<label for="loginUsername">Username or email</label>
 					<input v-model="loginUsername" name="loginUsername" type="text"/>
@@ -21,6 +22,7 @@
 
 			<div v-if="!loginMode" class="loginModalInnerWrapper">
 				<p class="modal-header">Sign up</p>
+				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form class="login-register-form">
 					<label for="signupUsername">Username</label>
 					<input 
@@ -64,18 +66,49 @@
 
 export default {
 	name: 'login-modal',
+	data: function () {
+		return {
+			loginMode: true,
+			loginUsername: '',
+			loginPassword: '',
+			signupUsername: '',
+			signupPassword: '',
+			signupEmail: '',
+			signupErrorMessage: '',
+			loginErrorMessage: ''
+		}
+	},
 	methods: {
 		toggleLoginModal () {
 			this.loginMode = !this.loginMode
 			this.emptyInputFields()
+			this.clearErrorMessages()
 		},
 		loginConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
-			alert('log in placeholder')
+			let mockApiResponse = this.mockLoginError()
+
+			if ( mockApiResponse.success ) {
+				this.$store.commit('setUsername', mockApiResponse.username)
+				this.closeModal()
+			}
+			else {
+				this.emptyInputFields()
+				this.loginErrorMessage = mockApiResponse.message
+			}
 		},
 		singupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
-			alert('signup placeholder')
+			let mockApiResponse = this.mockSignupSuccess()
+
+			if ( mockApiResponse.success ) {
+				this.$store.commit('setUsername', mockApiResponse.username)
+				this.closeModal()
+			}
+			else {
+				this.emptyInputFields()
+				this.signupErrorMessage = mockApiResponse.message
+			}
 		},
 		emptyInputFields () {
 			this.loginUsername = ''
@@ -84,16 +117,28 @@ export default {
 			this.signupPassword = ''
 			this.signupEmail = ''
 		},
-	},
-  data: function () {
-		return {
-			loginMode: true,
-			loginUsername: '',
-			loginPassword: '',
-			signupUsername: '',
-			signupPassword: '',
-			signupEmail: '',
-    }
+		clearErrorMessages () {
+			this.signupErrorMessage = ''
+			this.loginErrorMessage = ''
+		},
+		closeModal () {
+			this.emptyInputFields()
+			this.clearErrorMessages()
+			this.$store.commit('setModalVisibility', false)
+		},
+
+		mockLoginError () {
+			return { success: false, message: 'User does not exist' }
+		},
+		mockLoginSuccess () {
+			return { success: true, username: 'exempeluser' }
+		},
+		mockSignupError () {
+			return { success: false, message: 'Password is too short' }
+		},
+		mockSignupSuccess () {
+			return { success: true, username: 'tullebruker22' }
+		}
 	},
 	computed: {
 		usernameValidity () {
@@ -124,12 +169,14 @@ $linkColor: #3984d4
 	position: fixed
 	top: 0
 	left: 0
-	background: rgba(255, 255, 255, 0.7)
+	background: rgba(255, 255, 255, 0.95)
 	z-index: 5
 </style>
 
 <style lang="scss">
 $linkColor: #3984d4;
+$themeRed: #ec2f4b;
+
 .loginModalInnerWrapper {
 	width: 240px;
 	display: flex;
@@ -211,6 +258,12 @@ $linkColor: #3984d4;
 .modal-input-explanation {
 	font-size: 11px;
 	margin-bottom: 16px;
+}
+
+.modal-error-message {
+	margin-top: 5px;
+	color: $themeRed;
+	font-weight: 400;
 }
 
 .dark {

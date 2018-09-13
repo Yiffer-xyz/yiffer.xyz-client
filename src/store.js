@@ -18,8 +18,10 @@ export default new Vuex.Store({
 		totalNumberOfComics: 0,
 		selectedKeywords: [],
 		keywordList: [],
+		modalVisibility: false,
   },
   mutations: {
+		setUsername ( state, username ) { state.username = username },
 		clickComic ( state, comic ) { state.clickedComic = comic },
 		setComicList ( state, comicList ) { state.comicList = comicList },
 		setFilter ( state, filterType, filterList ) { state.filters[filterType] = filterList },
@@ -51,6 +53,7 @@ export default new Vuex.Store({
 		removeSelectedKeyword ( state, keyword ) { state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1) },
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
+		setModalVisibility ( state, isVisible ) { state.modalVisibility = isVisible },
   },
   actions: {}
 })

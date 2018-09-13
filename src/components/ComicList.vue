@@ -176,6 +176,20 @@ import config from '@/config.json'
 export default {
 	name: 'comic-list',
 	components: { 'comic-card': ComicCard, 'login-modal': LoginModal },
+	data: function () {
+		return {
+			config: config,
+			keywordList: [],
+			filters: this.$store.state.filters,
+			selectedKeywords: this.$store.state.selectedKeywords,
+			comicList: this.$store.state.comicList,
+			displayComics: this.$store.state.displayComics,
+			totalNumberOfComics: this.$store.state.totalNumberOfComics,
+			searchFiltering: this.$store.state.searchFiltering,
+			keywordSearch: '',
+			showModal: true,
+		}
+	},
 	methods: {
 		onFilterClick ( filterType, selectedFilter ) {
 			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
@@ -230,21 +244,8 @@ export default {
 			this.paginate()
 		}
 	},
-  data: function () {
-		return {
-			config: config,
-			keywordList: [],
-      filters: this.$store.state.filters,
-			selectedKeywords: this.$store.state.selectedKeywords,
-			comicList: this.$store.state.comicList,
-			displayComics: this.$store.state.displayComics,
-			totalNumberOfComics: this.$store.state.totalNumberOfComics,
-			searchFiltering: this.$store.state.searchFiltering,
-			keywordSearch: '',
-			showModal: false,
-    }
-	},
   created: function() {
+		this.$store.commit('setModalVisibility', false)
 		setTimeout( () => {
 			this.$store.commit('setComicList', config.comicList)
 			this.$store.commit('setComicList', this.config.comicList)
