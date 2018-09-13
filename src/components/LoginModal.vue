@@ -24,7 +24,7 @@
 			<div v-if="!loginMode" class="loginModalInnerWrapper">
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
-				<form @click="signupConfirmClicked" class="login-register-form">
+				<form @submit="signupConfirmClicked" class="login-register-form">
 					<label for="signupUsername">Username</label>
 					<input 
 						v-model="signupUsername"

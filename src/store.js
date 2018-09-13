@@ -18,6 +18,7 @@ export default new Vuex.Store({
 		selectedKeywords: [],
 		keywordList: [],
 		modalVisibility: false,
+		whiteThemeButtons: false,
   },
   mutations: {
 		setUsername ( state, username ) { state.username = username },
@@ -53,6 +54,7 @@ export default new Vuex.Store({
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
 		setModalVisibility ( state, isVisible ) { state.modalVisibility = isVisible; },
+		setWhiteThemeButtonStyle ( state, isWhite ) { state.whiteThemeButtons = isWhite },
   },
   actions: {}
 })

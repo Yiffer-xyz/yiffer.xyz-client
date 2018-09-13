@@ -5,7 +5,7 @@
 			<div v-if="comic">
 				<h2>by <a href="#">{{comic.artist}}</a></h2>
 				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
-				<p style="margin: 10px 0;">You must log in to vote. <a href="#">Log in</a></p>
+				<p><button class="text-button" v-on:click="showLoginModal" style="margin: 15px 0 10px 0; font-size: 16px;">Log in</button> to vote</p>
 				<router-link :to="'/'"><button class="y-button">← back to index</button></router-link>
 
 				<div class="normal-button-row">
@@ -14,7 +14,6 @@
 					<button v-on:click="setAllImagesFit('big')"    class="y-button">Big</button>
 					<button v-on:click="setAllImagesFit('thumb')"  class="y-button">Thumb</button>
 				</div>
-
 			</div>
 
 			<div v-else-if="!comicNotFound">
@@ -36,15 +35,20 @@
 				v-bind:class="['img-fit-height', 'comic-page']"
 				v-on:click="cycleImageFit(pageNumber-1)"/>
 		</div>
+
+		<login-modal v-if="$store.state.modalVisibility"></login-modal>
 	</span>
 </template>
 
 <script>
+import LoginModal from '@/components/LoginModal.vue'
+
 export default {
 	name: 'comic',
 	props: {
 		userInfo: Object
 	},
+	components: { 'login-modal': LoginModal },
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
@@ -78,8 +82,13 @@ export default {
 				for (var i=0; i<this.comic.numberOfPages; i++) { this.imageFitArray.push('height') }
 			}
 		},
+		showLoginModal () {
+			this.$store.commit('setModalVisibility', true)
+		}
 	},
 	created: async function () {
+		this.$store.commit('setModalVisibility', false)
+		this.$store.commit('setWhiteThemeButtonStyle', false)
 		if ( !this.comic ) {
 			mockGetComic(this.$route.params.comicName)
 				.then( comic => {

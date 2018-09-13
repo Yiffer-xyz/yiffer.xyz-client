@@ -1,8 +1,8 @@
 <template>
   <div v-bind:class="{'dark': darkTheme}" id="app">
 		<div class="theme-button-container">
-			<button class="theme-button" @click="setTheme('light')">Light</button>
-			<button class="theme-button" @click="setTheme('dark')">Dark</button>
+			<button class="theme-button" @click="setTheme('light')" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">Light</button>
+			<button class="theme-button" @click="setTheme('dark')"  v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">Dark</button>
 		</div>
     <router-view/>
   </div>
@@ -58,7 +58,24 @@ a
 .theme-button-container
 	position: absolute
 	top: 0
-	right: 10px
+	right: 3px
+
+.theme-button
+	background: transparent
+	border: none
+	color: #009fff
+	padding: 
+	&:hover
+		cursor: pointer
+		background: rgba(255, 255, 255, 0.1)
+	&:focus
+		outline: none
+
+.theme-button-white-text
+	color: white
+	background: rgba(255, 255, 255, 0.2)
+	&:hover
+		background: rgba(255, 255, 255, 0.4)
 
 .y-button
 	border: 0.8px solid $linkColor

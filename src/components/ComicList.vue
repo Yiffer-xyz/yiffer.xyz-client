@@ -245,6 +245,7 @@ export default {
 	},
   created: function() {
 		this.$store.commit('setModalVisibility', false)
+		this.$store.commit('setWhiteThemeButtonStyle', true)
 		setTimeout( () => {
 			this.$store.commit('setComicList', config.comicList)
 			this.$store.commit('setComicList', this.config.comicList)
