@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="{'dark': darkTheme}" id="app">
+  <div id="app">
 		<div class="theme-button-container">
 			<button class="theme-button" @click="setTheme('light')" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">Light</button>
 			<button class="theme-button" @click="setTheme('dark')"  v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">Dark</button>
@@ -12,8 +12,8 @@
 export default {
 	methods: {
 		setTheme( themeColor ) {
-			if ( themeColor === 'dark' ) { this.darkTheme = true }
-			else { this.darkTheme = false }
+			if ( themeColor === 'dark' ) { document.body.classList.add('dark') }
+			else { document.body.classList.remove('dark') }
 		}
 	},
 	data: function () {
@@ -28,6 +28,7 @@ export default {
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+	text-align: center;
 }
 </style>
 
