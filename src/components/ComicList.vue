@@ -106,6 +106,8 @@
 												v-for="keywordObject in keywordsMatchingSearch" 
 												v-bind:key="keywordObject.name"
 												@click="addSelectedKeyword(keywordObject.name)"
+												@mouseover="keywordResultHovered = keywordObject.name"
+												@mouseout="keywordResultHovered = undefined"
 												class="keyword-result">
 													{{keywordObject.name}} ({{keywordObject.count}})
 											</div>
@@ -196,6 +198,7 @@ export default {
 			searchFiltering: this.$store.state.searchFiltering,
 			keywordSearch: '',
 			keywordSearchFocused: false,
+			keywordResultHovered: undefined,
 		}
 	},
 	methods: {
@@ -223,8 +226,10 @@ export default {
 				)
 		},
 		addSelectedKeyword ( keywordName ) {
+			console.log('addselectedkeyword', keywordName)
 			this.$store.commit('addSelectedKeyword', keywordName+'')
-			this.keywordSearch = ''
+			console.log('addselectedkeyword done commiting')
+			// this.keywordSearch = ''
 			this.paginate()
 		},
 
@@ -255,6 +260,10 @@ export default {
 			this.$store.commit('setModalVisibility', true)
 		},
 		setKeywordSearchFocused ( isFocused ) {
+			// Needed because if there is no search term, then technically the results div is 
+			// hidden (by the onblur event invoking this method) before the onclick fires,
+			// so there is nothing to be "onclicked". 
+			if (this.keywordResultHovered) { this.addSelectedKeyword(this.keywordResultHovered) } 
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
 	},
