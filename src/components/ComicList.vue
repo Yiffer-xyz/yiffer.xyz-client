@@ -93,14 +93,21 @@
 							</div>
 
 							<div class="search-wrapper">
-									<input type="text" name="someName" placeholder="keywords" id="keywordSearch" class="upper-body-searchbox" v-model="keywordSearch"/>
+									<input type="text"
+												 name="someName" 
+												 placeholder="keywords"
+												 id="keywordSearch"
+												 class="upper-body-searchbox"
+												 v-model="keywordSearch"
+												 @focus="setKeywordSearchFocused(true)"
+												 @blur="setKeywordSearchFocused(false)"/>
 									<div id="keywordResults" v-if="keywordSearchFocused">
 											<div 
-												v-for="keyword in $store.allKeywords" 
-												v-bind:key="keyword.name"
-												v-on:click="addSelectedKeyword(keyword.name)"
+												v-for="keywordObject in keywordsMatchingSearch" 
+												v-bind:key="keywordObject.name"
+												@click="addSelectedKeyword(keywordObject.name)"
 												class="keyword-result">
-													{{keyword.name}} ({{keyword.count}})
+													{{keywordObject.name}} ({{keywordObject.count}})
 											</div>
 									</div>
 							</div>
@@ -108,8 +115,9 @@
 
 					<div id="selectedKeywords">
 							<div 
-								v-for="keyword in $store.selectedKeywords" 
+								v-for="keyword in $store.state.selectedKeywords" 
 								v-bind:key="keyword"
+								@click="removeSelectedKeyword(keyword)"
 								class="selected-keyword">
 									{{keyword}}
 							</div>
@@ -179,7 +187,7 @@ export default {
 	data: function () {
 		return {
 			config: config,
-			keywordList: [],
+			allKeywords: [],
 			filters: this.$store.state.filters,
 			selectedKeywords: this.$store.state.selectedKeywords,
 			comicList: this.$store.state.comicList,
@@ -187,6 +195,7 @@ export default {
 			totalNumberOfComics: this.$store.state.totalNumberOfComics,
 			searchFiltering: this.$store.state.searchFiltering,
 			keywordSearch: '',
+			keywordSearchFocused: false,
 		}
 	},
 	methods: {
@@ -199,7 +208,7 @@ export default {
 			this.paginate()
 		},
 		sortComicList: function () {
-			this.$state.store.sorting
+			this.$store.$state.sorting
 			this.paginate()
 		},
 		paginate: function ( pageNumber ) {
@@ -207,13 +216,21 @@ export default {
 			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
 				.filter( this.filterComicByNameOrArtist )
+				.filter( this.filterComicByKeywords )
 				.slice(
 					(this.$store.state.pageNumber-1) * config.comicsPerPage,
 					(this.$store.state.pageNumber) * config.comicsPerPage )
 				)
 		},
 		addSelectedKeyword ( keywordName ) {
-			this.$store.commit('addSelectedKeyword', keywordName)
+			this.$store.commit('addSelectedKeyword', keywordName+'')
+			this.keywordSearch = ''
+			this.paginate()
+		},
+
+		removeSelectedKeyword ( keywordName ) {
+			this.$store.commit('removeSelectedKeyword', keywordName)
+			this.paginate()
 		},
 
 		filterComicByTag ( comicObject ) {
@@ -227,6 +244,7 @@ export default {
 				|| comicObject.artist.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0
 		},
 		filterComicByKeywords ( comicObject ) {
+			if ( !this.keywordSearch ) { return true }
 			for (var keyword of this.$store.state.selectedKeywords) {
 				if (comicObject.keywords.indexOf(keyword) === -1) { return false }
 			}
@@ -235,7 +253,10 @@ export default {
 		showLoginModal ( clickEvent ) {
 			clickEvent.preventDefault()
 			this.$store.commit('setModalVisibility', true)
-		}
+		},
+		setKeywordSearchFocused ( isFocused ) {
+			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
+		},
 	},
 	watch: {
 		searchFiltering: function () {
@@ -251,16 +272,52 @@ export default {
 			this.$store.commit('setComicList', this.config.comicList)
 			this.$store.commit('setTotalNumberOfComics', 950)
 			this.paginate()
-			this.$store.commit('setAllKeywords', config.demoKeywordList)
+			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
 	},
 	computed: {
-		keywordSearchFocused () {
-			return (this.keywordSearch != '') || document.getElementById('keywordSearch') === document.activeElement 
+		keywordsMatchingSearch () {
+			return this.$store.state.keywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
+				.sort((kw1, kw2) => kw1.count<kw2.count ? 1 : (kw1.count>kw2.count ? -1 : 0))
+				.slice(0, 8)
 		}
 	}
 }
 </script>
+
+
+<style lang="scss">
+	$linkColor: #3984d4;
+	$themeBlue: #009fff;
+	$themeRed: #ec2f4b;
+
+	#keywordResults {
+		position: absolute;
+		min-width: 100%;
+		flex-direction: column;
+		justify-content: center;
+		box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
+	}
+
+	.keyword-result {
+		width: 100%;
+		text-align: center;
+		color: #444 !important;
+		font-size: 12px;
+		padding: 3px 0px;
+		background: rgba(255, 255, 255, 0.9);
+		&:hover {
+			background-color: #e3e3e3;
+			color: $linkColor !important;
+			cursor: pointer;
+		}
+	}
+
+	#keywordSearch {
+		min-width: 100%;
+		box-sizing: border-box;
+	}
+</style>
 
 
 <style lang="sass">
@@ -343,29 +400,6 @@ $themeRed: #ec2f4b
 		text-align: center
 		font-size: 14px
 
-#keywordResults
-	position: absolute
-	min-width: 100%
-	flex-direction: column
-	justify-content: center
-	box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2)
-
-.keyword-result 
-	width: 100%
-	text-align: center
-	color: #444 !important
-	font-size: 12px
-	padding: 3px 0px
-	background: rgba(255, 255, 255, 0.9)
-	&:hover
-		background-color: #e3e3e3
-		color: $linkColor !important
-		cursor: pointer
-
-#keywordSearch
-	min-width: 100%
-	box-sizing: border-box
-
 ::placeholder
 	color: rgba(255, 255, 255, 0.4)
 	font-size: 12px
@@ -376,6 +410,12 @@ $themeRed: #ec2f4b
 	width: 100%
 	flex-wrap: wrap
 	justify-content: center
+
+.selected-keyword
+	border: 0.5px solid white
+	&hover
+		cursor: pointer
+		text-decoration: line-through
 
 .dark
 	.upper-body-div
