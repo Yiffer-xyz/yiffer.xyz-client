@@ -39,8 +39,6 @@
 				v-bind:class="['img-fit-height', 'comic-page']"
 				v-on:click="cycleImageFit(pageNumber-1)"/>
 		</div>
-
-		<login-modal v-if="$store.state.modalVisibility"></login-modal>
 	</span>
 </template>
 

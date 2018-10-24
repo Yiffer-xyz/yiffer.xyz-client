@@ -5,7 +5,10 @@
 
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
-			<p style="margin-top: 10px;"><button class="text-button" v-on:click="showLoginModal" style="font-weight: 400;">Log in</button> to vote</p>
+			<p style="margin-top: 10px;" v-if="!$store.state.username">
+				<button class="text-button" v-on:click="showLoginModal" style="font-weight: 400;">Log in</button> 
+				to vote
+			</p>
 
 			<p style="margin-top: 10px;"><a href="#">Donate?</a></p>
 
@@ -189,8 +192,6 @@
 			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic" v-bind:detailLevel="$store.state.detailLevel">
 			</comic-card>
 		</div>
-
-		<login-modal v-if="$store.state.modalVisibility"></login-modal>
 	</div>
 </template>
 

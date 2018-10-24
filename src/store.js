@@ -7,7 +7,6 @@ export default new Vuex.Store({
   state: {
 		username: undefined,
 		clickedComic: undefined,
-
 		comicList: [],
 		displayComics: [],
 		filters: {category: ['All'], tag: ['All']},
@@ -19,7 +18,7 @@ export default new Vuex.Store({
 		keywordList: [],
 		modalVisibility: false,
 		whiteThemeButtons: false,
-		detailLevel: 'Medium detail'
+		detailLevel: 'Medium detail',
   },
   mutations: {
 		setUsername ( state, username ) { state.username = username },

@@ -1,19 +1,63 @@
 <template>
   <div id="app">
 		<div class="theme-button-container">
-			<button class="theme-button" @click="setTheme('light')" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">Light</button>
-			<button class="theme-button" @click="setTheme('dark')"  v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">Dark</button>
+
+			<button
+				v-if="!this.$store.state.username" 
+				class="theme-button" 
+				@click="showLoginModal()" 
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Log in
+			</button>
+
+			<button 
+				v-if="this.$store.state.username" 
+				class="theme-button" 
+				@click="logout()" 
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Log out
+			</button>
+
+			<button 
+				class="theme-button" 
+				@click="setTheme('light')" 
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}" 
+				style="margin-left:10px;"
+			>
+				Light
+			</button>
+
+			<button 
+				class="theme-button" 
+				@click="setTheme('dark')"  
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Dark
+			</button>
+
 		</div>
+
+		<login-modal v-if="$store.state.modalVisibility"></login-modal>
     <router-view/>
   </div>
 </template>
 
 <script>
+import LoginModal from '@/components/LoginModal.vue'
 export default {
+	components: { 'login-modal': LoginModal },
 	methods: {
 		setTheme( themeColor ) {
 			if ( themeColor === 'dark' ) { document.body.classList.add('dark') }
 			else { document.body.classList.remove('dark') }
+		},
+		showLoginModal () {
+			this.$store.commit('setModalVisibility', true)
+		},
+		logout () {
+			this.$store.commit('setUsername', undefined)
 		}
 	},
 	data: function () {
