@@ -5,7 +5,7 @@
 
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
-			<p style="margin-top: 10px;"><button class="text-button" v-on:click="showLoginModal">Log in</button> to vote</p>
+			<p style="margin-top: 10px;"><button class="text-button" v-on:click="showLoginModal" style="font-weight: 400;">Log in</button> to vote</p>
 
 			<p style="margin-top: 10px;"><a href="#">Donate?</a></p>
 

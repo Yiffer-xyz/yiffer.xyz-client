@@ -55,6 +55,7 @@ h2
 
 a
 	color: $linkColor
+	font-weight: 400
 
 .theme-button-container
 	position: absolute

@@ -1,5 +1,7 @@
 <template>
-	<router-link :to="'/'"><button class="y-button">← back to index</button></router-link>
+	<router-link :to="'/'">
+		← back to index
+	</router-link>
 </template>
 
 <script>

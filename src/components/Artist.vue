@@ -1,7 +1,8 @@
 <template>
 	<div style="width: 100%">
     <h1>{{$route.params.artistName}}</h1>
-    <p style="margin-top: 10px;"><button class="text-button" v-on:click="showLoginModal">Log in</button> to vote</p>
+    <p style="margin-top: 10px;"><button class="text-button" v-on:click="showLoginModal" style="font-weight: 400; font-size: 16px;">Log in</button> to vote</p>
+    <back-to-index></back-to-index>
   
     <h2 style="margin-top: 20px;">Links</h2>
     <div class="artist-link-container">
@@ -23,10 +24,11 @@
 <script>
 import ComicCard from '@/components/ComicCard.vue'
 import LoginModal from '@/components/LoginModal.vue'
+import BackToIndex from '@/components/BackToIndex.vue'
 
 export default {
 	name: 'artist',
-	components: { 'comic-card': ComicCard, 'login-modal': LoginModal },
+	components: { 'comic-card': ComicCard, 'login-modal': LoginModal, 'back-to-index': BackToIndex },
 	data: function () {
 		return {
       artistData: {},
