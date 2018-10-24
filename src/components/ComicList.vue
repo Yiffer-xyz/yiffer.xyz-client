@@ -116,7 +116,7 @@
 							</div>
 					</div>
 
-					<div id="selectedKeywords">
+					<div id="selectedKeywords" class="upper-body-width">
 							<div 
 								v-for="keyword in $store.state.selectedKeywords" 
 								v-bind:key="keyword"
@@ -301,36 +301,56 @@ export default {
 
 
 <style lang="scss">
-	$linkColor: #3984d4;
-	$themeBlue: #009fff;
-	$themeRed: #ec2f4b;
+$linkColor: #3984d4;
+$themeBlue: #009fff;
+$themeRed: #ec2f4b;
 
-	#keywordResults {
-		position: absolute;
-		min-width: 100%;
-		flex-direction: column;
-		justify-content: center;
-		box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
-	}
+#keywordResults {
+	position: absolute;
+	min-width: 100%;
+	flex-direction: column;
+	justify-content: center;
+	box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
+}
 
-	.keyword-result {
-		width: 100%;
-		text-align: center;
-		color: #444 !important;
-		font-size: 12px;
-		padding: 3px 0px;
-		background: rgba(255, 255, 255, 0.9);
-		&:hover {
-			background-color: #e3e3e3;
-			color: $linkColor !important;
-			cursor: pointer;
-		}
+.keyword-result {
+	width: 100%;
+	text-align: center;
+	color: #444 !important;
+	font-size: 12px;
+	padding: 3px 0px;
+	background: rgba(255, 255, 255, 0.9);
+	font-weight: 300;
+	&:hover {
+		background-color: #e3e3e3;
+		color: $linkColor !important;
+		cursor: pointer;
 	}
+}
 
-	#keywordSearch {
-		min-width: 100%;
-		box-sizing: border-box;
+#keywordSearch {
+	min-width: 100%;
+	box-sizing: border-box;
+}
+
+#selectedKeywords {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+	
+.selected-keyword {
+	border: 0.5px solid white;
+	font-size: 12px;
+	padding: 0.5px 4px 1px 4px;
+	border-radius: 15px;
+	font-weight: 300;
+	margin: 0px 2px;
+	&:hover {
+		cursor: pointer;
+		text-decoration: line-through;
 	}
+}
 </style>
 
 
@@ -425,12 +445,6 @@ $themeRed: #ec2f4b
 	flex-wrap: wrap
 	justify-content: center
 
-.selected-keyword
-	border: 0.5px solid white
-	&hover
-		cursor: pointer
-		text-decoration: line-through
-
 .dark
 	.upper-body-div
 		background: linear-gradient(to bottom left, #330a10, #001726)
@@ -439,14 +453,16 @@ $themeRed: #ec2f4b
 		border: 1px solid rgba(0,0,0,0)
 	.button-selected
 		background: $linkColor !important
-	.one-searchbox-container input
-		border-color: Black
+	.one-searchbox-container input, #keywordSearch
+		border-color: #111
 		background: rgba(0, 0, 0, 0.1)
 	.keyword, .selected-keyword
 		border-color: #555
-		color: #eee
-	.keyword-result
 		color: #ddd
+		&:hover
+			color: $linkColor
+	.keyword-result
+		color: #eee !important
 		background: rgba(22, 22, 22, 0.96)
 		&:hover
 			background: rgba(18, 18, 18, 1)
