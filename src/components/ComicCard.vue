@@ -15,6 +15,14 @@
 		</div>
 
 		<div class="keyword-container">
+			<div 
+				class="keyword"
+				v-for="keyword in comic.keywords"
+				v-bind:key="keyword"
+				@click="addSelectedKeyword(keyword)"
+			>
+				{{keyword}}
+			</div>
 		</div>
 	</div>
 </template>
@@ -35,10 +43,31 @@ export default {
 		},
 		storeClickedComicData: function () {
 			this.$store.commit('clickComic', this.comic)
+		},
+		addSelectedKeyword (keywordName) {
+			this.$store.commit('addSelectedKeyword', keywordName)
 		}
 	}
 }
 </script>
+
+<style lang="scss">
+$linkColor: #3984d4;
+
+.keyword {
+	font-size: 12px;
+	border: 0.5px solid #ccc;
+	margin: 1px 3px;
+	padding: 0.5px 6px 1px 6px;
+	border-radius: 10px;
+	&:hover {
+		color: $linkColor !important;
+		cursor: pointer;
+		border-color: $linkColor;
+	}
+}
+</style>
+
 
 <style lang="sass">
 $linkColor: #3984d4
@@ -83,16 +112,6 @@ $cardBgColorDark: #222426
 	flex-direction: row
 	flex-flow: row wrap
 	justify-content: center
-.keyword
-	font-size: 12px
-	border: 0.4px solid #ccc	 
-	margin: 1px 3px
-	padding: 1px 6px
-	border-radius: 10px
-	&:hover
-		color: $linkColor !important
-		cursor: pointer
-		border-color: $linkColor
 
 .dark
 	.comic-card
