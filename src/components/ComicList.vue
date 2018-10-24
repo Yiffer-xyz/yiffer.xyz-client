@@ -99,6 +99,7 @@
 												 id="keywordSearch"
 												 class="upper-body-searchbox"
 												 v-model="keywordSearch"
+												 @click="lastActionWasDeselectingKeyword = false"
 												 @focus="setKeywordSearchFocused(true)"
 												 @blur="setKeywordSearchFocused(false)"/>
 									<div id="keywordResults" v-if="keywordSearchFocused">
@@ -199,6 +200,7 @@ export default {
 			keywordSearch: '',
 			keywordSearchFocused: false,
 			keywordResultHovered: undefined,
+			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
 		}
 	},
 	methods: {
@@ -227,10 +229,13 @@ export default {
 		},
 		addSelectedKeyword ( keywordName ) {
 			console.log('addselectedkeyword', keywordName)
-			this.$store.commit('addSelectedKeyword', keywordName+'')
-			console.log('addselectedkeyword done commiting')
-			// this.keywordSearch = ''
-			this.paginate()
+			if (!this.lastActionWasDeselectingKeyword) {
+				this.lastActionWasDeselectingKeyword = true
+				this.$store.commit('addSelectedKeyword', keywordName+'')
+				this.keywordSearchFocused = undefined
+				this.keywordSearch = ''
+				this.paginate()
+			}
 		},
 
 		removeSelectedKeyword ( keywordName ) {

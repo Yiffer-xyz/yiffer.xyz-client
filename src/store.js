@@ -49,7 +49,11 @@ export default new Vuex.Store({
 		setPageNumber ( state, pageNumber ) { state.pageNumber = pageNumber },
 		setSearchFiltering ( state, searchFiltering ) { state.searchFiltering = searchFiltering },
 		setTotalNumberOfComics ( state, num ) { state.totalNumberOfComics = num },
-		addSelectedKeyword ( state, keyword ) { state.selectedKeywords.push(keyword) },
+		addSelectedKeyword ( state, keyword ) { 
+			if (state.selectedKeywords.indexOf(keyword) < 0) {
+				state.selectedKeywords.push(keyword) 
+			}
+		},
 		removeSelectedKeyword ( state, keyword ) { state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1) },
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
