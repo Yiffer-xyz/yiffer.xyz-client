@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import LoginModal from '@/components/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 
 export default {
@@ -51,7 +50,7 @@ export default {
 	props: {
 		userInfo: Object
 	},
-	components: { 'login-modal': LoginModal, 'back-to-index': BackToIndex },
+	components: { 'back-to-index': BackToIndex },
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,

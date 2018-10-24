@@ -101,6 +101,9 @@ a
 	color: $linkColor
 	font-weight: 400
 
+label
+	font-weight: 300
+
 .theme-button-container
 	position: absolute
 	top: 0

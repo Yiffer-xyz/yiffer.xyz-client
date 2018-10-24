@@ -4,6 +4,7 @@ import ComicList from './components/ComicList.vue'
 import Comic from './components/Comic.vue'
 import About from './components/About.vue'
 import Artist from './components/Artist.vue'
+import NewPassword from './components/NewPassword.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
 			path: '/artist/:artistName',
 			name: 'artist',
 			component: Artist
+		},
+		{
+			path: '/newPassword',
+			name: 'newPassword',
+			component: NewPassword
 		},
 		{
 			path: '/:comicName',
