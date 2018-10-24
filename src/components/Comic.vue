@@ -3,16 +3,39 @@
 		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
 			<div v-if="comic">
-				<h2>by 
-					<router-link v-bind="artist" :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
+				<h2 style="margin-bottom: 16px;">by 
+					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
 						{{comic.artist}}
 					</router-link>
 					</h2>
 				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
-				<p><button class="text-button" v-on:click="showLoginModal" style="margin: 15px 0 10px 0; font-size: 16px; font-weight: 400;">Log in</button> to vote</p>
-				<back-to-index></back-to-index>
 
-				<div class="normal-button-row">
+				<back-to-index class="margin-top-16"></back-to-index>
+
+				<p v-if="!$store.state.username">
+					<button class="text-button margin-top-16" v-on:click="showLoginModal" style="font-size: 16px; font-weight: 400;">
+						Log in
+					</button> 
+					to vote
+				</p>
+
+				<div class="comic-links margin-top-16">
+					<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
+					<p v-if="comicLinks.previousComic">
+						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
+							<i class="fas fa-arrow-circle-left"></i> 
+							{{comicLinks.previousComic}}
+						</router-link>
+					</p>
+					<p v-if="comicLinks.nextComic">
+						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.nextComic } }">
+							{{comicLinks.nextComic}} 
+							<i class="fas fa-arrow-circle-right"></i>
+						</router-link>
+					</p>
+				</div>
+
+				<div class="normal-button-row margin-top-16">
 					<button v-on:click="setAllImagesFit('height')" class="y-button">Fit screen H</button>
 					<button v-on:click="setAllImagesFit('width')"  class="y-button">Fit screen W</button>
 					<button v-on:click="setAllImagesFit('big')"    class="y-button">Big</button>
@@ -29,7 +52,7 @@
 			</div>
 		</div>
 	
-		<div v-if="comic" id="comic-page-container">
+		<div v-if="comic" id="comic-page-container" class="margin-top-16">
 			<img 
 				v-for="pageNumber in comic.numberOfPages" 
 				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
@@ -48,7 +71,7 @@ import BackToIndex from '@/components/BackToIndex.vue'
 export default {
 	name: 'comic',
 	props: {
-		userInfo: Object
+		userInfo: Object,
 	},
 	components: { 'back-to-index': BackToIndex },
 	data: function () {
@@ -57,6 +80,7 @@ export default {
 			userIsDonator: false,
 			comicNotFound: false,
 			imageFitArray: [],
+			comicLinks: { previousComic: undefined, nextComic: undefined },
 		}
 	},
 	methods: {
@@ -91,6 +115,7 @@ export default {
 	created: async function () {
 		this.$store.commit('setModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', false)
+		this.comicLinks = await mockGetLinks()
 		if ( !this.comic ) {
 			mockGetComic(this.$route.params.comicName)
 				.then( comic => {
@@ -110,9 +135,25 @@ async function mockGetComic () {
 	})
 }
 
+async function mockGetLinks () {
+	return await new Promise( (resolve) => {
+		setTimeout(() => {
+			resolve({nextComic: 'asd'})
+			console.log('resolved')
+		}, 500)
+	})
+}
+
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 </script>
+
+<style lang="scss">
+.margin-top-16 {
+	margin-top: 16px;
+}
+
+</style>
 
 <style lang="sass">
 $linkColor: #3984d4
@@ -133,9 +174,8 @@ a
 	display: flex
 	flex-direction: column
 	align-items: center
-	margin-top: 15px
 	img
-		margin-bottom: 15px
+		margin-bottom: 16px
 
 .img-fit-height
 	max-height: 100vh
@@ -147,7 +187,6 @@ a
 	max-height: 90px
 
 .normal-button-row
-	margin-top: 10px
 	.y-button
 		margin: 0px 2px
 

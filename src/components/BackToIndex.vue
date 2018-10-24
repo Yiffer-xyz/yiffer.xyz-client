@@ -1,6 +1,6 @@
 <template>
 	<router-link :to="'/'">
-		← back to index
+		<i class="fas fa-home"></i> back to index
 	</router-link>
 </template>
 
