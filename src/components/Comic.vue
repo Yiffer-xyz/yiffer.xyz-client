@@ -3,7 +3,11 @@
 		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
 			<div v-if="comic">
-				<h2>by <a href="#" style="font-weight: 300;">{{comic.artist}}</a></h2>
+				<h2>by 
+					<router-link v-bind="artist" :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
+						{{comic.artist}}
+					</router-link>
+					</h2>
 				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
 				<p><button class="text-button" v-on:click="showLoginModal" style="margin: 15px 0 10px 0; font-size: 16px; font-weight: 400;">Log in</button> to vote</p>
 				<back-to-index></back-to-index>

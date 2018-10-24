@@ -99,6 +99,11 @@ a
 
 <style lang="scss">
 $linkColor: #3984d4;
+
+.link-color{
+	color: $linkColor !important;
+}
+
 .text-button {
 	font-size: 14px;
 	text-align: center;

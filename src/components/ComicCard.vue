@@ -6,7 +6,9 @@
 		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 			<p class="comic-card-comic-title"><b>{{comic.name}}</b></p>
 		</router-link>
-		<p><a href="#" class="comic-card-artist">{{comic.artist}}</a></p>
+		<router-link v-bind:comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
+			<p class="link-color">{{comic.artist}}</p>
+		</router-link>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
 			<p><i class="fas fa-file"></i> {{comic.numberOfPages}}</p>
