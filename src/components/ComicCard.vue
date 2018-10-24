@@ -1,7 +1,7 @@
 <template>
 	<div class="comic-card">
 		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-			<img :src="`comics/${comic.name}/s.jpg`" v-on:click="storeClickedComicData()">
+			<img :src="`/comics/${comic.name}/s.jpg`" v-on:click="storeClickedComicData()">
 		</router-link>
 		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 			<p class="comic-card-comic-title"><b>{{comic.name}}</b></p>

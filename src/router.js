@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import ComicList from './components/ComicList.vue'
 import Comic from './components/Comic.vue'
 import About from './components/About.vue'
+import Artist from './components/Artist.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
 			path: '/about',
 			name: 'about',
 			component: About
+		},
+		{
+			path: '/artist/:artistName',
+			name: 'artist',
+			component: Artist
 		},
 		{
 			path: '/:comicName',
