@@ -148,9 +148,24 @@
 
 						<table class="button-row">
 								<tr>
-										<td>No detail</td>
-										<td>Medium detail</td>
-										<td class="button-selected">High detail</td>
+										<td
+											@click="setDetailLevel('No detail')"
+											v-bind:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
+										>
+											No detail
+										</td>
+										<td
+											@click="setDetailLevel('Medium detail')"
+											v-bind:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
+										>
+											Medium detail
+										</td>
+										<td
+											@click="setDetailLevel('High detail')"
+											v-bind:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
+										>
+											High detail
+										</td>
 								</tr>
 						</table>
 
@@ -171,7 +186,7 @@
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic">
+			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic" v-bind:detailLevel="$store.state.detailLevel">
 			</comic-card>
 		</div>
 
@@ -263,6 +278,9 @@ export default {
 			if (this.keywordResultHovered) { this.addSelectedKeyword(this.keywordResultHovered) } 
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
+		setDetailLevel ( detailLevel ) {
+			this.$store.commit('setDetailLevel', detailLevel)
+		}
 	},
 	watch: {
 		searchFiltering: function () {
@@ -472,8 +490,8 @@ $themeRed: #ec2f4b
 
 <style>
 	@media (max-width: 795px) {
-		.button-row {
-			
+		.upper-body-width {
+			width: 100%;
 		}
 	}
 </style>

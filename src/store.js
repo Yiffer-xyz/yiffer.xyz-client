@@ -19,6 +19,7 @@ export default new Vuex.Store({
 		keywordList: [],
 		modalVisibility: false,
 		whiteThemeButtons: false,
+		detailLevel: 'Medium detail'
   },
   mutations: {
 		setUsername ( state, username ) { state.username = username },
@@ -59,6 +60,7 @@ export default new Vuex.Store({
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
 		setModalVisibility ( state, isVisible ) { state.modalVisibility = isVisible; },
 		setWhiteThemeButtonStyle ( state, isWhite ) { state.whiteThemeButtons = isWhite },
+		setDetailLevel ( state, detailLevel ) { state.detailLevel = detailLevel },
 	},
 	getters: {
 		getSelectedKeywords: state => () => state.selectedKeywords,

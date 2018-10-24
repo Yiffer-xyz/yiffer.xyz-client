@@ -8,13 +8,18 @@
 		</router-link>
 		<p><a href="#" class="comic-card-artist">{{comic.artist}}</a></p>
 
-		<div class="horiz-card-row">
+		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
 			<p><i class="fas fa-file"></i> {{comic.numberOfPages}}</p>
 			<p><i class="fas fa-users"></i> {{formatRating(comic.userRating)}}</p>
 			<p><i class="fas fa-user"></i> {{comic.yourRating}}</p>
 		</div>
 
-		<div class="keyword-container">
+		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
+			<div v-if="isNewComic" class="circled-text">NEW</div>
+			<div v-if="!comic.finished" class="circled-text">WIP</div>
+		</div>
+
+		<div class="keyword-container" v-if="detailLevel === 'High detail'">
 			<div 
 				class="keyword"
 				v-for="keyword in comic.keywords"
@@ -31,10 +36,13 @@
 export default {
 	name: 'comic-card',
 	props: {
-		comic: Object
+		comic: Object,
+		detailLevel: String,
 	},
 	data: function () {
-		return {}
+		return {
+			isNewComic: new Date() - new Date(this.comic.created) < 604800000,
+		}
 	},
 	methods: {
 		formatRating: function (number) {
@@ -64,6 +72,28 @@ $linkColor: #3984d4;
 		color: $linkColor !important;
 		cursor: pointer;
 		border-color: $linkColor;
+	}
+}
+.circled-text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 33px;
+	width: 33px;
+	// border: 0.5px solid #444;
+	border-radius: 35px;
+	font-size: 12px;
+	font-weight: 400;
+	margin-top: 3px;
+	color: #444 !important;
+	background-color: #ddd;
+}
+
+.dark {
+	.circled-text {
+		background-color: #333;
+		color: #bbb !important;
+		// border-color: #444;
 	}
 }
 </style>
