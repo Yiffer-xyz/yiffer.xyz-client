@@ -3,7 +3,7 @@
 		<span class="modal-backdrop" v-on:click="closeModal()"></span>
 		<div class="loginModal">
 
-			<div v-if="loginMode" class="loginModalInnerWrapper">
+			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form @submit="loginConfirmClicked" class="login-register-form">
@@ -17,11 +17,12 @@
 					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="toggleLoginModal()" class="text-button">Click here to <u>sign up</u></button>
-				<router-link :to="'/forgottenpassword'" class="register-button" style="text-align: center;"><u>Forgot</u> login details?</router-link>
+				<button v-on:click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+				<button v-on:click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
 			</div>
 
-			<div v-if="!loginMode" class="loginModalInnerWrapper">
+
+			<div v-if="modalContext==='register'" class="loginModalInnerWrapper">
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form @submit="signupConfirmClicked" class="login-register-form">
@@ -57,9 +58,32 @@
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="toggleLoginModal()" class="text-button">Click here to <u>log in</u></button>
+				<button v-on:click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
+				<button v-on:click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
 			</div>
 
+
+			<div v-if="modalContext==='forgotten'" class="loginModalInnerWrapper">
+				<p class="modal-header">Forgotten account details?</p>
+				<p v-if="forgottenErrorMessage" class="modal-error-message">{{forgottenErrorMessage}}</p>
+				<p v-if="forgottenSuccessMessage" style="margin: 20px 0;">
+					<i class="fas fa-check-circle"></i> {{forgottenSuccessMessage}}
+				</p>
+				<form @submit="forgottenConfirmClicked" v-if="!forgottenSuccessMessage" class="login-register-form">
+					<label for="forgottenUsername">Username or email</label>
+					<input v-model="forgottenUsername" name="forgottenUsername" type="text" style="margin-bottom: 5px;">
+
+					<p class="modal-input-explanation">Link for creating a new password will be sent to the input email, or the 
+						email address associated with the input username.</p>
+
+
+					<button v-if="!forgottenLoading" type="submit" class="y-button login-button">Submit</button>
+					<button v-if="forgottenLoading" class="y-button login-button pleasewait-button">Please wait...</button>
+				</form>
+
+				<button v-on:click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
+				<button v-on:click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -70,21 +94,28 @@ export default {
 	name: 'login-modal',
 	data: function () {
 		return {
-			loginMode: true,
+			modalContext: 'login',
+
 			loginUsername: '',
 			loginPassword: '',
+			loginErrorMessage: '',
+			loginLoading: false,
+
 			signupUsername: '',
 			signupPassword: '',
 			signupEmail: '',
 			signupErrorMessage: '',
-			loginErrorMessage: '',
-			loginLoading: false,
 			signupLoading: false,
+
+			forgottenUsername: '',
+			forgottenErrorMessage: '',
+			forgottenSuccessMessage: '',
+			forgottenLoading: false,
 		}
 	},
 	methods: {
-		toggleLoginModal () {
-			this.loginMode = !this.loginMode
+		setModalContext ( modalContext ) {
+			this.modalContext = modalContext
 			this.emptyInputFields()
 			this.clearErrorMessages()
 		},
@@ -118,21 +149,35 @@ export default {
 				this.signupErrorMessage = mockApiResponse.message
 			}
 		},
+		forgottenConfirmClicked ( buttonEvent ) {
+			buttonEvent.preventDefault()
+			this.forgottenLoading = true
+			let mockApiResponse = this.mockForgottenError()
+
+			this.forgottenLoading = false
+			if ( mockApiResponse.success ) {
+				this.forgottenSuccessMessage = 'Link for resetting password sent to your email!'
+			}
+			else {
+				this.forgottenErrorMessage = mockApiResponse.message
+			}
+		},
 		emptyInputFields () {
 			this.loginUsername = ''
 			this.loginPassword = ''
 			this.signupUsername = ''
 			this.signupPassword = ''
 			this.signupEmail = ''
+			this.forgottenUsername = ''
 		},
 		clearErrorMessages () {
 			this.signupErrorMessage = ''
 			this.loginErrorMessage = ''
+			this.forgottenErrorMessage = ''
 		},
 		closeModal () {
-			this.emptyInputFields()
-			this.clearErrorMessages()
 			this.$store.commit('setModalVisibility', false)
+			this.setModalContext('login')
 		},
 
 		mockLoginError () {
@@ -146,6 +191,12 @@ export default {
 		},
 		mockSignupSuccess () {
 			return { success: true, username: 'tullebruker22' }
+		},
+		mockForgottenSuccess () {
+			return { success: true }
+		},
+		mockForgottenError () {
+			return { success: false, message: 'Username/email does not exist' }
 		}
 	},
 	computed: {
@@ -203,7 +254,7 @@ $themeRed: #ec2f4b;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
 
 	.text-button {
-		margin-top: 30px;
+		margin-top: 5px;
 	}
 }
 .loginModal:before {
@@ -255,6 +306,7 @@ $themeRed: #ec2f4b;
 .login-button {
 	padding: 6px 30px;
 	align-self: center;
+	margin-bottom: 32px;
 }
 
 .modal-header {
@@ -263,7 +315,7 @@ $themeRed: #ec2f4b;
 }
 
 .modal-input-explanation {
-	font-size: 11px;
+	font-size: 12px;
 	margin-bottom: 16px;
 }
 
