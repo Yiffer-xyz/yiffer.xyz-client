@@ -1,7 +1,7 @@
 <template>
 	<div style="width: 100%">
     <h1>{{$route.params.artistName}}</h1>
-    <p style="margin-top: 8px;">
+    <p v-if="!$store.state.username" style="margin-top: 8px;">
       <button class="text-button" v-on:click="showLoginModal" style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">Log in</button>
       to vote
     </p>
@@ -17,7 +17,7 @@
 
     <h2 style="margin-top: 16px;">Comics</h2>
 		<div class="comic-card-container">
-      <comic-card v-for="comic in this.artistData.comics" v-bind:key="comic.id" v-bind:comic="comic" v-bind:detailLevel="'High detail'"></comic-card>
+      <comic-card v-for="comic in this.artistData.comics" v-bind:key="comic.id" v-bind:clickableKeyword="false" v-bind:comic="comic" v-bind:detailLevel="'High detail'"></comic-card>
     </div>
 
 		<login-modal v-if="$store.state.modalVisibility"></login-modal>
@@ -51,6 +51,7 @@ export default {
   created: function () {
     this.$store.commit('setModalVisibility', false)
     this.artistData = mockGetArtist('$route.params.artistName')
+    this.clickableKeyword = false
   }
 }
 

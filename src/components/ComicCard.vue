@@ -23,7 +23,7 @@
 
 		<div class="keyword-container" v-if="detailLevel === 'High detail'">
 			<div 
-				class="keyword"
+				v-bind:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
 				v-for="keyword in comic.keywords"
 				v-bind:key="keyword"
 				@click="addSelectedKeyword(keyword)"
@@ -40,6 +40,10 @@ export default {
 	props: {
 		comic: Object,
 		detailLevel: String,
+		clickableKeyword: {
+			type: Boolean,
+			default: true
+		}
 	},
 	data: function () {
 		return {
@@ -55,7 +59,7 @@ export default {
 			this.$store.commit('clickComic', this.comic)
 		},
 		addSelectedKeyword (keywordName) {
-			this.$store.commit('addSelectedKeyword', keywordName)
+			if ( this.clickableKeyword ) { this.$store.commit('addSelectedKeyword', keywordName) }
 		}
 	}
 }
@@ -64,17 +68,20 @@ export default {
 <style lang="scss">
 $linkColor: #3984d4;
 
-.keyword {
+.keyword, .keyword-static {
 	font-size: 12px;
 	border: 0.5px solid #ccc;
 	margin: 1px 3px;
 	padding: 0.5px 6px 1px 6px;
 	border-radius: 10px;
-	&:hover {
-		color: $linkColor !important;
-		cursor: pointer;
-		border-color: $linkColor;
-	}
+}
+.keyword:hover {
+	color: $linkColor !important;
+	cursor: pointer;
+	border-color: $linkColor;
+}
+.keyword-static:hover {
+	cursor: default;
 }
 .circled-text {
 	display: flex;
