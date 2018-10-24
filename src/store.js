@@ -59,6 +59,15 @@ export default new Vuex.Store({
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
 		setModalVisibility ( state, isVisible ) { state.modalVisibility = isVisible; },
 		setWhiteThemeButtonStyle ( state, isWhite ) { state.whiteThemeButtons = isWhite },
-  },
+	},
+	getters: {
+		getSelectedKeywords: state => () => state.selectedKeywords,
+		getSorting: state => () => state.sorting,
+		// : state => () => state.,
+		// : state => () => state.,
+		// : state => () => state.,
+		// : state => () => state.,
+		// : state => () => state.,
+	},
   actions: {}
 })

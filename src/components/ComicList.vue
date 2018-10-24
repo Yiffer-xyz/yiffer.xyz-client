@@ -210,13 +210,8 @@ export default {
 		},
 		onSortingButtonClick: function ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
-			this.paginate()
 		},
-		sortComicList: function () {
-			this.$store.$state.sorting
-			this.paginate()
-		},
-		paginate: function ( pageNumber ) {
+		paginate: function ( pageNumber ) { console.log('pag in ate')
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
@@ -228,19 +223,16 @@ export default {
 				)
 		},
 		addSelectedKeyword ( keywordName ) {
-			console.log('addselectedkeyword', keywordName)
 			if (!this.lastActionWasDeselectingKeyword) {
 				this.lastActionWasDeselectingKeyword = true
 				this.$store.commit('addSelectedKeyword', keywordName+'')
 				this.keywordSearchFocused = undefined
 				this.keywordSearch = ''
-				this.paginate()
 			}
 		},
 
 		removeSelectedKeyword ( keywordName ) {
 			this.$store.commit('removeSelectedKeyword', keywordName)
-			this.paginate()
 		},
 
 		filterComicByTag ( comicObject ) {
@@ -254,7 +246,7 @@ export default {
 				|| comicObject.artist.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0
 		},
 		filterComicByKeywords ( comicObject ) {
-			if ( !this.keywordSearch ) { return true }
+			if ( this.$store.state.selectedKeywords.length === 0 ) { return true }
 			for (var keyword of this.$store.state.selectedKeywords) {
 				if (comicObject.keywords.indexOf(keyword) === -1) { return false }
 			}
@@ -276,7 +268,7 @@ export default {
 		searchFiltering: function () {
 			this.$store.commit('setSearchFiltering', this.searchFiltering)
 			this.paginate()
-		}
+		},
 	},
   created: function() {
 		this.$store.commit('setModalVisibility', false)
@@ -288,6 +280,9 @@ export default {
 			this.paginate()
 			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
+
+		this.$store.watch(this.$store.getters.getSelectedKeywords, selectedKeywords => this.paginate())
+		this.$store.watch(this.$store.getters.getSorting, sorting => this.paginate())
 	},
 	computed: {
 		keywordsMatchingSearch () {
