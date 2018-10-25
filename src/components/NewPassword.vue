@@ -11,7 +11,7 @@
         Password successfully changed!
       </p>
       
-      <p v-if="errorMessage" class="error-message">{{errorMessage}}</p>
+      <p v-if="errorMessage" id="newPasswordErrorMessage" class="error-message">{{errorMessage}}</p>
       <form @submit="submitClicked" v-if="!passwordChangeSuccess" class="login-register-form">
         <label for="newPassword">New password, 6+ characters</label>
         <input 
@@ -105,10 +105,13 @@ $themeRed: #ec2f4b;
 }
 
 .error-message {
-	margin-top: 16px;
-  margin-bottom: -16px;
 	color: $themeRed !important;
 	font-weight: 400;
+}
+
+#newPasswordErrorMessage {
+	margin-top: 16px;
+  margin-bottom: -16px;
 }
 
 .dark {

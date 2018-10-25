@@ -89,7 +89,6 @@ $linkColor: #3984d4;
 	justify-content: center;
 	height: 33px;
 	width: 33px;
-	// border: 0.5px solid #444;
 	border-radius: 35px;
 	font-size: 12px;
 	font-weight: 400;
@@ -102,7 +101,11 @@ $linkColor: #3984d4;
 	.circled-text {
 		background-color: #333;
 		color: #bbb !important;
-		// border-color: #444;
+	}
+
+	.keyword, .keyword-static {
+		border-color: #555;
+		color: #ddd;
 	}
 }
 </style>

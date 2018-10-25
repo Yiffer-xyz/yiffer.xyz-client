@@ -138,6 +138,18 @@ label
 		color: white
 		cursor: pointer
 
+.y-button-small
+	border: 0.8px solid $linkColor
+	border-radius: 5px
+	color: $linkColor
+	background: rgba(0,0,0,0)
+	padding: 2px 6px
+
+	&:hover
+		background-color: $linkColor
+		color: white
+		cursor: pointer
+
 .dark
 	background-color: #091014
 	p, h1, h2, div, td, h3, span

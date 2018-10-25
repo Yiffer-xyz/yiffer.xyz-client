@@ -2,7 +2,7 @@
 	<span>
 		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
-			<div v-if="comic">
+			<span v-if="comic" style="display: flex; flex-direction: column; align-items: center; max-width: 65%;">
 				<h2 style="margin-bottom: 16px;">by 
 					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
 						{{comic.artist}}
@@ -19,7 +19,7 @@
 					to vote
 				</p>
 
-				<div class="comic-links margin-top-16">
+				<div id="comicLinks" class="margin-top-16">
 					<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
 					<p v-if="comicLinks.previousComic">
 						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
@@ -35,13 +35,67 @@
 					</p>
 				</div>
 
+				<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
+					<div 
+						class="keyword-static"
+						v-for="keyword in comic.keywords"
+						v-bind:key="keyword"
+					>
+						{{keyword}}
+					</div>
+
+					<div class="keyword-static keyword-button" v-on:click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
+						add/remove tags
+					</div>
+					<div class="keyword-static keyword-button" v-on:click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
+						hide adding/removing tags
+					</div>
+				</div>
+
+				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
+					<div id="dropdownContainer">
+						<span>
+							<label for="addKeyword">Add tag</label>
+							<select v-model="addKeyword" name="addKeyword">
+								<option v-for="keyword in keywordsNotInComic" v-bind:key="keyword">
+									{{keyword}}
+								</option>
+							</select>
+							<button 
+								@click="suggestKeywordChange('add')"
+								v-bind:class="{'y-button-disabled': !addKeyword, 'y-button-small': addKeyword}"
+							>
+								Add
+							</button>
+						</span>
+
+						<span>
+						<label for="removeKeyword">Remove tag</label>
+							<select v-model="removeKeyword">
+								<option v-for="keyword in comic.keywords" v-bind:key="keyword">
+									{{keyword}}
+								</option>
+							</select>
+							<button 
+								@click="suggestKeywordChange('remove')"
+								v-bind:class="{'y-button-disabled': !removeKeyword, 'y-button-small': removeKeyword}"
+							>
+								Remove
+							</button>
+						</span>
+					</div>
+
+					<p class="success-message" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
+					<p class="error-message" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
+				</div>
+
 				<div class="normal-button-row margin-top-16">
 					<button v-on:click="setAllImagesFit('height')" class="y-button">Fit screen H</button>
 					<button v-on:click="setAllImagesFit('width')"  class="y-button">Fit screen W</button>
 					<button v-on:click="setAllImagesFit('big')"    class="y-button">Big</button>
 					<button v-on:click="setAllImagesFit('thumb')"  class="y-button">Thumb</button>
 				</div>
-			</div>
+			</span>
 
 			<div v-else-if="!comicNotFound">
 				Loading comic
@@ -81,6 +135,12 @@ export default {
 			comicNotFound: false,
 			imageFitArray: [],
 			comicLinks: { previousComic: undefined, nextComic: undefined },
+			keywordSuggestionsActive: false,
+			keywordsNotInComic: [],
+			addKeyword: undefined,
+			removeKeyword: undefined,
+			keywordSuccessMessage: '',
+			keywordErrorMessage: '',
 		}
 	},
 	methods: {
@@ -110,6 +170,31 @@ export default {
 		},
 		showLoginModal () {
 			this.$store.commit('setModalVisibility', true)
+		},
+		toggleKeywordSuggestions () {
+			this.keywordSuggestionsActive = !this.keywordSuggestionsActive
+			if ( this.keywordsNotInComic.length === 0 ) { this.getKeywordsNotInComic() }
+		},
+		async getKeywordsNotInComic () {
+			let allKeywords = await mockGetAllKeywords()
+			for ( var keyword of allKeywords ) {
+				if ( this.comic.keywords.indexOf(keyword) < 0 ) {
+					this.keywordsNotInComic.push(keyword)
+				}
+			}
+		},
+		async suggestKeywordChange ( typeOfChange ) {
+			let relevantKeyword = typeOfChange==='add' ? this.addKeyword : this.removeKeyword
+			let suggestionResponse = await mockKeywordSuggestion (relevantKeyword)
+
+			if ( suggestionResponse.success ) {
+				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${suggestionResponse.message})`
+				this.keywordErrorMessage = undefined
+			}
+			else {
+				this.keywordErrorMessage = suggestionResponse.message
+				this.keywordSuccessMessage = undefined
+			}
 		}
 	},
 	created: async function () {
@@ -130,7 +215,7 @@ export default {
 async function mockGetComic () {
 	return await new Promise( (resolve) => {
 		setTimeout(() => {
-			resolve({"id":343,"name":"Dress to Undress","cat":"MM","tag":"Furry","artist":"Seth-Iova","updated":"2017-10-24T11:04:46.000Z","finished":0,"created":"2017-07-01T00:00:00.000Z","numberOfPages":21,"userRating":7.881,"yourRating":0})
+			resolve({"tag": "Furry", "name": "Dress to Undress", "keywords": ['asd', 'asdasdasd', 'asdasdasdasd', 'asad asda', 'xccxxc', 'xcxcxcxc ', 'xccx', 'xcxc', 'asdasdasd a', 'asd  a a ', 'asdasd ',"finnick", "chipmunk", "charizard", "footjob", "fisting"], "cat": "MM", "lastUpdateNewPageCount": 0, "updated": "2017-10-24T11:04:46.000Z", "numberOfPages": 21, "userRating": 7.881, "id": 343, "created": "2017-07-01T00:00:00.000Z", "finished": 0, "artist": "Seth-Iova", "yourRating": 0})
 		}, 500)
 	})
 }
@@ -139,7 +224,22 @@ async function mockGetLinks () {
 	return await new Promise( (resolve) => {
 		setTimeout(() => {
 			resolve({nextComic: 'asd'})
-			console.log('resolved')
+		}, 500)
+	})
+}
+
+async function mockKeywordSuggestion (kwname) {
+	return await new Promise( (resolve) => {
+		setTimeout(() => {
+			resolve({success: false, message: 'nasdnlasd nlaksd lkasdlna n ann nnad nn '})
+		}, 500)
+	})
+}
+
+async function mockGetAllKeywords () {
+	return await new Promise( (resolve) => {
+		setTimeout(() => {
+			resolve(['a', 'bb', 'ccc', 'dd', 'ee', 'dasd', 'asda', 'asdasd', 'add', 'asddd', 'ddda', 'atr', 'dfg', 'dfgd', 'ghjg', 'ghjj', 'wer', 'wrrr'])
 		}, 500)
 	})
 }
@@ -149,10 +249,48 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 </script>
 
 <style lang="scss">
-.margin-top-16 {
-	margin-top: 16px;
-}
+	$linkColor: #3984d4;
+	$themeRed: #ec2f4b;
 
+	.margin-top-16 {
+		margin-top: 16px;
+	}
+	.margin-top-8 {
+		margin-top: 8px;
+	}
+
+	#comicKeywords {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.keyword-button {
+		border-color: $linkColor !important;
+		color: $linkColor !important;
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	#keywordEditing {
+		width: 100%;
+		select {
+			margin: 0 5px;
+			border-top-left-radius: 20px;
+			border-bottom-left-radius: 20px;
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	#dropdownContainer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+	}
 </style>
 
 <style lang="sass">
