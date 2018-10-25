@@ -63,14 +63,15 @@
 							</select>
 							<button 
 								@click="suggestKeywordChange('add')"
-								v-bind:class="{'y-button-disabled': !addKeyword, 'y-button-small': addKeyword}"
+								v-bind:class="{'y-button-disabled': !addKeyword}"
+								class="y-button-small"
 							>
 								Add
 							</button>
 						</span>
 
-						<span>
-						<label for="removeKeyword">Remove tag</label>
+						<span style="margin-left: 20px;">
+							<label for="removeKeyword">Remove tag</label>
 							<select v-model="removeKeyword">
 								<option v-for="keyword in comic.keywords" v-bind:key="keyword">
 									{{keyword}}
@@ -78,7 +79,8 @@
 							</select>
 							<button 
 								@click="suggestKeywordChange('remove')"
-								v-bind:class="{'y-button-disabled': !removeKeyword, 'y-button-small': removeKeyword}"
+								v-bind:class="{'y-button-disabled': !removeKeyword}"
+								class="y-button-small"
 							>
 								Remove
 							</button>
@@ -190,6 +192,17 @@ export default {
 			if ( suggestionResponse.success ) {
 				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${suggestionResponse.message})`
 				this.keywordErrorMessage = undefined
+
+				if ( typeOfChange === 'add' ) {
+					this.comic.keywords.splice(this.comic.keywords.indexOf(this.addKeyword))
+					this.keywordsNotInComic.push(this.addKeyword)
+					this.addKeyword = undefined
+				}
+				else {
+					this.keywordsNotInComic.splice(this.keywordsNotInComic.indexOf(this.removeKeyword))
+					this.comic.keywords.push(this.removeKeyword)
+					this.removeKeyword = undefined
+				}
 			}
 			else {
 				this.keywordErrorMessage = suggestionResponse.message
@@ -277,19 +290,13 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	#keywordEditing {
 		width: 100%;
 		select {
-			margin: 0 5px;
-			border-top-left-radius: 20px;
-			border-bottom-left-radius: 20px;
-			&:focus {
-				outline: none;
-			}
+			margin: 0 4px;
 		}
 	}
 
 	#dropdownContainer {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-evenly;
 	}
 </style>
 

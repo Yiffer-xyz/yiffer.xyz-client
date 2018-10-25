@@ -150,6 +150,13 @@ label
 		color: white
 		cursor: pointer
 
+.y-button-disabled
+	color: #999
+	&:hover
+		cursor: not-allowed
+		color: #999
+		background-color: none
+
 .dark
 	background-color: #091014
 	p, h1, h2, div, td, h3, span
