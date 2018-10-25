@@ -40,18 +40,26 @@
 		</div>
 
 		<login-modal v-if="$store.state.modalVisibility"></login-modal>
+		<voting-modal v-if="$store.state.votingModalVisibility"></voting-modal>
     <router-view/>
   </div>
 </template>
 
 <script>
 import LoginModal from '@/components/LoginModal.vue'
+import VotingModal from '@/components/VotingModal.vue'
 export default {
-	components: { 'login-modal': LoginModal },
+	components: { 'login-modal': LoginModal, 'voting-modal': VotingModal },
 	methods: {
 		setTheme( themeColor ) {
-			if ( themeColor === 'dark' ) { document.body.classList.add('dark') }
-			else { document.body.classList.remove('dark') }
+			if ( themeColor === 'dark' ) {
+				document.body.classList.add('dark')
+				this.$store.commit('setDarkTheme', true)
+			}
+			else {
+				document.body.classList.remove('dark')
+				this.$store.commit('setDarkTheme', false)
+			}
 		},
 		showLoginModal () {
 			this.$store.commit('setModalVisibility', true)
@@ -126,7 +134,7 @@ label
 	&:hover
 		background: rgba(255, 255, 255, 0.4)
 
-.y-button
+.y-button, .vote-button
 	border: 0.8px solid $linkColor
 	border-radius: 5px
 	color: $linkColor
@@ -164,24 +172,26 @@ label
 </style>
 
 <style lang="scss">
-$linkColor: #3984d4;
+	$themeBlue: #009fff;
+	$themeRed: #ec2f4b;
+	$linkColor: #3984d4;
 
-.link-color{
-	color: $linkColor !important;
-}
-
-.text-button {
-	font-size: 14px;
-	text-align: center;
-	font-weight: 300;
-	font-family: 'Open Sans', sans-serif;
-	background: transparent;
-	border: none;
-	color: $linkColor;
-	padding: 0px;
-	margin: 0px;
-	&:hover {
-		cursor: pointer;
+	.link-color {
+		color: $linkColor !important;
 	}
-}
+
+	.text-button {
+		font-size: 14px;
+		text-align: center;
+		font-weight: 300;
+		font-family: 'Open Sans', sans-serif;
+		background: transparent;
+		border: none;
+		color: $linkColor;
+		padding: 0px;
+		margin: 0px;
+		&:hover {
+			cursor: pointer;
+		}
+	}
 </style>

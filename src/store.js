@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+		darkTheme: false,
 		username: undefined,
 		clickedComic: undefined,
 		comicList: [],
@@ -20,6 +21,7 @@ export default new Vuex.Store({
 		votingModalVisibility: false,
 		whiteThemeButtons: false,
 		detailLevel: 'Medium detail',
+		comicForVotingModal: {},
   },
   mutations: {
 		setUsername ( state, username ) { state.username = username },
@@ -62,15 +64,19 @@ export default new Vuex.Store({
 		setVotingModalVisibility ( state, isVisible ) { state.votingModalVisibility = isVisible; },
 		setWhiteThemeButtonStyle ( state, isWhite ) { state.whiteThemeButtons = isWhite },
 		setDetailLevel ( state, detailLevel ) { state.detailLevel = detailLevel },
+		updateOneComicInList ( state, updatedComic ) {
+			for ( var i=0; i<state.comicList.length; i++ ) {
+				if ( state.comicList[i].id === updatedComic.id ) {
+					state.comicList[i] = updatedComic
+				}
+			}
+		},
+		setComicForVotingModal ( state, comic ) { state.comicForVotingModal = comic },
+		setDarkTheme ( state, isDarkTheme ) { state.darkTheme = isDarkTheme },
 	},
 	getters: {
 		getSelectedKeywords: state => () => state.selectedKeywords,
 		getSorting: state => () => state.sorting,
-		// : state => () => state.,
-		// : state => () => state.,
-		// : state => () => state.,
-		// : state => () => state.,
-		// : state => () => state.,
 	},
   actions: {}
 })

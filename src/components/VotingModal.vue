@@ -2,8 +2,8 @@
 	<div id="modalAndBackdropWrapper">
 		<span class="modal-backdrop" v-on:click="closeModal()"></span>
 		<div class="voting-modal">
-			<p class="modal-header">Vote for {{comic.name}}</p>
-			<p>User rating: {{comic.userRating}}</p>
+			<p class="modal-header">Vote for {{this.$store.state.comicForVotingModal.name}}</p>
+			<p>User rating: {{this.$store.state.comicForVotingModal.userRating}}</p>
 
 			<table class="voting-numbers-table">
 				<tr>
@@ -32,12 +32,9 @@
 
 export default {
 	name: 'voting-modal',
-	props: {
-		comic: Object
-	},
 	data: function () {
 		return {
-			currentMouseoverNumber: this.comic.yourRating,
+			currentMouseoverNumber: this.$store.state.comicForVotingModal.yourRating,
 		}
 	},
 	methods: {
@@ -45,7 +42,7 @@ export default {
 			this.currentMouseoverNumber = number
 		},
 		onNumberMouseOut () {
-			this.currentMouseoverNumber = this.comic.yourRating
+			this.currentMouseoverNumber = this.$store.state.comicForVotingModal.yourRating
 		},
 		async onNumberClick ( number ) {
 			this.closeModal()
@@ -53,17 +50,12 @@ export default {
 			if ( votingResponse.success ) {
 				let updatedComic = await mockGetComicDetails()
 				this.$store.commit('updateOneComicInList', updatedComic)
-				this.comic.yourRating = updatedComic.yourRating
-				this.comic.userRating = updatedComic.userRating
 			}
 		},
 		closeModal () {
 			this.$store.commit('setVotingModalVisibility', false)
 		}
 	},
-	computed: {
-
-	}
 }
 
 async function mockSendVote () {

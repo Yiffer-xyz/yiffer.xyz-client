@@ -10,15 +10,19 @@
 			<p>Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekstsadasdasd</p>
 			<p>Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekstFiller tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst</p>
 		</div>
+
+		<voting-button></voting-button>
+
 	</span>
 </template>
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
+import VotingButton from '@/components/VotingButton.vue'
 
 export default {
 	name: 'about',
-	components: { 'back-to-index': BackToIndex },
+	components: { 'back-to-index': BackToIndex, 'voting-button': VotingButton },
 	data: function () {
 		return {
 		}

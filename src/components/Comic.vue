@@ -19,6 +19,11 @@
 					to vote
 				</p>
 
+				<voting-button
+					v-bind:comic="comic"
+					v-bind:backgroundColors="{light: 'white', dark: '#091014'}"
+				></voting-button>
+
 				<div id="comicLinks" class="margin-top-16">
 					<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
 					<p v-if="comicLinks.previousComic">
@@ -123,13 +128,14 @@
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
+import VotingButton from '@/components/VotingButton.vue'
 
 export default {
 	name: 'comic',
 	props: {
 		userInfo: Object,
 	},
-	components: { 'back-to-index': BackToIndex },
+	components: { 'back-to-index': BackToIndex, 'voting-button': VotingButton },
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
@@ -194,13 +200,13 @@ export default {
 				this.keywordErrorMessage = undefined
 
 				if ( typeOfChange === 'add' ) {
-					this.comic.keywords.splice(this.comic.keywords.indexOf(this.addKeyword))
-					this.keywordsNotInComic.push(this.addKeyword)
+					this.comic.keywords.splice(this.comic.keywords.indexOf(relevantKeyword))
+					this.keywordsNotInComic.push(relevantKeyword)
 					this.addKeyword = undefined
 				}
 				else {
-					this.keywordsNotInComic.splice(this.keywordsNotInComic.indexOf(this.removeKeyword))
-					this.comic.keywords.push(this.removeKeyword)
+					this.keywordsNotInComic.splice(this.keywordsNotInComic.indexOf(relevantKeyword))
+					this.comic.keywords.push(relevantKeyword)
 					this.removeKeyword = undefined
 				}
 			}
@@ -218,7 +224,8 @@ export default {
 			mockGetComic(this.$route.params.comicName)
 				.then( comic => {
 					this.comic = comic
-						this.initializeImageFitArray()
+					this.$store.commit('setComicForVotingModal', comic)
+					this.initializeImageFitArray()
 				})
 		}
 		else { this.initializeImageFitArray() }
@@ -241,7 +248,7 @@ async function mockGetLinks () {
 	})
 }
 
-async function mockKeywordSuggestion (kwname) {
+async function mockKeywordSuggestion () {
 	return await new Promise( (resolve) => {
 		setTimeout(() => {
 			resolve({success: false, message: 'nasdnlasd nlaksd lkasdlna n ann nnad nn '})
@@ -260,6 +267,14 @@ async function mockGetAllKeywords () {
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 </script>
+
+
+<style lang="scss">
+	.voting-button {
+		margin-top: 16px;
+	}
+</style>
+
 
 <style lang="scss">
 	$linkColor: #3984d4;
@@ -334,5 +349,4 @@ a
 .normal-button-row
 	.y-button
 		margin: 0px 2px
-
 </style>
