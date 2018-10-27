@@ -317,7 +317,6 @@ export default {
 
 
 <style lang="scss">
-$linkColor: #3984d4;
 $themeBlue: #009fff;
 $themeRed: #ec2f4b;
 
@@ -339,7 +338,7 @@ $themeRed: #ec2f4b;
 	font-weight: 300;
 	&:hover {
 		background-color: #e3e3e3;
-		color: $linkColor !important;
+		color: $themeBlue !important;
 		cursor: pointer;
 	}
 }
@@ -371,7 +370,7 @@ $themeRed: #ec2f4b;
 
 
 <style lang="sass">
-$linkColor: #3984d4
+$themeBlue: #3984d4
 $themeBlue: #009fff
 $themeRed: #ec2f4b 
 
@@ -468,7 +467,7 @@ $themeRed: #ec2f4b
 		background: rgba(0, 0, 0, 0.2)
 		border: 1px solid rgba(0,0,0,0)
 	.button-selected
-		background: $linkColor !important
+		background: $themeBlue !important
 	.one-searchbox-container input, #keywordSearch
 		border-color: #111
 		background: rgba(0, 0, 0, 0.1)
@@ -476,13 +475,13 @@ $themeRed: #ec2f4b
 		border-color: #555
 		color: #ddd
 		&:hover
-			color: $linkColor
+			color: $themeRed
 	.keyword-result
 		color: #eee !important
 		background: rgba(22, 22, 22, 0.96)
 		&:hover
 			background: rgba(18, 18, 18, 1)
-			color: $linkColor
+			color: $themeBlue
 	.button-row td:hover, .pagination-table td:hover
 		cursor: pointer
 		background: rgba(255, 255, 255, 0.1)

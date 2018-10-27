@@ -85,7 +85,7 @@ export default {
 </style>
 
 <style lang="sass">
-$linkColor: #3984d4
+$themeBlue: #009fff;
 $themeRed: #ec2f4b
 
 div, table, span, img, body, h1, h2, h3, p
@@ -107,11 +107,14 @@ h2
 	font-size: 35px
 
 a
-	color: $linkColor
+	color: $themeBlue
 	font-weight: 400
 
 label
 	font-weight: 300
+
+::selection
+	background: rgba(236, 47, 75, 0.5)
 
 .theme-button-container
 	position: absolute
@@ -136,26 +139,26 @@ label
 		background: rgba(255, 255, 255, 0.4)
 
 .y-button, .vote-button
-	border: 0.8px solid $linkColor
+	border: 0.8px solid $themeBlue
 	border-radius: 5px
-	color: $linkColor
+	color: $themeBlue
 	background: rgba(0,0,0,0)
 	padding: 4px 9px
 
 	&:hover
-		background-color: $linkColor
+		background-color: $themeBlue
 		color: white
 		cursor: pointer
 
 .y-button-small
-	border: 0.8px solid $linkColor
+	border: 0.8px solid $themeBlue
 	border-radius: 5px
-	color: $linkColor
+	color: $themeBlue
 	background: rgba(0,0,0,0)
 	padding: 2px 6px
 
 	&:hover
-		background-color: $linkColor
+		background-color: $themeBlue
 		color: white
 		cursor: pointer
 
@@ -182,10 +185,10 @@ label
 <style lang="scss">
 	$themeBlue: #009fff;
 	$themeRed: #ec2f4b;
-	$linkColor: #3984d4;
+	$themeBlue: #3984d4;
 
 	.link-color {
-		color: $linkColor !important;
+		color: $themeBlue !important;
 	}
 
 	.text-button {
@@ -195,7 +198,7 @@ label
 		font-family: 'Open Sans', sans-serif;
 		background: transparent;
 		border: none;
-		color: $linkColor;
+		color: $themeBlue;
 		padding: 0px;
 		margin: 0px;
 		&:hover {
