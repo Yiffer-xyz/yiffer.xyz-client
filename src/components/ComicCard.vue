@@ -24,6 +24,7 @@
 		<voting-button
 			v-bind:comic="comic"
 			v-bind:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
+			v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'"
 		></voting-button>
 
 		<div class="keyword-container" v-if="detailLevel === 'High detail'">
@@ -127,6 +128,7 @@ $linkColor: #3984d4;
 $linkColor: #3984d4
 $cardBgColorLight: #f1f1f1
 $cardBgColorDark: #222426
+$cardTextColorLight: #222
 
 .comic-card 
 	width: 200px
@@ -147,7 +149,7 @@ $cardBgColorDark: #222426
 		text-decoration: none
 		color: $linkColor
 	p, div
-		color: black
+		color: $cardTextColorLight
 	.horiz-card-row
 		display: flex
 		flex-direction: row
@@ -159,6 +161,7 @@ $cardBgColorDark: #222426
 		font-weight: 400
 		margin: 0px 10px
 		text-align: center
+		color: $cardTextColorLight
 
 .keyword-container 
 	margin-top: 7px
@@ -170,6 +173,6 @@ $cardBgColorDark: #222426
 .dark
 	.comic-card
 		background-color: $cardBgColorDark
-		p, div
+		p, div, .fas
 			color: #ddd
 </style>

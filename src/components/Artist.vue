@@ -20,7 +20,7 @@
       <comic-card v-for="comic in this.artistData.comics" v-bind:key="comic.id" v-bind:clickableKeyword="false" v-bind:comic="comic" v-bind:detailLevel="'High detail'"></comic-card>
     </div>
 
-		<login-modal v-if="$store.state.modalVisibility"></login-modal>
+		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
 	</div>
 </template>
 
@@ -41,7 +41,7 @@ export default {
 	methods: {
     showLoginModal ( clickEvent ) {
       clickEvent.preventDefault()
-			this.$store.commit('setModalVisibility', true)
+			this.$store.commit('setLoginModalVisibility', true)
     },
     prettifyUrl ( linkUrl ) {
       if ( linkUrl.endsWith('/') ) { linkUrl = linkUrl.substring(0, linkUrl.length-1) }
@@ -49,7 +49,7 @@ export default {
     }
   },
   created: function () {
-    this.$store.commit('setModalVisibility', false)
+    this.$store.commit('setLoginModalVisibility', false)
     this.artistData = mockGetArtist('$route.params.artistName')
     this.clickableKeyword = false
   }

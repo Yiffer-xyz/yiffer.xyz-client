@@ -12,13 +12,6 @@
 
 				<back-to-index class="margin-top-16"></back-to-index>
 
-				<p v-if="!$store.state.username">
-					<button class="text-button margin-top-16" v-on:click="showLoginModal" style="font-size: 16px; font-weight: 400;">
-						Log in
-					</button> 
-					to vote
-				</p>
-
 				<voting-button
 					v-bind:comic="comic"
 					v-bind:backgroundColors="{light: 'white', dark: '#091014'}"
@@ -177,7 +170,7 @@ export default {
 			}
 		},
 		showLoginModal () {
-			this.$store.commit('setModalVisibility', true)
+			this.$store.commit('setLoginModalVisibility', true)
 		},
 		toggleKeywordSuggestions () {
 			this.keywordSuggestionsActive = !this.keywordSuggestionsActive
@@ -217,7 +210,7 @@ export default {
 		}
 	},
 	created: async function () {
-		this.$store.commit('setModalVisibility', false)
+		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', false)
 		this.comicLinks = await mockGetLinks()
 		if ( !this.comic ) {

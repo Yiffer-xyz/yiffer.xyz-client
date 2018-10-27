@@ -272,7 +272,7 @@ export default {
 		},
 		showLoginModal ( clickEvent ) {
 			clickEvent.preventDefault()
-			this.$store.commit('setModalVisibility', true)
+			this.$store.commit('setLoginModalVisibility', true)
 		},
 		setKeywordSearchFocused ( isFocused ) {
 			// Needed because if there is no search term, then technically the results div is 
@@ -292,7 +292,7 @@ export default {
 		},
 	},
   created: function() {
-		this.$store.commit('setModalVisibility', false)
+		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
 		setTimeout( () => {
 			this.$store.commit('setComicList', config.comicList)

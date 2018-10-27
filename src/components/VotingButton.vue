@@ -1,7 +1,8 @@
 <template>
-	<button class="voting-button" @click="showVotingModal()">
+	<button class="voting-button" @click="showSomeModal()" v-bind:class="{'disabled-voting-button': !$store.state.username}">
 		<span v-bind:style="{'background-color': this.backgroundColor}">
-			<p>Vote</p>
+			<p v-if="$store.state.username">Vote</p>
+			<p v-else>Log in to vote</p>
 		</span>
 	</button>
 </template>
@@ -17,9 +18,14 @@
 			}
 		},
 		methods: {
-			showVotingModal () {
-				this.$store.commit('setComicForVotingModal', this.comic)
-				this.$store.commit('setVotingModalVisibility', true)
+			showSomeModal () {
+				if (this.$store.state.username) {
+					this.$store.commit('setComicForVotingModal', this.comic)
+					this.$store.commit('setVotingModalVisibility', true)
+				}
+				else {
+					this.$store.commit('setLoginModalVisibility', true)
+				}
 			}
 		},
 		computed: {
@@ -68,5 +74,9 @@
 				}
 			}
 		}
+	}
+
+	.disabled-voting-button {
+		letter-spacing: 0px;
 	}
 </style>

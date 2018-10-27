@@ -39,7 +39,7 @@
 
 		</div>
 
-		<login-modal v-if="$store.state.modalVisibility"></login-modal>
+		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
 		<voting-modal v-if="$store.state.votingModalVisibility"></voting-modal>
     <router-view/>
   </div>
@@ -62,7 +62,7 @@ export default {
 			}
 		},
 		showLoginModal () {
-			this.$store.commit('setModalVisibility', true)
+			this.$store.commit('setLoginModalVisibility', true)
 		},
 		logout () {
 			this.$store.commit('setUsername', undefined)

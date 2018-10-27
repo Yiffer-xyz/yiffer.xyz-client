@@ -176,7 +176,7 @@ export default {
 			this.forgottenErrorMessage = ''
 		},
 		closeModal () {
-			this.$store.commit('setModalVisibility', false)
+			this.$store.commit('setLoginModalVisibility', false)
 			this.setModalContext('login')
 		},
 
