@@ -163,6 +163,9 @@ $cardTextColorLight: #222
 		text-align: center
 		color: $cardTextColorLight
 
+	.voting-button
+    margin-top: 4px
+
 .keyword-container 
 	margin-top: 7px
 	display: flex

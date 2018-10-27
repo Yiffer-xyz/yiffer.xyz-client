@@ -2,12 +2,12 @@
 	<span>
 		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
-			<span v-if="comic" style="display: flex; flex-direction: column; align-items: center; max-width: 65%;">
-				<h2 style="margin-bottom: 16px;">by 
+			<span v-if="comic" class="comic-upper-div">
+				<h2>by 
 					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
 						{{comic.artist}}
 					</router-link>
-					</h2>
+				</h2>
 				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
 
 				<back-to-index class="margin-top-16"></back-to-index>
@@ -263,15 +263,19 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 
 <style lang="scss">
-	.voting-button {
-		margin-top: 16px;
-	}
-</style>
-
-
-<style lang="scss">
 	$linkColor: #3984d4;
 	$themeRed: #ec2f4b;
+
+	.comic-upper-div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 65%;
+
+		.voting-button {
+			margin-top: 16px;
+		}
+	}
 
 	.margin-top-16 {
 		margin-top: 16px;
@@ -305,6 +309,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	#dropdownContainer {
 		display: flex;
 		flex-direction: row;
+		justify-content: center;
 	}
 </style>
 

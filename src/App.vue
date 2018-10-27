@@ -160,10 +160,11 @@ label
 
 .y-button-disabled
 	color: #999
+	border-color: #999
 	&:hover
 		cursor: not-allowed
 		color: #999
-		background-color: none
+		background: none
 
 .dark
 	background-color: #091014
