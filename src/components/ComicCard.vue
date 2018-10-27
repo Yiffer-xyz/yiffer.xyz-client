@@ -21,6 +21,11 @@
 			<div v-if="!comic.finished" class="circled-text">WIP</div>
 		</div>
 
+		<voting-button
+			v-bind:comic="comic"
+			v-bind:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
+		></voting-button>
+
 		<div class="keyword-container" v-if="detailLevel === 'High detail'">
 			<div 
 				v-bind:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
@@ -35,8 +40,11 @@
 </template>
 
 <script>
+import VotingButton from '@/components/VotingButton.vue'
+
 export default {
 	name: 'comic-card',
+	components: { 'voting-button': VotingButton },
 	props: {
 		comic: Object,
 		detailLevel: String,
@@ -95,6 +103,10 @@ $linkColor: #3984d4;
 	margin-top: 3px;
 	color: #444 !important;
 	background-color: #ddd;
+
+	&:hover {
+		cursor: default;
+	}
 }
 
 .dark {

@@ -75,35 +75,6 @@ export default {
 $linkColor: #3984d4;
 $themeRed: #ec2f4b;
 
-.login-register-form {
-	display: flex;
-	flex-direction: column;
-	margin-top: 32px;
-  width: 200px;
-	label {
-		font-size: 14px;
-		color: #555;
-	}
-	input {
-		outline: none;
-		margin-bottom: 17px;
-		margin-top: 3px;
-		border: 0.5px solid #555;
-		border-color: transparent transparent #555 transparent;
-		color: #333;
-		background: transparent;
-		padding: 6px 4px;
-	}
-	.invalid-input {
-		border: 2px solid #ec2f4b !important;
-		padding: 4.5px 2.5px;
-	}
-	.valid-input {
-		border: 2px solid #009fff !important;
-		padding: 4.5px 2.5px;
-	}
-}
-
 .error-message {
 	color: $themeRed !important;
 	font-weight: 400;

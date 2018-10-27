@@ -53,9 +53,9 @@
 			height: 100%;
 			width: 100%;
 			border-radius: 5px;
-			// margin: 4px 9px;
 			p {
-				margin: 5px 9px;
+				margin: 4px 8px;
+				font-family: 'Open Sans', sans-serif;
 			}
 		}
 

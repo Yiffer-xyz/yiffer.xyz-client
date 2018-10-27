@@ -96,15 +96,17 @@
 							</div>
 
 							<div class="search-wrapper">
-									<input type="text"
-												 name="someName" 
-												 placeholder="keywords"
-												 id="keywordSearch"
-												 class="upper-body-searchbox"
-												 v-model="keywordSearch"
-												 @click="lastActionWasDeselectingKeyword = false"
-												 @focus="setKeywordSearchFocused(true)"
-												 @blur="setKeywordSearchFocused(false)"/>
+									<input 
+										type="text"
+										name="someName" 
+										placeholder="keywords"
+										id="keywordSearch"
+										class="upper-body-searchbox"
+										v-model="keywordSearch"
+										@click="lastActionWasDeselectingKeyword = false"
+										@focus="setKeywordSearchFocused(true)"
+										@blur="setKeywordSearchFocused(false)"
+									/>
 									<div id="keywordResults" v-if="keywordSearchFocused">
 											<div 
 												v-for="keywordObject in keywordsMatchingSearch" 
@@ -227,7 +229,7 @@ export default {
 		onSortingButtonClick: function ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
 		},
-		paginate: function ( pageNumber ) { console.log('pag in ate')
+		paginate: function ( pageNumber ) {
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
@@ -300,8 +302,8 @@ export default {
 			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
 
-		this.$store.watch(this.$store.getters.getSelectedKeywords, selectedKeywords => this.paginate())
-		this.$store.watch(this.$store.getters.getSorting, sorting => this.paginate())
+		this.$store.watch(this.$store.getters.getSelectedKeywords, () => this.paginate())
+		this.$store.watch(this.$store.getters.getSorting, () => this.paginate())
 	},
 	computed: {
 		keywordsMatchingSearch () {
