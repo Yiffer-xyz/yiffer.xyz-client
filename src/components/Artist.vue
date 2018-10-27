@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <h2 style="margin-top: 16px;">Comics</h2>
+    <h2 class="margin-top-16">Comics</h2>
 		<div class="comic-card-container">
       <comic-card v-for="comic in this.artistData.comics" v-bind:key="comic.id" v-bind:clickableKeyword="false" v-bind:comic="comic" v-bind:detailLevel="'High detail'"></comic-card>
     </div>

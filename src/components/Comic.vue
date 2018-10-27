@@ -78,7 +78,7 @@
 							<button 
 								@click="suggestKeywordChange('remove')"
 								v-bind:class="{'y-button-disabled': !removeKeyword}"
-								class="y-button-small"
+								class="y-button-small y-button-red"
 							>
 								Remove
 							</button>

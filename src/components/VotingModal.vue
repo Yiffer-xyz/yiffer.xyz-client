@@ -2,28 +2,32 @@
 	<div id="modalAndBackdropWrapper">
 		<span class="modal-backdrop" v-on:click="closeModal()"></span>
 		<div class="voting-modal">
-			<p class="modal-header">Vote for {{this.$store.state.comicForVotingModal.name}}</p>
-			<p>User rating: {{this.$store.state.comicForVotingModal.userRating}}</p>
+			<span style="display: flex; flex-direction: column;">
+				<p class="modal-header margin-top-16">Vote for {{this.$store.state.comicForVotingModal.name}}</p>
+				<p class="margin-top-16">User rating: {{this.$store.state.comicForVotingModal.userRating}}</p>
 
-			<table class="voting-numbers-table">
-				<tr>
-					<td 
-						v-for="i in 10"
-						v-bind:key="i"
-						v-bind:class="[
-							'vote-box-colored-' + currentMouseoverNumber,
-							{'vote-box-uncolored': currentMouseoverNumber>i}
-						]"
-						@mouseover="onNumberMouseover(i)"
-						@mouseout="onNumberMouseOut()"
-						@click="onNumberClick(i)"
-					>
-						{{i}}
-					</td>
-				</tr>
-			</table>
+				<table class="voting-numbers-table margin-top-16">
+					<tr>
+						<td 
+							v-for="i in 10"
+							v-bind:key="i"
+							v-bind:class="[
+								'vote-box-colored-' + i,
+								{'vote-box-uncolored': currentMouseoverNumber<i}
+							]"
+							@mouseover="onNumberMouseover(i)"
+							@mouseout="onNumberMouseOut()"
+							@click="onNumberClick(i)"
+							class="voting-number"
+						>
+							{{i}}
+						</td>
+					</tr>
+				</table>
 
-			<button @click="onNumberClick(0)">Delete vote</button>
+				<button @click="onNumberClick(0)" id="deleteVoteButton" class="margin-top-16 y-button">Delete vote</button>
+
+			</span>
 		</div>
 	</div>
 </template>
@@ -71,25 +75,26 @@ async function mockGetComicDetails () {
 $linkColor: #3984d4;
 $themeRed: #ec2f4b;
 
-.vote-box-colored-1 { background-color: #009FFF; }
-.vote-box-colored-2 { background-color: #1A92EB; }
-.vote-box-colored-3 { background-color: #3486D7; }
-.vote-box-colored-4 { background-color: #4E79C3; }
-.vote-box-colored-5 { background-color: #686DAF; }
-.vote-box-colored-6 { background-color: #83609B; }
-.vote-box-colored-7 { background-color: #9D5487; }
-.vote-box-colored-8 { background-color: #B74773; }
-.vote-box-colored-9 { background-color: #D13B5F; }
-.vote-box-colored-10 { background-color: #EC2F4B; }
+.vote-box-colored-1 { background-color: #009FFF; color: white; }
+.vote-box-colored-2 { background-color: #1A92EB; color: white; }
+.vote-box-colored-3 { background-color: #3486D7; color: white; }
+.vote-box-colored-4 { background-color: #4E79C3; color: white; }
+.vote-box-colored-5 { background-color: #686DAF; color: white; }
+.vote-box-colored-6 { background-color: #83609B; color: white; }
+.vote-box-colored-7 { background-color: #9D5487; color: white; }
+.vote-box-colored-8 { background-color: #B74773; color: white; }
+.vote-box-colored-9 { background-color: #D13B5F; color: white; }
+.vote-box-colored-10 { background-color: #EC2F4B; color: white; }
 .vote-box-colored {
 	color: white;
 }
 .vote-box-uncolored {
-	background-color: #ccc;
+	background-color: transparent;
 	color: #222;
 }
 
 .voting-numbers-table {
+	border-collapse: collapse;
 	td {
 		&:hover {
 			cursor: pointer;
@@ -145,9 +150,20 @@ $themeRed: #ec2f4b;
 	font-weight: 400;
 }
 
+.voting-number {
+	width: 10%;
+	font-weight: 400;
+	padding: 10px 0;
+}
+
+#deleteVoteButton {
+	width: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .dark {
 	.vote-box-uncolored {
-		background-color: #333;
 		color: white;
 	}
 	

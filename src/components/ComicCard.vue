@@ -7,7 +7,7 @@
 			<p class="comic-card-comic-title"><b>{{comic.name}}</b></p>
 		</router-link>
 		<router-link v-bind:comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
-			<p class="link-color">{{comic.artist}}</p>
+			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
 		</router-link>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">

@@ -86,6 +86,7 @@ export default {
 
 <style lang="sass">
 $linkColor: #3984d4
+$themeRed: #ec2f4b
 
 div, table, span, img, body, h1, h2, h3, p
 	margin: 0px
@@ -157,6 +158,12 @@ label
 		background-color: $linkColor
 		color: white
 		cursor: pointer
+
+.y-button-red
+	color: $themeRed
+	border-color: $themeRed
+	&:hover
+		background-color: $themeRed
 
 .y-button-disabled
 	color: #999
