@@ -178,14 +178,14 @@
 
 					<table class="pagination-table upper-body-width">
 							<tr>
-									<td style="padding-bottom: 6px">&larr;</td>
+									<td style="padding-bottom: 6px" @click="paginateUpOrDown('down')">&larr;</td>
 									<td v-for="pageNo in Math.ceil($store.state.totalNumberOfComics/config.comicsPerPage)" 
 											v-bind:key="pageNo"
 											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
-											v-on:click="paginate(pageNo)">
+											@click="paginate(pageNo)">
 											{{pageNo}}
 									</td>
-									<td style="padding-bottom: 6px">&rarr;</td>
+									<td style="padding-bottom: 6px" @click="paginateUpOrDown('up')">&rarr;</td>
 							</tr>
 					</table>
 			</div>
@@ -227,10 +227,11 @@ export default {
 			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
 			this.paginate()
 		},
-		onSortingButtonClick: function ( sortButtonName ) {
+		onSortingButtonClick ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
 		},
-		paginate: function ( pageNumber ) {
+		paginate ( pageNumber ) {
+			console.log('pginated')
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
@@ -240,6 +241,18 @@ export default {
 					(this.$store.state.pageNumber-1) * config.comicsPerPage,
 					(this.$store.state.pageNumber) * config.comicsPerPage )
 				)
+		},
+		paginateUpOrDown ( upOrDown ) {
+			if (upOrDown === 'down') {
+				if (this.$store.state.pageNumber > 1) {
+					this.paginate(this.$store.state.pageNumber - 1)
+				} 
+			}
+			else {
+				if (this.$store.state.comicList.length > this.$store.state.pageNumber * config.comicsPerPage) {
+					this.paginate(this.$store.state.pageNumber + 1)
+				}
+			}
 		},
 		addSelectedKeyword ( keywordName ) {
 			if (!this.lastActionWasDeselectingKeyword) {
