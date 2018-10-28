@@ -1,5 +1,6 @@
 <template>
 	<div style="width: 100%">
+		<vue-headful title="Yiffer.xyz"/>
 		<div class="upper-body-div">
 			<h1>Yiffer.xyz</h1>
 

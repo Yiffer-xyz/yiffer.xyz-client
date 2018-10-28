@@ -1,5 +1,6 @@
 <template>
 	<div style="width: 100%">
+		<vue-headful :title="$route.params.artistName + ' - Artist - Yiffer.xyz'"/>
     <h1>{{$route.params.artistName}}</h1>
     <p v-if="!$store.state.username" style="margin-top: 8px;">
       <button class="text-button" v-on:click="showLoginModal" style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">Log in</button>

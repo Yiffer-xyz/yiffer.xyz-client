@@ -1,5 +1,6 @@
 <template>
 	<span>
+		<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
 		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
 			<span v-if="comic" class="comic-upper-div">

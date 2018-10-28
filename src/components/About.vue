@@ -1,5 +1,6 @@
 <template>
 	<span>
+		<vue-headful :title="'About - Yiffer.xyz'"/>
 		<h1>About lalal.xyz</h1>
 		<back-to-index></back-to-index>
 		
@@ -10,9 +11,6 @@
 			<p>Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekstsadasdasd</p>
 			<p>Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekstFiller tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst Filler tekst</p>
 		</div>
-
-		<voting-button></voting-button>
-
 	</span>
 </template>
 
