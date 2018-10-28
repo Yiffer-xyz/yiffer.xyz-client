@@ -1,25 +1,6 @@
 <template>
   <div id="app">
 		<div class="theme-button-container">
-
-			<button
-				v-if="!this.$store.state.username" 
-				class="theme-button" 
-				@click="showLoginModal()" 
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
-			>
-				Log in
-			</button>
-
-			<button 
-				v-if="this.$store.state.username" 
-				class="theme-button" 
-				@click="logout()" 
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
-			>
-				Log out
-			</button>
-
 			<button 
 				class="theme-button" 
 				@click="setTheme('light')" 
@@ -36,7 +17,37 @@
 			>
 				Dark
 			</button>
+		</div>
 
+		<div class="theme-button-container theme-button-container-left">
+			<router-link 
+				:to="{ name: 'comicList' }"
+				class="theme-button"
+			>
+				<button class="theme-button" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">
+					Home
+				</button>
+			</router-link>
+
+			<button
+				v-if="!this.$store.state.username" 
+				class="theme-button" 
+				style="margin-left: 3px;"
+				@click="showLoginModal()" 
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Log in
+			</button>
+
+			<button 
+				v-if="this.$store.state.username" 
+				class="theme-button" 
+				style="margin-left: 3px;"
+				@click="logout()" 
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Log out
+			</button>
 		</div>
 
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
@@ -120,6 +131,10 @@ label
 	position: absolute
 	top: 0
 	right: 3px
+
+.theme-button-container-left
+	left: 3px
+	right: auto
 
 .theme-button
 	background: transparent
