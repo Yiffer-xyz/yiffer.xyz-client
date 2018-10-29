@@ -225,13 +225,14 @@ export default {
 	methods: {
 		onFilterClick ( filterType, selectedFilter ) {
 			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
+			this.$store.commit('setPageNumber', 1)
 			this.paginate()
 		},
 		onSortingButtonClick ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
+			this.$store.commit('setPageNumber', 1)
 		},
 		paginate ( pageNumber ) {
-			console.log('pginated')
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )

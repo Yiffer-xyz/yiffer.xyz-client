@@ -4,6 +4,7 @@ import ComicList from './components/ComicList.vue'
 import Comic from './components/Comic.vue'
 import About from './components/About.vue'
 import Artist from './components/Artist.vue'
+import Admin from './components/Admin.vue'
 import NewPassword from './components/NewPassword.vue'
 
 Vue.use(Router)
@@ -30,6 +31,11 @@ export default new Router({
 			path: '/newPassword',
 			name: 'newPassword',
 			component: NewPassword
+		},
+		{
+			path: '/admin',
+			name: 'admin',
+			component: Admin
 		},
 		{
 			path: '/:comicName',
