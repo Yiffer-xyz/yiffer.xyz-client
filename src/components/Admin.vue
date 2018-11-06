@@ -5,33 +5,8 @@
     <back-to-index></back-to-index>
 
 		<div class="admin-content-container">
-			<div class="admin-content-box">
-				<h2>Add pages to comic</h2>
-					<span class="admin-content-box-inner">
-						<p>Files must be either .jpg or .png. File name does not matter, except for ordering:</p>
-						<p>If adding multiple pages, it is <i>very important</i> that they are named in some 
-							ascending order. Example: <tt>01.jpg, 02.jpg, ...</tt>, or 
-							<tt>a.jpg, b.jpg, ...</tt>. Note that <tt>1.jpg, 2.jpg, ...</tt> will not work for
-							more than 9 pages!</p>
-						<span class="horizontal-flex">
-							<select v-model="addPagesComic">
-								<option v-for="comic in addPagesComicList" v-bind:key="comic.id">
-									{{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
-								</option>
-							</select>
 
-							<input type="file" multiple="true" @change="processFileUploadChange" id="comic" class="y-button"/>
-							<button class="y-button" @click="uploadAddPages" v-show="addPagesFiles.length > 0 && addPagesComic">Upload files</button>
-
-							<p class="error-message" v-if="addPagesErrorMessage">{{addPagesErrorMessage}}</p>
-							<p class="success-message" v-if="addPagesSuccessMessage">{{addPagesSuccessMessage}}</p>
-						</span>
-					</span>
-				<p>Upload new pages, .png or .jpg, any file name</p>
-				<i class="fas fa-sort-down"></i>
-			</div>
-
-
+			<add-comic :comicList="[...addPagesComicList]"></add-comic>
 
 			<div class="admin-content-box">
 				<h2>Add tags to comic</h2>
@@ -84,48 +59,36 @@ import BackToIndex from '@/components/BackToIndex.vue'
 
 // husk å ta med upload progress
 
+import config from '@/config.json'
+import AddComic from '@/components/admin-panel/AddComic.vue'
 
 export default {
 	name: 'admin',
-	components: { 'login-modal': LoginModal, 'back-to-index': BackToIndex },
+	components: {
+		'login-modal': LoginModal,
+		'back-to-index': BackToIndex,
+		'add-comic': AddComic,
+	},
 	data: function () {
 		return {
-			addPagesComicList: [],
-			addPagesFiles: [],
-			keywordSuggestionList: [],
-			allKeywordsList: [],
-
 		}
 	},
 	methods: {
-		async processFileUploadChange (fileEvent) {
-			let response = await mockPageUpload()
-			// todo actually make the request
-
-			if (response.success) {
-				this.addPagesSuccessMessage = `Upload success (${this.addPagesComic})`
-				this.addPagesErrorMessage = ''
-				this.addPagesComic = undefined
-				// todo empty input files / pages
-			}
-			else {
-				this.addPagesErrorMessage = `Upload failure: ${response.message}`
-				this.addPagesSuccessMessage = ''
-			}
+		async mockGetComicList () {
+			this.addPagesComicList = config.comicList
 		},
-		uploadAddPages () {
-
-		}
   },
   created: function () {
+		this.mockGetComicList()
   }
 }
 
 function mockPageUpload () { return {success: true} }
+
 </script>
 
 <style lang="scss">
-$linkColor: #3984d4;
+$linkColor: #009fff;
 
 .admin-content-container {
 	display: flex;
@@ -144,13 +107,35 @@ $linkColor: #3984d4;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 8px;
+	padding: 8px 8px 12px 8px;
 	&:hover {
 		cursor: pointer;
 	}
-	i {
+}
 
+.admin-content-box-open {
+	width: auto;
+	height: auto;
+	&:hover {
+		cursor: initial;
 	}
+}
+
+.admin-content-box-inner {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	> p, select, button, form {
+		margin-bottom: 12px;
+	}
+}
+
+.horizontal-flex {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 }
 
 .dark {
