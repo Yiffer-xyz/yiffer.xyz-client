@@ -6,21 +6,27 @@
 
 		<div class="admin-content-container">
 
-			<add-comic :comicList="[...comicList]"></add-comic>
+			<add-page :comicList="[...comicList]"></add-page>
 
 			<add-keywords :comicList="[...comicList]" :keywordList="[...keywordList]"></add-keywords>
 
 			<correct-comic :comicList="[...comicList]" :artistList="[...artistList]"></correct-comic>
 
-			<div class="admin-content-box">
-				<h2>Add a new comic</h2>
-				<i class="fas fa-sort-down"></i>
-			</div>
-
+			<add-comic :comicList="[...comicList]" :artistList="[...artistList]" :keywordList="[...keywordList]"></add-comic>
 
 
 			<div class="admin-content-box">
 				<h2>Add an artist</h2>
+				<i class="fas fa-sort-down"></i>
+			</div>
+
+			<div class="admin-content-box">
+				<h2>Swap pages and stuff</h2>
+				<i class="fas fa-sort-down"></i>
+			</div>
+
+			<div class="admin-content-box">
+				<h2>Pending comics</h2>
 				<i class="fas fa-sort-down"></i>
 			</div>
 
@@ -51,18 +57,20 @@ import BackToIndex from '@/components/BackToIndex.vue'
 // husk å ta med upload progress
 
 import config from '@/config.json'
-import AddComic from '@/components/admin-panel/AddComic.vue'
+import AddPage from '@/components/admin-panel/AddPage.vue'
 import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
 import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
+import AddComic from '@/components/admin-panel/AddComic.vue'
 
 export default {
 	name: 'admin',
 	components: {
 		'login-modal': LoginModal,
 		'back-to-index': BackToIndex,
-		'add-comic': AddComic,
+		'add-page': AddPage,
 		'add-keywords': AddKeywords,
 		'correct-comic': CorrectComic,
+		'add-comic': AddComic,
 	},
 	data: function () {
 		return {

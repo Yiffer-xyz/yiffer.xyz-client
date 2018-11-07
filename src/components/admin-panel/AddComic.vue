@@ -1,82 +1,131 @@
 <template>
   <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
-    <h2>Add pages to comic</h2>
+    <h2>Add Comic</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
+
       <p>
         Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
-        If adding multiple pages, it is <i>very important</i> that they are named in some 
-        ascending order.<br/>
+        It is <i>very important</i> that pages are named in some ascending order.<br/>
         Example:
         <span class="courier">[01.jpg, 02.jpg, ...]</span>, or 
         <span class="courier">[a.jpg, b.jpg, ...]</span>. Note that
         <span class="courier">[1.jpg, 2.jpg, ...]</span> will not work for more than 9 pages!
       </p>
 
-      <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
-        <p style="margin-right: 8px;">Comic:</p>
-        <select v-model="comic" style="margin-bottom: 0">
-          <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
-            {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
-          </option>
-        </select>
-      </div>
-      
-      <form enctype="multipart/form-data" novalidate>
+      <p>
+        Adding a thumbnail is optional! Thumbnails are precisely 200x283 pixels, and have the filename <span class="courier">s.jpg</span>.<br/>
+        If the comic has a cover page, this should be used in the thumbnail. Otherwise, choose an image representing the comic well,
+        but not too lewd if possible.<br/>
+        GIMP is a great tool for making thumbnails. Don't use MSPaint, it's horrible for scaling.
+      </p>
+
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Comic details</p>
+      <table id="newComicTable">
+        <tr>
+          <td>
+            <p>Comic name</p>
+          </td>
+          <td>
+            <input type="text" v-model="comicName">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>Artist</p>
+          </td>
+          <td>
+            <select v-model="artist">
+              <option v-for="artist in artistList" :key="artist.name" :value="artist">
+                {{artist.name}}
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>Category</p>
+          </td>
+          <td>
+            <select v-model="tag">
+              <option value="Furry">Furry</option>
+              <option value="MLP">MLP</option>
+              <option value="Pokemon">Pokemon</option>
+              <option value="Other">Other</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>Classification</p>
+          </td>
+          <td>
+            <select v-model="cat">
+              <option value="M">M</option>
+              <option value="F">F</option>
+              <option value="MF">MF</option>
+              <option value="MM">MM</option>
+              <option value="FF">FF</option>
+              <option value="MF+">MF+</option>
+              <option value="I">I</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>Finished</p>
+          </td>
+          <td>
+            <select v-model="finished">
+              <option value="true">Finished</option>
+              <option value="false">Unfinished</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add pages</p>
+      <form enctype="multipart/form-data" novalidate style="margin-top: 4px;">
         <div class="pretty-input-upload">
-          <input type="file" multiple="true" @change="processFileUploadChange" id="newPageFiles" accept="image/x-png,image/jpeg" class="input-file"/>
+          <input type="file" multiple="true" @change="processFileUploadChange" id="newPageFilesAddComic" accept="image/x-png,image/jpeg" class="input-file"/>
           <p>Select files</p>
         </div>
       </form>
-
       <p v-if="filesAreInput" style="margin-bottom: 0px;"><b>{{selectedFiles.length}}</b> Selected files:</p>
       <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
-      <button @click="uploadFiles()" v-if="filesAreInput && comic" class="y-button">Upload files{{ comic.finished ? ' (NOTE: this comic is marked as finished!)' : ''}}</button>
 
-      <p class="error-message" v-if="uploadErrorMessage">{{uploadErrorMessage}}</p>
-      <p class="success-message" v-if="uploadSuccessMessage">{{uploadSuccessMessage}}</p>
-
-      <p class="link-color cursor-pointer" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-         v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!)</p>
-      <p class="link-color cursor-pointer" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-         v-if="showAllUnfinishedComics"> Hide this list</p>
-
-      <div v-if="showAllUnfinishedComics" class="vertical-flex;">
-        <table id="unfinishedComicsTable">
-          <thead>
-            <tr>
-              <th>Comic name</th>
-              <th>Pages</th>
-              <th>Days since update</th>
-              <th>Last page</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="comic in unfinishedComicList" v-bind:key="comic.id">
-              <td>
-                <router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" target="_blank">
-                  {{comic.name}}
-                </router-link>
-              </td>
-              <td>{{comic.numberOfPages}}</td>
-              <td>{{comic.daysSinceUpdate}}</td>
-              <td>
-                <span v-if="!comic.lastPageUrl" class="link-color cursor-pointer" @click="showLastPage(comic)">Load image</span>
-                <span v-if="comic.lastPageUrl" class="link-color cursor-pointer" @click="unshowLastPage(comic)">Hide image</span>
-                <a v-if="comic.lastPageUrl" :href="comic.lastPageUrl" target="_blank">
-                  <img :src="comic.lastPageUrl" class="last-page-image"/>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add tags</p>
+      <p>Adding tags is optional, but appreciated!</p>
+      <div class="horizontal-flex">
+        <div class="vertical-flex">
+          <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" v-on:keyup.13="addSelectedKeyword()"> 
+            <option v-for="keyword in keywordList" v-bind:key="keyword.name" v-bind:value="keyword.name">{{keyword.name}}</option>
+          </select>
+          <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
+        </div>
+      
+        <div class="vertical-flex" style="margin-left: 15px;">
+          <p style="margin-bottom: 6px;">Click to <span class="red-color">remove</span></p>
+          <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
+             v-bind:key="keyword" class="selected-add-keyword">{{keyword}}</p>
+        </div>
       </div>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 32px;">Finish</p>
+      <button @click="confirmAddComic()" v-if="readyForUpload" class="y-button" style="margin-top: 4px;">
+        Add comic!
+      </button>
+      <button v-if="!readyForUpload" class="y-button y-button-red" style="margin-top: 4px;">
+        Fill in all details and add pages before finishing!
+      </button>
+
+      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
+      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
+
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
     </span>
 
     <span v-else>
-      <p>Upload new pages, .png or .jpg, any file name</p>
       <i class="fas fa-sort-down arrow-symbol"></i>
     </span>
   </div>
@@ -84,61 +133,70 @@
 
 <script>
 export default {
-  name: 'addComic',
+  name: 'correctComic',
   props: {
-    comicList: Array
+    artistList: Array,
+    comicList: Array,
+    keywordList: Array,
   },
   data: function () {
     return {
       isOpen: false,
-      comic: undefined,
-      uploadErrorMessage: '',
-      uploadSuccessMessage: '',
+      comicName: '',
+      artist: undefined,
+      tag: undefined,
+      cat: undefined,
+      finished: undefined,
       selectedFiles: [],
-      showAllUnfinishedComics: false,
-      unfinishedComicList: this.createUnfinishedComicList(),
+      selectedKeywords: [],
+      selectedKeyword: undefined,
+
+      errorMessage: '',
+      successMessage: '',
     }
   },
   methods: {
     processFileUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
     },
-    uploadFiles () {
-      let response = {success: true, message: ''}
-      // response = {success: false, message: 'This is something weronggggggggg gggg'}
+    addSelectedKeyword () {
+      if (this.selectedKeywords.indexOf(this.selectedKeyword) < 0) {
+        this.selectedKeywords.push(this.selectedKeyword)
+      }
+    },
+    removeKeywordFromSelection (keywordName) {
+      this.selectedKeywords.splice(this.selectedKeywords.indexOf(keywordName), 1)
+    },
+    confirmAddComic () {
+      let uploadData = {
+        comicName: this.comicName,
+        artistId: this.artist.id,
+        tag: this.tag,
+        cat: this.cat,
+        finished: this.finished,
+        files: this.selectedFiles,
+        keywords: this.selectedKeywords
+      }
+
+      // todo mock bla bla bla
+      let response = {success: false, message: 'Comic with this name already exists'}
 
       if (response.success) {
-        this.uploadSuccessMessage = 'Success updating ' + this.comic.name
-        this.uploadErrorMessage = ''
+        this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic, and then (hopefully) add it! If you refresh the page, this comic should appear under "Pending comics".`
+        this.errorMessage = ''
+        this.comicName = ''
+        this.artist = undefined
+        this.cat = undefined
+        this.tag = undefined
+        this.finished = undefined
         this.selectedFiles = []
-        document.getElementById('newPageFiles').value = ''
+        this.selectedKeywords = []
+        document.getElementById('newPageFilesAddComic').value = ''
       }
       else {
-        this.uploadErrorMessage = 'Error updating: ' + response.message
-        this.uploadSuccessMessage = ''
+        this.errorMessage = 'Error adding comic: ' + response.message
+        this.successMessage = ''
       }
-    },
-    toggleAllUnfinishedComics () {
-      this.showAllUnfinishedComics = !this.showAllUnfinishedComics
-    },
-    createUnfinishedComicList () {
-      let unfinishedComicList = this.comicList.filter(comic => !comic.finished).sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
-      let one_day_millisec = 86400000
-      let nowTimestamp = (new Date()).getTime()
-      for (var comic of unfinishedComicList) {
-        let comicUpdatedTimestamp = (new Date(comic.updated)).getTime()
-        comic.daysSinceUpdate = Math.floor((nowTimestamp - comicUpdatedTimestamp) / one_day_millisec)
-      }
-      return unfinishedComicList
-    },
-    showLastPage (comic) {
-      // comic.lastPageUrl = '/comics/' + comic.name + '/' + comic.numberOfPages + '.jpg'
-      comic.lastPageUrl = `/comics/${comic.name}/${comic.numberOfPages}.jpg`
-      comic.name = ' ' + comic.name + ' '
-    },
-    unshowLastPage (comic) {
-      comic.lastPageUrl = undefined
-      comic.name = comic.name.substring(1, comic.name.length-1)
     },
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
@@ -146,75 +204,32 @@ export default {
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
+    readyForUpload () {
+      return this.comicName && this.artist && this.tag && this.cat  && this.finished && this.selectedFiles.length>0
+    }
   }
 }
 </script>
 
 <style lang="scss">
 $linkColor: #009fff;
+$themeRed: #ec2f4b;
 
-.pretty-input-upload {
-	position: relative;
-	cursor: pointer;
-
-	border: 0.8px solid #009fff;
-	border-radius: 5px;
-	color: $linkColor;
-	background: rgba(0, 0, 0, 0);
-	padding: 4px 9px;
-
-	display: flex;
-	align-items: center;
-
-	p {
-		font-size: 13px;
-    color: $linkColor;
-    font-weight: 400;
-	}
-
-  &:hover {
-    background-color: $linkColor;
-    p {
-      color: white;
-    }
+#newComicTable {
+  input, p, td, select {
+    margin-bottom: 0px;
+    text-align: left;
   }
-}
-
-.input-file {
-	opacity: 0;
-	cursor: pointer;
-	position: absolute;
-	width: 100%;
-	left: 0;
-}
-
-.arrow-symbol {
-  font-size: 28px;
-}
-
-.fa-sort-up {
-  position: relative;
-  top: 16px;
-
-  &:hover {
-    cursor: pointer;
+  input, select {
+    width: 100%;
+    box-sizing: border-box;
   }
-}
-
-.last-page-image {
-  max-width: 250px;
-}
-
-#unfinishedComicsTable {
-  border-collapse: collapse;
-  th, td {
-    border: 1px solid #aaa;
+  td {
     padding: 2px 4px;
   }
-  th {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-  }
 }
 
+.no-margin-bot {
+  margin-bottom: 0px !important;
+}
 </style>
