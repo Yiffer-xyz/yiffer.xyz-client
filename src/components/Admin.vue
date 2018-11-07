@@ -6,14 +6,9 @@
 
 		<div class="admin-content-container">
 
-			<add-comic :comicList="[...addPagesComicList]"></add-comic>
+			<add-comic :comicList="[...comicList]"></add-comic>
 
-			<div class="admin-content-box">
-				<h2>Add tags to comic</h2>
-				<i class="fas fa-sort-down"></i>
-			</div>
-
-
+			<add-keywords :comicList="[...comicList]" :keywordList="[...keywordList]"></add-keywords>
 
 			<div class="admin-content-box">
 				<h2>Correct comic info</h2>
@@ -61,6 +56,7 @@ import BackToIndex from '@/components/BackToIndex.vue'
 
 import config from '@/config.json'
 import AddComic from '@/components/admin-panel/AddComic.vue'
+import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
 
 export default {
 	name: 'admin',
@@ -68,14 +64,18 @@ export default {
 		'login-modal': LoginModal,
 		'back-to-index': BackToIndex,
 		'add-comic': AddComic,
+		'add-keywords': AddKeywords,
 	},
 	data: function () {
 		return {
+			comicList: [],
+			keywordList: [],
 		}
 	},
 	methods: {
 		async mockGetComicList () {
-			this.addPagesComicList = config.comicList
+			this.comicList = config.comicList
+			this.keywordList = config.demoKeywords
 		},
   },
   created: function () {
@@ -114,7 +114,7 @@ $linkColor: #009fff;
 }
 
 .admin-content-box-open {
-	width: auto;
+	width: 100%;
 	height: auto;
 	&:hover {
 		cursor: initial;
