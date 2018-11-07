@@ -11,11 +11,15 @@
         <span class="courier">[a.jpg, b.jpg, ...]</span>. Note that
         <span class="courier">[1.jpg, 2.jpg, ...]</span> will not work for more than 9 pages!
       </p>
-      <select v-model="comic">
-        <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
-          {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
-        </option>
-      </select>
+
+      <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
+        <p style="margin-right: 8px;">Comic:</p>
+        <select v-model="comic" style="margin-bottom: 0">
+          <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
+            {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
+          </option>
+        </select>
+      </div>
       
       <form enctype="multipart/form-data" novalidate>
         <div class="pretty-input-upload">
@@ -31,6 +35,42 @@
 
       <p class="error-message" v-if="uploadErrorMessage">{{uploadErrorMessage}}</p>
       <p class="success-message" v-if="uploadSuccessMessage">{{uploadSuccessMessage}}</p>
+
+      <p class="link-color cursor-pointer" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
+         v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!)</p>
+      <p class="link-color cursor-pointer" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
+         v-if="showAllUnfinishedComics"> Hide this list</p>
+
+      <div v-if="showAllUnfinishedComics" class="vertical-flex;">
+        <table id="unfinishedComicsTable">
+          <thead>
+            <tr>
+              <th>Comic name</th>
+              <th>Pages</th>
+              <th>Days since update</th>
+              <th>Last page</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="comic in unfinishedComicList" v-bind:key="comic.id">
+              <td>
+                <router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" target="_blank">
+                  {{comic.name}}
+                </router-link>
+              </td>
+              <td>{{comic.numberOfPages}}</td>
+              <td>{{comic.daysSinceUpdate}}</td>
+              <td>
+                <span v-if="!comic.lastPageUrl" class="link-color cursor-pointer" @click="showLastPage(comic)">Load image</span>
+                <span v-if="comic.lastPageUrl" class="link-color cursor-pointer" @click="unshowLastPage(comic)">Hide image</span>
+                <a v-if="comic.lastPageUrl" :href="comic.lastPageUrl" target="_blank">
+                  <img :src="comic.lastPageUrl" class="last-page-image"/>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
     </span>
@@ -55,6 +95,8 @@ export default {
       uploadErrorMessage: '',
       uploadSuccessMessage: '',
       selectedFiles: [],
+      showAllUnfinishedComics: false,
+      unfinishedComicList: this.createUnfinishedComicList(),
     }
   },
   methods: {
@@ -75,6 +117,28 @@ export default {
         this.uploadErrorMessage = 'Error updating: ' + response.message
         this.uploadSuccessMessage = ''
       }
+    },
+    toggleAllUnfinishedComics () {
+      this.showAllUnfinishedComics = !this.showAllUnfinishedComics
+    },
+    createUnfinishedComicList () {
+      let unfinishedComicList = this.comicList.filter(comic => !comic.finished).sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
+      let one_day_millisec = 86400000
+      let nowTimestamp = (new Date()).getTime()
+      for (var comic of unfinishedComicList) {
+        let comicUpdatedTimestamp = (new Date(comic.updated)).getTime()
+        comic.daysSinceUpdate = Math.floor((nowTimestamp - comicUpdatedTimestamp) / one_day_millisec)
+      }
+      return unfinishedComicList
+    },
+    showLastPage (comic) {
+      // comic.lastPageUrl = '/comics/' + comic.name + '/' + comic.numberOfPages + '.jpg'
+      comic.lastPageUrl = `/comics/${comic.name}/${comic.numberOfPages}.jpg`
+      comic.name = ' ' + comic.name + ' '
+    },
+    unshowLastPage (comic) {
+      comic.lastPageUrl = undefined
+      comic.name = comic.name.substring(1, comic.name.length-1)
     },
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
@@ -134,6 +198,22 @@ $linkColor: #009fff;
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+.last-page-image {
+  max-width: 250px;
+}
+
+#unfinishedComicsTable {
+  border-collapse: collapse;
+  th, td {
+    border: 1px solid #aaa;
+    padding: 2px 4px;
+  }
+  th {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
   }
 }
 
