@@ -10,13 +10,7 @@
 
 			<add-keywords :comicList="[...comicList]" :keywordList="[...keywordList]"></add-keywords>
 
-			<div class="admin-content-box">
-				<h2>Correct comic info</h2>
-				<p>Change the metadata, finished status, artist</p>
-				<i class="fas fa-sort-down"></i>
-			</div>
-
-
+			<correct-comic :comicList="[...comicList]" :artistList="[...artistList]"></correct-comic>
 
 			<div class="admin-content-box">
 				<h2>Add a new comic</h2>
@@ -52,11 +46,14 @@ import BackToIndex from '@/components/BackToIndex.vue'
 // re calculate and zip
 // mod stats
 
+// SW A P    P A G E S   O M G    A ND REMOVE DUPLICATES
+
 // husk å ta med upload progress
 
 import config from '@/config.json'
 import AddComic from '@/components/admin-panel/AddComic.vue'
 import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
+import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
 
 export default {
 	name: 'admin',
@@ -65,17 +62,20 @@ export default {
 		'back-to-index': BackToIndex,
 		'add-comic': AddComic,
 		'add-keywords': AddKeywords,
+		'correct-comic': CorrectComic,
 	},
 	data: function () {
 		return {
 			comicList: [],
 			keywordList: [],
+			artistList: [],
 		}
 	},
 	methods: {
 		async mockGetComicList () {
 			this.comicList = config.comicList
 			this.keywordList = config.demoKeywords
+			this.artistList = config.artistList
 		},
   },
   created: function () {
