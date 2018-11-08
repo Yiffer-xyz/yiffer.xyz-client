@@ -96,7 +96,7 @@ export default {
 </style>
 
 <style lang="sass">
-$themeBlue: #009fff;
+$themeBlue: #009fff
 $themeRed: #ec2f4b
 
 div, table, span, img, body, h1, h2, h3, p
@@ -159,6 +159,7 @@ label
 	color: $themeBlue
 	background: rgba(0,0,0,0)
 	padding: 4px 9px
+	font-family: 'Open Sans', sans-serif
 
 	&:hover
 		background-color: $themeBlue
@@ -198,12 +199,20 @@ label
 </style>
 
 <style lang="scss">
+	$themeBlue: #3984d4;
 	$themeBlue: #009fff;
 	$themeRed: #ec2f4b;
-	$themeBlue: #3984d4;
+
+	option, select, input {
+		font-family: 'Open Sans', sans-serif;
+	}
 
 	.link-color {
 		color: $themeBlue !important;
+	}
+
+	.red-color {
+		color: $themeRed !important;
 	}
 
 	.text-button {
@@ -218,6 +227,38 @@ label
 		margin: 0px;
 		&:hover {
 			cursor: pointer;
+		}
+	}
+
+	.success-message {
+		color: #20ad0a !important;
+		font-weight: 400;
+	}
+
+	.error-message {
+		color: $themeRed !important;
+		font-weight: 400;
+	}
+
+	.courier {
+		font-family: 'Courier New', Courier, monospace;
+		font-size: 13px;
+	}
+
+	.vertical-flex {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.cursor-pointer {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	.no-margin-bot {
+		p, select, button {
+			margin-bottom: 0 !important;
 		}
 	}
 </style>

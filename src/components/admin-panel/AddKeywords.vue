@@ -5,7 +5,7 @@
 
       <p>Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
 
-      <div class="horizontal-flex" style="margin: 12px 0;">
+      <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
           <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
@@ -15,13 +15,13 @@
       </div>
 
   
-      <div class="horizontal-flex" style="width: 100%; justify-content: space-evenly;" v-if="comic">
+      <div class="horizontal-flex" style="width: 100%; justify-content: space-evenly; margin-top: 8px;" v-if="comic">
         <div class="vertical-flex">
           <p class="add-kw-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" v-on:keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" v-bind:key="keyword.name" v-bind:value="keyword.name">{{keyword.name}}</option>
           </select>
-          <button class="y-button" @click="addSelectedKeyword()">&rarr;</button>
+          <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
         </div>
       
         <div class="vertical-flex">
@@ -69,7 +69,6 @@
     </span>
 
     <span v-else>
-      <p>Liten desc kan komme her</p>
       <i class="fas fa-sort-down arrow-symbol"></i>
     </span>
   </div>
@@ -199,7 +198,7 @@ $themeRed: #ec2f4b;
 }
 
 .keyword-to-be-deleted {
-  color: $themeRed;
+  color: $themeRed !important;
   text-decoration: line-through;
 }
 

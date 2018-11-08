@@ -264,7 +264,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 
 <style lang="scss">
-	$linkColor: #3984d4;
+	$linkColor: #009fff;
 	$themeRed: #ec2f4b;
 
 	.comic-upper-div {

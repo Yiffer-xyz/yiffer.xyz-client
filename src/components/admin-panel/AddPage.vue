@@ -12,7 +12,7 @@
         <span class="courier">[1.jpg, 2.jpg, ...]</span> will not work for more than 9 pages!
       </p>
 
-      <div class="horizontal-flex no-margin-bot" style="align-items: center; margin-bottom: 12px;">
+      <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
           <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
