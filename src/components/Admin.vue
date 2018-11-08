@@ -89,8 +89,6 @@ export default {
   }
 }
 
-function mockPageUpload () { return {success: true} }
-
 </script>
 
 <style lang="scss">
@@ -107,7 +105,7 @@ $linkColor: #009fff;
 
 .admin-content-box {
 	width: 300px;
-	border: 1px solid red;
+	border: 1px solid #aaa;
 	margin: 16px;
 	height: 156px;
 	display: flex;
