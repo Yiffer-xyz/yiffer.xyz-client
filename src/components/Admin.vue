@@ -14,11 +14,7 @@
 
 			<add-comic :comicList="[...comicList]" :artistList="[...artistList]" :keywordList="[...keywordList]"></add-comic>
 
-
-			<div class="admin-content-box">
-				<h2>Add an artist</h2>
-				<i class="fas fa-sort-down"></i>
-			</div>
+			<add-artist :artistList="[...artistList]"></add-artist>
 
 			<div class="admin-content-box">
 				<h2>Swap pages and stuff</h2>
@@ -61,6 +57,7 @@ import AddPage from '@/components/admin-panel/AddPage.vue'
 import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
 import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
 import AddComic from '@/components/admin-panel/AddComic.vue'
+import AddArtist from '@/components/admin-panel/AddArtist.vue'
 
 export default {
 	name: 'admin',
@@ -71,6 +68,7 @@ export default {
 		'add-keywords': AddKeywords,
 		'correct-comic': CorrectComic,
 		'add-comic': AddComic,
+		'add-artist': AddArtist,
 	},
 	data: function () {
 		return {
