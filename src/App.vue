@@ -246,11 +246,13 @@ label
 	.success-message {
 		color: #20ad0a !important;
 		font-weight: 400;
+		margin-bottom: 0px !important;
 	}
 
 	.error-message {
 		color: $themeRed !important;
 		font-weight: 400;
+		margin-bottom: 0px !important;
 	}
 
 	.courier {

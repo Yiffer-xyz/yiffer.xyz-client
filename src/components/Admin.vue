@@ -6,7 +6,7 @@
 
 		<div class="admin-content-container">
 	
-			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"></keyword-suggestions>
+			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList" v-on:refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
 
 			<add-page :comicList="[...comicList]"></add-page>
 
@@ -73,6 +73,11 @@ export default {
 			this.artistList = config.artistList
 			this.pendingComicList = config.pendingComicList
 			this.keywordSuggestionList = config.keywordSuggestionList
+		},
+
+		refreshKeywordSuggestions () {
+			// temp mock basdasdasd
+			this.keywordSuggestionList.splice(0, 1)
 		},
 
 		refreshPendingComics () {

@@ -1,0 +1,86 @@
+<template>
+  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+    <h2>Tag suggestions
+      <span v-if="keywordSuggestionList.length>0" class="red-color"> ({{keywordSuggestionList.length}})</span>
+      <span v-else style="color: #999;">(0)</span>
+    </h2>
+    <span class="admin-content-box-inner" v-if="isOpen">
+      <p>Tags suggested by users pending approval will appear here.</p>
+
+      <span v-if="keywordSuggestionList.length > 0">
+        <table class="y-table">
+          <thead>
+            <tr>
+              <th>Comic name</th>
+              <th>Suggestion</th>
+              <th>Suggester</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(suggestion, index) in keywordSuggestionList" :key="index">
+              <td>{{suggestion.ComicName}}</td>
+              <td>{{suggestion.Extension ? 'ADD' : 'REMOVE'}} {{suggestion.Keyword}}</td>
+              <td>{{suggestion.User}}</td>
+              <td>
+                <button @click="processKeyword(suggestion.ComicName, suggestion.Keyword, true)" class="y-button no-margin-bot">Approve</button>
+                <button @click="processKeyword(suggestion.ComicName, suggestion.Keyword, false)" class="y-button y-button-red no-margin-bot">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </span>
+
+      <span v-else>
+        <p>There are currently no new suggestions.</p>
+      </span>
+
+      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
+      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
+
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
+    </span>
+
+    <span v-else>
+      <i class="fas fa-sort-down arrow-symbol"></i>
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'keywordSuggestions',
+  props: {
+    keywordSuggestionList: Array
+  },
+  data: function () {
+    return {
+      isOpen: false,
+      successMessage: '',
+      errorMessage: '',
+    }
+  },
+  methods: {
+    processKeyword (comicName, keyword, isApproved) {
+      let response = {success: true, message: 'umm feuil her'}
+
+      if (response.success) {
+        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} tag ${keyword}`
+        this.errorMessage = ''
+        this.$emit('refresh-keyword-suggestions')
+      }
+      else {
+        this.errorMessage = 'Error processing tag suggestion: ' + response.message
+        this.successMessage = ''
+      }
+    },
+    openComponent () { if (!this.isOpen) { this.isOpen = true } },
+    closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
+  },
+}
+</script>
+
+<style lang="scss">
+$linkColor: #009fff;
+$themeRed: #ec2f4b;
+</style>
