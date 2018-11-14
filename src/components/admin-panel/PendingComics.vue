@@ -66,6 +66,9 @@ export default {
       let response = {success: true, message: 'umm'}
       if (response.success) {
         this.$emit('refresh-pending-comics')
+        if (isApproved) {
+          this.$emit('refresh-comic-list')
+        }
       }
     },
     openComponent () { if (!this.isOpen) { this.isOpen = true } },

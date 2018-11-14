@@ -113,13 +113,12 @@ export default {
       }
     },
     confirmAddKeywords () {
-      let response = {success: false, message: 'Tag already exists'}
+      let response = {success: true, message: 'Tag already exists'}
 
       if (response.success) {
         this.successMessage = 'Successfully added tags to ' + this.comic.name
         this.errorMessage = ''
         this.selectedKeywords = []
-        this.updateComicKeywordsFromBackend(this.comic.id)
         this.$emit('refresh-comic-list')
       }
       else {
@@ -134,7 +133,6 @@ export default {
         this.successMessage = 'Successfully removed tags from ' + this.comic.name
         this.errorMessage = ''
         this.keywordsToDelete = []
-        this.updateComicKeywordsFromBackend(this.comic.id)
         this.$emit('refresh-comic-list')
       }
       else {
@@ -142,31 +140,14 @@ export default {
         this.successMessage = ''
       }
     },
-    updateComicKeywordsFromBackend (comicId) {
-      // hotfix, hent det egentlig fra api med comic id
-      let newComic = {}
-      newComic.keywords = this.comic.keywords
-      newComic.id = this.comicId
-      newComic.keywords.push('new kw 1')
-      newComic.keywords.push('new kw 222')
-
-      // hotfix end, bruk dette
-      for (var comic of this.comicList) {
-        if (comic.id === comicId) {
-          comic.keywords = newComic.keywords
-        }
-      }
-    },
     createKeyword () {
-      // make response using this.newKeyword
-      // let response = {success: true}
-      let response = {success: false, message: 'Tag already exists'}
+      let response = {success: true, message: 'Tag already exists'}
 
       if (response.success) {
         this.newKwSuccessMessage = 'Successfully created tag ' + this.newKeyword
         this.newKwErrorMessage = ''
-        this.keywordList.push({name: this.newKeyword})
         this.newKeyword = ''
+        this.$emit('refresh-keyword-list')
       }
       else {
         this.newKwErrorMessage = 'Error creating tag: ' + response.message

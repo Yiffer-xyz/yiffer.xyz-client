@@ -87,7 +87,7 @@ export default {
   methods: {
     addNewArtist () {
       let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
-      let response = {success: false, message: 'Artist alreadye xists!', results: {artistId: 160}}
+      let response = {success: true, message: 'Artist alreadye xists!', results: {artistId: 160}}
 
       if (response.success) {
         this.artistList.push({name: this.artistName, id: response.results.artistId})
@@ -103,7 +103,7 @@ export default {
     },
     addArtistLinks () {
       let newLinks = [this.link1, this.link2, this.link3, this.link4, this.link5, this.link6].filter(x => x)
-      let response = {success: false, message: 'invalid link url'}
+      let response = {success: true, message: 'invalid link url'}
 
       if (response.success) {
         this.linksSuccessMessage = `Success adding ${newLinks.length} links to artist ${this.artist.name}`

@@ -93,25 +93,14 @@ export default {
   },
   methods: {
     submitChanges () {
-      // todo finne artistId for vi har alle i artistList
-      let artistId
-      for (var artist of this.artistList) {
-        if (artist.name === this.artist) {
-          artistId = artist.id
-          break
-        }
-      }
-
-      let finished = this.finished==='true' ? 1 : 0
-
-      let mockQueryElns = [this.comic.id, artistId, this.tag, this.cat, finished]
       // todo request
-
-      let response = {success: false, message: 'Somethign went wrong'}
+      // this.tag, this.cat, this.artist, this.finished
+      let response = {success: true, message: 'Somethign went wrong'}
 
       if (response.success) {
         this.successMessage = 'Successfully updated info of ' + this.comic.name
         this.errorMessage = ''
+        this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error updating comic: ' + response.message
@@ -123,7 +112,6 @@ export default {
   },
   watch: {
     comic: function () {
-      console.log(this.comic.name, this.comic.artist)
       if (this.comic) {
         this.tag = this.comic.tag
         this.cat = this.comic.cat

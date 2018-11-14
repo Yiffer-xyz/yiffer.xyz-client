@@ -179,10 +179,11 @@ export default {
       }
 
       // todo mock bla bla bla
-      let response = {success: false, message: 'Comic with this name already exists'}
+      let response = {success: true, message: 'Comic with this name already exists'}
 
       if (response.success) {
-        this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic, and then (hopefully) add it! If you refresh the page, this comic should appear under "Pending comics".`
+        this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
+          and then (hopefully) add it! Your suggested comic will now appear under "Pending comics".`
         this.errorMessage = ''
         this.comicName = ''
         this.artist = undefined
