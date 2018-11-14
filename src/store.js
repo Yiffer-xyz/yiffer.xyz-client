@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
 		darkTheme: false,
 		username: undefined,
+		userType: undefined,
 		clickedComic: undefined,
 		comicList: [],
 		displayComics: [],
@@ -25,6 +26,7 @@ export default new Vuex.Store({
   },
   mutations: {
 		setUsername ( state, username ) { state.username = username },
+		setUserType ( state, userType ) { state.userType = userType },
 		clickComic ( state, comic ) { state.clickedComic = comic },
 		setComicList ( state, comicList ) { state.comicList = comicList },
 		setFilter ( state, filterType, filterList ) { state.filters[filterType] = filterList },

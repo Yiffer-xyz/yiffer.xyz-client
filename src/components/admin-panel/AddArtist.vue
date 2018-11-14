@@ -2,12 +2,6 @@
   <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
     <h2>Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-
-			<p>Add a new artist by name. Then, add urls for any relevant website, such as FurAffinity,
-         Twitter, SoFurry, Pixiv, or any custom website. Also, add
-         <span class="courier">https://e621.net/post?tags=<i>ARTISTNAME</i>+order%3Ascore</span> if you
-         can find the artist on e621.</p>
-
       <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
       <div class="horizontal-flex" style="align-items: center;">
         <p style="margin-right: 8px;">Artist name:</p>
@@ -19,8 +13,9 @@
       <p class="success-message" v-if="newArtistSuccessMessage" style="margin-top: 8px;">{{newArtistSuccessMessage}}</p>
 
       <h2 style="margin-top: 32px;">Add artist links</h2>
-      <p>Any art website such as FurAffinity, Twitter, Pixiv, Weasyl, Furry Network<br/>Artist's own website<br/>e621.net
-        with order:score, so for example <span class="courier">https://e621.net/post/index/1/Braeburned%20order:score</span></p>
+      <p>Any art website such as FurAffinity, Twitter, Pixiv, Weasyl, Furry Network,<br/>
+        Artist's own website,
+        <br/>e621.net with order:score, so for example <span class="courier">https://e621.net/post/index/1/Braeburned%20order:score</span></p>
 
       <div class="horizontal-flex" style="align-items: center; margin-bottom: 8px;">
 
@@ -107,7 +102,6 @@ export default {
     },
     addArtistLinks () {
       let newLinks = [this.link1, this.link2, this.link3, this.link4, this.link5, this.link6].filter(x => x)
-      console.log(newLinks)
       let response = {success: false, message: 'invalid link url'}
 
       if (response.success) {

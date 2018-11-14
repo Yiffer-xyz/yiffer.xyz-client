@@ -39,6 +39,7 @@
 				Log in
 			</button>
 
+
 			<button 
 				v-if="this.$store.state.username" 
 				class="theme-button" 
@@ -48,6 +49,17 @@
 			>
 				Log out
 			</button>
+
+			<router-link 
+				v-if="this.$store.state.userType === 'mod'"
+				style="margin-left: 3px;"
+				:to="{ name: 'admin' }"
+				class="theme-button"
+			>
+				<button class="theme-button" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">
+					Admin
+				</button>
+			</router-link>
 		</div>
 
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
@@ -77,6 +89,7 @@ export default {
 		},
 		logout () {
 			this.$store.commit('setUsername', undefined)
+			this.$store.commit('setUserType', undefined)
 		}
 	},
 	data: function () {

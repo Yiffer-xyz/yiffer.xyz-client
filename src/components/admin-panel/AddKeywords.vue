@@ -54,7 +54,7 @@
       <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
 
-      <h2 style="margin-top: 16px;">Create new tag</h2>
+      <h2 style="margin-top: 32px;">Create new tag</h2>
       <p>If a tag is not in the list above, create it here.</p>
       <div class="horizontal-flex" style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">New tag name:</p>
