@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
-    <h2>Add or modify artist</h2>
+    <h2>Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
@@ -10,9 +10,14 @@
         <button @click="addNewArtist()" class="y-button" style="margin: 0 0 0 8px;">Add artist</button>
       </div>
 
+      <p class="error-message" v-if="newArtistErrorMessage" style="margin-top: 8px;">{{newArtistErrorMessage}}</p>
+      <p class="success-message" v-if="newArtistSuccessMessage" style="margin-top: 8px;">{{newArtistSuccessMessage}}</p>
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add artist links</p>
-      <div class="horizontal-flex" style="align-items: center;">
+      <h2 style="margin-top: 32px;">Add artist links</h2>
+      <p>Any art website such as FurAffinity, Twitter, Pixiv, Weasyl, Furry Network<br/>Artist's own website<br/>e621.net
+        with order:score, so for example <span class="courier">https://e621.net/post/index/1/Braeburned%20order:score</span></p>
+
+      <div class="horizontal-flex" style="align-items: center; margin-bottom: 8px;">
         <p style="margin-right: 8px;">Artist:</p>
         <select v-model="artist" class="no-margin-bot">
           <option v-for="artist in artistList" :key="artist.id" :value="artist">
@@ -21,8 +26,20 @@
         </select>
       </div>
 
-      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
+      <span v-if="artist">
+        <input type="text" v-model="link1" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link2" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link3" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link4" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link5" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link6" style="margin-top: 2px; width: 350px;"/>
+        <br/>
+        
+        <button @click="addArtistLinks()" class="y-button" style="margin-top: 8px;">Add links</button>
+      </span>
+
+      <p class="error-message" v-if="linksErrorMessage" style="margin-top: 8px;">{{linksErrorMessage}}</p>
+      <p class="success-message" v-if="linksSuccessMessage" style="margin-top: 8px;">{{linksSuccessMessage}}</p>
 
       <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
     </span>
@@ -45,13 +62,49 @@ export default {
       artist: undefined,
       artistName: '',
 
-      errorMessage: '',
-      successMessage: '',
+      newArtistErrorMessage: '',
+      newArtistSuccessMessage: '',
+      linksErrorMessage: '',
+      linksSuccessMessage: '',
+
+      link1: '',
+      link2: '',
+      link3: '',
+      link4: '',
+      link5: '',
+      link6: '',
     }
   },
   methods: {
     addNewArtist () {
+      let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
+      let response = {success: false, message: 'Artist alreadye xists!', results: {artistId: 160}}
 
+      if (response.success) {
+        this.artistList.push({name: this.artistName, id: response.results.artistId})
+        this.newArtistSuccessMessage = 'Success adding artist ' + this.artistName
+        this.newArtistErrorMessage = ''
+        this.artistName = ''
+      }
+      else {
+        this.newArtistErrorMessage = 'Error adding artist: ' + response.message
+        this.newArtistSuccessMessage = ''
+      }
+    },
+    addArtistLinks () {
+      let newLinks = [this.link1, this.link2, this.link3, this.link4, this.link5, this.link6].filter(x => x)
+      console.log(newLinks)
+      let response = {success: false, message: 'invalid link url'}
+
+      if (response.success) {
+        this.linksSuccessMessage = `Success adding ${newLinks.length} links to artist ${this.artist.name}`
+        this.linksErrorMessage = ''
+        this.link1 = this.link2 = this.link3 = this.link4 = this.link5 = this.link6 = ''
+      }
+      else {
+        this.linksErrorMessage = 'Error adding links: ' + response.message
+        this.linksSuccessMessage = ''
+      }
     },
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
