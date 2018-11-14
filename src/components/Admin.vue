@@ -16,16 +16,7 @@
 
 			<add-artist :artistList="[...artistList]"></add-artist>
 
-			<div class="admin-content-box">
-				<h2>Swap pages and stuff</h2>
-				<i class="fas fa-sort-down"></i>
-			</div>
-
-			<div class="admin-content-box">
-				<h2>Pending comics</h2>
-				<i class="fas fa-sort-down"></i>
-			</div>
-
+			<pending-comics :comicList="pendingComicList"></pending-comics>
 
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
@@ -37,13 +28,6 @@ import LoginModal from '@/components/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 
 // tag suggestions bare hvis
-// adding pages
-// kw adding   with new kw
-// correct comig
-// adding comic  with keywords
-// adding artist with links
-// rearrange pages
-// 
 // approving comics
 // re calculate and zip
 // mod stats
@@ -58,6 +42,7 @@ import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
 import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
 import AddComic from '@/components/admin-panel/AddComic.vue'
 import AddArtist from '@/components/admin-panel/AddArtist.vue'
+import PendingComics from '@/components/admin-panel/PendingComics.vue'
 
 export default {
 	name: 'admin',
@@ -69,12 +54,14 @@ export default {
 		'correct-comic': CorrectComic,
 		'add-comic': AddComic,
 		'add-artist': AddArtist,
+		'pending-comics': PendingComics,
 	},
 	data: function () {
 		return {
 			comicList: [],
 			keywordList: [],
 			artistList: [],
+			pendingComicList: [],
 		}
 	},
 	methods: {
@@ -82,6 +69,7 @@ export default {
 			this.comicList = config.comicList
 			this.keywordList = config.demoKeywords
 			this.artistList = config.artistList
+			this.pendingComicList = config.pendingComicList
 		},
   },
   created: function () {

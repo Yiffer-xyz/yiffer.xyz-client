@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
-    <h2>Add Comic</h2>
+    <h2>Add new comic</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <p>

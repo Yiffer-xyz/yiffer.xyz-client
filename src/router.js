@@ -6,6 +6,7 @@ import About from './components/About.vue'
 import Artist from './components/Artist.vue'
 import Admin from './components/Admin.vue'
 import NewPassword from './components/NewPassword.vue'
+import PendingComic from './components/PendingComic.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
 			path: '/:comicName',
 			name: 'comic',
 			component: Comic
+		},
+		{
+			path: '/pendingComics/:comicName',
+			name: 'pendingComic',
+			component: PendingComic
 		},
 	],
 	scrollBehavior ( to, from, savedPosition ) {

@@ -30,7 +30,7 @@
 			</router-link>
 
 			<button
-				v-if="!this.$store.state.username" 
+				v-if="!$store.state.username" 
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="showLoginModal()" 
@@ -41,7 +41,7 @@
 
 
 			<button 
-				v-if="this.$store.state.username" 
+				v-if="$store.state.username" 
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="logout()" 
@@ -51,7 +51,7 @@
 			</button>
 
 			<router-link 
-				v-if="this.$store.state.userType === 'mod'"
+				v-if="$store.state.userType === 'mod' || $store.state.userType === 'admin'"
 				style="margin-left: 3px;"
 				:to="{ name: 'admin' }"
 				class="theme-button"
@@ -273,5 +273,9 @@ label
 		p, select, button {
 			margin-bottom: 0 !important;
 		}
+	}
+
+	.no-margin-top {
+		margin-top: 0 !important;
 	}
 </style>

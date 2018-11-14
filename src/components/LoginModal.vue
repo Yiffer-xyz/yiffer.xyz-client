@@ -142,7 +142,7 @@ export default {
 			this.signupLoading = false
 			if ( mockApiResponse.success ) {
 				this.$store.commit('setUsername', mockApiResponse.username)
-				this.$store.commit('setUserType', 'mod') //todoooooooooooooooo
+				this.$store.commit('setUserType', 'admin') //todoooooooooooooooo
 				this.closeModal()
 			}
 			else {
