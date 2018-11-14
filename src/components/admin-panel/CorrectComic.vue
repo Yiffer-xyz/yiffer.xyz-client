@@ -2,8 +2,7 @@
   <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
     <h2>Correct comic data</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-
-      <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
+      <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
           <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
@@ -56,7 +55,7 @@
           </div>
 
         </div>
-        <button @click="submitChanges()" class="y-button">Submit changes</button>
+        <button @click="submitChanges()" class="y-button no-margin-bot">Submit changes</button>
       </span>
 
 

@@ -5,6 +5,8 @@
     <back-to-index></back-to-index>
 
 		<div class="admin-content-container">
+	
+			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"></keyword-suggestions>
 
 			<add-page :comicList="[...comicList]"></add-page>
 
@@ -16,7 +18,7 @@
 
 			<add-artist :artistList="[...artistList]"></add-artist>
 
-			<pending-comics :comicList="pendingComicList"></pending-comics>
+			<pending-comics :comicList="pendingComicList" v-on:refresh-pending-comics="refreshPendingComics"></pending-comics>
 
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
@@ -28,11 +30,8 @@ import LoginModal from '@/components/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 
 // tag suggestions bare hvis
-// approving comics
-// re calculate and zip
+// re calculate and zip med i correct
 // mod stats
-
-// SW A P    P A G E S   O M G    A ND REMOVE DUPLICATES
 
 // husk å ta med upload progress
 
@@ -43,6 +42,7 @@ import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
 import AddComic from '@/components/admin-panel/AddComic.vue'
 import AddArtist from '@/components/admin-panel/AddArtist.vue'
 import PendingComics from '@/components/admin-panel/PendingComics.vue'
+import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 
 export default {
 	name: 'admin',
@@ -55,6 +55,7 @@ export default {
 		'add-comic': AddComic,
 		'add-artist': AddArtist,
 		'pending-comics': PendingComics,
+		'keyword-suggestions': KeywordSuggestions,
 	},
 	data: function () {
 		return {
@@ -62,6 +63,7 @@ export default {
 			keywordList: [],
 			artistList: [],
 			pendingComicList: [],
+			keywordSuggestionList: [],
 		}
 	},
 	methods: {
@@ -70,7 +72,22 @@ export default {
 			this.keywordList = config.demoKeywords
 			this.artistList = config.artistList
 			this.pendingComicList = config.pendingComicList
+			this.keywordSuggestionList = config.keywordSuggestionList
 		},
+
+		refreshPendingComics () {
+			// temp mock basdasdasd
+			let temp = []
+			let ting = false
+			for (var x of config.pendingComicList) {
+				if (!x.Processed && !ting) {
+					x.Processed = 1
+					ting = true
+				}
+				temp.push(x)
+			}
+			this.pendingComicList = temp
+		}
   },
   created: function () {
 		this.mockGetComicList()
