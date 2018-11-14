@@ -43,7 +43,7 @@
       <p class="success-message" v-if="linksSuccessMessage" style="margin-top: 8px;">{{linksSuccessMessage}}</p>
 
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
     </span>
 
     <span v-else>
@@ -94,6 +94,7 @@ export default {
         this.newArtistSuccessMessage = 'Success adding artist ' + this.artistName
         this.newArtistErrorMessage = ''
         this.artistName = ''
+        this.$emit('refresh-artist-list')
       }
       else {
         this.newArtistErrorMessage = 'Error adding artist: ' + response.message

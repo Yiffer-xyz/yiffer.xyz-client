@@ -41,7 +41,7 @@
         <p>There are no pending comics.</p>
       </span>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
     </span>
 
     <span v-else>

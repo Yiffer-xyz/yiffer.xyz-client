@@ -62,7 +62,7 @@
       <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
       <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
     </span>
 
     <span v-else>

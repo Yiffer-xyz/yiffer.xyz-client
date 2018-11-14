@@ -111,6 +111,7 @@ export default {
         this.uploadErrorMessage = ''
         this.selectedFiles = []
         document.getElementById('newPageFiles').value = ''
+        this.$emit('refresh-comic-list')
       }
       else {
         this.uploadErrorMessage = 'Error updating: ' + response.message

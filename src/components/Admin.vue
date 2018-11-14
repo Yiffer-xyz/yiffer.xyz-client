@@ -6,19 +6,26 @@
 
 		<div class="admin-content-container">
 	
-			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList" v-on:refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
+			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"
+				v-on:refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
 
-			<add-page :comicList="[...comicList]"></add-page>
+			<add-page :comicList="[...comicList]"
+				v-on:refresh-comic-list="refreshComicList"></add-page>
 
-			<add-keywords :comicList="[...comicList]" :keywordList="[...keywordList]"></add-keywords>
+			<add-keywords :comicList="[...comicList]" :keywordList="[...keywordList]"
+				v-on:refresh-comic-list="refreshComicList"></add-keywords>
 
-			<correct-comic :comicList="[...comicList]" :artistList="[...artistList]"></correct-comic>
+			<correct-comic :comicList="[...comicList]" :artistList="[...artistList]"
+				v-on:refresh-comic-list="refreshComicList"></correct-comic>
 
-			<add-comic :comicList="[...comicList]" :artistList="[...artistList]" :keywordList="[...keywordList]"></add-comic>
+			<add-comic :comicList="[...comicList]" :artistList="[...artistList]" :keywordList="[...keywordList]"
+				v-on:refresh-pending-comics="refreshPendingComics"></add-comic>
 
-			<add-artist :artistList="[...artistList]"></add-artist>
+			<add-artist :artistList="[...artistList]"
+				v-on:refresh-artist-list="refreshArtistList()"></add-artist>
 
-			<pending-comics :comicList="pendingComicList" v-on:refresh-pending-comics="refreshPendingComics"></pending-comics>
+			<pending-comics :comicList="pendingComicList"
+				v-on:refresh-pending-comics="refreshPendingComics"></pending-comics>
 
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>

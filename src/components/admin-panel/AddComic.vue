@@ -94,7 +94,7 @@
       <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add tags</p>
+      <p class="add-kw-mini-header no-margin-bot">Add tags</p>
       <p>Adding tags is optional, but appreciated!</p>
       <div class="horizontal-flex">
         <div class="vertical-flex">
@@ -122,7 +122,7 @@
       <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
       <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
     </span>
 
     <span v-else>
@@ -192,6 +192,7 @@ export default {
         this.selectedFiles = []
         this.selectedKeywords = []
         document.getElementById('newPageFilesAddComic').value = ''
+        this.$emit('refresh-pending-comics')
       }
       else {
         this.errorMessage = 'Error adding comic: ' + response.message

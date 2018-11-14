@@ -65,7 +65,7 @@
       <p class="error-message" v-if="newKwErrorMessage" style="margin-top: 8px;">{{newKwErrorMessage}}</p>
       <p class="success-message" v-if="newKwSuccessMessage" style="margin-top: 8px;">{{newKwSuccessMessage}}</p>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
+      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
     </span>
 
     <span v-else>
@@ -120,6 +120,7 @@ export default {
         this.errorMessage = ''
         this.selectedKeywords = []
         this.updateComicKeywordsFromBackend(this.comic.id)
+        this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error adding tags: ' + response.message
@@ -134,6 +135,7 @@ export default {
         this.errorMessage = ''
         this.keywordsToDelete = []
         this.updateComicKeywordsFromBackend(this.comic.id)
+        this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error removing tags: ' + response.message
