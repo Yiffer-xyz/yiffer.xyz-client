@@ -78,10 +78,12 @@ export default {
 			if ( themeColor === 'dark' ) {
 				document.body.classList.add('dark')
 				this.$store.commit('setDarkTheme', true)
+				this.$cookies.set('theme', 'dark')
 			}
 			else {
 				document.body.classList.remove('dark')
 				this.$store.commit('setDarkTheme', false)
+				this.$cookies.set('theme', 'light')
 			}
 		},
 		showLoginModal () {
@@ -94,6 +96,12 @@ export default {
 	},
 	data: function () {
 		return { darkTheme: false }
+	},
+	created: function () {
+		this.$cookies.config('60d')
+		if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
+			this.setTheme('dark')
+		}
 	}
 }
 </script>

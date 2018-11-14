@@ -2,11 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import vueHeadful from 'vue-headful'
+import VueHeadful from 'vue-headful'
+import VueCookies from 'vue-cookies'
 
 Vue.config.productionTip = false
 
-Vue.component('vue-headful', vueHeadful)
+Vue.component('vue-headful', VueHeadful)
+Vue.use(VueCookies)
 
 new Vue({
   router,
