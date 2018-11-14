@@ -3,6 +3,11 @@
     <h2>Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
+			<p>Add a new artist by name. Then, add urls for any relevant website, such as FurAffinity,
+         Twitter, SoFurry, Pixiv, or any custom website. Also, add
+         <span class="courier">https://e621.net/post?tags=<i>ARTISTNAME</i>+order%3Ascore</span> if you
+         can find the artist on e621.</p>
+
       <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
       <div class="horizontal-flex" style="align-items: center;">
         <p style="margin-right: 8px;">Artist name:</p>
@@ -18,6 +23,7 @@
         with order:score, so for example <span class="courier">https://e621.net/post/index/1/Braeburned%20order:score</span></p>
 
       <div class="horizontal-flex" style="align-items: center; margin-bottom: 8px;">
+
         <p style="margin-right: 8px;">Artist:</p>
         <select v-model="artist" class="no-margin-bot">
           <option v-for="artist in artistList" :key="artist.id" :value="artist">
@@ -41,6 +47,7 @@
       <p class="error-message" v-if="linksErrorMessage" style="margin-top: 8px;">{{linksErrorMessage}}</p>
       <p class="success-message" v-if="linksSuccessMessage" style="margin-top: 8px;">{{linksSuccessMessage}}</p>
 
+
       <i class="fas fa-sort-up arrow-symbol" @click="closeComponent" style="margin-top: 16px;"></i>
     </span>
 
@@ -60,7 +67,13 @@ export default {
     return {
       isOpen: false,
       artist: undefined,
-      artistName: '',
+			artistName: '',
+			link1: undefined,
+			link2: undefined,
+			link3: undefined,
+			link4: undefined,
+			link5: undefined,
+			link6: undefined,
 
       newArtistErrorMessage: '',
       newArtistSuccessMessage: '',
@@ -73,6 +86,7 @@ export default {
       link4: '',
       link5: '',
       link6: '',
+
     }
   },
   methods: {
@@ -106,6 +120,7 @@ export default {
         this.linksSuccessMessage = ''
       }
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
