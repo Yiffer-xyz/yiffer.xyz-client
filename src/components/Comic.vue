@@ -117,6 +117,15 @@
 				v-bind:class="['img-fit-height', 'comic-page']"
 				v-on:click="cycleImageFit(pageNumber-1)"/>
 		</div>
+
+		<voting-button
+			v-bind:comic="comic"
+			v-bind:backgroundColors="{light: 'white', dark: '#091014'}"
+			style="margin-bottom: 8px;"
+		></voting-button>
+		<br/>
+		<back-to-index></back-to-index>
+		<div style="margin-top: 16px;"> </div>
 	</span>
 </template>
 

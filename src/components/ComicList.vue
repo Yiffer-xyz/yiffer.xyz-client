@@ -3,7 +3,6 @@
 		<vue-headful title="Yiffer.xyz"/>
 		<div class="upper-body-div">
 			<h1>Yiffer.xyz</h1>
-
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p style="margin-top: 10px;" v-if="!$store.state.username">
@@ -100,7 +99,7 @@
 									<input 
 										type="text"
 										name="someName" 
-										placeholder="keywords"
+										placeholder="tags"
 										id="keywordSearch"
 										class="upper-body-searchbox"
 										v-model="keywordSearch"
@@ -175,11 +174,10 @@
 								</tr>
 						</table>
 
-
-					<table class="pagination-table upper-body-width">
+					<!-- <table v-if="!smallPagination" class="pagination-table upper-body-width">
 							<tr>
 									<td style="padding-bottom: 6px" @click="paginateUpOrDown('down')">&larr;</td>
-									<td v-for="pageNo in Math.ceil($store.state.totalNumberOfComics/config.comicsPerPage)" 
+									<td v-for="pageNo in Math.ceil(this.$store.state.comicList.length/config.comicsPerPage)" 
 											v-bind:key="pageNo"
 											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
 											@click="paginate(pageNo)">
@@ -188,6 +186,32 @@
 									<td style="padding-bottom: 6px" @click="paginateUpOrDown('up')">&rarr;</td>
 							</tr>
 					</table>
+					<table v-if="smallPagination" class="pagination-table upper-body-width">
+							<tr>
+									<td style="padding-bottom: 6px" @click="paginateUpOrDown('down')">&larr;</td>
+
+									<td v-for="(pageNo, index) in smallPaginationInnerNumbers" 
+											v-bind:key="index"
+											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
+											@click="paginate(pageNo)">
+											{{pageNo}}
+									</td>
+									<td style="padding-bottom: 6px" @click="paginateUpOrDown('up')">&rarr;</td>
+							</tr>
+					</table> -->
+
+				<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-width">
+					<div style="padding-bottom: 7px; padding-top: 3px;" @click="paginateUpOrDown('down')" class="pagination-button">&larr;</div>
+					<div v-for="(pageNo, index) in paginationButtons"
+							 :key="index"
+							 :class="{'button-selected': $store.state.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
+							 class="pagination-button"
+							 @click="paginate(pageNo)">
+						{{pageNo}}
+					</div>
+					<div style="padding-bottom: 7px; padding-top: 3px;" @click="paginateUpOrDown('up')" class="pagination-button">&rarr;</div>
+				</div>
+					
 			</div>
 		</div>
 
@@ -220,6 +244,8 @@ export default {
 			keywordSearchFocused: false,
 			keywordResultHovered: undefined,
 			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
+			smallPagination: undefined,
+			numberOfPages: Math.ceil(this.$store.state.comicList/config.comicsPerPage),
 		}
 	},
 	methods: {
@@ -234,14 +260,17 @@ export default {
 		},
 		paginate ( pageNumber ) {
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
-			this.$store.commit('setDisplayComics', this.$store.state.comicList.filter( this.filterComicByTag )
+
+			let filteredComics = this.$store.state.comicList.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
 				.filter( this.filterComicByNameOrArtist )
 				.filter( this.filterComicByKeywords )
-				.slice(
+			this.$store.commit('setNumberOfFilteredComics', filteredComics.length)
+			this.$store.commit('setDisplayComics', filteredComics.slice (
 					(this.$store.state.pageNumber-1) * config.comicsPerPage,
-					(this.$store.state.pageNumber) * config.comicsPerPage )
+					(this.$store.state.pageNumber) * config.comicsPerPage 
 				)
+			)
 		},
 		paginateUpOrDown ( upOrDown ) {
 			if (upOrDown === 'down') {
@@ -298,6 +327,9 @@ export default {
 		},
 		setDetailLevel ( detailLevel ) {
 			this.$store.commit('setDetailLevel', detailLevel)
+		},
+		handleResize () {
+			this.smallPagination = document.body.clientWidth < 1200
 		}
 	},
 	watch: {
@@ -312,19 +344,39 @@ export default {
 		setTimeout( () => {
 			this.$store.commit('setComicList', config.comicList)
 			this.$store.commit('setComicList', this.config.comicList)
-			this.$store.commit('setTotalNumberOfComics', 950)
+			// this.$store.commit('setTotalNumberOfComics', 950)
 			this.paginate()
 			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
 
 		this.$store.watch(this.$store.getters.getSelectedKeywords, () => this.paginate())
 		this.$store.watch(this.$store.getters.getSorting, () => this.paginate())
+		this.handleResize()
+		window.addEventListener('resize', this.handleResize)
 	},
 	computed: {
 		keywordsMatchingSearch () {
 			return this.$store.state.keywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
 				.sort((kw1, kw2) => kw1.count<kw2.count ? 1 : (kw1.count>kw2.count ? -1 : 0))
 				.slice(0, 8)
+		},
+		paginationButtons () {
+			let pages = Math.ceil(this.$store.state.numberOfFilteredComics / config.comicsPerPage)
+			let currentPage = this.$store.state.pageNumber
+			let buttonList = []
+			if (pages <= 9) {
+				for (var i = 1; i < pages+1; i++) { buttonList.push(i) }
+				return buttonList
+			}
+			if (currentPage <= 5) {
+				return [1, 2, 3, 4, 5, 6, 7, 8, '...', pages]
+			}
+			if (currentPage >= pages-4) {
+				return [1, '...', pages-6, pages-5, pages-4, pages-3, pages-2, pages-1, pages]
+			}
+			else {
+				return [1, '...', currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2, '...', pages]
+			}
 		}
 	}
 }
@@ -379,6 +431,20 @@ $themeRed: #ec2f4b;
 	&:hover {
 		cursor: pointer;
 		text-decoration: line-through;
+	}
+}
+
+.pagination-button {
+	border: 0.5px solid white;
+	padding: 5px;
+	&:not(:first-child) {
+		border-left: none;
+	}
+	flex-grow: 1;
+
+	&:hover {
+		cursor: pointer;
+		background: rgba(255, 255, 255, 0.1) !important;
 	}
 }
 </style>
@@ -500,10 +566,22 @@ $themeRed: #ec2f4b
 	.button-row td:hover, .pagination-table td:hover
 		cursor: pointer
 		background: rgba(255, 255, 255, 0.1)
+	.pagination-button
+		border-color: rgba(0, 0, 0, 0)
+		background: rgba(0, 0, 0, 0.2)
 	
 .upper-body-width
 	width: 50%
 </style>
+
+<style lang="scss">
+.dot-dot-dot-button {
+	&:hover {
+		cursor: default;
+	}
+}
+</style>
+
 
 <style>
 	@media (max-width: 795px) {

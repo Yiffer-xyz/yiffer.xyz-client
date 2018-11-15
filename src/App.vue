@@ -102,6 +102,9 @@ export default {
 		if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
 			this.setTheme('dark')
 		}
+		else {
+			this.setTheme('light')
+		}
 	}
 }
 </script>
@@ -287,5 +290,18 @@ label
 
 	.no-margin-top {
 		margin-top: 0 !important;
+	}
+
+	.dark {
+		input {
+			background: rgb(22, 26, 29);
+			border: 1px solid #666;
+			color: white;
+		}
+
+		option, select {
+			background: rgb(22, 26, 29);
+			color: white;
+		}
 	}
 </style>

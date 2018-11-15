@@ -17,8 +17,9 @@
 		</div>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
-			<div v-if="isNewComic" class="circled-text">NEW</div>
-			<div v-if="!comic.finished" class="circled-text">WIP</div>
+			<div v-if="isNewComic" class="circled-text circled-text-red">NEW</div>
+			<div v-if="recentlyFinished" class="circled-text circled-text-red" title="Recently finished">RF</div>
+			<div v-if="!comic.finished" class="circled-text" title="Work in progress (comic not finished)">WIP</div>
 		</div>
 
 		<voting-button
@@ -56,7 +57,8 @@ export default {
 	},
 	data: function () {
 		return {
-			isNewComic: new Date() - new Date(this.comic.created) < 604800000,
+			isNewComic: new Date() - new Date(this.comic.created) < 55*604800000,  // todo 1 week = 604800000
+			recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000)
 		}
 	},
 	methods: {
@@ -75,7 +77,8 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #3984d4;
+$themeBlue: #009fff;
+$themeRed: #ec2f4b;
 
 .keyword, .keyword-static {
 	font-size: 12px;
@@ -85,9 +88,9 @@ $linkColor: #3984d4;
 	border-radius: 10px;
 }
 .keyword:hover {
-	color: $linkColor !important;
+	color: $themeBlue !important;
 	cursor: pointer;
-	border-color: $linkColor;
+	border-color: $themeBlue;
 }
 .keyword-static:hover {
 	cursor: default;
@@ -101,13 +104,17 @@ $linkColor: #3984d4;
 	border-radius: 35px;
 	font-size: 12px;
 	font-weight: 400;
-	margin-top: 3px;
+	margin: 3px 0;
 	color: #444 !important;
 	background-color: #ddd;
 
 	&:hover {
 		cursor: default;
 	}
+}
+
+.circled-text-red {
+	border: 0.5px solid $themeRed;
 }
 
 .dark {
@@ -125,7 +132,7 @@ $linkColor: #3984d4;
 
 
 <style lang="sass">
-$linkColor: #3984d4
+$themeBlue: #009fff
 $cardBgColorLight: #f1f1f1
 $cardBgColorDark: #222426
 $cardTextColorLight: #222
@@ -142,12 +149,13 @@ $cardTextColorLight: #222
 	background-color: $cardBgColorLight
 	justify-content: space-between
 	&:hover
-		box-shadow: 0 0 10px 1px $linkColor
+		box-shadow: 0 0 10px 1px $themeBlue
 	img
 		width: 100%
+		height: 283px
 	a
 		text-decoration: none
-		color: $linkColor
+		color: $themeBlue
 	p, div
 		color: $cardTextColorLight
 	.horiz-card-row
