@@ -292,6 +292,13 @@ label
 		margin-top: 0 !important;
 	}
 
+	h1 {
+		@media (max-width: 900px) {
+			font-size: 48px;
+			margin-top: 24px;
+		}
+	}
+
 	.dark {
 		input {
 			background: rgb(22, 26, 29);
@@ -302,6 +309,7 @@ label
 		option, select {
 			background: rgb(22, 26, 29);
 			color: white;
+			border: 1px solid #666;
 		}
 	}
 </style>

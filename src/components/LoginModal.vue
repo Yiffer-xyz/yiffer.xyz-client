@@ -257,6 +257,11 @@ $themeRed: #ec2f4b;
 	.text-button {
 		margin-top: 5px;
 	}
+
+	@media (max-width: 900px) {
+		padding: 40px 0px;
+		width: 100%;
+	}
 }
 .loginModal:before {
 	height: 10px;
@@ -341,7 +346,6 @@ $themeRed: #ec2f4b;
 		color: white;
 		input {
 			color: #ccc;
-			border-bottom-color: #ccc;
 		}
 		label {
 			color: #ccc;

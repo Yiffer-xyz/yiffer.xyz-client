@@ -90,7 +90,6 @@ $themeRed: #ec2f4b;
 		color: white;
 		input {
 			color: #ccc;
-			border-bottom-color: #ccc;
 		}
 		label {
 			color: #ccc;

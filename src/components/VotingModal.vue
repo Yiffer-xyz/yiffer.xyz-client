@@ -25,7 +25,10 @@
 					</tr>
 				</table>
 
-				<button @click="onNumberClick(0)" id="deleteVoteButton" class="margin-top-16 y-button">Delete vote</button>
+				<button @click="onNumberClick(0)" v-if="$store.state.comicForVotingModal.yourRating" 
+				id="deleteVoteButton" class="margin-top-16 y-button">
+					Delete vote
+				</button>
 
 			</span>
 		</div>
@@ -129,9 +132,19 @@ $themeRed: #ec2f4b;
 	transform: translateX(-50%) translateY(-50%);
 	display: flex;
 	justify-content: center;
-	padding: 40px 180px;
+	padding: 50px 0px 40px 0px;
+	width: 50%;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+
+	&>span {
+		width: 100%;
+		padding: 0px 40px;
+	}
+
+	@media (max-width: 900px) {
+		width: 100%;
+	}
 }
 
 .voting-modal:before {
@@ -153,7 +166,7 @@ $themeRed: #ec2f4b;
 .voting-number {
 	width: 10%;
 	font-weight: 400;
-	padding: 10px 0;
+	padding: 24px 0;
 }
 
 #deleteVoteButton {
@@ -172,7 +185,6 @@ $themeRed: #ec2f4b;
 		color: white;
 		input {
 			color: #ccc;
-			border-bottom-color: #ccc;
 		}
 		label {
 			color: #ccc;
@@ -181,6 +193,10 @@ $themeRed: #ec2f4b;
 
 	.modal-backdrop {
 		background-color: rgba(255, 255, 255, 0.2);
+	}
+
+	.voting-number {
+		padding: 10px 0;
 	}
 }
 </style>

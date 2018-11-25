@@ -280,7 +280,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		max-width: 65%;
+		max-width: 90%;
 
 		.voting-button {
 			margin-top: 16px;

@@ -79,6 +79,10 @@ export default {
 <style lang="scss">
 $themeBlue: #009fff;
 $themeRed: #ec2f4b;
+$cardBgColorLight: #f1f1f1;
+$cardBgColorDark: #222426;
+$cardTextColorLight: #222;
+
 
 .keyword, .keyword-static {
 	font-size: 12px;
@@ -128,62 +132,86 @@ $themeRed: #ec2f4b;
 		color: #ddd;
 	}
 }
-</style>
 
+// @media (max-width: 900px) {
+// 	.comic-card {
+// 		width: 128px;
+// 		img {
+// 			height: 178px;
+// 		}
+// 	}
+// }
 
-<style lang="sass">
-$themeBlue: #009fff
-$cardBgColorLight: #f1f1f1
-$cardBgColorDark: #222426
-$cardTextColorLight: #222
+.comic-card {
+	width: 200px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 8px;
+	overflow: hidden;
+	margin: 10px;
+	padding-bottom: 8px;
+	background-color: $cardBgColorLight;
+	justify-content: space-between;
+	&:hover {
+		box-shadow: 0 0 10px 1px $themeBlue;
+	}
+	img {
+		width: 100%;
+		height: 283px;
+	}
+	a {
+		text-decoration: none;
+		color: $themeBlue;
+	}
+	p, div {
+		color: $cardTextColorLight;
+	}
+	.horiz-card-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		width: 90%;
+		p:hover {
+			cursor: default;
+		}
+	}
+	.comic-card-comic-title {
+		font-weight: 400;
+		margin: 0px 10px;
+		text-align: center;
+		color: $cardTextColorLight;
+	}
+	.voting-button {
+		margin-top: 4px;
+	}
 
-.comic-card 
-	width: 200px
-	display: flex
-	flex-direction: column
-	align-items: center
-	border-radius: 8px
-	overflow: hidden
-	margin: 10px
-	padding-bottom: 8px
-	background-color: $cardBgColorLight
-	justify-content: space-between
-	&:hover
-		box-shadow: 0 0 10px 1px $themeBlue
-	img
-		width: 100%
-		height: 283px
-	a
-		text-decoration: none
-		color: $themeBlue
-	p, div
-		color: $cardTextColorLight
-	.horiz-card-row
-		display: flex
-		flex-direction: row
-		justify-content: space-around
-		width: 90%
-		p:hover
-			cursor: default
-	.comic-card-comic-title
-		font-weight: 400
-		margin: 0px 10px
-		text-align: center
-		color: $cardTextColorLight
+	@media (max-width: 900px) {
+		width: 94px;
+		img {
+			height: 133px;
+		}
+		.voting-button {
+			width: 76%;
+		}
+	}
+}
 
-	.voting-button
-    margin-top: 4px
+.keyword-container {
+	margin-top: 7px;
+	display: flex;
+	flex-direction: row;
+	flex-flow: row wrap;
+	justify-content: center;
+}
 
-.keyword-container 
-	margin-top: 7px
-	display: flex
-	flex-direction: row
-	flex-flow: row wrap
-	justify-content: center
+.dark {
+	.comic-card {
+		background-color: $cardBgColorDark;
+		p, div, .fas {
+			color: #ddd;
+		}
+	}
+}
 
-.dark
-	.comic-card
-		background-color: $cardBgColorDark
-		p, div, .fas
-			color: #ddd
 </style>

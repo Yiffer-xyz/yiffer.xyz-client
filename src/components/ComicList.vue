@@ -121,7 +121,7 @@
 							</div>
 					</div>
 
-					<div id="selectedKeywords" class="upper-body-width">
+					<div id="selectedKeywords" class="upper-body-width" v-if="$store.state.selectedKeywords.length > 0">
 							<div 
 								v-for="keyword in $store.state.selectedKeywords" 
 								v-bind:key="keyword"
@@ -259,6 +259,7 @@ export default {
 			this.$store.commit('setPageNumber', 1)
 		},
 		paginate ( pageNumber ) {
+			if ( pageNumber === '...' ) { return }
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 
 			let filteredComics = this.$store.state.comicList.filter( this.filterComicByTag )
@@ -418,6 +419,7 @@ $themeRed: #ec2f4b;
 #selectedKeywords {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	justify-content: flex-end;
 }
 	
@@ -447,6 +449,26 @@ $themeRed: #ec2f4b;
 		background: rgba(255, 255, 255, 0.1) !important;
 	}
 }
+
+.buttons-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 30px;
+	background: rgba(255, 255, 255, 0.1);
+	padding: 40px 0;
+	>div, >table {
+		margin: 7px 0px;
+	}
+	@media (max-width: 900px) {
+		margin-top: 12px;
+		padding: 10px 0;
+		>div, >table {
+			margin: 5px 0px;
+		}
+	}
+}
 </style>
 
 
@@ -472,17 +494,6 @@ $themeRed: #ec2f4b
 		color: white
 		text-decoration: underline
 		font-size: 16px
-
-.buttons-container
-	width: 100%
-	display: flex
-	flex-direction: column
-	align-items: center
-	margin-top: 30px
-	background: rgba(255, 255, 255, 0.1)
-	padding: 40px 0
-	>div, >table
-		margin: 7px 0px
 
 .button-row
 	table-layout: fixed
@@ -584,7 +595,7 @@ $themeRed: #ec2f4b
 
 
 <style>
-	@media (max-width: 795px) {
+	@media (max-width: 900px) {
 		.upper-body-width {
 			width: 100%;
 		}
