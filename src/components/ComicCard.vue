@@ -77,8 +77,29 @@ export default {
 </script>
 
 <style lang="scss">
-$themeBlue: #009fff;
-$themeRed: #ec2f4b;
+$theme0: #2f0018;
+$theme1: #4d0329;
+$theme2: #770b43;
+$theme3: #ba0763;
+$theme4: #00986b;
+$theme5: #00d596;
+$theme6: #78fdd6;
+$theme7: #ffd8ec;
+$themeGray0: #fafafa;
+$themeGray0p5: #f1f1f1;
+$themeGray1: #e7e7e7;
+$themeGray2: #dcdcdc;
+$themeGray3: #cbcbcb;
+$themeGray3p5: #bababa;
+$themeGray4: #b0b0b0;
+$themeGray5: #a6a6a6;
+$themeGray6: #9a9a9a;
+$themeGray7: #8e8e8e;
+$themeGray8: #7e7e7e;
+$themeRed0: #6b090b;
+$themeRed1: #a90509;
+$themeRed2: #c80005;
+$themeRed3: #fd8f91;
 $cardBgColorLight: #f1f1f1;
 $cardBgColorDark: #222426;
 $cardTextColorLight: #222;
@@ -92,9 +113,9 @@ $cardTextColorLight: #222;
 	border-radius: 10px;
 }
 .keyword:hover {
-	color: $themeBlue !important;
+	color: $theme4 !important;
 	cursor: pointer;
-	border-color: $themeBlue;
+	border-color: $theme4;
 }
 .keyword-static:hover {
 	cursor: default;
@@ -118,7 +139,7 @@ $cardTextColorLight: #222;
 }
 
 .circled-text-red {
-	border: 0.5px solid $themeRed;
+	border: 0.5px solid $theme5;
 }
 
 .dark {
@@ -133,15 +154,6 @@ $cardTextColorLight: #222;
 	}
 }
 
-// @media (max-width: 900px) {
-// 	.comic-card {
-// 		width: 128px;
-// 		img {
-// 			height: 178px;
-// 		}
-// 	}
-// }
-
 .comic-card {
 	width: 200px;
 	display: flex;
@@ -151,10 +163,11 @@ $cardTextColorLight: #222;
 	overflow: hidden;
 	margin: 10px;
 	padding-bottom: 8px;
-	background-color: $cardBgColorLight;
+	background-color: $themeGray0p5;
 	justify-content: space-between;
+		box-shadow: 0 0 8px 0px $themeGray3p5;
 	&:hover {
-		box-shadow: 0 0 10px 1px $themeBlue;
+		box-shadow: 0 0 10px 1px $theme4;
 	}
 	img {
 		width: 100%;
@@ -162,7 +175,7 @@ $cardTextColorLight: #222;
 	}
 	a {
 		text-decoration: none;
-		color: $themeBlue;
+		color: $theme4;
 	}
 	p, div {
 		color: $cardTextColorLight;
@@ -187,9 +200,9 @@ $cardTextColorLight: #222;
 	}
 
 	@media (max-width: 900px) {
-		width: 94px;
+		width: 100px;
 		img {
-			height: 133px;
+			height: 141px;
 		}
 		.voting-button {
 			width: 76%;

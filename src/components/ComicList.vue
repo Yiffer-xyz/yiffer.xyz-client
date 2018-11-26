@@ -13,145 +13,154 @@
 			<p style="margin-top: 10px;" class="link-color"><a href="#">Donate?</a></p>
 
 			<div class="buttons-container">
-					<table class="button-row upper-body-width">
-							<tr>
-									<td 
-										v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
-										v-on:click="onFilterClick( 'category', 'All' )">
-										All
-									</td>      
-									<td 
-										v-bind:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
-										v-on:click="onFilterClick( 'category', 'Furry' )">
-										Furry
-									</td>        
-									<td 
-										v-bind:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
-										v-on:click="onFilterClick( 'category', 'MLP' )">
-										MLP
-									</td>     
-									<td 
-										v-bind:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
-										v-on:click="onFilterClick( 'category', 'Pokemon' )">
-										Pokemon
-									</td>     
-									<td 
-										v-bind:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
-										v-on:click="onFilterClick( 'category', 'Other' )">
-										Other
-									</td>     
-							</tr>
-					</table>
-
-					<table class="button-row upper-body-width">
-							<tr>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'All' )">
-										All
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'M' )">
-										M
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'F' )">
-										F
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'MF' )">
-										MF
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'MM' )">
-										MM
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'FF' )">
-										FF
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'MF+' )">
-										MF+
-									</td>
-									<td
-										v-bind:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
-										v-on:click="onFilterClick( 'tag', 'I' )">
-										I
-									</td>
-							</tr>
-					</table>
-
-					<div class="two-search-row upper-body-width">
-							<div class="search-wrapper">
-								<div class="one-searchbox-container" id="mainSearchBox">
-										<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
-								</div>
-							</div>
-
-							<div class="search-wrapper">
-									<input 
-										type="text"
-										name="someName" 
-										placeholder="tags"
-										id="keywordSearch"
-										class="upper-body-searchbox"
-										v-model="keywordSearch"
-										@click="lastActionWasDeselectingKeyword = false"
-										@focus="setKeywordSearchFocused(true)"
-										@blur="setKeywordSearchFocused(false)"
-									/>
-									<div id="keywordResults" v-if="keywordSearchFocused">
-											<div 
-												v-for="keywordObject in keywordsMatchingSearch" 
-												v-bind:key="keywordObject.name"
-												@click="addSelectedKeyword(keywordObject.name)"
-												@mouseover="keywordResultHovered = keywordObject.name"
-												@mouseout="keywordResultHovered = undefined"
-												class="keyword-result">
-													{{keywordObject.name}} ({{keywordObject.count}})
-											</div>
-									</div>
-							</div>
-					</div>
-
-					<div id="selectedKeywords" class="upper-body-width" v-if="$store.state.selectedKeywords.length > 0">
-							<div 
-								v-for="keyword in $store.state.selectedKeywords" 
-								v-bind:key="keyword"
-								@click="removeSelectedKeyword(keyword)"
-								class="selected-keyword">
-									{{keyword}}
-							</div>
-					</div>
-
-					<table class="button-row upper-body-width">
-							<tr>
-									<td
-										v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
-										v-on:click="onSortingButtonClick('updated')">
-										Recently updated
-									</td>
-									<td
-										v-bind:class="{'button-selected': $store.state.sorting === 'userRating'}"
-										v-on:click="onSortingButtonClick('userRating')">
-										User rating
-									</td>
-									<td
-										v-bind:class="{'button-selected': $store.state.sorting === 'yourRating'}"
-										v-on:click="onSortingButtonClick('yourRating')">
-										Your rating
-									</td>
-							</tr>
-					</table>
-
+				<span class="upper-body-width buttons-container-inner">
+					<div class="div-row">
 						<table class="button-row">
+								<tr>
+										<td 
+											v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
+											v-on:click="onFilterClick( 'category', 'All' )">
+											All
+										</td>      
+										<td 
+											v-bind:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
+											v-on:click="onFilterClick( 'category', 'Furry' )">
+											Furry
+										</td>        
+										<td 
+											v-bind:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
+											v-on:click="onFilterClick( 'category', 'MLP' )">
+											MLP
+										</td>     
+										<td 
+											v-bind:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
+											v-on:click="onFilterClick( 'category', 'Pokemon' )">
+											Pokemon
+										</td>     
+										<td 
+											v-bind:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
+											v-on:click="onFilterClick( 'category', 'Other' )">
+											Other
+										</td>     
+								</tr>
+						</table>
+					</div>
+
+					<div class="div-row">
+						<table class="button-row">
+								<tr>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'All' )">
+											All
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'M' )">
+											M
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'F' )">
+											F
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'MF' )">
+											MF
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'MM' )">
+											MM
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'FF' )">
+											FF
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'MF+' )">
+											MF+
+										</td>
+										<td
+											v-bind:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
+											v-on:click="onFilterClick( 'tag', 'I' )">
+											I
+										</td>
+								</tr>
+						</table>
+					</div>
+
+					<div style="width: 100%; margin: 7px 0;">
+						<div class="two-search-row">
+								<div class="search-wrapper">
+									<div class="one-searchbox-container" id="mainSearchBox">
+											<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+									</div>
+								</div>
+
+								<div class="search-wrapper">
+										<input 
+											type="text"
+											name="someName" 
+											placeholder="tags"
+											id="keywordSearch"
+											class="upper-body-searchbox"
+											v-model="keywordSearch"
+											@click="lastActionWasDeselectingKeyword = false"
+											@focus="setKeywordSearchFocused(true)"
+											@blur="setKeywordSearchFocused(false)"
+										/>
+										<div id="keywordResults" v-if="keywordSearchFocused">
+												<div 
+													v-for="keywordObject in keywordsMatchingSearch" 
+													v-bind:key="keywordObject.name"
+													@click="addSelectedKeyword(keywordObject.name)"
+													@mouseover="keywordResultHovered = keywordObject.name"
+													@mouseout="keywordResultHovered = undefined"
+													class="keyword-result">
+														{{keywordObject.name}} ({{keywordObject.count}})
+												</div>
+										</div>
+								</div>
+						</div>
+					</div>
+						<div id="selectedKeywords" class="upper-body-width" v-if="$store.state.selectedKeywords.length > 0">
+								<div 
+									v-for="keyword in $store.state.selectedKeywords" 
+									v-bind:key="keyword"
+									@click="removeSelectedKeyword(keyword)"
+									class="selected-keyword">
+										{{keyword}}
+								</div>
+						</div>
+
+					<div class="div-row">
+						<table class="button-row">
+								<tr>
+										<td
+											v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
+											v-on:click="onSortingButtonClick('updated')">
+											Recently updated
+										</td>
+										<td
+											v-bind:class="{'button-selected': $store.state.sorting === 'userRating'}"
+											v-on:click="onSortingButtonClick('userRating')">
+											User rating
+										</td>
+										<td
+											v-bind:class="{'button-selected': $store.state.sorting === 'yourRating'}"
+											v-on:click="onSortingButtonClick('yourRating')">
+											Your rating
+										</td>
+								</tr>
+						</table>
+					</div>
+
+					<div class="div-row" style="width: fit-content; ">
+						<table class="button-row" style="width: auto;">
 								<tr>
 										<td
 											@click="setDetailLevel('No detail')"
@@ -173,45 +182,20 @@
 										</td>
 								</tr>
 						</table>
-
-					<!-- <table v-if="!smallPagination" class="pagination-table upper-body-width">
-							<tr>
-									<td style="padding-bottom: 6px" @click="paginateUpOrDown('down')">&larr;</td>
-									<td v-for="pageNo in Math.ceil(this.$store.state.comicList.length/config.comicsPerPage)" 
-											v-bind:key="pageNo"
-											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
-											@click="paginate(pageNo)">
-											{{pageNo}}
-									</td>
-									<td style="padding-bottom: 6px" @click="paginateUpOrDown('up')">&rarr;</td>
-							</tr>
-					</table>
-					<table v-if="smallPagination" class="pagination-table upper-body-width">
-							<tr>
-									<td style="padding-bottom: 6px" @click="paginateUpOrDown('down')">&larr;</td>
-
-									<td v-for="(pageNo, index) in smallPaginationInnerNumbers" 
-											v-bind:key="index"
-											v-bind:class="{'button-selected': $store.state.pageNumber===pageNo}"
-											@click="paginate(pageNo)">
-											{{pageNo}}
-									</td>
-									<td style="padding-bottom: 6px" @click="paginateUpOrDown('up')">&rarr;</td>
-							</tr>
-					</table> -->
-
-				<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-width">
-					<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('down')" class="pagination-button">&larr;</div>
-					<div v-for="(pageNo, index) in paginationButtons"
-							 :key="index"
-							 :class="{'button-selected': $store.state.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
-							 class="pagination-button"
-							 @click="paginate(pageNo)">
-						{{pageNo}}
 					</div>
-					<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('up')" class="pagination-button">&rarr;</div>
-				</div>
-					
+
+					<div style="display: flex; flex-direction: row; align-items: center;" class="div-row">
+						<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('down')" class="pagination-button">&larr;</div>
+						<div v-for="(pageNo, index) in paginationButtons"
+								:key="index"
+								:class="{'button-selected': $store.state.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
+								class="pagination-button"
+								@click="paginate(pageNo)">
+							{{pageNo}}
+						</div>
+						<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('up')" class="pagination-button">&rarr;</div>
+					</div>
+				</span>
 			</div>
 		</div>
 
@@ -399,6 +383,7 @@ $themeGray0: #fafafa;
 $themeGray1: #e7e7e7;
 $themeGray2: #dcdcdc;
 $themeGray3: #cbcbcb;
+$themeGray3p5: #bababa;
 $themeGray4: #b0b0b0;
 $themeGray5: #a6a6a6;
 $themeGray6: #9a9a9a;
@@ -491,6 +476,7 @@ $themeRed3: #fd8f91;
 }
 
 .buttons-container {
+box-shadow: 0px 0px 16px 0px $themeGray3;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -513,12 +499,26 @@ $themeRed3: #fd8f91;
 	}
 }
 
+.buttons-container-inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.div-row {
+	// box-shadow: 0px 2px 6px 0px rgba(138,136,138,0.4);
+	width: 100%;
+	margin: 7px 0;
+}
+
+
 .pagination-button, .button-row td {
 	// border: 0.5px solid $themeGray0;
 	background: $themeGray5;
 	color: white;
 	padding: 8px 10px;
 	font-weight: 400;
+
 	&:hover {
 		cursor: pointer;
 		background: $themeGray3;
@@ -528,6 +528,7 @@ $themeRed3: #fd8f91;
 
 
 .button-row {
+	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
 	border-radius: 20px;
