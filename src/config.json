@@ -1,5 +1,5 @@
 {
-	"comicsPerPage": 123,
+	"comicsPerPage": 10,
 	"artistList":[
 		{"name": "Seth-Iova", "id": 23},
 		{"name": "Adamwan", "id": 33},
