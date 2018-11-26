@@ -10,7 +10,7 @@
 				to vote
 			</p>
 
-			<p style="margin-top: 10px;"><a href="#">Donate?</a></p>
+			<p style="margin-top: 10px;" class="link-color"><a href="#">Donate?</a></p>
 
 			<div class="buttons-container">
 					<table class="button-row upper-body-width">
@@ -201,7 +201,7 @@
 					</table> -->
 
 				<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-width">
-					<div style="padding-bottom: 7px; padding-top: 3px;" @click="paginateUpOrDown('down')" class="pagination-button">&larr;</div>
+					<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('down')" class="pagination-button">&larr;</div>
 					<div v-for="(pageNo, index) in paginationButtons"
 							 :key="index"
 							 :class="{'button-selected': $store.state.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
@@ -209,7 +209,7 @@
 							 @click="paginate(pageNo)">
 						{{pageNo}}
 					</div>
-					<div style="padding-bottom: 7px; padding-top: 3px;" @click="paginateUpOrDown('up')" class="pagination-button">&rarr;</div>
+					<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('up')" class="pagination-button">&rarr;</div>
 				</div>
 					
 			</div>
@@ -387,6 +387,52 @@ export default {
 <style lang="scss">
 $themeBlue: #009fff;
 $themeRed: #ec2f4b;
+$theme0: #2f0018;
+$theme1: #4d0329;
+$theme2: #770b43;
+$theme3: #ba0763;
+$theme4: #00986b;
+$theme5: #00d596;
+$theme6: #ffb9dd;
+$theme7: #ffd8ec;
+$themeGray0: #fafafa;
+$themeGray1: #e7e7e7;
+$themeGray2: #dcdcdc;
+$themeGray3: #cbcbcb;
+$themeGray4: #b0b0b0;
+$themeGray5: #a6a6a6;
+$themeGray6: #9a9a9a;
+$themeGray7: #8e8e8e;
+$themeGray8: #7e7e7e;
+$themeRed0: #6b090b;
+$themeRed1: #a90509;
+$themeRed2: #c80005;
+$themeRed3: #fd8f91;
+
+.upper-body-div {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: $themeGray0;
+	color: white;
+	h1 {
+		color: #333;
+		font-family: 'Shrikhand', cursive;
+	}
+	h2 {
+		margin: 45px 0px;
+	}
+	a {
+		text-decoration: underline;
+		color: $theme4;
+	}
+	.text-button {
+		color: $theme4;
+		text-decoration: underline;
+		font-size: 16px;
+	}
+}
 
 #keywordResults {
 	position: absolute;
@@ -424,7 +470,7 @@ $themeRed: #ec2f4b;
 }
 	
 .selected-keyword {
-	border: 0.5px solid white;
+	border: 0.5px solid #666;
 	font-size: 12px;
 	padding: 0.5px 4px 1px 4px;
 	border-radius: 15px;
@@ -437,17 +483,11 @@ $themeRed: #ec2f4b;
 }
 
 .pagination-button {
-	border: 0.5px solid white;
 	padding: 5px;
 	&:not(:first-child) {
 		border-left: none;
 	}
 	flex-grow: 1;
-
-	&:hover {
-		cursor: pointer;
-		background: rgba(255, 255, 255, 0.1) !important;
-	}
 }
 
 .buttons-container {
@@ -456,8 +496,11 @@ $themeRed: #ec2f4b;
 	flex-direction: column;
 	align-items: center;
 	margin-top: 30px;
-	background: rgba(255, 255, 255, 0.1);
-	padding: 40px 0;
+	background: $themeGray1;
+	padding: 24px 0;
+	margin-bottom: 16px;
+	border-top: 1px solid $themeGray3;
+	border-bottom: 1px solid $themeGray3;
 	>div, >table {
 		margin: 7px 0px;
 	}
@@ -469,123 +512,116 @@ $themeRed: #ec2f4b;
 		}
 	}
 }
-</style>
+
+.pagination-button, .button-row td {
+	// border: 0.5px solid $themeGray0;
+	background: $themeGray5;
+	color: white;
+	padding: 8px 10px;
+	font-weight: 400;
+	&:hover {
+		cursor: pointer;
+		background: $themeGray3;
+	}
+}
 
 
-<style lang="sass">
-$themeBlue: #3984d4
-$themeBlue: #009fff
-$themeRed: #ec2f4b 
 
-.upper-body-div
-	width: 100%
-	display: flex
-	flex-direction: column
-	align-items: center
-	background: linear-gradient(to top right, $themeBlue, $themeRed)
-	color: white
-	h1, h2, td, p, div, span, a
-		color: white
-	h2
-		margin: 45px 0px
-	a 
-		text-decoration: underline
-	.text-button
-		color: white
-		text-decoration: underline
-		font-size: 16px
+.button-row {
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-radius: 20px;
+	td {
+		text-align: center;
+	}
+}
 
-.button-row
-	table-layout: fixed
-	border-collapse: collapse
-	border-radius: 20px
-	td
-		text-align: center
-		border: 0.5px solid white
-		padding: 5px 10px
+.button-selected {
+	background: $themeGray0 !important;
+	background: $theme5 !important;
+	font-weight: 400;
+	// color: $theme2 !important
+}
 
-.button-row td:hover, .pagination-table td:hover
-	cursor: pointer
-	background: rgba(255, 255, 255, 0.1)
+.upper-body-searchbox {
+	box-sizing: border-box;
+	padding: 7px;
+	text-align: center;
+	border: 0.5px solid $themeGray5;
+	background: #f0f0f0;
+	outline: none;
+	color: #333;
+	width: 100%;
+}
 
-.button-selected
-	background: rgba(255, 255, 255, 0.32) !important
+.search-wrapper {
+	width: 47%;
+	position: relative;
+}
 
-.upper-body-searchbox
-	background: rgba(0, 0, 0, 0.1)
-	box-sizing: border-box
-	padding: 7px
-	text-align: center
-	background: rgba(255, 255, 255, 0.0)
-	border: 0.5px solid white
-	outline: none
-	color: white
-	width: 100%
+.two-search-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
 
-.search-wrapper
-	width: 47%
-	position: relative
+::placeholder {
+	color: $themeGray5;
+	font-size: 12px;
+}
 
-.two-search-row
-	display: flex
-	flex-direction: row
-	justify-content: space-between
+.comic-card-container {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	flex-wrap: wrap;
+	justify-content: center;
+}
 
-.pagination-table
-	table-layout: fixed
-	margin-top: 30px
-	border-collapse: collapse
-	td
-		padding: 5px 6px
-		border: 0.5px solid white
-		text-align: center
-		font-size: 14px
-
-::placeholder
-	color: rgba(255, 255, 255, 0.4)
-	font-size: 12px
-
-.comic-card-container
-	display: flex
-	flex-direction: row
-	width: 100%
-	flex-wrap: wrap
-	justify-content: center
-
-.dark
-	.upper-body-div
-		background: linear-gradient(to bottom left, #330a10, #001726)
-	.button-row td, .pagination-table td
-		background: rgba(0, 0, 0, 0.2)
-		border: 1px solid rgba(0,0,0,0)
-	.button-selected
-		background: $themeBlue !important
-	.one-searchbox-container input, #keywordSearch
-		border-color: #111
-		background: rgba(0, 0, 0, 0.1)
-	.keyword, .selected-keyword
-		border-color: #555
-		color: #ddd
-		&:hover
-			color: $themeRed
-	.keyword-result
-		color: #eee !important
-		background: rgba(22, 22, 22, 0.96)
-		&:hover
-			background: rgba(18, 18, 18, 1)
-			color: $themeBlue
-	.button-row td:hover, .pagination-table td:hover
-		cursor: pointer
-		background: rgba(255, 255, 255, 0.1)
-	.pagination-button
-		border-color: rgba(0, 0, 0, 0)
-		background: rgba(0, 0, 0, 0.2)
+.dark {
+	.upper-body-div {
+		background: linear-gradient(to bottom left, #330a10, #001726);
+	}
+	.button-row td, .pagination-table td {
+		background: rgba(0, 0, 0, 0.2);
+		border: 1px solid rgba(0,0,0,0);
+	}
+	.button-selected {
+		background: $themeBlue !important;
+	}
+	.one-searchbox-container input, #keywordSearch {
+		border-color: #111;
+		background: rgba(0, 0, 0, 0.1);
+	}
+	.keyword, .selected-keyword {
+		border-color: #555;
+		color: #ddd;
+		&:hover {
+			color: $themeRed2;
+		}
+	}
+	.keyword-result {
+		color: #eee !important;
+		background: rgba(22, 22, 22, 0.96);
+		&:hover {
+			background: rgba(18, 18, 18, 1);
+			color: $themeBlue;
+		}
+	}
+	.button-row td:hover, .pagination-table td:hover {
+		cursor: pointer;
+		background: rgba(255, 255, 255, 0.1);
+	}
+	.pagination-button {
+		border-color: rgba(0, 0, 0, 0);
+		background: rgba(0, 0, 0, 0.2);
+	}
+}
 	
-.upper-body-width
-	width: 50%
-</style>
+.upper-body-width {
+	width: 50%;
+}
 
-<style lang="scss">
 .dot-dot-dot-button {
 	&:hover {
 		cursor: default;

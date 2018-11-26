@@ -119,197 +119,239 @@ export default {
 }
 </style>
 
-<style lang="sass">
-$themeBlue: #009fff
-$themeRed: #ec2f4b
-
-div, table, span, img, body, h1, h2, h3, p
-	margin: 0px
-
-router-link, p, td
-	font-weight: 300
-
-h1, h2, h3, h4, p, div, span
-	color: #111
-
-h1
-	font-weight: 300
-	font-size: 70px
-	margin-top: 50px
-
-h2
-	font-weight: 300
-	font-size: 35px
-
-a
-	color: $themeBlue
-	font-weight: 400
-
-label
-	font-weight: 300
-
-::selection
-	background: rgba(236, 47, 75, 0.5)
-
-.theme-button-container
-	position: absolute
-	top: 0
-	right: 3px
-
-.theme-button-container-left
-	left: 3px
-	right: auto
-
-.theme-button
-	background: transparent
-	border: none
-	color: #009fff
-	padding: 
-	&:hover
-		cursor: pointer
-		background: rgba(255, 255, 255, 0.1)
-	&:focus
-		outline: none
-
-.theme-button-white-text
-	color: white
-	background: rgba(255, 255, 255, 0.2)
-	&:hover
-		background: rgba(255, 255, 255, 0.4)
-
-.y-button, .vote-button
-	border: 0.8px solid $themeBlue
-	border-radius: 5px
-	color: $themeBlue
-	background: rgba(0,0,0,0)
-	padding: 4px 9px
-	font-family: 'Open Sans', sans-serif
-
-	&:hover
-		background-color: $themeBlue
-		color: white
-		cursor: pointer
-
-.y-button-small
-	border: 0.8px solid $themeBlue
-	border-radius: 5px
-	color: $themeBlue
-	background: rgba(0,0,0,0)
-	padding: 2px 6px
-
-	&:hover
-		background-color: $themeBlue
-		color: white
-		cursor: pointer
-
-.y-button-red
-	color: $themeRed
-	border-color: $themeRed
-	&:hover
-		background-color: $themeRed
-
-.y-button-disabled
-	color: #999
-	border-color: #999
-	&:hover
-		cursor: not-allowed
-		color: #999
-		background: none
-
-.dark
-	background-color: #091014
-	p, h1, h2, div, td, h3, span
-		color: #ddd
-</style>
-
 <style lang="scss">
-	$themeBlue: #3984d4;
-	$themeBlue: #009fff;
-	$themeRed: #ec2f4b;
 
-	option, select, input {
-		font-family: 'Open Sans', sans-serif;
+$theme0: #2f0018;
+$theme1: #4d0329;
+$theme2: #770b43;
+$theme3: #ba0763;
+$theme4: #00986b;
+$theme5: #00d596;
+$theme6: #ffb9dd;
+$theme7: #ffd8ec;
+$themeGray0: #fafafa;
+$themeGray1: #e7e7e7;
+$themeGray2: #dcdcdc;
+$themeGray3: #cbcbcb;
+$themeGray4: #b0b0b0;
+$themeGray5: #a6a6a6;
+$themeGray6: #9a9a9a;
+$themeGray7: #8e8e8e;
+$themeGray8: #7e7e7e;
+$themeRed0: #6b090b;
+$themeRed1: #a90509;
+$themeRed2: #c80005;
+$themeRed3: #fd8f91;
+
+div, table, span, img, body, h1, h2, h3, p {
+	margin: 0px;
+}
+
+router-link, p, td {
+	font-weight: 300;
+}
+
+h1, h2, h3, h4, p, div, span {
+	color: #111;
+}
+
+h1 {
+	font-weight: 300;
+	font-size: 70px;
+	margin-top: 32px;
+}
+
+h2 {
+	font-weight: 300;
+	font-size: 35px;
+}
+
+a {
+	color: $theme4;
+	font-weight: 400;
+}
+
+label {
+	font-weight: 300;
+}
+
+::selection {
+	background: rgba(236, 47, 75, 0.5);
+}
+
+.theme-button-container {
+	position: absolute;
+	top: 0;
+	right: 3px;
+}
+
+.theme-button-container-left {
+	left: 3px;
+	right: auto;
+}
+
+.theme-button {
+	background: transparent;
+	border: none;
+	color: $theme4;
+	&:hover {
+		cursor: pointer;
+		background: rgba(255, 255, 255, 0.1);
+	}
+	&:focus {
+		outline: none;
+	}
+}
+
+.theme-button-white-text {
+	// color: white;
+	// background: $themeGray1;
+	// &:hover {
+	// 	background: rgba(255, 255, 255, 0.4);
+	// }
+}
+
+.y-button, .vote-button {
+	border: 0.8px solid $theme4;
+	border-radius: 5px;
+	color: $theme4;
+	background: rgba(0,0,0,0);
+	padding: 4px 9px;
+	font-family: 'Open Sans', sans-serif;
+
+	&:hover {
+		background-color: $theme4;
+		color: white;
+		cursor: pointer;
+	}
+}
+
+.y-button-small {
+	border: 0.8px solid $theme4;
+	border-radius: 5px;
+	color: $theme4;
+	background: rgba(0,0,0,0);
+	padding: 2px 6px;
+
+	&:hover {
+		background-color: $theme4;
+		color: white;
+		cursor: pointer;
+	}
+}
+
+.y-button-red {
+	color: $themeRed2;
+	border-color: $themeRed2;
+	&:hover {
+		background-color: $themeRed2;
+	}
+}
+
+.y-button-disabled {
+	color: #999;
+	border-color: #999;
+	&:hover {
+		cursor: not-allowed;
+		color: #999;
+		background: none;
+	}
+}
+
+body {
+	background-color: #fafafa;
+}
+
+.dark {
+	background-color: #091014;
+	p, h1, h2, div, td, h3, span {
+		color: #ddd;
+	}
+}
+
+option, select, input {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.link-color {
+	color: $theme4 !important;
+}
+
+.red-color {
+	color: $themeRed2 !important;
+}
+
+.text-button {
+	font-size: 14px;
+	text-align: center;
+	font-weight: 300;
+	font-family: 'Open Sans', sans-serif;
+	background: transparent;
+	border: none;
+	color: $theme4;
+	padding: 0px;
+	margin: 0px;
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.success-message {
+	color: #20ad0a !important;
+	font-weight: 400;
+	margin-bottom: 0px !important;
+}
+
+.error-message {
+	color: $themeRed2 !important;
+	font-weight: 400;
+	margin-bottom: 0px !important;
+}
+
+.courier {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 13px;
+}
+
+.vertical-flex {
+	display: flex;
+	flex-direction: column;
+}
+
+.cursor-pointer {
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.no-margin-bot {
+	p, select, button {
+		margin-bottom: 0 !important;
+	}
+}
+
+.no-margin-top {
+	margin-top: 0 !important;
+}
+
+h1 {
+	@media (max-width: 900px) {
+		font-size: 48px;
+		margin-top: 24px;
+	}
+}
+
+.dark {
+	input {
+		background: rgb(22, 26, 29);
+		border: 1px solid #666;
+		color: white;
 	}
 
-	.link-color {
-		color: $themeBlue !important;
+	option, select {
+		background: rgb(22, 26, 29);
+		color: white;
+		border: 1px solid #666;
 	}
-
-	.red-color {
-		color: $themeRed !important;
-	}
-
-	.text-button {
-		font-size: 14px;
-		text-align: center;
-		font-weight: 300;
-		font-family: 'Open Sans', sans-serif;
-		background: transparent;
-		border: none;
-		color: $themeBlue;
-		padding: 0px;
-		margin: 0px;
-		&:hover {
-			cursor: pointer;
-		}
-	}
-
-	.success-message {
-		color: #20ad0a !important;
-		font-weight: 400;
-		margin-bottom: 0px !important;
-	}
-
-	.error-message {
-		color: $themeRed !important;
-		font-weight: 400;
-		margin-bottom: 0px !important;
-	}
-
-	.courier {
-		font-family: 'Courier New', Courier, monospace;
-		font-size: 13px;
-	}
-
-	.vertical-flex {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.cursor-pointer {
-		&:hover {
-			cursor: pointer;
-		}
-	}
-
-	.no-margin-bot {
-		p, select, button {
-			margin-bottom: 0 !important;
-		}
-	}
-
-	.no-margin-top {
-		margin-top: 0 !important;
-	}
-
-	h1 {
-		@media (max-width: 900px) {
-			font-size: 48px;
-			margin-top: 24px;
-		}
-	}
-
-	.dark {
-		input {
-			background: rgb(22, 26, 29);
-			border: 1px solid #666;
-			color: white;
-		}
-
-		option, select {
-			background: rgb(22, 26, 29);
-			color: white;
-			border: 1px solid #666;
-		}
-	}
+}
 </style>
