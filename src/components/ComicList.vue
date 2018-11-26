@@ -127,7 +127,7 @@
 								</div>
 						</div>
 					</div>
-						<div id="selectedKeywords" class="upper-body-width" v-if="$store.state.selectedKeywords.length > 0">
+						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="div-row" style="margin-top: 0px;">
 								<div 
 									v-for="keyword in $store.state.selectedKeywords" 
 									v-bind:key="keyword"

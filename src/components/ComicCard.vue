@@ -25,8 +25,14 @@
 		<voting-button
 			v-bind:comic="comic"
 			v-bind:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
-			v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'"
+			v-if="$store.state.username && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
 		></voting-button>
+
+		<!-- <voting-button-single-color
+			v-bind:comic="comic"
+			v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'"
+			style="margin-top: 10px;"
+		></voting-button-single-color> -->
 
 		<div class="keyword-container" v-if="detailLevel === 'High detail'">
 			<div 
@@ -43,10 +49,14 @@
 
 <script>
 import VotingButton from '@/components/VotingButton.vue'
+import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 
 export default {
 	name: 'comic-card',
-	components: { 'voting-button': VotingButton },
+	components: {
+		'voting-button': VotingButton,
+		'voting-button-single-color': VotingButtonSingleColor,
+	},
 	props: {
 		comic: Object,
 		detailLevel: String,
@@ -78,9 +88,9 @@ export default {
 
 <style lang="scss">
 $theme0: #2f0018;
-$theme1: #4d0329;
-$theme2: #770b43;
-$theme3: #ba0763;
+$theme1: #004934;
+$theme2: #006d4d;
+$theme3: #007754;
 $theme4: #00986b;
 $theme5: #00d596;
 $theme6: #78fdd6;
@@ -167,7 +177,7 @@ $cardTextColorLight: #222;
 	justify-content: space-between;
 		box-shadow: 0 0 8px 0px $themeGray3p5;
 	&:hover {
-		box-shadow: 0 0 10px 1px $theme4;
+		box-shadow: 0 0 10px 1px $theme5;
 	}
 	img {
 		width: 100%;

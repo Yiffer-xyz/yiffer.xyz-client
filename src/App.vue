@@ -122,12 +122,12 @@ export default {
 <style lang="scss">
 
 $theme0: #2f0018;
-$theme1: #4d0329;
-$theme2: #770b43;
-$theme3: #ba0763;
+$theme1: #004934;
+$theme2: #006d4d;
+$theme3: #007754;
 $theme4: #00986b;
 $theme5: #00d596;
-$theme6: #ffb9dd;
+$theme6: #78fdd6;
 $theme7: #ffd8ec;
 $themeGray0: #fafafa;
 $themeGray1: #e7e7e7;
@@ -176,7 +176,7 @@ label {
 }
 
 ::selection {
-	background: rgba(236, 47, 75, 0.5);
+	background: rgba(120, 253, 214, 0.5);
 }
 
 .theme-button-container {
