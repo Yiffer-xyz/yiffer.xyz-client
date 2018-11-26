@@ -151,16 +151,19 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
+$theme1: #004934;
+$theme2: #006d4d;
+$theme3: #007754;
+$theme4: #00986b;
+$theme5: #00d596;
+$theme6: #78fdd6;
 
 .pretty-input-upload {
 	position: relative;
 	cursor: pointer;
 
-	border: 0.8px solid #009fff;
 	border-radius: 5px;
-	color: $linkColor;
-	background: rgba(0, 0, 0, 0);
+	background: $theme5;
 	padding: 4px 9px;
 
 	display: flex;
@@ -168,15 +171,12 @@ $linkColor: #009fff;
 
 	p {
 		font-size: 13px;
-    color: $linkColor;
+    color: white;
     font-weight: 400;
 	}
 
   &:hover {
-    background-color: $linkColor;
-    p {
-      color: white;
-    }
+    background-color: $theme4;
   }
 }
 

@@ -1,9 +1,10 @@
 <template>
-	<button class="voting-button" @click="showSomeModal()" v-bind:class="{'disabled-voting-button': !$store.state.username}">
-		<span v-bind:style="{'background-color': this.backgroundColor}">
-			<p v-if="$store.state.username">Vote</p>
-			<p v-else>Log in to vote</p>
-		</span>
+	<button class="y-button" @click="showSomeModal()" v-bind:class="{'disabled-voting-button': !$store.state.username}">
+		<!-- <span v-bind:style="{'background-color': this.backgroundColor}"> -->
+			{{$store.state.username ? 'Vote' : 'Log in to vote'}}
+			<!-- <p v-if="$store.state.username">Vote</p> -->
+			<!-- <p v-else>Log in to vote</p> -->
+		<!-- </span> -->
 	</button>
 </template>
 
@@ -47,18 +48,18 @@ $theme6: #78fdd6;
 
 
 .voting-button {
+	box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
 	background-image: linear-gradient(to top right, $theme2 0%, $theme5 100%);
-	color: #00a84f;
 	text-decoration: none;
 	border-style: solid;
 	padding: 2px;
-	letter-spacing: 1px;
 	border: none;
 	border-radius: 7px;
 
 	span {
 		align-items: center;
 		background: white;
+		background: transparent !important;
 		display: flex;
 		justify-content: center;
 		height: 100%;
@@ -67,6 +68,8 @@ $theme6: #78fdd6;
 		p {
 			margin: 4px 8px;
 			font-family: 'Open Sans', sans-serif;
+			color: white;
+			font-weight: 400;
 		}
 	}
 
@@ -79,9 +82,5 @@ $theme6: #78fdd6;
 			}
 		}
 	}
-}
-
-.disabled-voting-button {
-	letter-spacing: 0px;
 }
 </style>

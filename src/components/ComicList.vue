@@ -6,11 +6,15 @@
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p style="margin-top: 10px;" v-if="!$store.state.username">
-				<button class="text-button" v-on:click="showLoginModal" style="font-weight: 400;">Log in</button> 
+				<button class="y-button" v-on:click="showLoginModal">
+					<i class="fas fa-sign-in-alt"></i> Log in
+				</button> 
 				to vote
 			</p>
 
-			<p style="margin-top: 10px;" class="link-color"><a href="#">Donate?</a></p>
+			<p class="link-color" style="margin-top: 10px;"><a href="#">
+				<i class="fas fa-donate" style="text-decoration: none;"></i> Donate?
+			</a></p>
 
 			<div class="buttons-container">
 				<span class="upper-body-width buttons-container-inner">
@@ -372,12 +376,12 @@ export default {
 $themeBlue: #009fff;
 $themeRed: #ec2f4b;
 $theme0: #2f0018;
-$theme1: #4d0329;
-$theme2: #770b43;
-$theme3: #ba0763;
+$theme1: #004934;
+$theme2: #006d4d;
+$theme3: #007754;
 $theme4: #00986b;
 $theme5: #00d596;
-$theme6: #ffb9dd;
+$theme6: #78fdd6;
 $theme7: #ffd8ec;
 $themeGray0: #fafafa;
 $themeGray1: #e7e7e7;
@@ -408,10 +412,6 @@ $themeRed3: #fd8f91;
 	h2 {
 		margin: 45px 0px;
 	}
-	a {
-		text-decoration: underline;
-		color: $theme4;
-	}
 	.text-button {
 		color: $theme4;
 		text-decoration: underline;
@@ -436,8 +436,8 @@ $themeRed3: #fd8f91;
 	background: rgba(255, 255, 255, 0.9);
 	font-weight: 300;
 	&:hover {
-		background-color: #e3e3e3;
-		color: $themeBlue !important;
+		background-color: $themeGray1;
+		color: $theme4 !important;
 		cursor: pointer;
 	}
 }
@@ -457,13 +457,15 @@ $themeRed3: #fd8f91;
 .selected-keyword {
 	border: 0.5px solid #666;
 	font-size: 12px;
-	padding: 0.5px 4px 1px 4px;
+	padding: 0.5px 6px 1px 6px;
 	border-radius: 15px;
 	font-weight: 300;
 	margin: 0px 2px;
 	&:hover {
 		cursor: pointer;
 		text-decoration: line-through;
+		color: $themeRed2;
+		border-color: $themeRed2;
 	}
 }
 
@@ -476,13 +478,14 @@ $themeRed3: #fd8f91;
 }
 
 .buttons-container {
-box-shadow: 0px 0px 16px 0px $themeGray3;
+	box-shadow: 0px 0px 16px 0px $themeGray3;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-top: 30px;
 	background: $themeGray1;
+	// background: linear-gradient(to bottom left, #e3efeb, #d1dcd9);
 	padding: 24px 0;
 	margin-bottom: 16px;
 	border-top: 1px solid $themeGray3;

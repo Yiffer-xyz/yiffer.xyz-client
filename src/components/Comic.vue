@@ -273,54 +273,74 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 
 <style lang="scss">
-	$linkColor: #009fff;
-	$themeRed: #ec2f4b;
+$theme0: #2f0018;
+$theme1: #004934;
+$theme2: #006d4d;
+$theme3: #007754;
+$theme4: #00986b;
+$theme5: #00d596;
+$theme6: #78fdd6;
+$theme7: #a9ffe6;
+$theme8: #dbfff4;
+$themeGray0: #fafafa;
+$themeGray1: #e7e7e7;
+$themeGray2: #dcdcdc;
+$themeGray3: #cbcbcb;
+$themeGray4: #b0b0b0;
+$themeGray5: #a6a6a6;
+$themeGray6: #9a9a9a;
+$themeGray7: #8e8e8e;
+$themeGray8: #7e7e7e;
+$themeRed0: #6b090b;
+$themeRed1: #a90509;
+$themeRed2: #c80005;
+$themeRed3: #fd8f91;
 
-	.comic-upper-div {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		max-width: 90%;
+.comic-upper-div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 90%;
 
-		.voting-button {
-			margin-top: 16px;
-		}
-	}
-
-	.margin-top-16 {
+	.y-button {
 		margin-top: 16px;
 	}
-	.margin-top-8 {
-		margin-top: 8px;
-	}
+}
 
-	#comicKeywords {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
+.margin-top-16 {
+	margin-top: 16px;
+}
+.margin-top-8 {
+	margin-top: 8px;
+}
 
-	.keyword-button {
-		border-color: $linkColor !important;
-		color: $linkColor !important;
-		&:hover {
-			cursor: pointer;
-		}
-	}
+#comicKeywords {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
 
-	#keywordEditing {
-		width: 100%;
-		select {
-			margin: 0 4px;
-		}
+.keyword-button {
+	border-color: $theme4 !important;
+	color: $theme4 !important;
+	&:hover {
+		cursor: pointer;
 	}
+}
 
-	#dropdownContainer {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
+#keywordEditing {
+	width: 100%;
+	select {
+		margin: 0 4px;
 	}
+}
+
+#dropdownContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
 </style>
 
 <style lang="sass">

@@ -141,7 +141,7 @@ $cardTextColorLight: #222;
 	font-weight: 400;
 	margin: 3px 0;
 	color: #444 !important;
-	background-color: #ddd;
+	background-color: $themeGray2;
 
 	&:hover {
 		cursor: default;
@@ -185,7 +185,7 @@ $cardTextColorLight: #222;
 	}
 	a {
 		text-decoration: none;
-		color: $theme4;
+		color: $theme5;
 	}
 	p, div {
 		color: $cardTextColorLight;

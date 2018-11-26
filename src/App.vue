@@ -218,6 +218,10 @@ label {
 	background: rgba(0,0,0,0);
 	padding: 4px 9px;
 	font-family: 'Open Sans', sans-serif;
+	// box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
+	background: $theme5;
+	color: white;
+	border: none;
 
 	&:hover {
 		background-color: $theme4;
@@ -227,34 +231,41 @@ label {
 }
 
 .y-button-small {
-	border: 0.8px solid $theme4;
+	font-family: 'Open Sans', sans-serif;
+	// box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
+	// border: 0.8px solid $theme4;
 	border-radius: 5px;
-	color: $theme4;
-	background: rgba(0,0,0,0);
+	// color: $theme4;
+	// background: rgba(0,0,0,0);
+	background: $theme5;
+	color: white;
 	padding: 2px 6px;
+	border: none;
 
 	&:hover {
+		// background-color: $theme4;
+		// color: white;
 		background-color: $theme4;
-		color: white;
 		cursor: pointer;
 	}
 }
 
 .y-button-red {
-	color: $themeRed2;
-	border-color: $themeRed2;
+	background: $themeRed2;
 	&:hover {
-		background-color: $themeRed2;
+		background-color: $themeRed1;
 	}
 }
 
 .y-button-disabled {
-	color: #999;
-	border-color: #999;
+	background: transparent;
+	background: $themeGray1;
+	color: #444;
+	// border-color: #444;
 	&:hover {
 		cursor: not-allowed;
-		color: #999;
-		background: none;
+		color: #444;
+		background: $themeGray1;
 	}
 }
 
@@ -275,6 +286,10 @@ option, select, input {
 
 .link-color {
 	color: $theme4 !important;
+}
+
+.link-color-light {
+	color: $theme5 !important;
 }
 
 .red-color {

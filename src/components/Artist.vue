@@ -2,10 +2,6 @@
 	<div style="width: 100%">
 		<vue-headful :title="$route.params.artistName + ' - Artist - Yiffer.xyz'"/>
     <h1>{{$route.params.artistName}}</h1>
-    <p v-if="!$store.state.username" style="margin-top: 8px;">
-      <button class="text-button" v-on:click="showLoginModal" style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">Log in</button>
-      to vote
-    </p>
     <back-to-index></back-to-index>
   
     <h2 style="margin-top: 16px;">Links</h2>
@@ -84,8 +80,6 @@ function mockGetArtist (artistName) {
 </script>
 
 <style lang="scss">
-$linkColor: #3984d4;
-
 .artist-link-container {
   display: flex;
   flex-direction: column;
@@ -106,10 +100,6 @@ $linkColor: #3984d4;
 	width: 100%;
 	flex-wrap: wrap;
 	justify-content: center;
-}
-
-.dark {
-
 }
 </style>
 
