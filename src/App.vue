@@ -228,6 +228,10 @@ label {
 		color: white;
 		cursor: pointer;
 	}
+
+	span {
+		color: white;
+	}
 }
 
 .y-button-small {

@@ -9,9 +9,10 @@
 						{{comic.artist}}
 					</router-link>
 				</h2>
-				<button v-if="userIsDonator" class="y-button-important">Download comic</button>
 
 				<back-to-index class="margin-top-16"></back-to-index>
+
+				<button v-if="userIsDonator && $store.state.username" class="y-button">Download comic</button>
 
 				<voting-button
 					v-bind:comic="comic"
@@ -142,7 +143,7 @@ export default {
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
-			userIsDonator: false,
+			userIsDonator: true,
 			comicNotFound: false,
 			imageFitArray: [],
 			comicLinks: { previousComic: undefined, nextComic: undefined },

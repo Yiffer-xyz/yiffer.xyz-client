@@ -77,22 +77,28 @@ async function mockGetComicDetails () {
 <style lang="scss">
 $linkColor: #3984d4;
 $themeRed: #ec2f4b;
+$theme1: #004934;
+$theme2: #006d4d;
+$theme3: #007754;
+$theme4: #00986b;
+$theme5: #00d596;
+$theme6: #78fdd6;
 
-.vote-box-colored-1 { background-color: #009FFF; color: white; }
-.vote-box-colored-2 { background-color: #1A92EB; color: white; }
-.vote-box-colored-3 { background-color: #3486D7; color: white; }
-.vote-box-colored-4 { background-color: #4E79C3; color: white; }
-.vote-box-colored-5 { background-color: #686DAF; color: white; }
-.vote-box-colored-6 { background-color: #83609B; color: white; }
-.vote-box-colored-7 { background-color: #9D5487; color: white; }
-.vote-box-colored-8 { background-color: #B74773; color: white; }
-.vote-box-colored-9 { background-color: #D13B5F; color: white; }
-.vote-box-colored-10 { background-color: #EC2F4B; color: white; }
+.vote-box-colored-1 { background-color: #006D4D; color: white; }
+.vote-box-colored-2 { background-color: #007C57; color: white; }
+.vote-box-colored-3 { background-color: #008B62; color: white; }
+.vote-box-colored-4 { background-color: #009B6D; color: white; }
+.vote-box-colored-5 { background-color: #00AA78; color: white; }
+.vote-box-colored-6 { background-color: #00BA83; color: white; }
+.vote-box-colored-7 { background-color: #00C98E; color: white; }
+.vote-box-colored-8 { background-color: #00D999; color: white; }
+.vote-box-colored-9 { background-color: #00E8A4; color: white; }
+.vote-box-colored-10 { background-color: #00F8AF; color: white; }
 .vote-box-colored {
 	color: white;
 }
 .vote-box-uncolored {
-	background-color: transparent;
+	background-color: #f7f7f7;
 	color: #222;
 }
 
@@ -153,7 +159,7 @@ $themeRed: #ec2f4b;
 
 	position: absolute;
 	content: "";
-	background: linear-gradient(to right, rgb(0, 159, 255), rgb(236, 47, 75));
+	background: linear-gradient(to right, $theme2, $theme6);
 	top: -3px;
 
 }
@@ -165,8 +171,15 @@ $themeRed: #ec2f4b;
 
 .voting-number {
 	width: 10%;
-	font-weight: 400;
+	font-weight: 600;
 	padding: 24px 0;
+
+	@media (max-width: 900px) {
+		padding: 18px 0;
+	}
+	@media (max-width: 500px) {
+		padding: 6px 0;
+	}
 }
 
 #deleteVoteButton {
