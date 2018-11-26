@@ -7,6 +7,7 @@ import Artist from './components/Artist.vue'
 import Admin from './components/Admin.vue'
 import NewPassword from './components/NewPassword.vue'
 import PendingComic from './components/PendingComic.vue'
+import Donate from './components/Donate.vue'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
 			path: '/admin',
 			name: 'admin',
 			component: Admin
+		},
+		{
+			path: '/donate',
+			name: 'donate',
+			component: Donate
 		},
 		{
 			path: '/:comicName',

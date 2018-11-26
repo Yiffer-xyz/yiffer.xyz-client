@@ -12,9 +12,9 @@
 				to vote
 			</p>
 
-			<p class="link-color" style="margin-top: 10px;"><a href="#">
+			<router-link :to="{name: 'donate'}" style="margin-top: 10px;">
 				<i class="fas fa-donate" style="text-decoration: none;"></i> Donate?
-			</a></p>
+			</router-link>
 
 			<div class="buttons-container">
 				<span class="upper-body-width buttons-container-inner">

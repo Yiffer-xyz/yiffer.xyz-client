@@ -356,6 +356,20 @@ h1 {
 	}
 }
 
+.whole-body-text {
+	width: 70%;
+	margin: auto;
+	text-align: left;
+
+	@media (max-width: 900px) {
+		width: 90%;
+	}
+
+	p {
+		margin-top: 16px;
+	}
+}
+
 .dark {
 	input {
 		background: rgb(22, 26, 29);
