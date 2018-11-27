@@ -13,7 +13,7 @@
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
 			<p><i class="fas fa-file"></i> {{comic.numberOfPages}}</p>
 			<p><i class="fas fa-users"></i> {{formatRating(comic.userRating)}}</p>
-			<p><i class="fas fa-user"></i> {{comic.yourRating}}</p>
+			<p v-if="$store.state.username"><i class="fas fa-user"></i> {{comic.yourRating}}</p>
 		</div>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
@@ -93,7 +93,7 @@ $themeGray3p5: #bababa;
 $theme0: #0d201b;
 $theme1: #0e4736;
 $theme2: #006d4d;
-$theme3: #007754;
+$theme3: #00855e;
 $theme4: #00986b;
 $theme5: #00d596;
 $theme6: #78fdd6;

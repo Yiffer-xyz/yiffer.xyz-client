@@ -277,7 +277,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 $theme0: #2f0018;
 $theme1: #004934;
 $theme2: #006d4d;
-$theme3: #007754;
+$theme3: #00855e;
 $theme4: #00986b;
 $theme5: #00d596;
 $theme6: #78fdd6;

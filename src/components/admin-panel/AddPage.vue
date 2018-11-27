@@ -151,12 +151,16 @@ export default {
 </script>
 
 <style lang="scss">
-$theme1: #004934;
+$theme0: #0d201b;
+$theme1: #0e4736;
 $theme2: #006d4d;
-$theme3: #007754;
+$theme3: #00855e;
 $theme4: #00986b;
+$theme4p5: #00ab79;
 $theme5: #00d596;
 $theme6: #78fdd6;
+$theme7: #a9ffe6;
+
 
 .pretty-input-upload {
 	position: relative;
@@ -214,6 +218,16 @@ $theme6: #78fdd6;
   th {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
+  }
+}
+
+.dark {
+  .pretty-input-upload {
+    background: $theme4p5;
+
+    &:hover {
+      background-color: $theme3;
+    }
   }
 }
 

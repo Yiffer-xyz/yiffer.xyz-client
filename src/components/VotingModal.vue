@@ -75,14 +75,35 @@ async function mockGetComicDetails () {
 
 
 <style lang="scss">
-$linkColor: #3984d4;
-$themeRed: #ec2f4b;
-$theme1: #004934;
+$theme0: #0d201b;
+$theme1: #0e4736;
 $theme2: #006d4d;
-$theme3: #007754;
+$theme3: #00855e;
 $theme4: #00986b;
 $theme5: #00d596;
 $theme6: #78fdd6;
+$theme7: #a9ffe6;
+$themeGray0: #fafafa;
+$themeGray1: #e7e7e7;
+$themeGray2: #dcdcdc;
+$themeGray3: #cbcbcb;
+$themeGray4: #b0b0b0;
+$themeGray5: #a6a6a6;
+$themeGray6: #9a9a9a;
+$themeGray7: #8e8e8e;
+$themeGray8: #7e7e7e;
+$themeDark1: #495552;
+$themeDark2: #384441;
+$themeDark3: #26302c;
+$themeDark4: #1a201f;
+$themeDark5: #0a0e0c;
+$themeRed0: #6b090b;
+$themeRed1: #a90509;
+$themeRed2: #c80005;
+$themeRed3: #fd8f91;
+$themeBlue0: #090f14;
+$themeBlue0p5: #0b1116;
+$themeBlue1: #0e1a27;
 
 .vote-box-colored-1 { background-color: #006D4D; color: white; }
 .vote-box-colored-2 { background-color: #007C57; color: white; }
@@ -192,9 +213,13 @@ $theme6: #78fdd6;
 	.vote-box-uncolored {
 		color: white;
 	}
+
+	.vote-box-uncolored {
+		background-color: transparent;
+	}
 	
 	.voting-modal {
-		background-color: #222426;
+		background-color: $themeBlue0p5;
 		color: white;
 		input {
 			color: #ccc;
@@ -205,11 +230,7 @@ $theme6: #78fdd6;
 	}
 
 	.modal-backdrop {
-		background-color: rgba(255, 255, 255, 0.2);
-	}
-
-	.voting-number {
-		padding: 10px 0;
+		background-color: rgba(0, 0, 0, 0.7);
 	}
 }
 </style>

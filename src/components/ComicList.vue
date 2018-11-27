@@ -7,7 +7,7 @@
 
 			<p style="margin-top: 10px;" v-if="!$store.state.username">
 				<button class="y-button" v-on:click="showLoginModal">
-					<i class="fas fa-sign-in-alt"></i> Log in
+					<i data-feather="log-in"></i> Log in
 				</button> 
 				&nbsp;to vote
 			</p>
@@ -603,7 +603,7 @@ $themeBlue1: #0e1a27;
 			color: white;
 		}
 	}
-	.button-row td, .pagination-table td {
+	.button-row td, .pagination-button {
 		background: rgba(0, 0, 0, 0.3);
 	}
 	.one-searchbox-container input, #keywordSearch {
@@ -619,19 +619,15 @@ $themeBlue1: #0e1a27;
 	}
 	.keyword-result {
 		color: #eee !important;
-		background: rgba(22, 22, 22, 0.96);
+		background: rgba(9, 15, 20, 0.96);
 		&:hover {
-			background: rgba(18, 18, 18, 1);
+			background: $themeBlue1;
 			color: $themeBlue;
 		}
 	}
-	.button-row td:hover, .pagination-table td:hover {
+	.button-row td:hover, .pagination-button:hover {
 		cursor: pointer;
 		background: rgba(255, 255, 255, 0.1);
-	}
-	.pagination-button {
-		border-color: rgba(0, 0, 0, 0);
-		background: rgba(0, 0, 0, 0.2);
 	}
 }
 	

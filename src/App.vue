@@ -124,8 +124,9 @@ export default {
 $theme0: #0d201b;
 $theme1: #0e4736;
 $theme2: #006d4d;
-$theme3: #007754;
+$theme3: #00855e;
 $theme4: #00986b;
+$theme4p5: #00ab79;
 $theme5: #00d596;
 $theme6: #78fdd6;
 $theme7: #a9ffe6;
@@ -148,6 +149,7 @@ $themeRed1: #a90509;
 $themeRed2: #c80005;
 $themeRed3: #fd8f91;
 $themeBlue0: #090f14;
+$themeBlue0p5: #0b1116;
 $themeBlue1: #0e1a27;
 
 div, table, span, img, body, h1, h2, h3, p {
@@ -397,5 +399,18 @@ h1 {
 	.link-color, a, .theme-button {
 		color: $theme5 !important;
 	}
-}
+
+	.y-button {
+		background-color: $theme4p5;
+		&:hover {
+			background-color: $theme3;
+		}
+	}
+
+	.y-button-red {
+		background: $themeRed1;
+		&:hover {
+			background-color: $themeRed0;
+		}
+	}}
 </style>
