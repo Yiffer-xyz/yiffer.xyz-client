@@ -13,7 +13,7 @@
 
       <span v-if="comic" style="width: 100%;">
 
-        <div class="horizontal-flex horiz-space-items-8px">
+        <div class="horizontal-flex horiz-space-items-8px" style="flex-wrap: wrap;">
           <div class="vertical-flex">
             <p>Artist</p>
             <select v-model="artist">

@@ -1,10 +1,10 @@
 <template>
 	<div style="width: 100%">
 		<vue-headful :title="$route.params.artistName + ' - Artist - Yiffer.xyz'"/>
-    <h1>{{$route.params.artistName}}</h1>
+    <h1 id="artistTitle">{{$route.params.artistName}}</h1>
     <back-to-index></back-to-index>
   
-    <h2 style="margin-top: 16px;">Links</h2>
+    <h2 id="artistLinksTitle" style="margin-top: 16px;">Links</h2>
     <div class="artist-link-container">
       <div v-for="link in artistData.links" v-bind:key="link.linkUrl" class="artist-link">
         <img :src="`/icons/${link.linkType}.png`" style="height: 18px;"/>
@@ -12,8 +12,8 @@
       </div>
     </div>
 
-    <h2 class="margin-top-16">Comics</h2>
-		<div class="comic-card-container">
+    <h2 id="artistComicsTitle" class="margin-top-16">Comics</h2>
+		<div class="comic-card-container" id="comicCardContainerArtist">
       <comic-card v-for="comic in this.artistData.comics" v-bind:key="comic.id" v-bind:clickableKeyword="false" v-bind:comic="comic" v-bind:detailLevel="'High detail'"></comic-card>
     </div>
 
@@ -100,6 +100,25 @@ function mockGetArtist (artistName) {
 	width: 100%;
 	flex-wrap: wrap;
 	justify-content: center;
+}
+
+#artistComicsTitle, #artistLinksTitle {
+  @media (max-width: 900px) {
+    font-size: 22px
+  }
+}
+#artistTitle {
+  @media (max-width: 900px) {
+    font-size: 32px
+  }
+}
+
+#comicCardContainerArtist {
+  @media (max-width: 900px) {
+    .keyword-container {
+      display: none;
+    }
+  }
 }
 </style>
 

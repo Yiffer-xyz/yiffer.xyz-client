@@ -230,6 +230,14 @@ export default {
 					this.comic = comic
 					this.$store.commit('setComicForVotingModal', comic)
 					this.initializeImageFitArray()
+					if (window.innerWidth < 900) {
+						let resizeIntervalHook = setInterval(() => {
+							if (document.getElementById('comic-page-container').childElementCount === this.comic.numberOfPages) {
+								this.setAllImagesFit('width')
+								clearInterval(resizeIntervalHook)
+							}
+						}, 30)
+					}
 				})
 		}
 		else { this.initializeImageFitArray() }
@@ -355,6 +363,12 @@ $cardBgColorDark: #222426
 	flex-direction: column
 	align-items: center
 	text-align: center
+	h1
+		@media (max-width: 900px)
+			font-size: 32px
+	h2
+		@media (max-width: 900px)
+			font-size: 22px
 
 a
 	text-decoration: none
