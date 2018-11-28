@@ -186,7 +186,8 @@ $cardTextColorLight: #222;
 	justify-content: space-between;
 	box-shadow: 0 0 8px 0px $themeGray3p5;
 	&:hover {
-		box-shadow: 0 0 10px 1px $theme5;
+		// box-shadow: 0 0 10px 1px $theme4;
+		box-shadow: 0 0 10px 1px $themeGray6;
 	}
 	img {
 		width: 100%;

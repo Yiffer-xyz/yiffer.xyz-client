@@ -379,7 +379,9 @@ $theme0: #0d201b;
 $theme1: #0e4736;
 $theme2: #006d4d;
 $theme3: #007754;
+$theme3p5: #008f65;
 $theme4: #00986b;
+$theme4p5: #00c188;
 $theme5: #00d596;
 $theme6: #78fdd6;
 $theme7: #a9ffe6;
@@ -393,7 +395,7 @@ $themeGray5: #a6a6a6;
 $themeGray6: #9a9a9a;
 $themeGray7: #8e8e8e;
 $themeGray8: #7e7e7e;
-$themeDark1: #495552;
+$themeDark1: #5a5a5a;
 $themeDark2: #384441;
 $themeDark3: #26302c;
 $themeDark4: #1a201f;
@@ -547,8 +549,8 @@ $themeBlue1: #0e1a27;
 }
 
 .button-selected {
-	background: $themeGray0 !important;
 	background: $theme5 !important;
+	// background: $themeDark1 !important;
 	font-weight: 400;
 	// color: $theme2 !important
 }

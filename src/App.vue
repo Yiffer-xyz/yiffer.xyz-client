@@ -17,6 +17,22 @@
 			>
 				Dark
 			</button>
+
+			<button 
+				class="theme-button" 
+				@click="setTheme('redblue')"  
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Redblue
+			</button>
+
+			<button 
+				class="theme-button" 
+				@click="setTheme('pink')"  
+				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
+			>
+				Pink
+			</button>
 		</div>
 
 		<div class="theme-button-container theme-button-container-left">
@@ -75,13 +91,25 @@ export default {
 	components: { 'login-modal': LoginModal, 'voting-modal': VotingModal },
 	methods: {
 		setTheme( themeColor ) {
+			document.body.classList.remove('dark')
+			document.body.classList.remove('redblue')
+			document.body.classList.remove('pink')
 			if ( themeColor === 'dark' ) {
 				document.body.classList.add('dark')
 				this.$store.commit('setDarkTheme', true)
 				this.$cookies.set('theme', 'dark')
 			}
+			else if ( themeColor === 'redblue') {
+				document.body.classList.add('redblue')
+				this.$store.commit('setDarkTheme', false)
+				this.$cookies.set('theme', 'light')
+			}
+			else if ( themeColor === 'pink') {
+				document.body.classList.add('pink')
+				this.$store.commit('setDarkTheme', false)
+				this.$cookies.set('theme', 'light')
+			}
 			else {
-				document.body.classList.remove('dark')
 				this.$store.commit('setDarkTheme', false)
 				this.$cookies.set('theme', 'light')
 			}
@@ -125,6 +153,7 @@ $theme0: #0d201b;
 $theme1: #0e4736;
 $theme2: #006d4d;
 $theme3: #00855e;
+$theme3p5: #008f65;
 $theme4: #00986b;
 $theme4p5: #00ab79;
 $theme5: #00d596;
@@ -139,8 +168,8 @@ $themeGray5: #a6a6a6;
 $themeGray6: #9a9a9a;
 $themeGray7: #8e8e8e;
 $themeGray8: #7e7e7e;
-$themeDark1: #495552;
-$themeDark2: #384441;
+$themeDark1: #484e54;
+$themeDark2: #383f45;
 $themeDark3: #26302c;
 $themeDark4: #1a201f;
 $themeDark5: #0a0e0c;
@@ -225,8 +254,9 @@ label {
 	border-radius: 5px;
 	color: $theme4;
 	background: rgba(0,0,0,0);
-	padding: 4px 9px;
+	padding: 5px 10px;
 	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
 	// box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
 	background: $theme5;
 	color: white;
@@ -279,6 +309,13 @@ label {
 		cursor: not-allowed;
 		color: #444;
 		background: $themeGray1;
+	}
+}
+
+.y-button-neutral {
+	background-color: $themeGray7 !important;
+	&:hover {
+		background-color: $themeDark1 !important;
 	}
 }
 
@@ -413,4 +450,178 @@ h1 {
 			background-color: $themeRed0;
 		}
 	}}
+
+
+
+
+
+
+
+
+
+
+.redblue {
+	$theme4: #0075bf;
+	$theme5: #008fea;
+	$themeRed: #ec2f4b;
+	$themeRedDark1: #bc0e27;
+	$gradientLeft: $theme5;
+	$gradientRight: $themeRed;
+	.y-button, .y-button-small, .button-selected {
+		background-color: $theme5 !important;
+	}
+	.y-button, .y-button-small {
+		&:hover {
+			background-color: $theme4 !important;
+		}
+	}
+	.y-button-red {
+		background-color: $themeRed !important;
+		&:hover {
+			background-color: $themeRedDark1 !important;
+		}
+	}
+	.y-button-disabled {
+		background-color: $themeGray3 !important;
+		&:hover {
+			background-color: $themeGray3 !important;
+		}
+	}
+	.link-color, a, .theme-button, .text-button {
+		color: $theme5 !important;
+	}
+	.circled-text-red {
+		border-color: $themeRed !important;
+	}
+	.keyword-button {
+		color: $theme5 !important;
+		border-color: $theme5 !important;
+	}
+	.loginModal:before, .voting-modal:before {
+		background: linear-gradient(to right, $gradientLeft, $gradientRight);
+	}
+	.invalid-input {
+		border: 2px solid $themeRed !important;
+		padding: 4.5px 2.5px;
+	}
+	.valid-input {
+		border: 2px solid $theme5 !important;
+		padding: 4.5px 2.5px;
+	}
+	.comic-card {
+		&:hover {
+			box-shadow: 0 0 10px 1px $theme4;
+		}
+	}
+	.vote-box-colored-1 { background-color: #009FFF; color: white; }
+	.vote-box-colored-2 { background-color: #1A92EB; color: white; }
+	.vote-box-colored-3 { background-color: #3486D7; color: white; }
+	.vote-box-colored-4 { background-color: #4E79C3; color: white; }
+	.vote-box-colored-5 { background-color: #686DAF; color: white; }
+	.vote-box-colored-6 { background-color: #83609B; color: white; }
+	.vote-box-colored-7 { background-color: #9D5487; color: white; }
+	.vote-box-colored-8 { background-color: #B74773; color: white; }
+	.vote-box-colored-9 { background-color: #D13B5F; color: white; }
+	.vote-box-colored-10 { background-color: #EC2F4B; color: white; }
+	.vote-box-uncolored {
+		background-color: #f7f7f7;
+		color: #222;
+	}
+}
+
+
+
+
+
+
+
+
+
+.pink {
+	$theme4: #ce1877;
+	$theme5: #ee1185;
+	$themeRed: #ec2f4b;
+	$themeRedDark1: #bc0e27;
+	$gradientLeft: #920550;
+	$gradientRight: #ff8bc7;
+	.y-button, .y-button-small, .button-selected {
+		background-color: $theme5 !important;
+	}
+	.y-button, .y-button-small {
+		&:hover {
+			background-color: $theme4 !important;
+		}
+	}
+	.y-button-red {
+		background-color: $themeRed !important;
+		&:hover {
+			background-color: $themeRedDark1 !important;
+		}
+	}
+	.y-button-disabled {
+		background-color: $themeGray3 !important;
+		&:hover {
+			background-color: $themeGray3 !important;
+		}
+	}
+	.link-color, a, .theme-button, .text-button {
+		color: $theme5 !important;
+	}
+	.circled-text-red {
+		border-color: $themeRed !important;
+	}
+	.keyword-button {
+		color: $theme5 !important;
+		border-color: $theme5 !important;
+	}
+	.loginModal:before, .voting-modal:before {
+		background: linear-gradient(to right, $gradientLeft, $gradientRight);
+	}
+	.invalid-input {
+		border: 2px solid $themeRed !important;
+		padding: 4.5px 2.5px;
+	}
+	.valid-input {
+		border: 2px solid $theme5 !important;
+		padding: 4.5px 2.5px;
+	}
+	.comic-card {
+		&:hover {
+			box-shadow: 0 0 10px 1px $theme4;
+		}
+	}
+	.vote-box-colored-1 { background-color: #009FFF; color: white; }
+	.vote-box-colored-2 { background-color: #1A92EB; color: white; }
+	.vote-box-colored-3 { background-color: #3486D7; color: white; }
+	.vote-box-colored-4 { background-color: #4E79C3; color: white; }
+	.vote-box-colored-5 { background-color: #686DAF; color: white; }
+	.vote-box-colored-6 { background-color: #83609B; color: white; }
+	.vote-box-colored-7 { background-color: #9D5487; color: white; }
+	.vote-box-colored-8 { background-color: #B74773; color: white; }
+	.vote-box-colored-9 { background-color: #D13B5F; color: white; }
+	.vote-box-colored-10 { background-color: #EC2F4B; color: white; }
+	.vote-box-uncolored {
+		background-color: #f7f7f7;
+		color: #222;
+	}
+}
+
+
+.pink, .redblue {
+	.y-button-neutral {
+		background-color: $themeGray7 !important;
+		&:hover {
+			background-color: $themeDark1 !important;
+		}
+	}
+}
+.dark {
+	.y-button-neutral {
+		background-color: $themeDark1 !important;
+		&:hover {
+			background-color: $themeDark2 !important;
+		}
+	}
+}
+
 </style>

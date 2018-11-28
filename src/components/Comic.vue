@@ -92,10 +92,10 @@
 				</div>
 
 				<div class="normal-button-row margin-top-16">
-					<button v-on:click="setAllImagesFit('height')" class="y-button">Fit screen H</button>
-					<button v-on:click="setAllImagesFit('width')"  class="y-button">Fit screen W</button>
-					<button v-on:click="setAllImagesFit('big')"    class="y-button">Big</button>
-					<button v-on:click="setAllImagesFit('thumb')"  class="y-button">Thumb</button>
+					<button v-on:click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
+					<button v-on:click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
+					<button v-on:click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
+					<button v-on:click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
 				</div>
 			</span>
 
