@@ -12,14 +12,14 @@
 				&nbsp;to vote
 			</p>
 
-			<router-link :to="{name: 'donate'}" style="margin-top: 16px;">
+			<router-link :to="{name: 'donate'}" class="donate-link">
 				<i class="fas fa-donate" style="text-decoration: none;"></i> Donate?
 			</router-link>
 
 			<div class="buttons-container">
 				<span class="upper-body-width buttons-container-inner">
 					<div class="div-row">
-						<table class="button-row">
+						<table class="button-row" id="catTable">
 								<tr>
 										<td 
 											v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
@@ -189,7 +189,7 @@
 					</div>
 
 					<div style="display: flex; flex-direction: row; align-items: center;" class="div-row">
-						<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('down')" class="pagination-button">&larr;</div>
+						<div @click="paginateUpOrDown('down')" class="pagination-button pagination-arrow">&larr;</div>
 						<div v-for="(pageNo, index) in paginationButtons"
 								:key="index"
 								:class="{'button-selected': $store.state.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
@@ -197,7 +197,7 @@
 								@click="paginate(pageNo)">
 							{{pageNo}}
 						</div>
-						<div style="padding-bottom: 10px; padding-top: 6px;" @click="paginateUpOrDown('up')" class="pagination-button">&rarr;</div>
+						<div @click="paginateUpOrDown('up')" class="pagination-button pagination-arrow">&rarr;</div>
 					</div>
 				</span>
 			</div>
@@ -407,6 +407,13 @@ $themeRed3: #fd8f91;
 $themeBlue0: #090f14;
 $themeBlue1: #0e1a27;
 
+.donate-link {
+	margin-top: 16px;
+	@media (max-width: 900px) {
+		margin-top: 8px;
+	}
+}
+
 .upper-body-div {
 	width: 100%;
 	display: flex;
@@ -520,6 +527,10 @@ $themeBlue1: #0e1a27;
 	// box-shadow: 0px 2px 6px 0px rgba(138,136,138,0.4);
 	width: 100%;
 	margin: 7px 0;
+
+	@media (max-width: 900px) {
+		margin: 4px 0;
+	}
 }
 
 
@@ -530,13 +541,33 @@ $themeBlue1: #0e1a27;
 	padding: 8px 10px;
 	font-weight: 400;
 
+	font-size: 14px;
+
 	&:hover {
 		cursor: pointer;
 		background: $themeGray3;
 	}
+
+	@media (max-width: 900px) {
+		padding: 4px 10px;
+	}
 }
 
+#catTable td {
+	@media (max-width: 900px) {
+		padding: 4px 1px;
+	}
+}
 
+.pagination-arrow {
+	padding-bottom: 10px;
+	padding-top: 6px;
+
+	@media (max-width: 900px) {
+		padding-bottom: 6px;
+		padding-top: 2px;
+	}
+}
 
 .button-row {
 	width: 100%;
@@ -564,6 +595,9 @@ $themeBlue1: #0e1a27;
 	outline: none;
 	color: #333;
 	width: 100%;
+	@media (max-width: 900px) {
+		padding: 5px;
+	}
 }
 
 .search-wrapper {
@@ -589,6 +623,10 @@ $themeBlue1: #0e1a27;
 	width: 100%;
 	flex-wrap: wrap;
 	justify-content: center;
+
+	@media (max-width: 900px) {
+		margin-top: 8px;
+	}
 }
 
 .dark {

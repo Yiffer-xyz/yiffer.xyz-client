@@ -4,7 +4,7 @@
 			<img :src="`/comics/${comic.name}/s.jpg`" v-on:click="storeClickedComicData()">
 		</router-link>
 		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-			<p class="comic-card-comic-title"><b>{{comic.name}}</b></p>
+			<p class="comic-card-comic-title">{{comic.name}}</p>
 		</router-link>
 		<router-link v-bind:comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
 			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
@@ -210,7 +210,7 @@ $cardTextColorLight: #222;
 		}
 	}
 	.comic-card-comic-title {
-		font-weight: 400;
+		font-weight: 600;
 		margin: 0px 10px;
 		text-align: center;
 		color: $cardTextColorLight;
@@ -221,6 +221,12 @@ $cardTextColorLight: #222;
 
 	@media (max-width: 900px) {
 		width: 100px;
+		margin: 6px;
+		font-size: 14px;
+		.comic-card-comic-title {
+			font-size: 15px;
+			margin: 0px 2px;
+		}
 		img {
 			height: 141px;
 		}

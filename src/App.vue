@@ -18,7 +18,7 @@
 				Dark
 			</button>
 
-			<button 
+			<!-- <button 
 				class="theme-button" 
 				@click="setTheme('redblue')"  
 				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
@@ -32,7 +32,7 @@
 				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
 			>
 				Pink
-			</button>
+			</button> -->
 		</div>
 
 		<div class="theme-button-container theme-button-container-left">
