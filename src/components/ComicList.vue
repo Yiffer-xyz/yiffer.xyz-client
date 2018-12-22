@@ -142,7 +142,7 @@
 						</div>
 
 					<div class="div-row">
-						<table class="button-row">
+						<table class="button-row" style="table-layout: auto;">
 								<tr>
 										<td
 											v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"

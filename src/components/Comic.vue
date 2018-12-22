@@ -218,6 +218,16 @@ export default {
 				this.keywordErrorMessage = suggestionResponse.message
 				this.keywordSuccessMessage = undefined
 			}
+		},
+		fitImagesForMobile () {
+			if (window.innerWidth < 900) {
+				let resizeIntervalHook = setInterval(() => {
+					if (document.getElementById('comic-page-container').childElementCount === this.comic.numberOfPages) {
+						this.setAllImagesFit('width')
+						clearInterval(resizeIntervalHook)
+					}
+				}, 30)
+			}
 		}
 	},
 	created: async function () {
@@ -230,17 +240,13 @@ export default {
 					this.comic = comic
 					this.$store.commit('setComicForVotingModal', comic)
 					this.initializeImageFitArray()
-					if (window.innerWidth < 900) {
-						let resizeIntervalHook = setInterval(() => {
-							if (document.getElementById('comic-page-container').childElementCount === this.comic.numberOfPages) {
-								this.setAllImagesFit('width')
-								clearInterval(resizeIntervalHook)
-							}
-						}, 30)
-					}
+					this.fitImagesForMobile()
 				})
 		}
-		else { this.initializeImageFitArray() }
+		else {
+			this.initializeImageFitArray()
+			this.fitImagesForMobile()
+		}
 	}
 }
 
@@ -374,11 +380,10 @@ a
 	text-decoration: none
 
 #comic-page-container
-	display: flex
-	flex-direction: column
-	align-items: center
 	img
 		margin-bottom: 16px
+		display: block
+		margin: auto
 
 .img-fit-height
 	max-height: 100vh
