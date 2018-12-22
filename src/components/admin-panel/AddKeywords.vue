@@ -163,9 +163,6 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-
 .add-kw-mini-header {
   font-weight: 400;
   margin-bottom: 6px;

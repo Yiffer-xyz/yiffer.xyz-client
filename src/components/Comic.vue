@@ -116,7 +116,7 @@
 				:id="'page' + (pageNumber-1)"
 				v-bind:key="pageNumber"
 				v-bind:class="['img-fit-height', 'comic-page']"
-				v-on:click="cycleImageFit(pageNumber-1)"/>
+				v-on:click="cycleOneImageFit(pageNumber-1)"/>
 		</div>
 
 		<voting-button
@@ -163,7 +163,7 @@ export default {
 				page.classList.add('img-fit-' + imageFit)
 			})
 		},
-		cycleImageFit ( pageNumber ) {
+		cycleOneImageFit ( pageNumber ) {
 			let imageElement = document.getElementById('page'+pageNumber)
 			let oldClassList = [...imageElement.classList]
 			let oldFit
@@ -179,9 +179,6 @@ export default {
 			if ( this.comic ) {
 				for (var i=0; i<this.comic.numberOfPages; i++) { this.imageFitArray.push('height') }
 			}
-		},
-		showLoginModal () {
-			this.$store.commit('setLoginModalVisibility', true)
 		},
 		toggleKeywordSuggestions () {
 			this.keywordSuggestionsActive = !this.keywordSuggestionsActive
@@ -288,29 +285,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 
 <style lang="scss">
-$theme0: #2f0018;
-$theme1: #004934;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$theme8: #dbfff4;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-
 .comic-upper-div {
 	display: flex;
 	flex-direction: column;
@@ -356,45 +330,51 @@ $themeRed3: #fd8f91;
 	flex-direction: row;
 	justify-content: center;
 }
-</style>
 
-<style lang="sass">
-$linkColor: #3984d4
-$cardBgColorLight: #f1f1f1
-$cardBgColorDark: #222426
+.upper-body-div-comic {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	h1 {
+		@media (max-width: 900px) {
+			font-size: 32px;
+		}
+	}
+	h2 {
+		@media (max-width: 900px) {
+			font-size: 22px;
+		}
+	}
+}
+a {
+	text-decoration: none;
+}
 
-.upper-body-div-comic
-	width: 100%
-	display: flex
-	flex-direction: column
-	align-items: center
-	text-align: center
-	h1
-		@media (max-width: 900px)
-			font-size: 32px
-	h2
-		@media (max-width: 900px)
-			font-size: 22px
+#comic-page-container {
+	img {
+		margin-bottom: 16px;
+		display: block;
+		margin: auto;
+	}
+}
 
-a
-	text-decoration: none
+.img-fit-height {
+	max-height: 100vh;
+}
 
-#comic-page-container
-	img
-		margin-bottom: 16px
-		display: block
-		margin: auto
+.img-fit-width {
+	max-width: 97vw;
+}
 
-.img-fit-height
-	max-height: 100vh
+.img-fit-thumb {
+	max-height: 90px;
+}
 
-.img-fit-width
-	max-width: 97vw
-
-.img-fit-thumb
-	max-height: 90px
-
-.normal-button-row
-	.y-button
-		margin: 0px 2px
+.normal-button-row {
+	.y-button {
+		margin: 0px 2px;
+	}
+}
 </style>

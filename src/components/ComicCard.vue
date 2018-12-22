@@ -87,46 +87,9 @@ export default {
 </script>
 
 <style lang="scss">
-$themeGray0p5: #f1f1f1;
-$themeGray3p5: #bababa;
-
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeDark1: #495552;
-$themeDark2: #384441;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-$themeBlue0: #090f14;
-$themeBlue1: #0e1a27;
-
-$cardBgColorLight: #f1f1f1;
-$cardBgColorDark: #222426;
-$cardTextColorLight: #222;
-
-
 .keyword, .keyword-static {
 	font-size: 12px;
-	border: 0.5px solid #ccc;
+	border: 0.5px solid #ccc; //todo
 	margin: 1px 3px;
 	padding: 0.5px 6px 1px 6px;
 	border-radius: 10px;
@@ -164,11 +127,11 @@ $cardTextColorLight: #222;
 .dark {
 	.circled-text {
 		background-color: #333;
-		color: #bbb !important;
+		color: #bbb !important; //todo
 	}
 
 	.keyword, .keyword-static {
-		border-color: #555;
+		border-color: #555; //todo
 		color: #ddd;
 	}
 }
@@ -248,7 +211,7 @@ $cardTextColorLight: #222;
 	.comic-card {
 		background-color: $cardBgColorDark;
 		p, div, .fas {
-			color: #ddd;
+			color: #ddd; //todo
 		}
 		box-shadow: none;
 		&:hover {

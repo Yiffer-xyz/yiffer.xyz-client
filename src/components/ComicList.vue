@@ -18,8 +18,8 @@
 
 			<div class="buttons-container">
 				<span class="upper-body-width buttons-container-inner">
-					<div class="div-row">
-						<table class="button-row" id="catTable">
+					<div class="upper-body-horiz-row">
+						<table class="horiz-row-inner" id="catTable">
 								<tr>
 										<td 
 											v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
@@ -50,8 +50,8 @@
 						</table>
 					</div>
 
-					<div class="div-row">
-						<table class="button-row">
+					<div class="upper-body-horiz-row">
+						<table class="horiz-row-inner">
 								<tr>
 										<td
 											v-bind:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
@@ -132,7 +132,7 @@
 								</div>
 						</div>
 					</div>
-						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="div-row" style="margin-top: 0px;">
+						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
 								<div 
 									v-for="keyword in $store.state.selectedKeywords" 
 									v-bind:key="keyword"
@@ -142,8 +142,8 @@
 								</div>
 						</div>
 
-					<div class="div-row">
-						<table class="button-row" style="table-layout: auto;">
+					<div class="upper-body-horiz-row">
+						<table class="horiz-row-inner" style="table-layout: auto;">
 								<tr>
 										<td
 											v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
@@ -164,8 +164,8 @@
 						</table>
 					</div>
 
-					<div class="div-row" style="width: fit-content; ">
-						<table class="button-row" style="width: auto;">
+					<div class="upper-body-horiz-row" style="width: fit-content; ">
+						<table class="horiz-row-inner" style="width: auto;">
 								<tr>
 										<td
 											@click="setDetailLevel('No detail')"
@@ -189,7 +189,7 @@
 						</table>
 					</div>
 
-					<div style="display: flex; flex-direction: row; align-items: center;" class="div-row">
+					<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row">
 						<div @click="paginateUpOrDown('down')" class="pagination-button pagination-arrow">&larr;</div>
 						<div v-for="(pageNo, index) in paginationButtons"
 								:key="index"
@@ -350,6 +350,7 @@ export default {
 		},
 		setDetailLevel ( detailLevel ) {
 			this.$store.commit('setDetailLevel', detailLevel)
+			this.$cookies.set('detail', detailLevel)
 		},
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
@@ -366,6 +367,7 @@ export default {
 		},
 	},
   created: function() {
+		if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
 		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
@@ -411,40 +413,6 @@ export default {
 
 
 <style lang="scss">
-$themeBlue: #009fff;
-$themeRed: #ec2f4b;
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #007754;
-$theme3p5: #008f65;
-$theme4: #00986b;
-$theme4p5: #00c188;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray3p5: #bababa;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeDark1: #5a5a5a;
-$themeDark2: #384441;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-$themeBlue0: #090f14;
-$themeBlue1: #0e1a27;
-
 .donate-link {
 	margin-top: 16px;
 	@media (max-width: 900px) {
@@ -460,7 +428,7 @@ $themeBlue1: #0e1a27;
 	background: $themeGray0;
 	color: white;
 	h1 {
-		color: #333;
+		color: #333; //todo
 		font-family: 'Shrikhand', cursive;
 	}
 	h2 {
@@ -539,7 +507,6 @@ $themeBlue1: #0e1a27;
 	align-items: center;
 	margin-top: 30px;
 	background: $themeGray1;
-	// background: linear-gradient(to bottom left, #e3efeb, #d1dcd9);
 	padding: 24px 0;
 	border-top: 1px solid $themeGray3;
 	border-bottom: 1px solid $themeGray3;
@@ -555,14 +522,7 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-.buttons-container-inner {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.div-row {
-	// box-shadow: 0px 2px 6px 0px rgba(138,136,138,0.4);
+.upper-body-horiz-row {
 	width: 100%;
 	margin: 7px 0;
 
@@ -571,9 +531,7 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-
-.pagination-button, .button-row td {
-	// border: 0.5px solid $themeGray0;
+.pagination-button, .horiz-row-inner td {
 	background: $themeGray5;
 	color: white;
 	padding: 8px 10px;
@@ -607,7 +565,7 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-.button-row {
+.horiz-row-inner {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
@@ -619,9 +577,7 @@ $themeBlue1: #0e1a27;
 
 .button-selected {
 	background: $theme5 !important;
-	// background: $themeDark1 !important;
 	font-weight: 400;
-	// color: $theme2 !important
 }
 
 .one-searchbox-container {
@@ -688,13 +644,16 @@ $themeBlue1: #0e1a27;
 	}
 	.upper-body-div {
 		background: linear-gradient(to top right, $themeBlue1, #0D1C23, $theme0);
-		// background: linear-gradient(to top right, $themeBlue1, $theme0);
 		h1 {
 			color: white;
 		}
 	}
-	.button-row td, .pagination-button {
+	.horiz-row-inner td, .pagination-button {
 		background: rgba(0, 0, 0, 0.3);
+		&:hover {
+			cursor: pointer;
+			background: rgba(255, 255, 255, 0.1);
+		}
 	}
 	.one-searchbox-container input, #keywordSearch {
 		border-color: #111;
@@ -716,14 +675,16 @@ $themeBlue1: #0e1a27;
 			color: $themeBlue;
 		}
 	}
-	.button-row td:hover, .pagination-button:hover {
-		cursor: pointer;
-		background: rgba(255, 255, 255, 0.1);
+	.horiz-row-inner td:hover, .pagination-button:hover {
+
 	}
 }
 	
 .upper-body-width {
 	width: 50%;
+	@media (max-width: 900px) {
+		width: 100%;
+	}
 }
 
 .dot-dot-dot-button {
@@ -731,13 +692,4 @@ $themeBlue1: #0e1a27;
 		cursor: default;
 	}
 }
-</style>
-
-
-<style>
-	@media (max-width: 900px) {
-		.upper-body-width {
-			width: 100%;
-		}
-	}
 </style>

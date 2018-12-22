@@ -34,10 +34,6 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #3984d4;
-$cardBgColorLight: #f1f1f1;
-$cardBgColorDark: #222426;
-
 .mini-header {
 	font-weight: 400;
 	margin-top: 15px;

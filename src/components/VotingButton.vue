@@ -38,15 +38,6 @@
 </script>
 
 <style lang="scss">
-$theme1: #004934;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme4p5: #00ab79;
-$theme5: #00d596;
-$theme6: #78fdd6;
-
-
 .voting-button {
 	box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
 	// background-image: linear-gradient(to top right, $theme2 0%, $theme5 100%);

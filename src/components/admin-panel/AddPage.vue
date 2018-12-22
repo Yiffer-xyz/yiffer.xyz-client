@@ -151,16 +151,6 @@ export default {
 </script>
 
 <style lang="scss">
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme4p5: #00ab79;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-
 
 .pretty-input-upload {
 	position: relative;

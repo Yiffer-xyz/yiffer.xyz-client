@@ -124,9 +124,6 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-
 .horiz-space-items-8px {
   &>div {
     margin: 0px 8px;

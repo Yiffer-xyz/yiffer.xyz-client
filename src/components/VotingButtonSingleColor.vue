@@ -31,11 +31,7 @@
 </script>
 
 <style lang="scss">
-	$themeBlue: #009fff;
-	$themeRed: #ec2f4b;
-  $theme4: #00986b;
-  $theme5: #00d596;
-
+// todo alt
 
 	.voting-button-single-color {
     background: transparent;

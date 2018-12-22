@@ -87,7 +87,7 @@ export default {
   methods: {
     addNewArtist () {
       let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
-      let response = {success: true, message: 'Artist alreadye xists!', results: {artistId: 160}}
+      let response = {success: true, message: 'Artist already exists!', results: {artistId: 160}}
 
       if (response.success) {
         this.artistList.push({name: this.artistName, id: response.results.artistId})
@@ -121,8 +121,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-</style>

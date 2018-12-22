@@ -83,13 +83,10 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-
 .y-table {
   border-collapse: collapse;
   td, th {
-    border: 1px solid #aaa;
+    border: 1px solid #aaa; //todo
     padding: 2px 4px;
   }
   th {

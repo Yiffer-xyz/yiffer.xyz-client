@@ -128,8 +128,6 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-
 .admin-content-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -141,7 +139,7 @@ $linkColor: #009fff;
 
 .admin-content-box {
 	width: 300px;
-	border: 1px solid #aaa;
+	border: 1px solid #aaa; //todo
 	margin: 16px;
 	height: 156px;
 	display: flex;
@@ -176,9 +174,6 @@ $linkColor: #009fff;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-}
-
-.dark {
 }
 </style>
 

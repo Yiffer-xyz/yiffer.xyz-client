@@ -79,8 +79,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-</style>
