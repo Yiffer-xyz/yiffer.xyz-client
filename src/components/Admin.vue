@@ -7,27 +7,27 @@
 		<div class="admin-content-container">
 	
 			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"
-				@:refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
+				@refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
 
 			<add-page :comicList="comicList"
-				@:refresh-comic-list="refreshComicList"></add-page>
+				@refresh-comic-list="refreshComicList"></add-page>
 
 			<add-keywords :comicList="comicList" :keywordList="[...keywordList]"
-				@:refresh-comic-list="refreshComicList"
-				@:refresh-keyword-list="refreshKeywordList"></add-keywords>
+				@refresh-comic-list="refreshComicList"
+				@refresh-keyword-list="refreshKeywordList"></add-keywords>
 
 			<correct-comic :comicList="comicList" :artistList="artistList"
-				@:refresh-comic-list="refreshComicList"></correct-comic>
+				@refresh-comic-list="refreshComicList"></correct-comic>
 
 			<add-comic :comicList="comicList" :artistList="artistList" :keywordList="[...keywordList]"
-				@:refresh-pending-comics="refreshPendingComics"></add-comic>
+				@refresh-pending-comics="refreshPendingComics"></add-comic>
 
 			<add-artist :artistList="artistList"
-				@:refresh-artist-list="refreshArtistList"></add-artist>
+				@refresh-artist-list="refreshArtistList"></add-artist>
 
 			<pending-comics :comicList="pendingComicList"
-				@:refresh-pending-comics="refreshPendingComics"
-				@:refresh-comic-list="refreshComicList"></pending-comics>
+				@refresh-pending-comics="refreshPendingComics"
+				@refresh-comic-list="refreshComicList"></pending-comics>
 
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
