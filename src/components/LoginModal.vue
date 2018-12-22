@@ -284,6 +284,7 @@ $themeRed: #ec2f4b;
 	padding: 40px 180px;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+	transform: translateX(-50%) translateY(-50%);
 
 	.text-button {
 		margin-top: 5px;

@@ -101,6 +101,7 @@
 						<div class="two-search-row">
 								<div class="search-wrapper">
 									<div class="one-searchbox-container" id="mainSearchBox">
+											<span class="input-icon-wrapper"><i class="fas fa-search"></i></span>
 											<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
 									</div>
 								</div>
@@ -342,7 +343,8 @@ export default {
 		setKeywordSearchFocused ( isFocused ) {
 			// Needed because if there is no search term, then technically the results div is 
 			// hidden (by the onblur event invoking this method) before the onclick fires,
-			// so there is nothing to be "onclicked". 
+			// so there is nothing to be "onclicked".
+			// In other words, the first if happens whenever the user clicks a keyword.
 			if (this.keywordResultHovered) { this.addSelectedKeyword(this.keywordResultHovered) } 
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
@@ -622,9 +624,21 @@ $themeBlue1: #0e1a27;
 	// color: $theme2 !important
 }
 
+.one-searchbox-container {
+	position: relative;
+	span {
+		position: absolute;
+		display: block;
+		width: 25px;
+		height: 25px;
+		left: 1px; top: 1px;
+	}
+}
+
 .upper-body-searchbox {
 	box-sizing: border-box;
 	padding: 7px;
+	padding-left: 22px;
 	text-align: center;
 	border: 0.5px solid $themeGray5;
 	background: #f0f0f0;
@@ -685,6 +699,7 @@ $themeBlue1: #0e1a27;
 	.one-searchbox-container input, #keywordSearch {
 		border-color: #111;
 		background: rgba(0, 0, 0, 0.1);
+
 	}
 	.keyword, .selected-keyword {
 		border-color: #555;

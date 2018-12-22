@@ -163,6 +163,7 @@ $themeBlue1: #0e1a27;
 	width: 50%;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+	transform: translateX(-50%) translateY(-50%);
 
 	&>span {
 		width: 100%;
