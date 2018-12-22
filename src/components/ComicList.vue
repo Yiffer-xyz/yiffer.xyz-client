@@ -260,6 +260,7 @@ export default {
 					(this.$store.state.pageNumber) * config.comicsPerPage 
 				)
 			)
+			this.setRouterQuery()
 		},
 		paginateUpOrDown ( upOrDown ) {
 			if (upOrDown === 'down') {
@@ -303,6 +304,37 @@ export default {
 			}
 			return true
 		},
+		setRouterQuery () {
+			let queryObj = {}
+			if (this.$store.state.filters.category.indexOf('All') < 0) {
+				queryObj.category = this.$store.state.filters.category
+			}
+			if (this.$store.state.filters.tag.indexOf('All') < 0) {
+				queryObj.classification = this.$store.state.filters.tag
+			}
+			if (this.$store.state.searchFiltering) {
+				queryObj.search = this.$store.state.searchFiltering
+			}
+			if (this.$store.state.selectedKeywords.length > 0) { 
+				queryObj.tags = this.$store.state.selectedKeywords
+			}
+			this.$router.push({query: queryObj})
+		},
+		setFiltersFromRouterQuery () {
+			if (!this.$route || !this.$route.query) { return }
+			if (this.$route.query.category) {
+				this.filters.category = this.listify(this.$route.query.category)
+			}
+			if (this.$route.query.classification) {
+				this.filters.tag = this.listify(this.$route.query.classification)
+			}
+			if (this.$route.query.search) {
+				this.$store.commit('setSearchFiltering', this.$route.query.search)
+			}
+			if (this.$route.query.tags) {
+				this.$store.commit('setSelectedKeywords', this.listify(this.$route.query.tags))
+			}
+		},
 		showLoginModal ( clickEvent ) {
 			clickEvent.preventDefault()
 			this.$store.commit('setLoginModalVisibility', true)
@@ -319,6 +351,10 @@ export default {
 		},
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
+		},
+		listify ( input ) {
+			if (typeof(input) === 'string') { return [input] }
+			else { return input }
 		}
 	},
 	watch: {
@@ -328,18 +364,18 @@ export default {
 		},
 	},
   created: function() {
+		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
 		setTimeout( () => {
 			this.$store.commit('setComicList', config.comicList)
 			this.$store.commit('setComicList', this.config.comicList)
-			// this.$store.commit('setTotalNumberOfComics', 950)
 			this.paginate()
 			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
 
-		this.$store.watch(this.$store.getters.getSelectedKeywords, () => this.paginate())
-		this.$store.watch(this.$store.getters.getSorting, () => this.paginate())
+		this.$store.watch(this.$store.getters.getSelectedKeywords, this.paginate())
+		this.$store.watch(this.$store.getters.getSorting, this.paginate())
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
 	},

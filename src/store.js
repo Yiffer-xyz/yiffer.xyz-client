@@ -61,6 +61,7 @@ export default new Vuex.Store({
 			}
 		},
 		removeSelectedKeyword ( state, keyword ) { state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1) },
+		setSelectedKeywords ( state, keywordList) { state.selectedKeywords = keywordList },		
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
 		setNumberOfFilteredComics ( state, number ) { state.numberOfFilteredComics = number },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
@@ -81,6 +82,7 @@ export default new Vuex.Store({
 	getters: {
 		getSelectedKeywords: state => () => state.selectedKeywords,
 		getSorting: state => () => state.sorting,
+		getFilters: state => () => state.filters
 	},
   actions: {}
 })
