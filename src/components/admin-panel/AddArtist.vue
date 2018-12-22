@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
@@ -63,13 +63,6 @@ export default {
       isOpen: false,
       artist: undefined,
 			artistName: '',
-			link1: undefined,
-			link2: undefined,
-			link3: undefined,
-			link4: undefined,
-			link5: undefined,
-			link6: undefined,
-
       newArtistErrorMessage: '',
       newArtistSuccessMessage: '',
       linksErrorMessage: '',
@@ -81,7 +74,6 @@ export default {
       link4: '',
       link5: '',
       link6: '',
-
     }
   },
   methods: {

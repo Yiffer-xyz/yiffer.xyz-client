@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Add new comic</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
@@ -98,8 +98,8 @@
       <p>Adding tags is optional, but appreciated!</p>
       <div class="horizontal-flex">
         <div class="vertical-flex">
-          <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" v-on:keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" v-bind:key="keyword.name" v-bind:value="keyword.name">{{keyword.name}}</option>
+          <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @:keyup.13="addSelectedKeyword()"> 
+            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword.name">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
         </div>
@@ -107,7 +107,7 @@
         <div class="vertical-flex" style="margin-left: 15px;">
           <p style="margin-bottom: 6px;">Click to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
-             v-bind:key="keyword" class="selected-add-keyword">{{keyword}}</p>
+             :key="keyword" class="selected-add-keyword">{{keyword}}</p>
         </div>
       </div>
 

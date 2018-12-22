@@ -1,9 +1,9 @@
 <template>
-  <button class="voting-button-single-color" @click="showSomeModal()" v-bind:class="{'disabled-voting-button': !$store.state.username}">
+  <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.username}">
     {{$store.state.username ? 'Vote' : 'Log in to vote'}}
   </button>
-	<!-- <button class="voting-button-single-color" @click="showSomeModal()" v-bind:class="{'disabled-voting-button': !$store.state.username}">
-		<span v-bind:style="{'background-color': this.backgroundColor}">
+	<!-- <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.username}">
+		<span :style="{'background-color': this.backgroundColor}">
 			<p v-if="$store.state.username">Vote</p>
 			<p v-else>Log in to vote</p>
 		</span>

@@ -1,12 +1,12 @@
 <template>
 	<div class="comic-card">
-		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-			<img :src="`/comics/${comic.name}/s.jpg`" v-on:click="storeClickedComicData()">
+		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
-		<router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 			<p class="comic-card-comic-title">{{comic.name}}</p>
 		</router-link>
-		<router-link v-bind:comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
+		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
 			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
 		</router-link>
 
@@ -23,22 +23,22 @@
 		</div>
 
 		<voting-button
-			v-bind:comic="comic"
-			v-bind:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
+			:comic="comic"
+			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
 			v-if="$store.state.username && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
 		></voting-button>
 
 		<!-- <voting-button-single-color
-			v-bind:comic="comic"
+			:comic="comic"
 			v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'"
 			style="margin-top: 10px;"
 		></voting-button-single-color> -->
 
 		<div class="keyword-container" v-if="detailLevel === 'High detail'">
 			<div 
-				v-bind:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
+				:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
 				v-for="keyword in comic.keywords"
-				v-bind:key="keyword"
+				:key="keyword"
 				@click="addSelectedKeyword(keyword)"
 			>
 				{{keyword}}

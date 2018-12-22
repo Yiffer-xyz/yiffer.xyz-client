@@ -1,6 +1,6 @@
 <template>
 	<div id="modalAndBackdropWrapper">
-		<span class="modal-backdrop" v-on:click="closeModal()"></span>
+		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
 			<span style="display: flex; flex-direction: column;">
 				<p class="modal-header margin-top-16">Vote for {{this.$store.state.comicForVotingModal.name}}</p>
@@ -10,8 +10,8 @@
 					<tr>
 						<td 
 							v-for="i in 10"
-							v-bind:key="i"
-							v-bind:class="[
+							:key="i"
+							:class="[
 								'vote-box-colored-' + i,
 								{'vote-box-uncolored': currentMouseoverNumber<i}
 							]"

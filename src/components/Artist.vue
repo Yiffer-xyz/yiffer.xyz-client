@@ -6,15 +6,15 @@
   
     <h2 id="artistLinksTitle" style="margin-top: 16px;">Links</h2>
     <div class="artist-link-container">
-      <div v-for="link in artistData.links" v-bind:key="link.linkUrl" class="artist-link">
+      <div v-for="link in artistData.links" :key="link.linkUrl" class="artist-link">
         <img :src="`/icons/${link.linkType}.png`" style="height: 18px;"/>
-        <a v-bind:href="link.linkUrl" target="_blank">{{prettifyUrl(link.linkUrl)}}</a>
+        <a :href="link.linkUrl" target="_blank">{{prettifyUrl(link.linkUrl)}}</a>
       </div>
     </div>
 
     <h2 id="artistComicsTitle" class="margin-top-16">Comics</h2>
 		<div class="comic-card-container" id="comicCardContainerArtist">
-      <comic-card v-for="comic in this.artistData.comics" v-bind:key="comic.id" v-bind:clickableKeyword="false" v-bind:comic="comic" v-bind:detailLevel="'High detail'"></comic-card>
+      <comic-card v-for="comic in this.artistData.comics" :key="comic.id" :clickableKeyword="false" :comic="comic" :detailLevel="'High detail'"></comic-card>
     </div>
 
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>

@@ -7,27 +7,27 @@
 		<div class="admin-content-container">
 	
 			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"
-				v-on:refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
+				@:refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
 
 			<add-page :comicList="comicList"
-				v-on:refresh-comic-list="refreshComicList"></add-page>
+				@:refresh-comic-list="refreshComicList"></add-page>
 
 			<add-keywords :comicList="comicList" :keywordList="[...keywordList]"
-				v-on:refresh-comic-list="refreshComicList"
-				v-on:refresh-keyword-list="refreshKeywordList"></add-keywords>
+				@:refresh-comic-list="refreshComicList"
+				@:refresh-keyword-list="refreshKeywordList"></add-keywords>
 
 			<correct-comic :comicList="comicList" :artistList="artistList"
-				v-on:refresh-comic-list="refreshComicList"></correct-comic>
+				@:refresh-comic-list="refreshComicList"></correct-comic>
 
 			<add-comic :comicList="comicList" :artistList="artistList" :keywordList="[...keywordList]"
-				v-on:refresh-pending-comics="refreshPendingComics"></add-comic>
+				@:refresh-pending-comics="refreshPendingComics"></add-comic>
 
 			<add-artist :artistList="artistList"
-				v-on:refresh-artist-list="refreshArtistList"></add-artist>
+				@:refresh-artist-list="refreshArtistList"></add-artist>
 
 			<pending-comics :comicList="pendingComicList"
-				v-on:refresh-pending-comics="refreshPendingComics"
-				v-on:refresh-comic-list="refreshComicList"></pending-comics>
+				@:refresh-pending-comics="refreshPendingComics"
+				@:refresh-comic-list="refreshComicList"></pending-comics>
 
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
@@ -38,7 +38,6 @@
 import LoginModal from '@/components/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 
-// tag suggestions bare hvis
 // re calculate and zip med i correct
 // mod stats
 

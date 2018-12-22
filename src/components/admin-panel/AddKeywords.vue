@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Add tags to comic</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
@@ -8,7 +8,7 @@
       <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
-          <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -18,8 +18,8 @@
       <div class="horizontal-flex" style="width: 100%; justify-content: space-evenly; margin-top: 8px;" v-if="comic">
         <div class="vertical-flex">
           <p class="add-kw-mini-header">Tag list</p>
-          <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" v-on:keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" v-bind:key="keyword.name" v-bind:value="keyword.name">{{keyword.name}}</option>
+          <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @:keyup.13="addSelectedKeyword()"> 
+            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword.name">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
         </div>
@@ -28,7 +28,7 @@
           <p class="add-kw-mini-header">Tags you're adding</p>
           <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
-             v-bind:key="keyword" class="selected-add-keyword">{{keyword}}</p>
+             :key="keyword" class="selected-add-keyword">{{keyword}}</p>
           <button class="y-button" v-if="selectedKeywords.length > 0"
                   @click="confirmAddKeywords()" style="margin-top: 6px;">
             Add tags
@@ -41,8 +41,8 @@
             Click tags to <span class="red-color">remove</span>
           </p>
           <p v-for="keyword in comic.keywords" @click="addOrRemoveKeywordToDeleteList(keyword)" 
-             v-bind:key="keyword" class="selected-add-keyword" 
-             v-bind:class="{'keyword-to-be-deleted': keywordsToDelete.indexOf(keyword) >= 0}">{{keyword}}</p>
+             :key="keyword" class="selected-add-keyword" 
+             :class="{'keyword-to-be-deleted': keywordsToDelete.indexOf(keyword) >= 0}">{{keyword}}</p>
           <button @click="confirmRemoveKeywords()" class="y-button y-button-red"
                   v-if="keywordsToDelete.length > 0" style="margin-top: 6px;">
             Remove tags

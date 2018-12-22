@@ -1,6 +1,6 @@
 <template>
-	<button class="y-button" @click="showSomeModal()" v-bind:class="{'disabled-voting-button': !$store.state.username}">
-		<!-- <span v-bind:style="{'background-color': this.backgroundColor}"> -->
+	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.username}">
+		<!-- <span :style="{'background-color': this.backgroundColor}"> -->
 			<span v-if="$store.state.username">Vote</span>
 			<span v-else><i class="fas fa-sign-in-alt"/> Log in to vote</span>
 		<!-- </span> -->

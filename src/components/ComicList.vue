@@ -6,7 +6,7 @@
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p style="margin-top: 10px;" v-if="!$store.state.username">
-				<button class="y-button" v-on:click="showLoginModal">
+				<button class="y-button" @click="showLoginModal">
 					<i data-feather="log-in"></i> Log in
 				</button> 
 				&nbsp;to vote
@@ -22,28 +22,28 @@
 						<table class="horiz-row-inner" id="catTable">
 								<tr>
 										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
-											v-on:click="onFilterClick( 'category', 'All' )">
+											:class="{'button-selected': filters.category.indexOf('All') >= 0}"
+											@click="onFilterClick( 'category', 'All' )">
 											All
 										</td>      
 										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
-											v-on:click="onFilterClick( 'category', 'Furry' )">
+											:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
+											@click="onFilterClick( 'category', 'Furry' )">
 											Furry
 										</td>        
 										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
-											v-on:click="onFilterClick( 'category', 'MLP' )">
+											:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
+											@click="onFilterClick( 'category', 'MLP' )">
 											MLP
 										</td>     
 										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
-											v-on:click="onFilterClick( 'category', 'Pokemon' )">
+											:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
+											@click="onFilterClick( 'category', 'Pokemon' )">
 											Pokemon
 										</td>     
 										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
-											v-on:click="onFilterClick( 'category', 'Other' )">
+											:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
+											@click="onFilterClick( 'category', 'Other' )">
 											Other
 										</td>     
 								</tr>
@@ -54,43 +54,43 @@
 						<table class="horiz-row-inner">
 								<tr>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'All' )">
+											:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
+											@click="onFilterClick( 'tag', 'All' )">
 											All
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'M' )">
+											:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
+											@click="onFilterClick( 'tag', 'M' )">
 											M
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'F' )">
+											:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
+											@click="onFilterClick( 'tag', 'F' )">
 											F
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'MF' )">
+											:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
+											@click="onFilterClick( 'tag', 'MF' )">
 											MF
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'MM' )">
+											:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
+											@click="onFilterClick( 'tag', 'MM' )">
 											MM
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'FF' )">
+											:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
+											@click="onFilterClick( 'tag', 'FF' )">
 											FF
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'MF+' )">
+											:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
+											@click="onFilterClick( 'tag', 'MF+' )">
 											MF+
 										</td>
 										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'I' )">
+											:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
+											@click="onFilterClick( 'tag', 'I' )">
 											I
 										</td>
 								</tr>
@@ -119,9 +119,9 @@
 											@blur="setKeywordSearchFocused(false)"
 										/>
 										<div id="keywordResults" v-if="keywordSearchFocused">
-												<div 
+												<div
 													v-for="keywordObject in keywordsMatchingSearch" 
-													v-bind:key="keywordObject.name"
+													:key="keywordObject.name"
 													@click="addSelectedKeyword(keywordObject.name)"
 													@mouseover="keywordResultHovered = keywordObject.name"
 													@mouseout="keywordResultHovered = undefined"
@@ -135,7 +135,7 @@
 						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
 								<div 
 									v-for="keyword in $store.state.selectedKeywords" 
-									v-bind:key="keyword"
+									:key="keyword"
 									@click="removeSelectedKeyword(keyword)"
 									class="selected-keyword">
 										{{keyword}}
@@ -146,18 +146,18 @@
 						<table class="horiz-row-inner" style="table-layout: auto;">
 								<tr>
 										<td
-											v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
-											v-on:click="onSortingButtonClick('updated')">
+											:class="{'button-selected': $store.state.sorting === 'updated'}"
+											@click="onSortingButtonClick('updated')">
 											Recently updated
 										</td>
 										<td
-											v-bind:class="{'button-selected': $store.state.sorting === 'userRating'}"
-											v-on:click="onSortingButtonClick('userRating')">
+											:class="{'button-selected': $store.state.sorting === 'userRating'}"
+											@click="onSortingButtonClick('userRating')">
 											User rating
 										</td>
 										<td
-											v-bind:class="{'button-selected': $store.state.sorting === 'yourRating'}"
-											v-on:click="onSortingButtonClick('yourRating')">
+											:class="{'button-selected': $store.state.sorting === 'yourRating'}"
+											@click="onSortingButtonClick('yourRating')">
 											Your rating
 										</td>
 								</tr>
@@ -169,19 +169,19 @@
 								<tr>
 										<td
 											@click="setDetailLevel('No detail')"
-											v-bind:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
+											:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
 										>
 											No detail
 										</td>
 										<td
 											@click="setDetailLevel('Medium detail')"
-											v-bind:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
+											:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
 										>
 											Medium detail
 										</td>
 										<td
 											@click="setDetailLevel('High detail')"
-											v-bind:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
+											:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
 										>
 											High detail
 										</td>
@@ -205,7 +205,7 @@
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic" v-bind:detailLevel="$store.state.detailLevel">
+			<comic-card v-for="comic in $store.state.displayComics" :key="comic.id" :comic="comic" :detailLevel="$store.state.detailLevel">
 			</comic-card>
 		</div>
 	</div>
@@ -674,9 +674,6 @@ export default {
 			background: $themeBlue1;
 			color: $themeBlue;
 		}
-	}
-	.horiz-row-inner td:hover, .pagination-button:hover {
-
 	}
 }
 	

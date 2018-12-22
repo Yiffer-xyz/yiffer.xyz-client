@@ -1,6 +1,6 @@
 <template>
 	<div id="modalAndBackdropWrapper">
-		<span class="modal-backdrop" v-on:click="closeModal()"></span>
+		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="loginModal">
 
 			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
@@ -17,8 +17,8 @@
 					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
-				<button v-on:click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
+				<button @click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+				<button @click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
 			</div>
 
 
@@ -29,7 +29,7 @@
 					<label for="signupUsername">Username</label>
 					<input
 						v-model="signupUsername"
-						v-bind:class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
+						:class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
 						name="signupUsername"
 						type="text"
 					/>
@@ -37,7 +37,7 @@
 					<label for="signupPassword">Password</label>
 					<input
 						v-model="signupPassword"
-						v-bind:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
+						:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
 						name="signupPassword"
 						type="password"
 					/>
@@ -45,7 +45,7 @@
 					<label for="signupEmail">Email <span style="font-size: 10px">(no spam!)</span></label>
 					<input 
 						v-model="signupEmail" 
-						v-bind:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
+						:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
 						name="signupEmail" 
 						type="text" 
 						style="margin-bottom: 5px;"
@@ -58,8 +58,8 @@
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
-				<button v-on:click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
+				<button @click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
+				<button @click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
 			</div>
 
 
@@ -81,8 +81,8 @@
 					<button v-if="forgottenLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
-				<button v-on:click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+				<button @click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
+				<button @click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
 			</div>
 		</div>
 	</div>

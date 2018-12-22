@@ -15,8 +15,8 @@
 				<button v-if="userIsDonator && $store.state.username" class="y-button">Download comic</button>
 
 				<voting-button
-					v-bind:comic="comic"
-					v-bind:backgroundColors="{light: 'white', dark: '#091014'}"
+					:comic="comic"
+					:backgroundColors="{light: 'white', dark: '#091014'}"
 				></voting-button>
 
 				<div id="comicLinks" class="margin-top-16">
@@ -39,15 +39,15 @@
 					<div 
 						class="keyword-static"
 						v-for="keyword in comic.keywords"
-						v-bind:key="keyword"
+						:key="keyword"
 					>
 						{{keyword}}
 					</div>
 
-					<div class="keyword-static keyword-button" v-on:click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
+					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
 						add/remove tags
 					</div>
-					<div class="keyword-static keyword-button" v-on:click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
+					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
 						hide adding/removing tags
 					</div>
 				</div>
@@ -57,13 +57,13 @@
 						<span>
 							<label for="addKeyword">Add tag</label>
 							<select v-model="addKeyword" name="addKeyword">
-								<option v-for="keyword in keywordsNotInComic" v-bind:key="keyword">
+								<option v-for="keyword in keywordsNotInComic" :key="keyword">
 									{{keyword}}
 								</option>
 							</select>
 							<button 
 								@click="suggestKeywordChange('add')"
-								v-bind:class="{'y-button-disabled': !addKeyword}"
+								:class="{'y-button-disabled': !addKeyword}"
 								class="y-button-small"
 							>
 								Add
@@ -73,13 +73,13 @@
 						<span style="margin-left: 20px;">
 							<label for="removeKeyword">Remove tag</label>
 							<select v-model="removeKeyword">
-								<option v-for="keyword in comic.keywords" v-bind:key="keyword">
+								<option v-for="keyword in comic.keywords" :key="keyword">
 									{{keyword}}
 								</option>
 							</select>
 							<button 
 								@click="suggestKeywordChange('remove')"
-								v-bind:class="{'y-button-disabled': !removeKeyword}"
+								:class="{'y-button-disabled': !removeKeyword}"
 								class="y-button-small y-button-red"
 							>
 								Remove
@@ -92,10 +92,10 @@
 				</div>
 
 				<div class="normal-button-row margin-top-16">
-					<button v-on:click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
-					<button v-on:click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
-					<button v-on:click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
-					<button v-on:click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
+					<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
+					<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
+					<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
+					<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
 				</div>
 			</span>
 
@@ -114,14 +114,14 @@
 				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
 				:alt="`${comic.name} page ${pageNumber}`"
 				:id="'page' + (pageNumber-1)"
-				v-bind:key="pageNumber"
-				v-bind:class="['img-fit-height', 'comic-page']"
-				v-on:click="cycleOneImageFit(pageNumber-1)"/>
+				:key="pageNumber"
+				:class="['img-fit-height', 'comic-page']"
+				@click="cycleOneImageFit(pageNumber-1)"/>
 		</div>
 
 		<voting-button
-			v-bind:comic="comic"
-			v-bind:backgroundColors="{light: 'white', dark: '#091014'}"
+			:comic="comic"
+			:backgroundColors="{light: 'white', dark: '#091014'}"
 			style="margin-bottom: 8px;"
 		></voting-button>
 		<br/>
