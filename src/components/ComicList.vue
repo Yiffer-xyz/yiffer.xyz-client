@@ -22,28 +22,28 @@
 						<table class="horiz-row-inner" id="catTable">
 							<tr>
 								<td 
-									:class="{'button-selected': filters.category.indexOf('All') >= 0}"
-									@click="onFilterClick( 'category', 'All' )">
+									:class="{'button-selected': categoryFilter.indexOf('All') >= 0}"
+									@click="onCategoryFilterClick('All')">
 									All
 								</td>      
 								<td 
-									:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
-									@click="onFilterClick( 'category', 'Furry' )">
+									:class="{'button-selected': categoryFilter.indexOf('Furry') >= 0}"
+									@click="onCategoryFilterClick('Furry')">
 									Furry
 								</td>        
 								<td 
-									:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
-									@click="onFilterClick( 'category', 'MLP' )">
+									:class="{'button-selected': categoryFilter.indexOf('MLP') >= 0}"
+									@click="onCategoryFilterClick('MLP')">
 									MLP
 								</td>     
 								<td 
-									:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
-									@click="onFilterClick( 'category', 'Pokemon' )">
+									:class="{'button-selected': categoryFilter.indexOf('Pokemon') >= 0}"
+									@click="onCategoryFilterClick('Pokemon')">
 									Pokemon
 								</td>     
 								<td 
-									:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
-									@click="onFilterClick( 'category', 'Other' )">
+									:class="{'button-selected': categoryFilter.indexOf('Other') >= 0}"
+									@click="onCategoryFilterClick('Other')">
 									Other
 								</td>     
 							</tr>
@@ -54,43 +54,43 @@
 						<table class="horiz-row-inner">
 							<tr>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
-									@click="onFilterClick( 'tag', 'All' )">
+									:class="{'button-selected': tagFilter.indexOf('All') >= 0}"
+									@click="onTagFilterClick('All')">
 									All
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
-									@click="onFilterClick( 'tag', 'M' )">
+									:class="{'button-selected': tagFilter.indexOf('M') >= 0}"
+									@click="onTagFilterClick('M')">
 									M
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
-									@click="onFilterClick( 'tag', 'F' )">
+									:class="{'button-selected': tagFilter.indexOf('F') >= 0}"
+									@click="onTagFilterClick('F')">
 									F
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
-									@click="onFilterClick( 'tag', 'MF' )">
+									:class="{'button-selected': tagFilter.indexOf('MF') >= 0}"
+									@click="onTagFilterClick('MF')">
 									MF
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
-									@click="onFilterClick( 'tag', 'MM' )">
+									:class="{'button-selected': tagFilter.indexOf('MM') >= 0}"
+									@click="onTagFilterClick('MM')">
 									MM
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
-									@click="onFilterClick( 'tag', 'FF' )">
+									:class="{'button-selected': tagFilter.indexOf('FF') >= 0}"
+									@click="onTagFilterClick('FF')">
 									FF
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
-									@click="onFilterClick( 'tag', 'MF+' )">
+									:class="{'button-selected': tagFilter.indexOf('MF+') >= 0}"
+									@click="onTagFilterClick('MF+')">
 									MF+
 								</td>
 								<td
-									:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
-									@click="onFilterClick( 'tag', 'I' )">
+									:class="{'button-selected': tagFilter.indexOf('I') >= 0}"
+									@click="onTagFilterClick('I')">
 									I
 								</td>
 							</tr>
@@ -223,7 +223,8 @@ export default {
 		return {
 			config: config,
 			allKeywords: [],
-			filters: this.$store.state.filters,
+			categoryFilter: this.$store.state.categoryFilter,
+			tagFilter: this.$store.state.tagFilter,
 			selectedKeywords: this.$store.state.selectedKeywords,
 			comicList: this.$store.state.comicList,
 			displayComics: this.$store.state.displayComics,
@@ -238,9 +239,14 @@ export default {
 		}
 	},
 	methods: {
-		onFilterClick ( filterType, selectedFilter ) {
-			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
-			this.$store.commit('setPageNumber', 1)
+		onCategoryFilterClick (filter) {
+			this.$store.commit('addCategoryFilter', filter)
+			this.$store.commit('setPageNumber', 1) //todo trengs??
+			this.paginate()
+		},
+		onTagFilterClick (filter) {
+			this.$store.commit('addTagFilter', filter)
+			this.$store.commit('setPageNumber', 1) //todo trengs??
 			this.paginate()
 		},
 		onSortingButtonClick ( sortButtonName ) {
@@ -251,7 +257,8 @@ export default {
 			if ( pageNumber === '...' ) { return }
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 
-			let filteredComics = this.$store.state.comicList.filter( this.filterComicByTag )
+			let filteredComics = this.$store.state.comicList
+				.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
 				.filter( this.filterComicByNameOrArtist )
 				.filter( this.filterComicByKeywords )
@@ -289,10 +296,10 @@ export default {
 		},
 
 		filterComicByTag ( comicObject ) {
-			return this.filters.category.indexOf('All') === 0 || this.filters.category.indexOf(comicObject.tag) >= 0
+			return this.categoryFilter.indexOf('All') === 0 || this.categoryFilter.indexOf(comicObject.tag) >= 0
 		},
 		filterComicByCategory ( comicObject ) {
-			return this.filters.tag.indexOf('All') === 0 || this.filters.tag.indexOf(comicObject.cat) >= 0
+			return this.tagFilter.indexOf('All') === 0 || this.tagFilter.indexOf(comicObject.cat) >= 0
 		},
 		filterComicByNameOrArtist ( comicObject ) {
 			return comicObject.name.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0 
@@ -307,11 +314,11 @@ export default {
 		},
 		setRouterQuery () {
 			let queryObj = {}
-			if (this.$store.state.filters.category.indexOf('All') < 0) {
-				queryObj.category = this.$store.state.filters.category
+			if (this.$store.state.categoryFilter.indexOf('All') < 0) {
+				queryObj.category = this.$store.state.categoryFilter
 			}
-			if (this.$store.state.filters.tag.indexOf('All') < 0) {
-				queryObj.classification = this.$store.state.filters.tag
+			if (this.$store.state.tagFilter.indexOf('All') < 0) {
+				queryObj.classification = this.$store.state.tagFilter
 			}
 			if (this.$store.state.searchFiltering) {
 				queryObj.search = this.$store.state.searchFiltering
@@ -324,10 +331,10 @@ export default {
 		setFiltersFromRouterQuery () {
 			if (!this.$route || !this.$route.query) { return }
 			if (this.$route.query.category) {
-				this.filters.category = this.listify(this.$route.query.category)
+				this.categoryFilter = this.listify(this.$route.query.category)
 			}
 			if (this.$route.query.classification) {
-				this.filters.tag = this.listify(this.$route.query.classification)
+				this.tagFilter = this.listify(this.$route.query.classification)
 			}
 			if (this.$route.query.search) {
 				this.$store.commit('setSearchFiltering', this.$route.query.search)
@@ -380,6 +387,7 @@ export default {
 
 		this.$store.watch(this.$store.getters.getSelectedKeywords, this.paginate())
 		this.$store.watch(this.$store.getters.getSorting, this.paginate())
+		//todo watch tagFilter and categoryFilter
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
 	},
