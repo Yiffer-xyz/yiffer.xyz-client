@@ -20,172 +20,172 @@
 				<span class="upper-body-width buttons-container-inner">
 					<div class="upper-body-horiz-row">
 						<table class="horiz-row-inner" id="catTable">
-								<tr>
-										<td 
-											:class="{'button-selected': filters.category.indexOf('All') >= 0}"
-											@click="onFilterClick( 'category', 'All' )">
-											All
-										</td>      
-										<td 
-											:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
-											@click="onFilterClick( 'category', 'Furry' )">
-											Furry
-										</td>        
-										<td 
-											:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
-											@click="onFilterClick( 'category', 'MLP' )">
-											MLP
-										</td>     
-										<td 
-											:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
-											@click="onFilterClick( 'category', 'Pokemon' )">
-											Pokemon
-										</td>     
-										<td 
-											:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
-											@click="onFilterClick( 'category', 'Other' )">
-											Other
-										</td>     
-								</tr>
+							<tr>
+								<td 
+									:class="{'button-selected': filters.category.indexOf('All') >= 0}"
+									@click="onFilterClick( 'category', 'All' )">
+									All
+								</td>      
+								<td 
+									:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
+									@click="onFilterClick( 'category', 'Furry' )">
+									Furry
+								</td>        
+								<td 
+									:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
+									@click="onFilterClick( 'category', 'MLP' )">
+									MLP
+								</td>     
+								<td 
+									:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
+									@click="onFilterClick( 'category', 'Pokemon' )">
+									Pokemon
+								</td>     
+								<td 
+									:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
+									@click="onFilterClick( 'category', 'Other' )">
+									Other
+								</td>     
+							</tr>
 						</table>
 					</div>
 
 					<div class="upper-body-horiz-row">
 						<table class="horiz-row-inner">
-								<tr>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
-											@click="onFilterClick( 'tag', 'All' )">
-											All
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
-											@click="onFilterClick( 'tag', 'M' )">
-											M
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
-											@click="onFilterClick( 'tag', 'F' )">
-											F
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
-											@click="onFilterClick( 'tag', 'MF' )">
-											MF
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
-											@click="onFilterClick( 'tag', 'MM' )">
-											MM
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
-											@click="onFilterClick( 'tag', 'FF' )">
-											FF
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
-											@click="onFilterClick( 'tag', 'MF+' )">
-											MF+
-										</td>
-										<td
-											:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
-											@click="onFilterClick( 'tag', 'I' )">
-											I
-										</td>
-								</tr>
+							<tr>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
+									@click="onFilterClick( 'tag', 'All' )">
+									All
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
+									@click="onFilterClick( 'tag', 'M' )">
+									M
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
+									@click="onFilterClick( 'tag', 'F' )">
+									F
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
+									@click="onFilterClick( 'tag', 'MF' )">
+									MF
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
+									@click="onFilterClick( 'tag', 'MM' )">
+									MM
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
+									@click="onFilterClick( 'tag', 'FF' )">
+									FF
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
+									@click="onFilterClick( 'tag', 'MF+' )">
+									MF+
+								</td>
+								<td
+									:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
+									@click="onFilterClick( 'tag', 'I' )">
+									I
+								</td>
+							</tr>
 						</table>
 					</div>
 
 					<div style="width: 100%; margin: 7px 0;">
 						<div class="two-search-row">
-								<div class="search-wrapper">
-									<div class="one-searchbox-container" id="mainSearchBox">
-											<span class="input-icon-wrapper"><i class="fas fa-search"></i></span>
-											<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+							<div class="search-wrapper">
+								<div class="one-searchbox-container" id="mainSearchBox">
+									<span class="input-icon-wrapper"><i class="fas fa-search"></i></span>
+									<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+								</div>
+							</div>
+
+							<div class="search-wrapper">
+								<input 
+									type="text"
+									name="someName" 
+									placeholder="tags"
+									id="keywordSearch"
+									class="upper-body-searchbox"
+									v-model="keywordSearch"
+									@click="lastActionWasDeselectingKeyword = false"
+									@focus="setKeywordSearchFocused(true)"
+									@blur="setKeywordSearchFocused(false)"
+								/>
+								<div id="keywordResults" v-if="keywordSearchFocused">
+									<div
+										v-for="keywordObject in keywordsMatchingSearch" 
+										:key="keywordObject.name"
+										@click="addSelectedKeyword(keywordObject.name)"
+										@mouseover="keywordResultHovered = keywordObject.name"
+										@mouseout="keywordResultHovered = undefined"
+										class="keyword-result">
+											{{keywordObject.name}} ({{keywordObject.count}})
 									</div>
 								</div>
-
-								<div class="search-wrapper">
-										<input 
-											type="text"
-											name="someName" 
-											placeholder="tags"
-											id="keywordSearch"
-											class="upper-body-searchbox"
-											v-model="keywordSearch"
-											@click="lastActionWasDeselectingKeyword = false"
-											@focus="setKeywordSearchFocused(true)"
-											@blur="setKeywordSearchFocused(false)"
-										/>
-										<div id="keywordResults" v-if="keywordSearchFocused">
-												<div
-													v-for="keywordObject in keywordsMatchingSearch" 
-													:key="keywordObject.name"
-													@click="addSelectedKeyword(keywordObject.name)"
-													@mouseover="keywordResultHovered = keywordObject.name"
-													@mouseout="keywordResultHovered = undefined"
-													class="keyword-result">
-														{{keywordObject.name}} ({{keywordObject.count}})
-												</div>
-										</div>
-								</div>
+							</div>
 						</div>
 					</div>
 						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
-								<div 
-									v-for="keyword in $store.state.selectedKeywords" 
-									:key="keyword"
-									@click="removeSelectedKeyword(keyword)"
-									class="selected-keyword">
-										{{keyword}}
-								</div>
+							<div 
+								v-for="keyword in $store.state.selectedKeywords" 
+								:key="keyword"
+								@click="removeSelectedKeyword(keyword)"
+								class="selected-keyword">
+									{{keyword}}
+							</div>
 						</div>
 
 					<div class="upper-body-horiz-row">
 						<table class="horiz-row-inner" style="table-layout: auto;">
-								<tr>
-										<td
-											:class="{'button-selected': $store.state.sorting === 'updated'}"
-											@click="onSortingButtonClick('updated')">
-											Recently updated
-										</td>
-										<td
-											:class="{'button-selected': $store.state.sorting === 'userRating'}"
-											@click="onSortingButtonClick('userRating')">
-											User rating
-										</td>
-										<td
-											:class="{'button-selected': $store.state.sorting === 'yourRating'}"
-											@click="onSortingButtonClick('yourRating')">
-											Your rating
-										</td>
-								</tr>
+							<tr>
+								<td
+									:class="{'button-selected': $store.state.sorting === 'updated'}"
+									@click="onSortingButtonClick('updated')">
+									Recently updated
+								</td>
+								<td
+									:class="{'button-selected': $store.state.sorting === 'userRating'}"
+									@click="onSortingButtonClick('userRating')">
+									User rating
+								</td>
+								<td
+									:class="{'button-selected': $store.state.sorting === 'yourRating'}"
+									@click="onSortingButtonClick('yourRating')">
+									Your rating
+								</td>
+							</tr>
 						</table>
 					</div>
 
 					<div class="upper-body-horiz-row" style="width: fit-content; ">
 						<table class="horiz-row-inner" style="width: auto;">
-								<tr>
-										<td
-											@click="setDetailLevel('No detail')"
-											:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
-										>
-											No detail
-										</td>
-										<td
-											@click="setDetailLevel('Medium detail')"
-											:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
-										>
-											Medium detail
-										</td>
-										<td
-											@click="setDetailLevel('High detail')"
-											:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
-										>
-											High detail
-										</td>
-								</tr>
+							<tr>
+								<td
+									@click="setDetailLevel('No detail')"
+									:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
+								>
+									No detail
+								</td>
+								<td
+									@click="setDetailLevel('Medium detail')"
+									:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
+								>
+									Medium detail
+								</td>
+								<td
+									@click="setDetailLevel('High detail')"
+									:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
+								>
+									High detail
+								</td>
+							</tr>
 						</table>
 					</div>
 

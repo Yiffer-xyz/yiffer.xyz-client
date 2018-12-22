@@ -28,12 +28,12 @@
       </div>
 
       <span v-if="artist">
-        <input type="text" v-model="link1" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link2" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link3" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link4" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link5" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link6" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link1" class="artist-link-input"/>
+        <input type="text" v-model="link2" class="artist-link-input"/>
+        <input type="text" v-model="link3" class="artist-link-input"/>
+        <input type="text" v-model="link4" class="artist-link-input"/>
+        <input type="text" v-model="link5" class="artist-link-input"/>
+        <input type="text" v-model="link6" class="artist-link-input"/>
         <br/>
         
         <button @click="addArtistLinks()" class="y-button" style="margin-top: 8px;">Add links</button>
@@ -113,3 +113,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+	.artist-link-input {
+		margin-top: 2px;
+		width: 350px;
+	}
+</style>
