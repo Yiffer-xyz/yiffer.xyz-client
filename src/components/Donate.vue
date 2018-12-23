@@ -61,11 +61,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-.whole-body-text {
-	background-color: $themeTest !important;
-	color: $themeTest !important;
-}
-</style>
-

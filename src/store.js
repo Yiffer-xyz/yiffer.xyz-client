@@ -67,7 +67,7 @@ export default new Vuex.Store({
 			})
 		},
 		setPageNumber ( state, pageNumber ) { state.pageNumber = pageNumber },
-		setSearchFiltering ( state, searchFiltering ) { state.searchFiltering = searchFiltering },
+		setSearchFiltering ( state, searchFiltering ) { state.searchFiltering = searchFiltering ;console.log(searchFiltering)},
 		setTotalNumberOfComics ( state, num ) { state.totalNumberOfComics = num },
 
 		addSelectedKeyword ( state, keyword ) { 
