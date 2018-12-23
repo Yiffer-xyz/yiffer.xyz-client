@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
@@ -28,12 +28,12 @@
       </div>
 
       <span v-if="artist">
-        <input type="text" v-model="link1" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link2" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link3" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link4" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link5" style="margin-top: 2px; width: 350px;"/>
-        <input type="text" v-model="link6" style="margin-top: 2px; width: 350px;"/>
+        <input type="text" v-model="link1" class="artist-link-input"/>
+        <input type="text" v-model="link2" class="artist-link-input"/>
+        <input type="text" v-model="link3" class="artist-link-input"/>
+        <input type="text" v-model="link4" class="artist-link-input"/>
+        <input type="text" v-model="link5" class="artist-link-input"/>
+        <input type="text" v-model="link6" class="artist-link-input"/>
         <br/>
         
         <button @click="addArtistLinks()" class="y-button" style="margin-top: 8px;">Add links</button>
@@ -63,13 +63,6 @@ export default {
       isOpen: false,
       artist: undefined,
 			artistName: '',
-			link1: undefined,
-			link2: undefined,
-			link3: undefined,
-			link4: undefined,
-			link5: undefined,
-			link6: undefined,
-
       newArtistErrorMessage: '',
       newArtistSuccessMessage: '',
       linksErrorMessage: '',
@@ -81,13 +74,12 @@ export default {
       link4: '',
       link5: '',
       link6: '',
-
     }
   },
   methods: {
     addNewArtist () {
       let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
-      let response = {success: true, message: 'Artist alreadye xists!', results: {artistId: 160}}
+      let response = {success: true, message: 'Artist already exists!', results: {artistId: 160}}
 
       if (response.success) {
         this.artistList.push({name: this.artistName, id: response.results.artistId})
@@ -123,6 +115,8 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
+	.artist-link-input {
+		margin-top: 2px;
+		width: 350px;
+	}
 </style>

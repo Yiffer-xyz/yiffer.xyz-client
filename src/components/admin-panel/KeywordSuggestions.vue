@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Tag suggestions
       <span v-if="keywordSuggestionList.length>0" class="red-color"> ({{keywordSuggestionList.length}})</span>
       <span v-else style="color: #999;">(0)</span>
@@ -79,8 +79,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-</style>

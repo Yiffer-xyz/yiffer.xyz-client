@@ -63,8 +63,9 @@ export default {
 </script>
 
 <style lang="scss">
-$theme4: #00986b;
-$theme5: #00d596;
-
+.whole-body-text {
+	background-color: $themeTest !important;
+	color: $themeTest !important;
+}
 </style>
 

@@ -1,11 +1,11 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Correct comic data</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
-          <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -17,7 +17,7 @@
           <div class="vertical-flex">
             <p>Artist</p>
             <select v-model="artist">
-              <option v-for="artist in artistList" v-bind:key="artist.name" v-bind:value="artist.name">
+              <option v-for="artist in artistList" :key="artist.name" :value="artist.name">
                 {{artist.name}}
               </option>
             </select>
@@ -124,9 +124,6 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-
 .horiz-space-items-8px {
   &>div {
     margin: 0px 8px;

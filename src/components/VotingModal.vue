@@ -1,6 +1,6 @@
 <template>
 	<div id="modalAndBackdropWrapper">
-		<span class="modal-backdrop" v-on:click="closeModal()"></span>
+		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
 			<span style="display: flex; flex-direction: column;">
 				<p class="modal-header margin-top-16">Vote for {{this.$store.state.comicForVotingModal.name}}</p>
@@ -10,8 +10,8 @@
 					<tr>
 						<td 
 							v-for="i in 10"
-							v-bind:key="i"
-							v-bind:class="[
+							:key="i"
+							:class="[
 								'vote-box-colored-' + i,
 								{'vote-box-uncolored': currentMouseoverNumber<i}
 							]"
@@ -75,36 +75,6 @@ async function mockGetComicDetails () {
 
 
 <style lang="scss">
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeDark1: #495552;
-$themeDark2: #384441;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-$themeBlue0: #090f14;
-$themeBlue0p5: #0b1116;
-$themeBlue1: #0e1a27;
-
 .vote-box-colored-1 { background-color: #006D4D; color: white; }
 .vote-box-colored-2 { background-color: #007C57; color: white; }
 .vote-box-colored-3 { background-color: #008B62; color: white; }
@@ -145,11 +115,6 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-.loginModalInnerWrapper {
-	width: 240px;
-	display: flex;
-	flex-direction: column;
-}
 
 .voting-modal {
 	position: fixed;
@@ -163,6 +128,7 @@ $themeBlue1: #0e1a27;
 	width: 50%;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+	transform: translateX(-50%) translateY(-50%);
 
 	&>span {
 		width: 100%;

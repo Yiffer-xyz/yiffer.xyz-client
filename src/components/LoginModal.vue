@@ -1,6 +1,6 @@
 <template>
 	<div id="modalAndBackdropWrapper">
-		<span class="modal-backdrop" v-on:click="closeModal()"></span>
+		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="loginModal">
 
 			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
@@ -17,8 +17,8 @@
 					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
-				<button v-on:click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
+				<button @click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+				<button @click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
 			</div>
 
 
@@ -27,9 +27,9 @@
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form @submit="signupConfirmClicked" class="login-register-form">
 					<label for="signupUsername">Username</label>
-					<input 
+					<input
 						v-model="signupUsername"
-						v-bind:class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
+						:class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
 						name="signupUsername"
 						type="text"
 					/>
@@ -37,7 +37,7 @@
 					<label for="signupPassword">Password</label>
 					<input
 						v-model="signupPassword"
-						v-bind:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
+						:class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
 						name="signupPassword"
 						type="password"
 					/>
@@ -45,7 +45,7 @@
 					<label for="signupEmail">Email <span style="font-size: 10px">(no spam!)</span></label>
 					<input 
 						v-model="signupEmail" 
-						v-bind:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
+						:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
 						name="signupEmail" 
 						type="text" 
 						style="margin-bottom: 5px;"
@@ -58,8 +58,8 @@
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
-				<button v-on:click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
+				<button @click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
+				<button @click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
 			</div>
 
 
@@ -81,8 +81,8 @@
 					<button v-if="forgottenLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button v-on:click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
-				<button v-on:click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+				<button @click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
+				<button @click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
 			</div>
 		</div>
 	</div>
@@ -221,39 +221,6 @@ export default {
 
 
 <style lang="scss">
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeDark1: #495552;
-$themeDark2: #384441;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-$themeBlue0: #090f14;
-$themeBlue0p5: #0b1116;
-$themeBlue1: #0e1a27;
-$themeBlue6: #0860c3;
-$linkColor: #3984d4;
-$themeRed: #ec2f4b;
-
 .modal-backdrop {
 	width: 100%;
 	height: 100%;
@@ -284,6 +251,7 @@ $themeRed: #ec2f4b;
 	padding: 40px 180px;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
+	transform: translateX(-50%) translateY(-50%);
 
 	.text-button {
 		margin-top: 5px;
@@ -326,11 +294,11 @@ $themeRed: #ec2f4b;
 	}
 
 	.invalid-input {
-		border: 2px solid #ec2f4b !important;
+		border: 2px solid #ec2f4b !important; //todo
 		padding: 4.5px 2.5px;
 	}
 	.valid-input {
-		border: 2px solid $themeBlue6 !important;
+		border: 2px solid $theme5 !important; //todo works? rett farge ??
 		padding: 4.5px 2.5px;
 	}
 }
@@ -364,7 +332,7 @@ $themeRed: #ec2f4b;
 }
 
 .pleasewait-button {
-	background-color: $linkColor;
+	background-color: $theme5; //todo wut
 	color: white;
 	cursor: pointer;
 	&:hover {

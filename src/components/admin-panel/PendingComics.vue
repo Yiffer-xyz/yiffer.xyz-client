@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Pending comics</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
@@ -83,13 +83,10 @@ export default {
 </script>
 
 <style lang="scss">
-$linkColor: #009fff;
-$themeRed: #ec2f4b;
-
 .y-table {
   border-collapse: collapse;
   td, th {
-    border: 1px solid #aaa;
+    border: 1px solid #aaa; //todo
     padding: 2px 4px;
   }
   th {

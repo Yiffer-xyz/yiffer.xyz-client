@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-content-box" @click="openComponent" v-bind:class="{'admin-content-box-open': isOpen}">
+  <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2>Add pages to comic</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <p>
@@ -15,7 +15,7 @@
       <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
-          <option v-for="comic in comicList" v-bind:key="comic.id" v-bind:value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
           </option>
         </select>
@@ -52,9 +52,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="comic in unfinishedComicList" v-bind:key="comic.id">
+            <tr v-for="comic in unfinishedComicList" :key="comic.id">
               <td>
-                <router-link v-bind:comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" target="_blank">
+                <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" target="_blank">
                   {{comic.name}}
                 </router-link>
               </td>
@@ -151,16 +151,6 @@ export default {
 </script>
 
 <style lang="scss">
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme4: #00986b;
-$theme4p5: #00ab79;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-
 
 .pretty-input-upload {
 	position: relative;

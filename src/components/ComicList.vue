@@ -6,7 +6,7 @@
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p style="margin-top: 10px;" v-if="!$store.state.username">
-				<button class="y-button" v-on:click="showLoginModal">
+				<button class="y-button" @click="showLoginModal">
 					<i data-feather="log-in"></i> Log in
 				</button> 
 				&nbsp;to vote
@@ -18,177 +18,178 @@
 
 			<div class="buttons-container">
 				<span class="upper-body-width buttons-container-inner">
-					<div class="div-row">
-						<table class="button-row" id="catTable">
-								<tr>
-										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('All') >= 0}"
-											v-on:click="onFilterClick( 'category', 'All' )">
-											All
-										</td>      
-										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('Furry') >= 0}"
-											v-on:click="onFilterClick( 'category', 'Furry' )">
-											Furry
-										</td>        
-										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('MLP') >= 0}"
-											v-on:click="onFilterClick( 'category', 'MLP' )">
-											MLP
-										</td>     
-										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('Pokemon') >= 0}"
-											v-on:click="onFilterClick( 'category', 'Pokemon' )">
-											Pokemon
-										</td>     
-										<td 
-											v-bind:class="{'button-selected': filters.category.indexOf('Other') >= 0}"
-											v-on:click="onFilterClick( 'category', 'Other' )">
-											Other
-										</td>     
-								</tr>
+					<div class="upper-body-horiz-row">
+						<table class="horiz-row-inner" id="catTable">
+							<tr>
+								<td 
+									:class="{'button-selected': categoryFilter.indexOf('All') >= 0}"
+									@click="onCategoryFilterClick('All')">
+									All
+								</td>      
+								<td 
+									:class="{'button-selected': categoryFilter.indexOf('Furry') >= 0}"
+									@click="onCategoryFilterClick('Furry')">
+									Furry
+								</td>        
+								<td 
+									:class="{'button-selected': categoryFilter.indexOf('MLP') >= 0}"
+									@click="onCategoryFilterClick('MLP')">
+									MLP
+								</td>     
+								<td 
+									:class="{'button-selected': categoryFilter.indexOf('Pokemon') >= 0}"
+									@click="onCategoryFilterClick('Pokemon')">
+									Pokemon
+								</td>     
+								<td 
+									:class="{'button-selected': categoryFilter.indexOf('Other') >= 0}"
+									@click="onCategoryFilterClick('Other')">
+									Other
+								</td>     
+							</tr>
 						</table>
 					</div>
 
-					<div class="div-row">
-						<table class="button-row">
-								<tr>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('All') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'All' )">
-											All
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('M') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'M' )">
-											M
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('F') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'F' )">
-											F
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('MF') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'MF' )">
-											MF
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('MM') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'MM' )">
-											MM
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('FF') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'FF' )">
-											FF
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('MF+') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'MF+' )">
-											MF+
-										</td>
-										<td
-											v-bind:class="{'button-selected': filters.tag.indexOf('I') >= 0}"
-											v-on:click="onFilterClick( 'tag', 'I' )">
-											I
-										</td>
-								</tr>
+					<div class="upper-body-horiz-row">
+						<table class="horiz-row-inner">
+							<tr>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('All') >= 0}"
+									@click="onTagFilterClick('All')">
+									All
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('M') >= 0}"
+									@click="onTagFilterClick('M')">
+									M
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('F') >= 0}"
+									@click="onTagFilterClick('F')">
+									F
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('MF') >= 0}"
+									@click="onTagFilterClick('MF')">
+									MF
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('MM') >= 0}"
+									@click="onTagFilterClick('MM')">
+									MM
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('FF') >= 0}"
+									@click="onTagFilterClick('FF')">
+									FF
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('MF+') >= 0}"
+									@click="onTagFilterClick('MF+')">
+									MF+
+								</td>
+								<td
+									:class="{'button-selected': tagFilter.indexOf('I') >= 0}"
+									@click="onTagFilterClick('I')">
+									I
+								</td>
+							</tr>
 						</table>
 					</div>
 
 					<div style="width: 100%; margin: 7px 0;">
 						<div class="two-search-row">
-								<div class="search-wrapper">
-									<div class="one-searchbox-container" id="mainSearchBox">
-											<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+							<div class="search-wrapper">
+								<div class="one-searchbox-container" id="mainSearchBox">
+									<span class="input-icon-wrapper"><i class="fas fa-search"></i></span>
+									<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+								</div>
+							</div>
+
+							<div class="search-wrapper">
+								<input 
+									type="text"
+									name="someName" 
+									placeholder="tags"
+									id="keywordSearch"
+									class="upper-body-searchbox"
+									v-model="keywordSearch"
+									@click="lastActionWasDeselectingKeyword = false"
+									@focus="setKeywordSearchFocused(true)"
+									@blur="setKeywordSearchFocused(false)"
+								/>
+								<div id="keywordResults" v-if="keywordSearchFocused">
+									<div
+										v-for="keywordObject in keywordsMatchingSearch" 
+										:key="keywordObject.name"
+										@click="addSelectedKeyword(keywordObject.name)"
+										@mouseover="keywordResultHovered = keywordObject.name"
+										@mouseout="keywordResultHovered = undefined"
+										class="keyword-result">
+											{{keywordObject.name}} ({{keywordObject.count}})
 									</div>
 								</div>
-
-								<div class="search-wrapper">
-										<input 
-											type="text"
-											name="someName" 
-											placeholder="tags"
-											id="keywordSearch"
-											class="upper-body-searchbox"
-											v-model="keywordSearch"
-											@click="lastActionWasDeselectingKeyword = false"
-											@focus="setKeywordSearchFocused(true)"
-											@blur="setKeywordSearchFocused(false)"
-										/>
-										<div id="keywordResults" v-if="keywordSearchFocused">
-												<div 
-													v-for="keywordObject in keywordsMatchingSearch" 
-													v-bind:key="keywordObject.name"
-													@click="addSelectedKeyword(keywordObject.name)"
-													@mouseover="keywordResultHovered = keywordObject.name"
-													@mouseout="keywordResultHovered = undefined"
-													class="keyword-result">
-														{{keywordObject.name}} ({{keywordObject.count}})
-												</div>
-										</div>
-								</div>
+							</div>
 						</div>
 					</div>
-						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="div-row" style="margin-top: 0px;">
-								<div 
-									v-for="keyword in $store.state.selectedKeywords" 
-									v-bind:key="keyword"
-									@click="removeSelectedKeyword(keyword)"
-									class="selected-keyword">
-										{{keyword}}
-								</div>
+						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
+							<div 
+								v-for="keyword in $store.state.selectedKeywords" 
+								:key="keyword"
+								@click="removeSelectedKeyword(keyword)"
+								class="selected-keyword">
+									{{keyword}}
+							</div>
 						</div>
 
-					<div class="div-row">
-						<table class="button-row" style="table-layout: auto;">
-								<tr>
-										<td
-											v-bind:class="{'button-selected': $store.state.sorting === 'updated'}"
-											v-on:click="onSortingButtonClick('updated')">
-											Recently updated
-										</td>
-										<td
-											v-bind:class="{'button-selected': $store.state.sorting === 'userRating'}"
-											v-on:click="onSortingButtonClick('userRating')">
-											User rating
-										</td>
-										<td
-											v-bind:class="{'button-selected': $store.state.sorting === 'yourRating'}"
-											v-on:click="onSortingButtonClick('yourRating')">
-											Your rating
-										</td>
-								</tr>
+					<div class="upper-body-horiz-row">
+						<table class="horiz-row-inner" style="table-layout: auto;">
+							<tr>
+								<td
+									:class="{'button-selected': $store.state.sorting === 'updated'}"
+									@click="onSortingButtonClick('updated')">
+									Recently updated
+								</td>
+								<td
+									:class="{'button-selected': $store.state.sorting === 'userRating'}"
+									@click="onSortingButtonClick('userRating')">
+									User rating
+								</td>
+								<td
+									:class="{'button-selected': $store.state.sorting === 'yourRating'}"
+									@click="onSortingButtonClick('yourRating')">
+									Your rating
+								</td>
+							</tr>
 						</table>
 					</div>
 
-					<div class="div-row" style="width: fit-content; ">
-						<table class="button-row" style="width: auto;">
-								<tr>
-										<td
-											@click="setDetailLevel('No detail')"
-											v-bind:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
-										>
-											No detail
-										</td>
-										<td
-											@click="setDetailLevel('Medium detail')"
-											v-bind:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
-										>
-											Medium detail
-										</td>
-										<td
-											@click="setDetailLevel('High detail')"
-											v-bind:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
-										>
-											High detail
-										</td>
-								</tr>
+					<div class="upper-body-horiz-row" style="width: fit-content; ">
+						<table class="horiz-row-inner" style="width: auto;">
+							<tr>
+								<td
+									@click="setDetailLevel('No detail')"
+									:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
+								>
+									No detail
+								</td>
+								<td
+									@click="setDetailLevel('Medium detail')"
+									:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
+								>
+									Medium detail
+								</td>
+								<td
+									@click="setDetailLevel('High detail')"
+									:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
+								>
+									High detail
+								</td>
+							</tr>
 						</table>
 					</div>
 
-					<div style="display: flex; flex-direction: row; align-items: center;" class="div-row">
+					<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row">
 						<div @click="paginateUpOrDown('down')" class="pagination-button pagination-arrow">&larr;</div>
 						<div v-for="(pageNo, index) in paginationButtons"
 								:key="index"
@@ -204,7 +205,7 @@
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in $store.state.displayComics" v-bind:key="comic.id" v-bind:comic="comic" v-bind:detailLevel="$store.state.detailLevel">
+			<comic-card v-for="comic in $store.state.displayComics" :key="comic.id" :comic="comic" :detailLevel="$store.state.detailLevel">
 			</comic-card>
 		</div>
 	</div>
@@ -222,7 +223,8 @@ export default {
 		return {
 			config: config,
 			allKeywords: [],
-			filters: this.$store.state.filters,
+			categoryFilter: this.$store.state.categoryFilter,
+			tagFilter: this.$store.state.tagFilter,
 			selectedKeywords: this.$store.state.selectedKeywords,
 			comicList: this.$store.state.comicList,
 			displayComics: this.$store.state.displayComics,
@@ -237,9 +239,14 @@ export default {
 		}
 	},
 	methods: {
-		onFilterClick ( filterType, selectedFilter ) {
-			this.$store.commit('addFilter', {filterType: filterType, selectedFilter: selectedFilter})
-			this.$store.commit('setPageNumber', 1)
+		onCategoryFilterClick (filter) {
+			this.$store.commit('addCategoryFilter', filter)
+			this.$store.commit('setPageNumber', 1) //todo trengs??
+			this.paginate()
+		},
+		onTagFilterClick (filter) {
+			this.$store.commit('addTagFilter', filter)
+			this.$store.commit('setPageNumber', 1) //todo trengs??
 			this.paginate()
 		},
 		onSortingButtonClick ( sortButtonName ) {
@@ -250,7 +257,8 @@ export default {
 			if ( pageNumber === '...' ) { return }
 			if ( pageNumber ) { this.$store.commit('setPageNumber', pageNumber) }
 
-			let filteredComics = this.$store.state.comicList.filter( this.filterComicByTag )
+			let filteredComics = this.$store.state.comicList
+				.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
 				.filter( this.filterComicByNameOrArtist )
 				.filter( this.filterComicByKeywords )
@@ -288,10 +296,10 @@ export default {
 		},
 
 		filterComicByTag ( comicObject ) {
-			return this.filters.category.indexOf('All') === 0 || this.filters.category.indexOf(comicObject.tag) >= 0
+			return this.categoryFilter.indexOf('All') === 0 || this.categoryFilter.indexOf(comicObject.tag) >= 0
 		},
 		filterComicByCategory ( comicObject ) {
-			return this.filters.tag.indexOf('All') === 0 || this.filters.tag.indexOf(comicObject.cat) >= 0
+			return this.tagFilter.indexOf('All') === 0 || this.tagFilter.indexOf(comicObject.cat) >= 0
 		},
 		filterComicByNameOrArtist ( comicObject ) {
 			return comicObject.name.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0 
@@ -306,11 +314,11 @@ export default {
 		},
 		setRouterQuery () {
 			let queryObj = {}
-			if (this.$store.state.filters.category.indexOf('All') < 0) {
-				queryObj.category = this.$store.state.filters.category
+			if (this.$store.state.categoryFilter.indexOf('All') < 0) {
+				queryObj.category = this.$store.state.categoryFilter
 			}
-			if (this.$store.state.filters.tag.indexOf('All') < 0) {
-				queryObj.classification = this.$store.state.filters.tag
+			if (this.$store.state.tagFilter.indexOf('All') < 0) {
+				queryObj.classification = this.$store.state.tagFilter
 			}
 			if (this.$store.state.searchFiltering) {
 				queryObj.search = this.$store.state.searchFiltering
@@ -323,10 +331,10 @@ export default {
 		setFiltersFromRouterQuery () {
 			if (!this.$route || !this.$route.query) { return }
 			if (this.$route.query.category) {
-				this.filters.category = this.listify(this.$route.query.category)
+				this.categoryFilter = this.listify(this.$route.query.category)
 			}
 			if (this.$route.query.classification) {
-				this.filters.tag = this.listify(this.$route.query.classification)
+				this.tagFilter = this.listify(this.$route.query.classification)
 			}
 			if (this.$route.query.search) {
 				this.$store.commit('setSearchFiltering', this.$route.query.search)
@@ -342,12 +350,14 @@ export default {
 		setKeywordSearchFocused ( isFocused ) {
 			// Needed because if there is no search term, then technically the results div is 
 			// hidden (by the onblur event invoking this method) before the onclick fires,
-			// so there is nothing to be "onclicked". 
+			// so there is nothing to be "onclicked".
+			// In other words, the first if happens whenever the user clicks a keyword.
 			if (this.keywordResultHovered) { this.addSelectedKeyword(this.keywordResultHovered) } 
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
 		setDetailLevel ( detailLevel ) {
 			this.$store.commit('setDetailLevel', detailLevel)
+			this.$cookies.set('detail', detailLevel)
 		},
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
@@ -364,6 +374,7 @@ export default {
 		},
 	},
   created: function() {
+		if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
 		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
@@ -376,6 +387,7 @@ export default {
 
 		this.$store.watch(this.$store.getters.getSelectedKeywords, this.paginate())
 		this.$store.watch(this.$store.getters.getSorting, this.paginate())
+		//todo watch tagFilter and categoryFilter
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
 	},
@@ -409,40 +421,6 @@ export default {
 
 
 <style lang="scss">
-$themeBlue: #009fff;
-$themeRed: #ec2f4b;
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #007754;
-$theme3p5: #008f65;
-$theme4: #00986b;
-$theme4p5: #00c188;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray3p5: #bababa;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeDark1: #5a5a5a;
-$themeDark2: #384441;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-$themeBlue0: #090f14;
-$themeBlue1: #0e1a27;
-
 .donate-link {
 	margin-top: 16px;
 	@media (max-width: 900px) {
@@ -458,7 +436,7 @@ $themeBlue1: #0e1a27;
 	background: $themeGray0;
 	color: white;
 	h1 {
-		color: #333;
+		color: #333; //todo
 		font-family: 'Shrikhand', cursive;
 	}
 	h2 {
@@ -537,7 +515,6 @@ $themeBlue1: #0e1a27;
 	align-items: center;
 	margin-top: 30px;
 	background: $themeGray1;
-	// background: linear-gradient(to bottom left, #e3efeb, #d1dcd9);
 	padding: 24px 0;
 	border-top: 1px solid $themeGray3;
 	border-bottom: 1px solid $themeGray3;
@@ -553,14 +530,7 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-.buttons-container-inner {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.div-row {
-	// box-shadow: 0px 2px 6px 0px rgba(138,136,138,0.4);
+.upper-body-horiz-row {
 	width: 100%;
 	margin: 7px 0;
 
@@ -569,9 +539,7 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-
-.pagination-button, .button-row td {
-	// border: 0.5px solid $themeGray0;
+.pagination-button, .horiz-row-inner td {
 	background: $themeGray5;
 	color: white;
 	padding: 8px 10px;
@@ -605,7 +573,7 @@ $themeBlue1: #0e1a27;
 	}
 }
 
-.button-row {
+.horiz-row-inner {
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
@@ -617,14 +585,24 @@ $themeBlue1: #0e1a27;
 
 .button-selected {
 	background: $theme5 !important;
-	// background: $themeDark1 !important;
 	font-weight: 400;
-	// color: $theme2 !important
+}
+
+.one-searchbox-container {
+	position: relative;
+	span {
+		position: absolute;
+		display: block;
+		width: 25px;
+		height: 25px;
+		left: 1px; top: 1px;
+	}
 }
 
 .upper-body-searchbox {
 	box-sizing: border-box;
 	padding: 7px;
+	padding-left: 22px;
 	text-align: center;
 	border: 0.5px solid $themeGray5;
 	background: #f0f0f0;
@@ -674,17 +652,21 @@ $themeBlue1: #0e1a27;
 	}
 	.upper-body-div {
 		background: linear-gradient(to top right, $themeBlue1, #0D1C23, $theme0);
-		// background: linear-gradient(to top right, $themeBlue1, $theme0);
 		h1 {
 			color: white;
 		}
 	}
-	.button-row td, .pagination-button {
+	.horiz-row-inner td, .pagination-button {
 		background: rgba(0, 0, 0, 0.3);
+		&:hover {
+			cursor: pointer;
+			background: rgba(255, 255, 255, 0.1);
+		}
 	}
 	.one-searchbox-container input, #keywordSearch {
 		border-color: #111;
 		background: rgba(0, 0, 0, 0.1);
+
 	}
 	.keyword, .selected-keyword {
 		border-color: #555;
@@ -701,14 +683,13 @@ $themeBlue1: #0e1a27;
 			color: $themeBlue;
 		}
 	}
-	.button-row td:hover, .pagination-button:hover {
-		cursor: pointer;
-		background: rgba(255, 255, 255, 0.1);
-	}
 }
 	
 .upper-body-width {
 	width: 50%;
+	@media (max-width: 900px) {
+		width: 100%;
+	}
 }
 
 .dot-dot-dot-button {
@@ -716,13 +697,4 @@ $themeBlue1: #0e1a27;
 		cursor: default;
 	}
 }
-</style>
-
-
-<style>
-	@media (max-width: 900px) {
-		.upper-body-width {
-			width: 100%;
-		}
-	}
 </style>

@@ -5,7 +5,6 @@ import Comic from './components/Comic.vue'
 import About from './components/About.vue'
 import Artist from './components/Artist.vue'
 import Admin from './components/Admin.vue'
-import NewPassword from './components/NewPassword.vue'
 import PendingComic from './components/PendingComic.vue'
 import Donate from './components/Donate.vue'
 
@@ -28,11 +27,6 @@ export default new Router({
 			path: '/artist/:artistName',
 			name: 'artist',
 			component: Artist
-		},
-		{
-			path: '/newPassword',
-			name: 'newPassword',
-			component: NewPassword
 		},
 		{
 			path: '/admin',

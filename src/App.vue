@@ -4,7 +4,6 @@
 			<button 
 				class="theme-button" 
 				@click="setTheme('light')" 
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}" 
 				style="margin-left:10px;"
 			>
 				Light
@@ -13,7 +12,6 @@
 			<button 
 				class="theme-button" 
 				@click="setTheme('dark')"  
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
 			>
 				Dark
 			</button>
@@ -21,7 +19,6 @@
 			<!-- <button 
 				class="theme-button" 
 				@click="setTheme('redblue')"  
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
 			>
 				Redblue
 			</button>
@@ -29,7 +26,6 @@
 			<button 
 				class="theme-button" 
 				@click="setTheme('pink')"  
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
 			>
 				Pink
 			</button> -->
@@ -40,9 +36,7 @@
 				:to="{ name: 'comicList' }"
 				class="theme-button"
 			>
-				<button class="theme-button" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">
-					Home
-				</button>
+				<button class="theme-button">Home</button>
 			</router-link>
 
 			<button
@@ -50,7 +44,6 @@
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="showLoginModal()" 
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
 			>
 				Log in
 			</button>
@@ -61,7 +54,6 @@
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="logout()" 
-				v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}"
 			>
 				Log out
 			</button>
@@ -72,9 +64,7 @@
 				:to="{ name: 'admin' }"
 				class="theme-button"
 			>
-				<button class="theme-button" v-bind:class="{'theme-button-white-text': $store.state.whiteThemeButtons}">
-					Admin
-				</button>
+				<button class="theme-button">Admin</button>
 			</router-link>
 		</div>
 
@@ -148,39 +138,6 @@ export default {
 </style>
 
 <style lang="scss">
-
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme3p5: #008f65;
-$theme4: #00986b;
-$theme4p5: #00ab79;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$themeGray0: #fafafa;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray4: #b0b0b0;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
-$themeDark1: #484e54;
-$themeDark2: #383f45;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
-$themeBlue0: #090f14;
-$themeBlue0p5: #0b1116;
-$themeBlue1: #0e1a27;
-
 div, table, span, img, body, h1, h2, h3, p {
 	margin: 0px;
 }
@@ -239,14 +196,6 @@ label {
 	&:focus {
 		outline: none;
 	}
-}
-
-.theme-button-white-text {
-	// color: white;
-	// background: $themeGray1;
-	// &:hover {
-	// 	background: rgba(255, 255, 255, 0.4);
-	// }
 }
 
 .y-button, .vote-button {

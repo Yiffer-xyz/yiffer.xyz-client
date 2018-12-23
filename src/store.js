@@ -12,7 +12,8 @@ export default new Vuex.Store({
 		comicList: [],
 		displayComics: [],
 		numberOfFilteredComics: 0,
-		filters: {category: ['All'], tag: ['All']},
+		categoryFilter: ['All'],
+		tagFilter: ['All'],
 		sorting: 'updated',
 		pageNumber: 1,
 		searchFiltering: '',
@@ -30,20 +31,33 @@ export default new Vuex.Store({
 		setUserType ( state, userType ) { state.userType = userType },
 		clickComic ( state, comic ) { state.clickedComic = comic },
 		setComicList ( state, comicList ) { state.comicList = comicList },
-		setFilter ( state, filterType, filterList ) { state.filters[filterType] = filterList },
-		addFilter ( state, filterData ) {
-			let selectedFilter = filterData.selectedFilter
-			let filterType = filterData.filterType
-			if (selectedFilter === 'All') { state.filters[filterType] = ['All'] }
-			else if ( state.filters[filterType].indexOf(selectedFilter) >= 0 ) {
-				if ( state.filters[filterType].length === 1 ) { state.filters[filterType] = ['All'] }
-				else { state.filters[filterType].splice( state.filters[filterType].indexOf(selectedFilter), 1 ) }
+
+		setCategoryFilter ( state, filterList ) { state.categoryFilter = filterList },
+		setTagFilter ( state, filterList ) { state.tagFilter = filterList },
+
+		addCategoryFilter ( state, filter ) {
+			if (filter === 'All') { state.categoryFilter = ['All'] }
+			else if (state.categoryFilter.indexOf(filter) >= 0) {
+				if (state.categoryFilter.length === 1) { state.categoryFilter = ['All'] }
+				else { state.categoryFilter.splice( state.categoryFilter.indexOf(filter), 1 ) }
 			}
 			else {
-				if ( state.filters[filterType].indexOf('All') >= 0 ) { state.filters[filterType] = [selectedFilter] }
-				else { state.filters[filterType].push( selectedFilter ) }
+				if ( state.categoryFilter.indexOf('All') >= 0 ) { state.categoryFilter = [filter] }
+				else { state.categoryFilter.push( filter ) }
 			}
 		},
+		addTagFilter ( state, filter ) {
+			if (filter === 'All') { state.tagFilter = ['All'] }
+			else if (state.tagFilter.indexOf(filter) >= 0) {
+				if (state.tagFilter.length === 1) { state.tagFilter = ['All'] }
+				else { state.tagFilter.splice( state.tagFilter.indexOf(filter), 1 ) }
+			}
+			else {
+				if ( state.tagFilter.indexOf('All') >= 0 ) { state.tagFilter = [filter] }
+				else { state.tagFilter.push( filter ) }
+			}
+		},
+
 		setSorting ( state, sorting ) {
 			state.sorting = sorting
 			state.comicList.sort( (c1, c2) => {
@@ -55,6 +69,7 @@ export default new Vuex.Store({
 		setPageNumber ( state, pageNumber ) { state.pageNumber = pageNumber },
 		setSearchFiltering ( state, searchFiltering ) { state.searchFiltering = searchFiltering },
 		setTotalNumberOfComics ( state, num ) { state.totalNumberOfComics = num },
+
 		addSelectedKeyword ( state, keyword ) { 
 			if (state.selectedKeywords.indexOf(keyword) < 0) {
 				state.selectedKeywords.push(keyword) 
@@ -62,6 +77,7 @@ export default new Vuex.Store({
 		},
 		removeSelectedKeyword ( state, keyword ) { state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1) },
 		setSelectedKeywords ( state, keywordList) { state.selectedKeywords = keywordList },		
+
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
 		setNumberOfFilteredComics ( state, number ) { state.numberOfFilteredComics = number },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
@@ -82,7 +98,8 @@ export default new Vuex.Store({
 	getters: {
 		getSelectedKeywords: state => () => state.selectedKeywords,
 		getSorting: state => () => state.sorting,
-		getFilters: state => () => state.filters
+		getCategoryFilter: state => () => state.categoryFilter,
+		getTagFilter: state => () => state.tagFilter,
 	},
   actions: {}
 })
