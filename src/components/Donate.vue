@@ -1,5 +1,5 @@
 <template>
-	<div style="width: 100%">
+	<div style="width: 100%; margin-bottom: 32px;">
 		<vue-headful :title="'Donate - Yiffer.xyz'"/>
     <h1>Donating</h1>
     <back-to-index></back-to-index>
