@@ -146,7 +146,7 @@ router-link, p, td {
 	font-weight: 300;
 }
 
-h1, h2, h3, h4, p, div, span {
+h1, h2, h3, h4, p, div {
 	color: #111;
 }
 
@@ -274,7 +274,7 @@ body {
 
 .dark {
 	background-color: #090f14;
-	p, h1, h2, div, td, h3, span {
+	p, h1, h2, div, td, h3 {
 		color: #ddd;
 	}
 }

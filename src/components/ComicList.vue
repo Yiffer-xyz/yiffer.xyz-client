@@ -139,7 +139,7 @@
 								:key="keyword"
 								@click="removeSelectedKeyword(keyword)"
 								class="selected-keyword">
-									{{keyword}}
+									{{keyword}} <span class="iconify" data-icon="mdi-window-close"></span>
 							</div>
 						</div>
 
@@ -488,7 +488,7 @@ export default {
 .selected-keyword {
 	border: 0.5px solid #666;
 	font-size: 12px;
-	padding: 0.5px 6px 1px 6px;
+	padding: 1px 4px 1px 6px;
 	border-radius: 15px;
 	font-weight: 300;
 	margin: 0px 2px;
@@ -674,7 +674,7 @@ export default {
 	}
 	.keyword, .selected-keyword {
 		border-color: #555;
-		color: #ddd;
+		color: white;
 		&:hover {
 			color: $themeRed2;
 		}

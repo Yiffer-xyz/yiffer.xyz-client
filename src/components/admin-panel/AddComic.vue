@@ -98,7 +98,7 @@
       <p>Adding tags is optional, but appreciated!</p>
       <div class="horizontal-flex">
         <div class="vertical-flex">
-          <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @:keyup.13="addSelectedKeyword()"> 
+          <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword.name">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
@@ -122,11 +122,11 @@
       <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
       <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
+      <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
     <span v-else>
-      <i class="fas fa-sort-down arrow-symbol"></i>
+      <menu-down-icon class="mdi-arrow"/>
     </span>
   </div>
 </template>

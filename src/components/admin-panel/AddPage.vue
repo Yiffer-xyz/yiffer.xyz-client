@@ -72,11 +72,11 @@
         </table>
       </div>
 
-      <i class="fas fa-sort-up arrow-symbol" @click="closeComponent"></i>
+      <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
     <span v-else>
-      <i class="fas fa-sort-down arrow-symbol"></i>
+      <menu-down-icon class="mdi-arrow"/>
     </span>
   </div>
 </template>
@@ -184,15 +184,6 @@ export default {
 
 .arrow-symbol {
   font-size: 28px;
-}
-
-.fa-sort-up {
-  position: relative;
-  top: 16px;
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 .last-page-image {

@@ -1,9 +1,13 @@
 <template>
 	<router-link :to="'/'">
-		<i class="fas fa-home"></i> back to index
+		<home-icon/> back to index
 	</router-link>
 </template>
 
 <script>
-export default { name: 'backToIndex' }
+import HomeIcon from 'vue-material-design-icons/Home.vue'
+export default {
+	name: 'backToIndex',
+	components: { HomeIcon }
+}
 </script>

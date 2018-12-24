@@ -127,6 +127,17 @@ export default {
 </script>
 
 <style lang="scss">
+.mdi-arrow {
+	font-size: 28px;
+}
+.close-component-arrow {
+	margin-top: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .admin-content-container {
 	display: flex;
 	flex-wrap: wrap;
