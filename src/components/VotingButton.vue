@@ -2,39 +2,43 @@
 	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.username}">
 		<!-- <span :style="{'background-color': this.backgroundColor}"> -->
 			<span v-if="$store.state.username">Vote</span>
-			<span v-else><i class="fas fa-sign-in-alt"/> Log in to vote</span>
+			<span v-else><login-icon/> Log in to vote</span>
 		<!-- </span> -->
 	</button>
 </template>
 
 <script>
-	export default {
-		name: 'votingButton',
-		props: {
-			comic: Object,
-			backgroundColors: {
-				type: Object,
-				default: () => { return {light: 'blue', dark: 'red'} }
-			}
+import LoginIcon from 'vue-material-design-icons/Login.vue'
+export default {
+	name: 'votingButton',
+	components: {
+		'login-icon': LoginIcon,
+	},
+	props: {
+		comic: Object,
+		backgroundColors: {
+			type: Object,
+			default: () => { return {light: 'blue', dark: 'red'} }
 		},
-		methods: {
-			showSomeModal () {
-				if (this.$store.state.username) {
-					this.$store.commit('setComicForVotingModal', this.comic)
-					this.$store.commit('setVotingModalVisibility', true)
-				}
-				else {
-					this.$store.commit('setLoginModalVisibility', true)
-				}
+	},
+	methods: {
+		showSomeModal () {
+			if (this.$store.state.username) {
+				this.$store.commit('setComicForVotingModal', this.comic)
+				this.$store.commit('setVotingModalVisibility', true)
 			}
-		},
-		computed: {
-			backgroundColor: function () {
-				if (this.$store.state.darkTheme) { return this.backgroundColors.dark }
-				else { return this.backgroundColors.light }
+			else {
+				this.$store.commit('setLoginModalVisibility', true)
 			}
 		}
+	},
+	computed: {
+		backgroundColor: function () {
+			if (this.$store.state.darkTheme) { return this.backgroundColors.dark }
+			else { return this.backgroundColors.light }
+		}
 	}
+}
 </script>
 
 <style lang="scss">

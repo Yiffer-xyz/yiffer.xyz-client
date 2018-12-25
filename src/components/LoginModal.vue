@@ -67,7 +67,7 @@
 				<p class="modal-header">Forgotten account details?</p>
 				<p v-if="forgottenErrorMessage" class="modal-error-message">{{forgottenErrorMessage}}</p>
 				<p v-if="forgottenSuccessMessage" style="margin: 20px 0;">
-					<i class="fas fa-check-circle"></i> {{forgottenSuccessMessage}}
+					<checkbox-icon/> {{forgottenSuccessMessage}}
 				</p>
 				<form @submit="forgottenConfirmClicked" v-if="!forgottenSuccessMessage" class="login-register-form">
 					<label for="forgottenUsername">Username or email</label>
@@ -89,9 +89,13 @@
 </template>
 
 <script>
+import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 
 export default {
 	name: 'login-modal',
+	components: {
+		'checkbox-icon': CheckboxIcon,
+	},
 	data: function () {
 		return {
 			modalContext: 'login',
@@ -197,7 +201,7 @@ export default {
 			return { success: true }
 		},
 		mockForgottenError () {
-			return { success: false, message: 'Username/email does not exist' }
+			return { success: true, message: 'Username/email does not exist' }
 		}
 	},
 	computed: {

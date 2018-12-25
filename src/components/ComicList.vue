@@ -13,7 +13,7 @@
 			</p>
 
 			<router-link :to="{name: 'donate'}" class="donate-link">
-				<i class="fas fa-donate" style="text-decoration: none;"></i> Donate?
+				<donate-icon/> Donate?
 			</router-link>
 
 			<div class="buttons-container">
@@ -101,13 +101,13 @@
 						<div class="two-search-row">
 							<div class="search-wrapper">
 								<div class="one-searchbox-container" id="mainSearchBox">
-									<span class="input-icon-wrapper"><i class="fas fa-search"></i></span>
+									<span class="input-icon-wrapper"><search-icon/></span>
 									<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
 								</div>
 							</div>
 
 							<div class="search-wrapper">
-								<span class="input-icon-wrapper"><i class="fas fa-tags"></i></span>
+								<span class="input-icon-wrapper"><tags-icon/></span>
 								<input 
 									type="text"
 									name="someName" 
@@ -139,7 +139,7 @@
 								:key="keyword"
 								@click="removeSelectedKeyword(keyword)"
 								class="selected-keyword">
-									{{keyword}} <span class="iconify" data-icon="mdi-window-close"></span>
+									{{keyword}}<cross-icon/>
 							</div>
 						</div>
 
@@ -216,10 +216,22 @@
 import ComicCard from '@/components/ComicCard.vue'
 import LoginModal from '@/components/LoginModal.vue'
 import config from '@/config.json'
+import SearchIcon from 'vue-material-design-icons/Magnify.vue'
+import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
+import DonateIcon from 'vue-material-design-icons/CurrencyUsd.vue'
+import CrossIcon from 'vue-material-design-icons/Close.vue'
+
 
 export default {
 	name: 'comic-list',
-	components: { 'comic-card': ComicCard, 'login-modal': LoginModal },
+	components: {
+		'comic-card': ComicCard,
+		'login-modal': LoginModal,
+		'search-icon': SearchIcon,
+		'tags-icon': TagsIcon,
+		'donate-icon': DonateIcon,
+		'cross-icon': CrossIcon
+	},
 	data: function () {
 		return {
 			config: config,
@@ -454,6 +466,7 @@ export default {
 	min-width: 100%;
 	flex-direction: column;
 	justify-content: center;
+	z-index: 2;
 	box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
 }
 
@@ -488,7 +501,7 @@ export default {
 .selected-keyword {
 	border: 0.5px solid #666;
 	font-size: 12px;
-	padding: 1px 4px 1px 6px;
+	padding: 1px 4px 1.5px 6px;
 	border-radius: 15px;
 	font-weight: 300;
 	margin: 0px 2px;
@@ -497,6 +510,12 @@ export default {
 		text-decoration: line-through;
 		color: $themeRed2;
 		border-color: $themeRed2;
+	}
+	span {
+		svg {
+			bottom: -0.22em !important;
+			margin-right: -1px;
+		}
 	}
 }
 

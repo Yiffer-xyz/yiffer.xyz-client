@@ -37,7 +37,7 @@
         </ul>
         <a href="https://www.paypal.me/yifferxyz" target="_blank" style="margin-top: 8px;">
           <button class="y-button" style="width: 100%; padding: 12px; font-size: 16px;">
-            <i class="fab fa-paypal"></i> Help us out!
+            <paypal-icon/> Help us out!
           </button>
         </a>
       </p>
@@ -52,11 +52,13 @@
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
+import PaypalIcon from 'vue-material-design-icons/Paypal.vue'
 
 export default {
 	name: 'admin',
 	components: {
-		'back-to-index': BackToIndex,
+    'back-to-index': BackToIndex,
+    'paypal-icon': PaypalIcon,
 	},
 }
 

@@ -11,9 +11,9 @@
 		</router-link>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
-			<p><i class="fas fa-file"></i> {{comic.numberOfPages}}</p>
-			<p><i class="fas fa-users"></i> {{formatRating(comic.userRating)}}</p>
-			<p v-if="$store.state.username"><i class="fas fa-user"></i> {{comic.yourRating}}</p>
+			<p><pages-icon/> {{comic.numberOfPages}}</p>
+			<p><users-icon/> {{formatRating(comic.userRating)}}</p>
+			<p v-if="$store.state.username"><user-icon/> {{comic.yourRating}}</p>
 		</div>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
@@ -51,8 +51,8 @@
 import VotingButton from '@/components/VotingButton.vue'
 import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
-import UserIcon from 'vue-material-design-icons/UserOutline.vue'
-import UsersIcon from 'vue-material-design-icons/UsersOutline.vue'
+import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
+import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'
 
 export default {
 	name: 'comic-card',
