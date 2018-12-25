@@ -23,14 +23,15 @@
 					<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
 					<p v-if="comicLinks.previousComic">
 						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
-							<i class="fas fa-arrow-circle-left"></i> 
+							
+							<left-arrow/>
 							{{comicLinks.previousComic}}
 						</router-link>
 					</p>
 					<p v-if="comicLinks.nextComic">
 						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.nextComic } }">
 							{{comicLinks.nextComic}} 
-							<i class="fas fa-arrow-circle-right"></i>
+							<right-arrow/>
 						</router-link>
 					</p>
 				</div>
@@ -133,13 +134,20 @@
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
 import VotingButton from '@/components/VotingButton.vue'
+import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 export default {
 	name: 'comic',
 	props: {
 		userInfo: Object,
 	},
-	components: { 'back-to-index': BackToIndex, 'voting-button': VotingButton },
+	components: {
+		'back-to-index': BackToIndex,
+		'voting-button': VotingButton,
+		'left-arrow': LeftArrow,
+		'right-arrow': RightArrow,
+	},
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
@@ -258,7 +266,7 @@ async function mockGetComic () {
 async function mockGetLinks () {
 	return await new Promise( (resolve) => {
 		setTimeout(() => {
-			resolve({nextComic: 'asd'})
+			resolve({nextComic: 'Breaking Bad Habits'})
 		}, 500)
 	})
 }
