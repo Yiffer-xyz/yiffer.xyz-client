@@ -3,6 +3,7 @@
 		<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
 		<div class="upper-body-div-comic">
 			<h1>{{$route.params.comicName}}</h1>
+			<share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
 			<span v-if="comic" class="comic-upper-div">
 				<h2>by 
 					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
@@ -136,6 +137,7 @@ import BackToIndex from '@/components/BackToIndex.vue'
 import VotingButton from '@/components/VotingButton.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 
 export default {
 	name: 'comic',
@@ -147,6 +149,7 @@ export default {
 		'voting-button': VotingButton,
 		'left-arrow': LeftArrow,
 		'right-arrow': RightArrow,
+		'share-icon': ShareIcon,
 	},
 	data: function () {
 		return {
@@ -161,6 +164,7 @@ export default {
 			removeKeyword: undefined,
 			keywordSuccessMessage: '',
 			keywordErrorMessage: '',
+			showShareIcon: true,
 		}
 	},
 	methods: {
@@ -233,9 +237,22 @@ export default {
 					}
 				}, 30)
 			}
+		},
+		async shareClicked () {
+			if (navigator.share === undefined) { return }
+			let shareDataObject = {
+				'title': this.$route.params.comicName + ' - Yiffer.xyz',
+				'text': '',
+				'url': 'https://yiffer.xyz/' + this.$route.path
+			}
+			await navigator.share(shareDataObject)
+			// todo log something
 		}
 	},
 	created: async function () {
+		if (navigator.share === undefined) {
+			// this.showShareIcon = false todo
+		}
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', false)
 		this.comicLinks = await mockGetLinks()
@@ -293,6 +310,16 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 
 <style lang="scss">
+.share-icon {
+	position:absolute !important;
+	top: 30px;
+	right: 12px;
+	font-size: 28px;
+	@media (min-width: 900px) {
+		display: none !important;
+	}
+}
+
 .comic-upper-div {
 	display: flex;
 	flex-direction: column;
@@ -348,6 +375,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	h1 {
 		@media (max-width: 900px) {
 			font-size: 32px;
+			max-width: calc(100% - 84px);
 		}
 	}
 	h2 {
