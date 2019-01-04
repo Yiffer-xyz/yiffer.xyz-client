@@ -348,6 +348,10 @@ option, select, input {
 	margin-top: 0 !important;
 }
 
+.margin-top-4 {
+	margin-top: 4px;
+}
+
 h1 {
 	@media (max-width: 900px) {
 		font-size: 48px;
@@ -359,6 +363,7 @@ h1 {
 	width: 70%;
 	margin: auto;
 	text-align: left;
+	margin-bottom: 32px;
 
 	@media (max-width: 900px) {
 		width: 90%;
@@ -367,6 +372,13 @@ h1 {
 	p {
 		margin-top: 16px;
 	}
+}
+
+.whole-body-text-centered {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 .dark {
