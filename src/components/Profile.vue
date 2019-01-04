@@ -18,8 +18,8 @@
 			<label>Turn these on if you would like to be notified via email when your selected comics
 				are updated, or when new comics are uploaded!</label>
 			<label><b>*</b> will only regard updates to comics you have assigned some rating to.</label>
+			<button @click="submitEmailPreference()" v-if="emailSettingChanged" class="y-button margin-top-4">Save</button>
 			<br/>
-			
 
 			<span><b>Email</b>: {{userData.email}}</span> 
 			<br/>
@@ -65,6 +65,7 @@ export default {
 				'donator': false,
 			},
 			'emailSetting': 'none',
+			'emailSettingChanged': false,
 			'currentPassword': '',
 			'newPassword1': '',
 			'newPassword2': '',
@@ -96,7 +97,13 @@ export default {
 				this.successMessage = ''
 			}
 		},
-
+		submitEmailPreference () {
+			let response = {'success': true}
+			if (response.success) {
+				this.savedEmailSetting = this.emailSetting
+				this.emailSettingChanged = false
+			}
+		}
   },
   created: function () {
 		this.userData = {
@@ -104,8 +111,16 @@ export default {
 			email: 'malann.sjakk@gmail.com',
 			donator: true,
 		}
+		this.savedEmailSetting = 'updates'
 		this.emailSetting = 'updates'
-  }
+	},
+	watch: {
+		// Need to use watch instead of computed because vue won't redraw when
+		// submitEmailPreference() is called
+		emailSetting () {
+			this.emailSettingChanged = this.emailSetting != this.savedEmailSetting
+		}
+	}
 }
 
 </script>

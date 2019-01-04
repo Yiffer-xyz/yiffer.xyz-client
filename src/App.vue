@@ -58,6 +58,17 @@
 				Log out
 			</button>
 
+
+			<router-link 
+				v-if="$store.state.username"
+				style="margin-left: 3px;"
+				:to="{ name: 'profile' }"
+				class="theme-button"
+			>
+				<button class="theme-button">Profile</button>
+			</router-link>
+
+
 			<router-link 
 				v-if="$store.state.userType === 'mod' || $store.state.userType === 'admin'"
 				style="margin-left: 3px;"
