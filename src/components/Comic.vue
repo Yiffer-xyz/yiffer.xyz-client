@@ -272,7 +272,7 @@ export default {
 		}
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', false)
-		this.comicLinks = await mockGetLinks()
+		this.comicLinks = await mockGetLinks()  //todo big changes, links ska med i comic. hvis kw e s[ why the fuck not
 		if ( !this.comic ) {
 			mockGetComic(this.$route.params.comicName)
 				.then( comic => {

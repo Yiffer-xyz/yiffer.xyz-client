@@ -82,10 +82,6 @@ export default {
 	},
 	methods: {
 		async mockGetComicList () {
-			// todo
-			// this.comicList = config.comicList
-			console.log(this.$store.getters.getComicList)
-			// this.comicList = this.$store.getters.getComicList
 			this.keywordList = config.demoKeywords
 			this.artistList = config.artistList
 			this.pendingComicList = config.pendingComicList
@@ -132,9 +128,9 @@ export default {
 			this.artistList.push({name: 'Artisten raggi', id: 1231233})
 		},
   },
-  created: function () {
-		this.$store.dispatch('loadComicList2')
-			.then(() => this.mockGetComicList)
+  async created () {
+		await this.$store.dispatch('loadComicList')
+		this.mockGetComicList()
   }
 }
 

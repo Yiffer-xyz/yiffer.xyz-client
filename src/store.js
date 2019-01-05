@@ -1,16 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import admin from './state-modules/admin';
+import comic from './state-modules/comic';
 
 Vue.use(Vuex)
 export default new Vuex.Store({
 	modules: {
-		admin
+		comic
 	},
   state: {
 		darkTheme: false,
 		clickedComic: undefined,
-		comicList: [],
 		displayComics: [],
 		numberOfFilteredComics: 0,
 		categoryFilter: ['All'],
@@ -49,7 +48,6 @@ export default new Vuex.Store({
 		setUsername ( state, username ) { state.username = username },
 		setUserType ( state, userType ) { state.userType = userType },
 		clickComic ( state, comic ) { state.clickedComic = comic },
-		setComicList ( state, comicList ) { state.comicList = comicList },
 
 		setCategoryFilter ( state, filterList ) { state.categoryFilter = filterList },
 		setTagFilter ( state, filterList ) { state.tagFilter = filterList },

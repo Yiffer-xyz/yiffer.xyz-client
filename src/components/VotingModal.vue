@@ -3,8 +3,8 @@
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
 			<span style="display: flex; flex-direction: column;">
-				<p class="modal-header margin-top-16">Vote for {{this.$store.state.comicForVotingModal.name}}</p>
-				<p class="margin-top-16">User rating: {{this.$store.state.comicForVotingModal.userRating}}</p>
+				<p class="modal-header margin-top-16">Vote for {{$store.state.comicForVotingModal.name}}</p>
+				<p class="margin-top-16">User rating: {{$store.state.comicForVotingModal.userRating}}</p>
 
 				<table class="voting-numbers-table margin-top-16">
 					<tr>
@@ -57,7 +57,7 @@ export default {
 			if ( votingResponse.success ) {
 				let updatedComic = await mockGetComicDetails()
 				this.$store.commit('updateOneComicInList', updatedComic)
-			}
+			}	
 		},
 		closeModal () {
 			this.$store.commit('setVotingModalVisibility', false)
