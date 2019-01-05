@@ -376,6 +376,17 @@ h1 {
 	}
 }
 
+.admin-content-box {
+	box-shadow: 0 0 12px 0px $themeGray2;
+	&:hover {
+		// box-shadow: 0 0 10px 1px $theme4;
+		box-shadow: 0 0 20px 1px $themeGray3;
+	}
+}
+.admin-content-box-open {
+	box-shadow: 0 0 20px 1px $themeGray3;
+}
+
 .whole-body-text {
 	width: 70%;
 	margin: auto;
@@ -427,7 +438,19 @@ h1 {
 		&:hover {
 			background-color: $themeRed0;
 		}
-	}}
+	}
+
+	.admin-content-box {
+		box-shadow: none;
+		border-color: $themeGray7;
+		&:hover {
+			background-color: $themeDark4	
+		}
+	}
+	.admin-content-box-open {
+		background-color: $themeDark4;
+	}
+}
 
 
 

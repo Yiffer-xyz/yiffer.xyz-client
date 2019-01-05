@@ -9,6 +9,9 @@
 			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"
 				@refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
 
+			<comic-suggestions :comicSuggestionList="comicSuggestionList"
+				@refresh-comic-suggestions="refreshComicSuggestions"></comic-suggestions>
+
 			<add-page :comicList="comicList"
 				@refresh-comic-list="refreshComicList"></add-page>
 
@@ -51,6 +54,7 @@ import AddComic from '@/components/admin-panel/AddComic.vue'
 import AddArtist from '@/components/admin-panel/AddArtist.vue'
 import PendingComics from '@/components/admin-panel/PendingComics.vue'
 import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
+import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
 
 export default {
 	name: 'admin',
@@ -64,6 +68,7 @@ export default {
 		'add-artist': AddArtist,
 		'pending-comics': PendingComics,
 		'keyword-suggestions': KeywordSuggestions,
+		'comic-suggestions': ComicSuggestions,
 	},
 	data: function () {
 		return {
@@ -81,11 +86,15 @@ export default {
 			this.artistList = config.artistList
 			this.pendingComicList = config.pendingComicList
 			this.keywordSuggestionList = config.keywordSuggestionList
+			this.comicSuggestionList = config.comicSuggestionList
 		},
 
 //todo alleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 		refreshKeywordSuggestions () {
 			this.keywordSuggestionList.splice(0, 1)
+		},
+		refreshComicSuggestions() {
+			this.comicSuggestionList.splice(0, 1)
 		},
 		refreshComicList () {
 			let ret = []
