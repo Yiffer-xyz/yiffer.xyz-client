@@ -12,9 +12,15 @@
 				&nbsp;to vote
 			</p>
 
-			<router-link :to="{name: 'donate'}" class="donate-link">
-				<donate-icon/> Donate?
-			</router-link>
+			<span class="donate-link">
+				<router-link :to="{name: 'donate'}" style="margin-right: 16px;">
+					<donate-icon/> Donate?
+				</router-link>
+
+				<router-link :to="{name: 'suggestComic'}" style="margin-left: 16px;">
+					<plus-icon/> Suggest comic?
+				</router-link>
+			</span>
 
 			<div class="buttons-container">
 				<span class="upper-body-width buttons-container-inner">
@@ -220,6 +226,7 @@ import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
 import DonateIcon from 'vue-material-design-icons/CurrencyUsd.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
 
 
 export default {
@@ -230,6 +237,7 @@ export default {
 		'search-icon': SearchIcon,
 		'tags-icon': TagsIcon,
 		'donate-icon': DonateIcon,
+		'plus-icon': PlusIcon,
 		'cross-icon': CrossIcon
 	},
 	data: function () {

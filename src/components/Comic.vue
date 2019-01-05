@@ -20,7 +20,7 @@
 					:backgroundColors="{light: 'white', dark: '#091014'}"
 				></voting-button>
 
-				<div id="comicLinks" class="margin-top-16">
+				<div class="margin-top-16">
 					<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
 					<p v-if="comicLinks.previousComic">
 						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
@@ -110,7 +110,7 @@
 			</div>
 		</div>
 	
-		<div v-if="comic" id="comic-page-container" class="margin-top-16">
+		<div v-if="comic" id="comic-page-container" class="margin-top-16 margin-bottom-8">
 			<img 
 				v-for="pageNumber in comic.numberOfPages" 
 				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
@@ -124,9 +124,26 @@
 		<voting-button
 			:comic="comic"
 			:backgroundColors="{light: 'white', dark: '#091014'}"
-			style="margin-bottom: 8px;"
 		></voting-button>
 		<br/>
+
+		<div class="margin-top-8 margin-bottom-8">
+			<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
+			<p v-if="comicLinks.previousComic">
+				<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
+					
+					<left-arrow/>
+					{{comicLinks.previousComic}}
+				</router-link>
+			</p>
+			<p v-if="comicLinks.nextComic">
+				<router-link :to="{ name: 'comic', params: { comicName: comicLinks.nextComic } }">
+					{{comicLinks.nextComic}} 
+					<right-arrow/>
+				</router-link>
+			</p>
+		</div>
+
 		<back-to-index></back-to-index>
 		<div style="margin-top: 16px;"> </div>
 	</span>
@@ -336,6 +353,9 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 .margin-top-8 {
 	margin-top: 8px;
+}
+.margin-bottom-8 {
+	margin-bottom: 8px;
 }
 
 #comicKeywords {

@@ -11,13 +11,16 @@
 			<select v-model="emailSetting">
 				<option value="none">No emails</option>
 				<option value="updates">Emails for updates*</option>
+				<option value="updates">Emails for updates (10)**</option>
 				<option value="new">Emails for new comics</option>
 				<option value="updatesAndNew">Emails for updates* and new comics</option>
+				<option value="updatesAndNew">Emails for updates (10)** and new comics</option>
 			</select>
 			</span>
 			<label>Turn these on if you would like to be notified via email when your selected comics
 				are updated, or when new comics are uploaded!</label>
-			<label><b>*</b> will only regard updates to comics you have assigned some rating to.</label>
+			<label><b>*</b> will only regard updates to comics that you have given <u>some rating</u>.</label>
+			<label><b>**</b> will only regard updates to comics that you have give a <u>rating of 10</u>.</label>
 			<button @click="submitEmailPreference()" v-if="emailSettingChanged" class="y-button margin-top-4">Save</button>
 			<br/>
 

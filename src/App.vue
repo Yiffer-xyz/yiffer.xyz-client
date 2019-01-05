@@ -153,7 +153,7 @@ div, table, span, img, body, h1, h2, h3, p {
 	margin: 0px;
 }
 
-router-link, p, td {
+router-link, p, td, li {
 	font-weight: 300;
 }
 
@@ -358,10 +358,16 @@ option, select, input {
 .no-margin-top {
 	margin-top: 0 !important;
 }
-
 .margin-top-4 {
 	margin-top: 4px;
 }
+.margin-top-8 {
+	margin-top: 8px;
+}
+.margin-bottom-8 {
+	margin-bottom: 8px;
+}
+
 
 h1 {
 	@media (max-width: 900px) {

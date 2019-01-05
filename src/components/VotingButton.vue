@@ -1,8 +1,8 @@
 <template>
 	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.authenticated}">
 		<!-- <span :style="{'background-color': this.backgroundColor}"> -->
-			<span v-if="$store.state.authenticated">Vote</span>
-			<span v-else><login-icon/> Log in to vote</span>
+			<span v-if="$store.state.authenticated">Rate</span>
+			<span v-else><login-icon/> Log in to rate</span>
 		<!-- </span> -->
 	</button>
 </template>
