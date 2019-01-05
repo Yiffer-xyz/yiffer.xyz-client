@@ -44,7 +44,8 @@
       <p>
         <b>I have donated. How do I download?</b><br/>
         Simple! You click a comic, and then hit the "download comic" button located below the title and artist name. You must be logged in for the button to appear.
-        If you have donated and suspect that something is wrong, please send an email to malann.sjakk@gmail.com. Please note that it might take up to 24 hours for your downloading privileges to appear.
+        If you have donated and suspect that something is wrong, please send an email to malann.sjakk@gmail.com. Please note that it might take up to 24 hours for your downloading privileges to appear. 
+				The 'donator' status on your profile will also change when you have been granted the privileges.
       </p>
     </div>
 	</div>

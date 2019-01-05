@@ -3,7 +3,7 @@
 		<div class="whole-body-text whole-body-text-centered">
 
 			<vue-headful :title="'Profile - Yiffer.xyz'"/>
-			<h1 class="upper-body-div-comic">Profile: {{userData.username}}</h1>
+			<h1 class="upper-body-div-comic">Profile: {{$store.state.userData.username}}</h1>
 			<back-to-index></back-to-index>
 			<br/>
 
@@ -21,10 +21,10 @@
 			<button @click="submitEmailPreference()" v-if="emailSettingChanged" class="y-button margin-top-4">Save</button>
 			<br/>
 
-			<span><b>Email</b>: {{userData.email}}</span> 
+			<span><b>Email</b>: {{userEmail}}</span> 
 			<br/>
 			
-			<span><b>Donator</b>: {{userData.donator ? 'yes' : 'no'}}</span>
+			<span><b>Donator</b>: {{$store.state.userData.donator ? 'yes' : 'no'}}</span>
 			<br/>
 
 			<b>Change password</b>
@@ -60,9 +60,7 @@ export default {
 	data: function () {
 		return {
 			'userData': {
-				'username': '',
 				'email': '',
-				'donator': false,
 			},
 			'emailSetting': 'none',
 			'emailSettingChanged': false,
@@ -106,11 +104,8 @@ export default {
 		}
   },
   created: function () {
-		this.userData = {
-			username: 'malann',
-			email: 'malann.sjakk@gmail.com',
-			donator: true,
-		}
+		// todo get email setting data and email
+		this.userEmail = 'todo@epost.com'
 		this.savedEmailSetting = 'updates'
 		this.emailSetting = 'updates'
 	},

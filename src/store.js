@@ -6,8 +6,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		darkTheme: false,
-		username: undefined,
-		userType: undefined,
 		clickedComic: undefined,
 		comicList: [],
 		displayComics: [],
@@ -25,8 +23,26 @@ export default new Vuex.Store({
 		whiteThemeButtons: false,
 		detailLevel: 'Medium detail',
 		comicForVotingModal: {},
+		userData: {},
+		authenticated: false,
   },
   mutations: {
+		setUserDataFromCookies ( state ) {
+			if ($cookies.isKey('user-data')) {
+				state.userData = $cookies.get('user-data')
+				state.authenticated = true
+			}
+		},
+		setUserData ( state, userData ) {
+			state.userData = userData
+			state.authenticated = true
+			$cookies.set('user-data', userData)
+		},
+		destroyUserData ( state ) {
+			state.userData = {}
+			state.authenticated = false
+			$cookies.remove('user-data')
+		},
 		setUsername ( state, username ) { state.username = username },
 		setUserType ( state, userType ) { state.userType = userType },
 		clickComic ( state, comic ) { state.clickedComic = comic },

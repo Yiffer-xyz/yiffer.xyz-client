@@ -13,7 +13,7 @@
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
 			<p><pages-icon/> {{comic.numberOfPages}}</p>
 			<p><users-icon/> {{formatRating(comic.userRating)}}</p>
-			<p v-if="$store.state.username"><user-icon/> {{comic.yourRating}}</p>
+			<p v-if="comic.yourRating"><user-icon/> {{comic.yourRating}}</p>
 		</div>
 
 		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
@@ -25,7 +25,7 @@
 		<voting-button
 			:comic="comic"
 			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
-			v-if="$store.state.username && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
+			v-if="$store.state.authenticated && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
 		></voting-button>
 
 		<!-- <voting-button-single-color

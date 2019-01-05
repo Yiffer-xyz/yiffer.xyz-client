@@ -40,7 +40,7 @@
 			</router-link>
 
 			<button
-				v-if="!$store.state.username" 
+				v-if="!$store.state.authenticated" 
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="showLoginModal()" 
@@ -50,7 +50,7 @@
 
 
 			<button 
-				v-if="$store.state.username" 
+				v-if="$store.state.authenticated" 
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="logout()" 
@@ -60,7 +60,7 @@
 
 
 			<router-link 
-				v-if="$store.state.username"
+				v-if="$store.state.authenticated"
 				style="margin-left: 3px;"
 				:to="{ name: 'profile' }"
 				class="theme-button"
@@ -70,7 +70,7 @@
 
 
 			<router-link 
-				v-if="$store.state.userType === 'mod' || $store.state.userType === 'admin'"
+				v-if="$store.state.userData.userType === 'mod' || $store.state.userData.userType === 'admin'"
 				style="margin-left: 3px;"
 				:to="{ name: 'admin' }"
 				class="theme-button"
@@ -119,8 +119,7 @@ export default {
 			this.$store.commit('setLoginModalVisibility', true)
 		},
 		logout () {
-			this.$store.commit('setUsername', undefined)
-			this.$store.commit('setUserType', undefined)
+			this.$store.commit('destroyUserData')
 		}
 	},
 	data: function () {
@@ -128,6 +127,7 @@ export default {
 	},
 	created: function () {
 		this.$cookies.config('60d')
+		this.$store.commit('setUserDataFromCookies')
 		if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
 			this.setTheme('dark')
 		}

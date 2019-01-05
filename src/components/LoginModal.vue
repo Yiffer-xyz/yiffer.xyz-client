@@ -126,11 +126,12 @@ export default {
 		loginConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
 			this.loginLoading = true
-			let mockApiResponse = this.mockLoginError()
+			let mockApiResponse = this.mockLoginSuccess()
 
 			this.loginLoading = false
 			if ( mockApiResponse.success ) {
-				this.$store.commit('setUsername', mockApiResponse.username)
+				this.$store.commit('setUserData', mockApiResponse.userData)
+				// this.$store.commit('setUsername', mockApiResponse.username)
 				this.closeModal()
 			}
 			else {
@@ -145,8 +146,9 @@ export default {
 
 			this.signupLoading = false
 			if ( mockApiResponse.success ) {
-				this.$store.commit('setUsername', mockApiResponse.username)
-				this.$store.commit('setUserType', 'admin') //todoooooooooooooooo
+				this.$store.commit('setUserData', mockApiResponse.userData)
+				// this.$store.commit('setUsername', mockApiResponse.username)
+				// this.$store.commit('setUserType', 'admin') //todoooooooooooooooo
 				this.closeModal()
 			}
 			else {
@@ -189,13 +191,13 @@ export default {
 			return { success: false, message: 'User does not exist' }
 		},
 		mockLoginSuccess () {
-			return { success: true, username: 'exempeluser' }
+			return { success: true, userData: {username: 'tullebruker22', donator: false, userType: 'normal'} }
 		},
 		mockSignupError () {
 			return { success: false, message: 'Password is too short' }
 		},
 		mockSignupSuccess () {
-			return { success: true, username: 'tullebruker22' }
+			return { success: true, userData: {username: 'tullebruker22', donator: true, userType: 'admin'} }
 		},
 		mockForgottenSuccess () {
 			return { success: true }

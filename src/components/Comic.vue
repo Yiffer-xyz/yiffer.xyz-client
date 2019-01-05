@@ -13,7 +13,7 @@
 
 				<back-to-index class="margin-top-16"></back-to-index>
 
-				<button v-if="userIsDonator && $store.state.username" class="y-button">Download comic</button>
+				<button v-if="$store.state.authenticated && $store.state.userData.donator" class="y-button">Download comic</button>
 
 				<voting-button
 					:comic="comic"

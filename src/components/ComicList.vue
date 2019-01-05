@@ -5,7 +5,7 @@
 			<h1>Yiffer.xyz</h1>
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
-			<p style="margin-top: 10px;" v-if="!$store.state.username">
+			<p style="margin-top: 10px;" v-if="!$store.state.authenticated">
 				<button class="y-button" @click="showLoginModal">
 					<i data-feather="log-in"></i> Log in
 				</button> 
