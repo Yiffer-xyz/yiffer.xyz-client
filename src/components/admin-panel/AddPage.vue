@@ -15,7 +15,7 @@
       <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
-          <option v-for="comic in comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in $store.getters.getComicList2" :key="comic.id" :value="comic">
             {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
           </option>
         </select>
@@ -84,9 +84,6 @@
 <script>
 export default {
   name: 'addPage',
-  props: {
-    comicList: Array
-  },
   data: function () {
     return {
       isOpen: false,
@@ -122,7 +119,7 @@ export default {
       this.showAllUnfinishedComics = !this.showAllUnfinishedComics
     },
     createUnfinishedComicList () {
-      let unfinishedComicList = this.comicList.filter(comic => !comic.finished).sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
+      let unfinishedComicList = this.$store.getters.getComicList2.filter(comic => !comic.finished).sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
       let one_day_millisec = 86400000
       let nowTimestamp = (new Date()).getTime()
       for (var comic of unfinishedComicList) {
@@ -146,7 +143,10 @@ export default {
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
-  }
+	},
+	created: function () {
+		console.log('clist 2 is', this.$store.getters.getComicList2)
+	}
 }
 </script>
 

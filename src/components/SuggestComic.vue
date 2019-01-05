@@ -10,13 +10,13 @@
 			<span style="text-align: left;">
 				<ul>
 					<li>
-						The comic must be 4 pages long.
+						The comic should be 4 pages long. If the pages have lots of panels or if the comic is of very high quality, 3-page comics might be accepted.
 					</li>
 					<li>
 						The comic must be of a certain quality (visually).
 					</li>
 					<li>
-						The comic <i>may</i> not be accepted if it is uncolored.
+						The comic <i>might</i> not be accepted if it is uncolored.
 					</li>
 					<li>
 						The comic will not be accepted if it is not in English.

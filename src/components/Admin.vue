@@ -77,11 +77,15 @@ export default {
 			artistList: [],
 			pendingComicList: [],
 			keywordSuggestionList: [],
+			comicSuggestionList: [],
 		}
 	},
 	methods: {
 		async mockGetComicList () {
-			this.comicList = config.comicList
+			// todo
+			// this.comicList = config.comicList
+			console.log(this.$store.getters.getComicList)
+			// this.comicList = this.$store.getters.getComicList
 			this.keywordList = config.demoKeywords
 			this.artistList = config.artistList
 			this.pendingComicList = config.pendingComicList
@@ -129,7 +133,8 @@ export default {
 		},
   },
   created: function () {
-		this.mockGetComicList()
+		this.$store.dispatch('loadComicList2')
+			.then(() => this.mockGetComicList)
   }
 }
 

@@ -181,6 +181,10 @@ label {
 	font-weight: 300;
 }
 
+textarea {
+	font-family: 'Open Sans', sans-serif;
+}
+
 ::selection {
 	background: rgba(120, 253, 214, 0.5);
 }
@@ -410,7 +414,7 @@ h1 {
 }
 
 .dark {
-	input {
+	input, textarea {
 		background: rgb(22, 26, 29);
 		border: 1px solid #666;
 		color: white;
