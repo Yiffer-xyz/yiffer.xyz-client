@@ -41,19 +41,36 @@ export default {
 			})
 		},
 
-		addNewComic: (context, comicData) => {
-			return new Promise( async (resolve) => {
-				let addComicResponse = comicApi.addNewComic(comicData)
-				if (addComicResponse.data.success) {
-					await context.dispatch('loadComicList')
-				}
-				resolve(addComicResponse.data)
+		addNewComic: (context, {comicData, newPagesList}) => {
+			return new Promise( (resolve) => {
+				// .then syntax here because uploading might fail, and we want to .catch 
+				comicApi.addNewComic(comicData, newPagesList)
+					.then( async (addComicResponse) => {
+						if (addComicResponse.data.success) {
+							await context.dispatch('loadComicList')
+						}
+						resolve(addComicResponse.data)
+					})
+					.catch( error => {
+						// todo test todo
+						console.log(error)
+						alert(error)
+					})
 			})
 		},
 
 		addPagetoComic: (context, {comicData, newPagesList}) => {
-			return new Promise( async (resolve) => {
-				
+			return new Promise( (resolve) => {
+				comicApi.addPagesToComic(comicData, newPagesList)
+					.then( async (addPagesResponse) => {
+						if (addPagesResponse.data.success) {
+							context.commit('updateOneComicInList', comicData)
+						}
+						resolve(addPagesResponse.data)
+					})
+					.catch( error => {
+						console.log(error) // todo something
+					})
 			})
 		}
 	},

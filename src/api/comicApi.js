@@ -28,7 +28,13 @@ export default {
 		})
 	},
 
-	async addNewComic (comicData) {
+	async addNewComic (comicData, newPagesList) {
+		return new Promise(resolve => {
+			resolve({data: {'success': true, 'message': 'asd'}})
+		})
+	},
+
+	addPagesToComic (comicData, newPagesList) {
 		return new Promise(resolve => {
 			resolve({data: {'success': true, 'message': 'asd'}})
 		})
