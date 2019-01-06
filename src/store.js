@@ -11,7 +11,6 @@ export default new Vuex.Store({
 		darkTheme: false,
 		clickedComic: undefined,
 		displayComics: [],
-		numberOfFilteredComics: 0,
 		categoryFilter: ['All'],
 		tagFilter: ['All'],
 		sorting: 'updated',
@@ -96,7 +95,6 @@ export default new Vuex.Store({
 		setSelectedKeywords ( state, keywordList) { state.selectedKeywords = keywordList },		
 
 		setDisplayComics ( state, comicList ) { state.displayComics = comicList },
-		setNumberOfFilteredComics ( state, number ) { state.numberOfFilteredComics = number },
 		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
 		setLoginModalVisibility ( state, isVisible ) { state.loginModalVisibility = isVisible; },
 		setVotingModalVisibility ( state, isVisible ) { state.votingModalVisibility = isVisible; },

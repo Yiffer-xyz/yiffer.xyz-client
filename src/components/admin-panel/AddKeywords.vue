@@ -8,7 +8,7 @@
       <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
-          <option v-for="comic in comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -78,7 +78,6 @@
 export default {
   name: 'addKeywords',
   props: {
-    comicList: Array,
     keywordList: Array,
   },
   data: function () {

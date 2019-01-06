@@ -136,7 +136,6 @@ export default {
   name: 'correctComic',
   props: {
     artistList: Array,
-    comicList: Array,
     keywordList: Array,
   },
   data: function () {

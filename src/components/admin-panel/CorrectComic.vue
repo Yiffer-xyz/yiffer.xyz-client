@@ -5,7 +5,7 @@
       <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
-          <option v-for="comic in comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -76,7 +76,6 @@ export default {
   name: 'correctComic',
   props: {
     artistList: Array,
-    comicList: Array,
   },
   data: function () {
     return {

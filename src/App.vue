@@ -126,6 +126,7 @@ export default {
 		return { darkTheme: false }
 	},
 	created: function () {
+		this.$store.dispatch('loadComicList')
 		this.$cookies.config('60d')
 		this.$store.commit('setUserDataFromCookies')
 		if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {

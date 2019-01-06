@@ -53,9 +53,6 @@
 <script>
 export default {
   name: 'pendingComics',
-  props: {
-    comicList: Array,
-  },
   data: function () {
     return {
       isOpen: false,
@@ -76,7 +73,7 @@ export default {
   },
   computed: {
     pendingComicList () {
-      return this.comicList.filter(suggestion => !suggestion.Processed)
+      return this.$store.getters.comicList.filter(suggestion => !suggestion.Processed)
     }
   }
 }

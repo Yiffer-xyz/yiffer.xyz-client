@@ -129,7 +129,6 @@ export default {
 		},
   },
   async created () {
-		await this.$store.dispatch('loadComicList')
 		this.mockGetComicList()
   }
 }

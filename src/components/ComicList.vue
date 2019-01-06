@@ -247,16 +247,15 @@ export default {
 			categoryFilter: this.$store.state.categoryFilter,
 			tagFilter: this.$store.state.tagFilter,
 			selectedKeywords: this.$store.state.selectedKeywords,
-			comicList: this.$store.state.comicList,
 			displayComics: this.$store.state.displayComics,
 			totalNumberOfComics: this.$store.state.totalNumberOfComics,
+			numberOfFilteredComics: this.totalNumberOfComics,
 			searchFiltering: this.$store.state.searchFiltering,
 			keywordSearch: '',
 			keywordSearchFocused: false,
 			keywordResultHovered: undefined,
 			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
 			smallPagination: undefined,
-			numberOfPages: Math.ceil(this.$store.state.comicList/config.comicsPerPage),
 		}
 	},
 	methods: {
@@ -277,12 +276,12 @@ export default {
 			if ( typeof(pageNumber) !== 'number') { pageNumber = 1 }
 			this.$store.commit('setPageNumber', pageNumber||1)
 
-			let filteredComics = this.$store.state.comicList
+			let filteredComics = this.$store.getters.comicList
 				.filter( this.filterComicByTag )
 				.filter( this.filterComicByCategory )
 				.filter( this.filterComicByNameOrArtist )
 				.filter( this.filterComicByKeywords )
-			this.$store.commit('setNumberOfFilteredComics', filteredComics.length)
+			this.numberOfFilteredComics = filteredComics.length
 			this.$store.commit('setDisplayComics', filteredComics.slice (
 					(this.$store.state.pageNumber-1) * config.comicsPerPage,
 					(this.$store.state.pageNumber) * config.comicsPerPage 
@@ -297,7 +296,7 @@ export default {
 				} 
 			}
 			else {
-				if (this.$store.state.comicList.length > this.$store.state.pageNumber * config.comicsPerPage) {
+				if (this.$store.getters.comicList.length > this.$store.state.pageNumber * config.comicsPerPage) {
 					this.paginate(this.$store.state.pageNumber + 1)
 				}
 			}
@@ -399,8 +398,6 @@ export default {
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
 		setTimeout( () => {
-			this.$store.commit('setComicList', config.comicList)
-			this.$store.commit('setComicList', this.config.comicList)
 			this.paginate()
 			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
@@ -418,7 +415,7 @@ export default {
 				.slice(0, 8)
 		},
 		paginationButtons () {
-			let pages = Math.ceil(this.$store.state.numberOfFilteredComics / config.comicsPerPage)
+			let pages = Math.ceil(this.numberOfFilteredComics / config.comicsPerPage)
 			let currentPage = this.$store.state.pageNumber
 			let buttonList = []
 			if (pages <= 9) {
