@@ -4,21 +4,16 @@ import Vue from 'vue';
 export default {
 	state: {
 		selectedComic: undefined,
-		comicList: []
+		comicListAdmin: []
 	},
 
 	actions: {
-		loadComicList: context => {
+		loadComicListAdmin: context => {
 			return new Promise (async (resolve) => {
 				let response = await comicApi.getComics()
-				context.commit('setComicList', response.data)
+				context.commit('setComicListAdmin', response.data)
 				resolve(response.data)
 			})
-		},
-
-		loadSelectedComic: async (context, comicName) => {
-			let response = await comicApi.getComic(comicName)
-			context.commit('setSelectedComic', response.data)
 		},
 
 		rateSelectedComic: (context, rating) => {
@@ -76,7 +71,7 @@ export default {
 	},
 
 	mutations: {
-		setComicList: (state, comicList) => state.comicList = comicList,
+		setComicListAdmin: (state, comicList) => state.comicListAdmin = comicList,
 		setSelectedComic: (state, comicData) => state.selectedComic = comicData,
 		updateOneComicInList: (state, newComicData) => {
 			let selectedComicIndex = state.comicList.findIndex(c => c.id === newComicData.id)
@@ -85,7 +80,8 @@ export default {
 	},
 
 	getters: {
-		comicList: state => state.comicList,
+		comicListAdmin: state => state.comicListAdmin,
+		comicListF: state => () => state.comicList,
 		selectedComic: state => state.selectedComic
 	}
 }

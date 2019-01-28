@@ -28,27 +28,27 @@
 						<table class="horiz-row-inner" id="catTable">
 							<tr>
 								<td 
-									v-bind:class="{'button-selected': $store.state.categoryFilter.indexOf('All') >= 0}"
+									v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('All') >= 0}"
 									@click="onCategoryFilterClick('All')">
 									All
 								</td>      
 								<td 
-									v-bind:class="{'button-selected': $store.state.categoryFilter.indexOf('Furry') >= 0}"
+									v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Furry') >= 0}"
 									@click="onCategoryFilterClick('Furry')">
 									Furry
 								</td>        
 								<td 
-									v-bind:class="{'button-selected': $store.state.categoryFilter.indexOf('MLP') >= 0}"
+									v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('MLP') >= 0}"
 									@click="onCategoryFilterClick('MLP')">
 									MLP
 								</td>     
 								<td 
-									v-bind:class="{'button-selected': $store.state.categoryFilter.indexOf('Pokemon') >= 0}"
+									v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Pokemon') >= 0}"
 									@click="onCategoryFilterClick('Pokemon')">
 									Pokemon
 								</td>     
 								<td 
-									v-bind:class="{'button-selected': $store.state.categoryFilter.indexOf('Other') >= 0}"
+									v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Other') >= 0}"
 									@click="onCategoryFilterClick('Other')">
 									Other
 								</td>     
@@ -60,42 +60,42 @@
 						<table class="horiz-row-inner">
 							<tr>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('All') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('All') >= 0}"
 									@click="onTagFilterClick('All')">
 									All
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('M') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('M') >= 0}"
 									@click="onTagFilterClick('M')">
 									M
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('F') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('F') >= 0}"
 									@click="onTagFilterClick('F')">
 									F
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('MF') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('MF') >= 0}"
 									@click="onTagFilterClick('MF')">
 									MF
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('MM') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('MM') >= 0}"
 									@click="onTagFilterClick('MM')">
 									MM
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('FF') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('FF') >= 0}"
 									@click="onTagFilterClick('FF')">
 									FF
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('MF+') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('MF+') >= 0}"
 									@click="onTagFilterClick('MF+')">
 									MF+
 								</td>
 								<td
-									:class="{'button-selected': $store.state.tagFilter.indexOf('I') >= 0}"
+									:class="{'button-selected': $store.getters.tagFilter.indexOf('I') >= 0}"
 									@click="onTagFilterClick('I')">
 									I
 								</td>
@@ -139,9 +139,9 @@
 							</div>
 						</div>
 					</div>
-						<div id="selectedKeywords" v-if="$store.state.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
+						<div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
 							<div 
-								v-for="keyword in $store.state.selectedKeywords" 
+								v-for="keyword in $store.getters.selectedKeywords" 
 								:key="keyword"
 								@click="removeSelectedKeyword(keyword)"
 								class="selected-keyword">
@@ -153,17 +153,17 @@
 						<table class="horiz-row-inner" style="table-layout: auto;">
 							<tr>
 								<td
-									:class="{'button-selected': $store.state.sorting === 'updated'}"
+									:class="{'button-selected': $store.getters.sorting === 'updated'}"
 									@click="onSortingButtonClick('updated')">
 									Recently updated
 								</td>
 								<td
-									:class="{'button-selected': $store.state.sorting === 'userRating'}"
+									:class="{'button-selected': $store.getters.sorting === 'userRating'}"
 									@click="onSortingButtonClick('userRating')">
 									User rating
 								</td>
 								<td
-									:class="{'button-selected': $store.state.sorting === 'yourRating'}"
+									:class="{'button-selected': $store.getters.sorting === 'yourRating'}"
 									@click="onSortingButtonClick('yourRating')">
 									Your rating
 								</td>
@@ -176,19 +176,19 @@
 							<tr>
 								<td
 									@click="setDetailLevel('No detail')"
-									:class="{'button-selected': $store.state.detailLevel === 'No detail'}"
+									:class="{'button-selected': $store.getters.detailLevel === 'No detail'}"
 								>
 									No detail
 								</td>
 								<td
 									@click="setDetailLevel('Medium detail')"
-									:class="{'button-selected': $store.state.detailLevel === 'Medium detail'}"
+									:class="{'button-selected': detailLevel === 'Medium detail'}"
 								>
 									Medium detail
 								</td>
 								<td
 									@click="setDetailLevel('High detail')"
-									:class="{'button-selected': $store.state.detailLevel === 'High detail'}"
+									:class="{'button-selected': detailLevel === 'High detail'}"
 								>
 									High detail
 								</td>
@@ -197,22 +197,22 @@
 					</div>
 
 					<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row">
-						<div @click="paginateUpOrDown('down')" class="pagination-button pagination-arrow">&larr;</div>
+						<div @click="paginate('down')" class="pagination-button pagination-arrow">&larr;</div>
 						<div v-for="(pageNo, index) in paginationButtons"
 								:key="index"
-								:class="{'button-selected': $store.state.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
+								:class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
 								class="pagination-button"
 								@click="paginate(pageNo)">
 							{{pageNo}}
 						</div>
-						<div @click="paginateUpOrDown('up')" class="pagination-button pagination-arrow">&rarr;</div>
+						<div @click="paginate('up')" class="pagination-button pagination-arrow">&rarr;</div>
 					</div>
 				</span>
 			</div>
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in $store.state.displayComics" :key="comic.id" :comic="comic" :detailLevel="$store.state.detailLevel">
+			<comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic" :detailLevel="detailLevel">
 			</comic-card>
 		</div>
 	</div>
@@ -241,66 +241,63 @@ export default {
 		'cross-icon': CrossIcon
 	},
 	data: function () {
+		// Initially attempted to not use references like this (and instead only use
+		// vuex state), but it seems vuex isn't quite ready for this yet.
 		return {
 			config: config,
 			allKeywords: [],
-			categoryFilter: this.$store.state.categoryFilter,
-			tagFilter: this.$store.state.tagFilter,
-			selectedKeywords: this.$store.state.selectedKeywords,
-			displayComics: this.$store.state.displayComics,
-			totalNumberOfComics: this.$store.state.totalNumberOfComics,
-			numberOfFilteredComics: this.totalNumberOfComics,
-			searchFiltering: this.$store.state.searchFiltering,
+			displayedComics: this.$store.getters.displayedComics,
 			keywordSearch: '',
 			keywordSearchFocused: false,
 			keywordResultHovered: undefined,
 			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
 			smallPagination: undefined,
+			detailLevel: 'Medium detail',
+			searchFiltering: '',
 		}
 	},
 	methods: {
 		onCategoryFilterClick (filter) {
 			this.$store.commit('addCategoryFilter', filter)
-			this.paginate()
 		},
 		onTagFilterClick (filter) {
 			this.$store.commit('addTagFilter', filter)
-			this.paginate()
 		},
 		onSortingButtonClick ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
-			this.paginate()
 		},
 		paginate ( pageNumber ) {
 			if ( pageNumber === '...' ) { return }
-			if ( typeof(pageNumber) !== 'number') { pageNumber = 1 }
-			this.$store.commit('setPageNumber', pageNumber||1)
-
-			let filteredComics = this.$store.getters.comicList
-				.filter( this.filterComicByTag )
-				.filter( this.filterComicByCategory )
-				.filter( this.filterComicByNameOrArtist )
-				.filter( this.filterComicByKeywords )
-			this.numberOfFilteredComics = filteredComics.length
-			this.$store.commit('setDisplayComics', filteredComics.slice (
-					(this.$store.state.pageNumber-1) * config.comicsPerPage,
-					(this.$store.state.pageNumber) * config.comicsPerPage 
-				)
-			)
-			this.setRouterQuery()
-		},
-		paginateUpOrDown ( upOrDown ) {
-			if (upOrDown === 'down') {
-				if (this.$store.state.pageNumber > 1) {
-					this.paginate(this.$store.state.pageNumber - 1)
+			if (pageNumber === 'down') {
+				if (this.$store.getters.pageNumber > 1) {
+					this.$store.commit('setPageNumber', this.$store.getters.pageNumber-1)
 				} 
 			}
-			else {
-				if (this.$store.getters.comicList.length > this.$store.state.pageNumber * config.comicsPerPage) {
-					this.paginate(this.$store.state.pageNumber + 1)
+			else if (pageNumber === 'up') {
+				if (this.$store.getters.pageNumber * config.comicsPerPage < this.$store.getters.filteredComics.length) {
+					this.$store.commit('setPageNumber', this.$store.getters.pageNumber+1)
 				}
 			}
+			else if ( typeof(pageNumber) !== 'number') { pageNumber = 1 }
+			else {
+				this.$store.commit('setPageNumber', pageNumber)
+			}
+			// this.$store.commit('setPageNumber', pageNumber||1)
+
+			// let filteredComics = this.$store.getters.comicList
+			// 	.filter( this.filterComicByTag )
+			// 	.filter( this.filterComicByCategory )
+			// 	.filter( this.filterComicByNameOrArtist )
+			// 	.filter( this.filterComicByKeywords )
+			// this.numberOfFilteredComics = filteredComics.length
+			// this.$store.commit('setDisplayedComics', filteredComics.slice (
+			// 		(this.$store.state.pageNumber-1) * config.comicsPerPage,
+			// 		(this.$store.state.pageNumber) * config.comicsPerPage 
+			// 	)
+			// )
+			this.setRouterQuery()
 		},
+
 		addSelectedKeyword ( keywordName ) {
 			if (!this.lastActionWasDeselectingKeyword) {
 				this.lastActionWasDeselectingKeyword = true
@@ -315,35 +312,35 @@ export default {
 		},
 
 		filterComicByTag ( comicObject ) {
-			return this.$store.state.categoryFilter.indexOf('All') === 0 || this.$store.state.categoryFilter.indexOf(comicObject.tag) >= 0
+			return this.$store.getters.categoryFilter.indexOf('All') === 0 || this.$store.getters.categoryFilter.indexOf(comicObject.tag) >= 0
 		},
 		filterComicByCategory ( comicObject ) {
-			return this.$store.state.tagFilter.indexOf('All') === 0 || this.$store.state.tagFilter.indexOf(comicObject.cat) >= 0
+			return this.$store.getters.tagFilter.indexOf('All') === 0 || this.$store.getters.tagFilter.indexOf(comicObject.cat) >= 0
 		},
 		filterComicByNameOrArtist ( comicObject ) {
-			return comicObject.name.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0 
-				|| comicObject.artist.toLowerCase().indexOf( this.searchFiltering.toLowerCase() ) >= 0
+			return comicObject.name.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0 
+				|| comicObject.artist.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0
 		},
 		filterComicByKeywords ( comicObject ) {
-			if ( this.$store.state.selectedKeywords.length === 0 ) { return true }
-			for (var keyword of this.$store.state.selectedKeywords) {
+			if ( this.$store.getters.selectedKeywords.length === 0 ) { return true }
+			for (var keyword of this.$store.getters.selectedKeywords) {
 				if (comicObject.keywords.indexOf(keyword) === -1) { return false }
 			}
 			return true
 		},
 		setRouterQuery () {
 			let queryObj = {}
-			if (this.$store.state.categoryFilter.indexOf('All') < 0) {
-				queryObj.category = this.$store.state.categoryFilter
+			if (this.$store.getters.categoryFilter.indexOf('All') < 0) {
+				queryObj.category = this.$store.getters.categoryFilter
 			}
-			if (this.$store.state.tagFilter.indexOf('All') < 0) {
-				queryObj.classification = this.$store.state.tagFilter
+			if (this.$store.getters.tagFilter.indexOf('All') < 0) {
+				queryObj.classification = this.$store.getters.tagFilter
 			}
-			if (this.$store.state.searchFiltering) {
-				queryObj.search = this.$store.state.searchFiltering
+			if (this.$store.getters.searchFiltering) {
+				queryObj.search = this.$store.getters.searchFiltering
 			}
-			if (this.$store.state.selectedKeywords.length > 0) { 
-				queryObj.tags = this.$store.state.selectedKeywords
+			if (this.$store.getters.selectedKeywords.length > 0) { 
+				queryObj.tags = this.$store.getters.selectedKeywords
 			}
 			this.$router.replace({query: queryObj})
 		},
@@ -356,6 +353,7 @@ export default {
 				this.$store.commit('setTagFilter', this.listify(this.$route.query.classification))
 			}
 			if (this.$route.query.search) {
+				this.$store.commit('setSearchFiltering', this.$route.query.search)
 				this.searchFiltering = this.$route.query.search
 			}
 			if (this.$route.query.tags) {
@@ -375,7 +373,7 @@ export default {
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
 		setDetailLevel ( detailLevel ) {
-			this.$store.commit('setDetailLevel', detailLevel)
+			this.detailLevel = detailLevel
 			this.$cookies.set('detail', detailLevel)
 		},
 		handleResize () {
@@ -389,7 +387,6 @@ export default {
 	watch: {
 		searchFiltering: function () {
 			this.$store.commit('setSearchFiltering', this.searchFiltering)
-			this.paginate()
 		},
 	},
   created: function() {
@@ -397,14 +394,11 @@ export default {
 		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
-		setTimeout( () => {
-			this.paginate()
+		setTimeout( () => { //todo gtfo of here
 			this.$store.commit('setAllKeywords', config.demoKeywords)
 		}, 800)
-
-		this.$store.watch(this.$store.getters.getSelectedKeywords, this.paginate)
-		this.$store.watch(this.$store.getters.getSorting, this.paginate)
-		//todo watch tagFilter and categoryFilter
+		this.$store.dispatch('calculateFilteredComics')
+		this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
 	},
@@ -415,7 +409,7 @@ export default {
 				.slice(0, 8)
 		},
 		paginationButtons () {
-			let pages = Math.ceil(this.numberOfFilteredComics / config.comicsPerPage)
+			let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage)
 			let currentPage = this.$store.state.pageNumber
 			let buttonList = []
 			if (pages <= 9) {
