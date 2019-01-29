@@ -132,12 +132,16 @@
 </template>
 
 <script>
+import comicApi from '../../api/comicApi'
+
 export default {
   name: 'correctComic',
+
   props: {
     artistList: Array,
     keywordList: Array,
   },
+
   data: function () {
     return {
       isOpen: false,
@@ -154,31 +158,33 @@ export default {
       successMessage: '',
     }
   },
+
   methods: {
     processFileUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
     },
+
     addSelectedKeyword () {
       if (this.selectedKeywords.indexOf(this.selectedKeyword) < 0) {
         this.selectedKeywords.push(this.selectedKeyword)
       }
     },
+
     removeKeywordFromSelection (keywordName) {
       this.selectedKeywords.splice(this.selectedKeywords.indexOf(keywordName), 1)
     },
-    confirmAddComic () {
+
+    async confirmAddComic () {
       let uploadData = {
         comicName: this.comicName,
         artistId: this.artist.id,
         tag: this.tag,
         cat: this.cat,
         finished: this.finished,
-        files: this.selectedFiles,
         keywords: this.selectedKeywords
       }
 
-      // todo mock bla bla bla
-      let response = {success: true, message: 'Comic with this name already exists'}
+      let response = await comicApi.addNewComic(uploadData, this.selectedFiles)
 
       if (response.success) {
         this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
@@ -199,9 +205,12 @@ export default {
         this.successMessage = ''
       }
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
+
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },

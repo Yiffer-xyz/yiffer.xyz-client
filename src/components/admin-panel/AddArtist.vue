@@ -53,11 +53,14 @@
 </template>
 
 <script>
+import artistApi from '../../api/artistApi'
+
 export default {
   name: 'addArtist',
   props: {
     artistList: Array,
   },
+
   data: function () {
     return {
       isOpen: false,
@@ -76,13 +79,13 @@ export default {
       link6: '',
     }
   },
+
   methods: {
-    addNewArtist () {
+    async addNewArtist () {
       let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
-      let response = {success: true, message: 'Artist already exists!', results: {artistId: 160}}
+      let response = await artistApi.addNewArtist(name)
 
       if (response.success) {
-        this.artistList.push({name: this.artistName, id: response.results.artistId})
         this.newArtistSuccessMessage = 'Success adding artist ' + this.artistName
         this.newArtistErrorMessage = ''
         this.artistName = ''
@@ -93,9 +96,10 @@ export default {
         this.newArtistSuccessMessage = ''
       }
     },
-    addArtistLinks () {
+
+    async addArtistLinks () {
       let newLinks = [this.link1, this.link2, this.link3, this.link4, this.link5, this.link6].filter(x => x)
-      let response = {success: true, message: 'invalid link url'}
+      let response = await artistApi.addArtistLinks(this.artist.id, newLinks)
 
       if (response.success) {
         this.linksSuccessMessage = `Success adding ${newLinks.length} links to artist ${this.artist.name}`
@@ -109,6 +113,7 @@ export default {
     },
 
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
 }

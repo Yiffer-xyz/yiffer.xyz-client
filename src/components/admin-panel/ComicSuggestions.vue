@@ -33,8 +33,8 @@
               <td style="word-break: break-word;">{{suggestion.LinksComments}}</td>
               <td>{{suggestion.User}}</td>
               <td>
-                <button @click="processSuggestion(suggestion.ComicName, suggestion.User, true)" class="y-button no-margin-bot">Added</button>
-                <button @click="processSuggestion(suggestion.ComicName, suggestion.User, false)" class="y-button y-button-red no-margin-bot">Reject</button>
+                <button @click="processSuggestion(suggestion.Id, suggestion.User, true, suggestion.ComicName)" class="y-button no-margin-bot">Added</button>
+                <button @click="processSuggestion(suggestion.Id, suggestion.User, false, suggestion.ComicName)" class="y-button y-button-red no-margin-bot">Reject</button>
               </td>
             </tr>
           </tbody>
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import comicApi from '../../api/comicApi'
+
 export default {
   name: 'comicSuggestions',
   props: {
@@ -71,8 +73,8 @@ export default {
     }
   },
   methods: {
-    processSuggestion (comicName, user, isApproved) {
-      let response = {success: true, message: 'umm feuil her'}
+    async processSuggestion (comicId, user, isApproved, comicName) {
+      let response = await comicApi.processComicSuggestion(comicId, user, isApproved)
 
       if (response.success) {
         this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} comic ${comicName}`

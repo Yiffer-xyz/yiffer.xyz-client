@@ -4,28 +4,9 @@ import Vue from 'vue';
 export default {
 	state: {
 		selectedComic: undefined,
-		comicListAdmin: []
 	},
 
 	actions: {
-		loadComicListAdmin: context => {
-			return new Promise (async (resolve) => {
-				let response = await comicApi.getComics()
-				context.commit('setComicListAdmin', response.data)
-				resolve(response.data)
-			})
-		},
-
-		rateSelectedComic: (context, rating) => {
-			return new Promise( async (resolve) => {
-				let rateResponse = await comicApi.rateComic(context.getters.selectedComic, rating)
-				let updatedComicResponse = await comicApi.getComic(context.getters.selectedComic.name)
-				context.commit('updateOneComicInList', updatedComicResponse.data)
-				context.commit('setSelectedComic', updatedComicResponse.data)
-				resolve(rateResponse.data)
-			})
-		},
-
 		correctComic: (context, updatedComicData) => {
 			return new Promise( async (resolve) => {
 				let updateResponse = await comicApi.updateComic(updatedComicData)
@@ -47,9 +28,8 @@ export default {
 						resolve(addComicResponse.data)
 					})
 					.catch( error => {
-						// todo test todo
-						console.log(error)
-						alert(error)
+						// todo write real thing
+						resolve({success: false, message: 'Comic with this BLA BLA this is error message'})
 					})
 			})
 		},
@@ -71,7 +51,6 @@ export default {
 	},
 
 	mutations: {
-		setComicListAdmin: (state, comicList) => state.comicListAdmin = comicList,
 		setSelectedComic: (state, comicData) => state.selectedComic = comicData,
 		updateOneComicInList: (state, newComicData) => {
 			let selectedComicIndex = state.comicList.findIndex(c => c.id === newComicData.id)
@@ -80,8 +59,6 @@ export default {
 	},
 
 	getters: {
-		comicListAdmin: state => state.comicListAdmin,
-		comicListF: state => () => state.comicList,
 		selectedComic: state => state.selectedComic
 	}
 }

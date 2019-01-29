@@ -56,6 +56,10 @@ import PendingComics from '@/components/admin-panel/PendingComics.vue'
 import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
 
+import ArtistApi from '../api/artistApi'
+import keywordApi from '../api/keywordApi'
+import comicApi from '../api/comicApi'
+
 export default {
 	name: 'admin',
 	components: {
@@ -81,12 +85,12 @@ export default {
 		}
 	},
 	methods: {
-		async mockGetComicList () {
-			this.keywordList = config.demoKeywords
-			this.artistList = config.artistList
-			this.pendingComicList = config.pendingComicList
-			this.keywordSuggestionList = config.keywordSuggestionList
-			this.comicSuggestionList = config.comicSuggestionList
+		async loadData () {
+			this.keywordList = await keywordApi.getKeywordList()
+			this.artistList = await ArtistApi.getArtistList()
+			this.pendingComicList = await comicApi.getPendingComics()
+			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
+			this.comicSuggestionList = await comicApi.getSuggestedComicList()
 		},
 
 //todo alleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
@@ -129,7 +133,7 @@ export default {
 		},
   },
   async created () {
-		this.mockGetComicList()
+		this.loadData()
   }
 }
 

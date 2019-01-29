@@ -51,16 +51,21 @@
 </template>
 
 <script>
+import comicApi from '../../api/comicApi'
+
 export default {
   name: 'pendingComics',
+
   data: function () {
     return {
       isOpen: false,
     }
   },
+
   methods: {
     processComic (comicId, isApproved) {
-      let response = {success: true, message: 'umm'}
+      let response = comicApi.processPendingComic(comicId, isApproved)
+      
       if (response.success) {
         this.$emit('refresh-pending-comics')
         if (isApproved) {
@@ -68,9 +73,12 @@ export default {
         }
       }
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
+
   computed: {
     pendingComicList () {
       return this.$store.getters.comicList.filter(suggestion => !suggestion.Processed)

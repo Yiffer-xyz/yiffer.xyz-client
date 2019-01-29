@@ -75,11 +75,15 @@
 </template>
 
 <script>
+import keywordApi from '../../api/keywordApi'
+
 export default {
   name: 'addKeywords',
+
   props: {
     keywordList: Array,
   },
+
   data: function () {
     return {
       isOpen: false,
@@ -94,15 +98,18 @@ export default {
       newKeyword: '',
     }
   },
+
   methods: {
     addSelectedKeyword () {
       if (this.selectedKeywords.indexOf(this.selectedKeyword) < 0) {
         this.selectedKeywords.push(this.selectedKeyword)
       }
     },
+
     removeKeywordFromSelection (keywordName) {
       this.selectedKeywords.splice(this.selectedKeywords.indexOf(keywordName), 1)
     },
+
     addOrRemoveKeywordToDeleteList (keywordName) {
       if (this.keywordsToDelete.indexOf(keywordName) < 0) {
         this.keywordsToDelete.push(keywordName)
@@ -111,8 +118,9 @@ export default {
         this.keywordsToDelete.splice(this.keywordsToDelete.indexOf(keywordName), 1)
       }
     },
-    confirmAddKeywords () {
-      let response = {success: true, message: 'Tag already exists'}
+    
+    async confirmAddKeywords () {
+      let response = await keywordApi.addKeywordsToComic(this.comic, this.selectedKeywords)
 
       if (response.success) {
         this.successMessage = 'Successfully added tags to ' + this.comic.name
@@ -125,8 +133,9 @@ export default {
         this.successMessage = ''
       }
     },
-    confirmRemoveKeywords () {
-      let response = {success: true}
+
+    async confirmRemoveKeywords () {
+      let response = await keywordApi.removeKeywordsFromComic(this.comic, this.selectedKeywords)
 
       if (response.success) {
         this.successMessage = 'Successfully removed tags from ' + this.comic.name
@@ -139,8 +148,9 @@ export default {
         this.successMessage = ''
       }
     },
-    createKeyword () {
-      let response = {success: true, message: 'Tag already exists'}
+
+    async createKeyword () {
+      let response = await keywordApi.createKeyword(this.newKeyword)
 
       if (response.success) {
         this.newKwSuccessMessage = 'Successfully created tag ' + this.newKeyword
@@ -153,10 +163,10 @@ export default {
         this.newKwSuccessMessage = ''
       }
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
-  },
-  computed: {
   }
 }
 </script>

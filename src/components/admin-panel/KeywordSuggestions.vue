@@ -23,8 +23,8 @@
               <td>{{suggestion.Extension ? 'ADD' : 'REMOVE'}} {{suggestion.Keyword}}</td>
               <td>{{suggestion.User}}</td>
               <td>
-                <button @click="processKeyword(suggestion.ComicName, suggestion.Keyword, true)" class="y-button no-margin-bot">Approve</button>
-                <button @click="processKeyword(suggestion.ComicName, suggestion.Keyword, false)" class="y-button y-button-red no-margin-bot">Reject</button>
+                <button @click="processKeyword(suggestion.ComicId, suggestion.Keyword, true)" class="y-button no-margin-bot">Approve</button>
+                <button @click="processKeyword(suggestion.ComicId, suggestion.Keyword, false)" class="y-button y-button-red no-margin-bot">Reject</button>
               </td>
             </tr>
           </tbody>
@@ -48,11 +48,15 @@
 </template>
 
 <script>
+import keywordApi from '../../api/keywordApi'
+
 export default {
   name: 'keywordSuggestions',
+
   props: {
     keywordSuggestionList: Array
   },
+
   data: function () {
     return {
       isOpen: false,
@@ -60,9 +64,10 @@ export default {
       errorMessage: '',
     }
   },
+
   methods: {
-    processKeyword (comicName, keyword, isApproved) {
-      let response = {success: true, message: 'umm feuil her'}
+    async processKeyword (comicId, keyword, isApproved) {
+      let response = await keywordApi.processKeywordSuggestion(comicId, keyword, isApproved)
 
       if (response.success) {
         this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} tag ${keyword}`
@@ -74,7 +79,9 @@ export default {
         this.successMessage = ''
       }
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
 }

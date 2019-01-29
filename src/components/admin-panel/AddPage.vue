@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import comicApi from '../../api/comicApi'
+
 export default {
   name: 'addPage',
   data: function () {
@@ -99,9 +101,8 @@ export default {
     processFileUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
     },
-    uploadFiles () {
-      let response = {success: true, message: ''}
-      // response = {success: false, message: 'This is something weronggggggggg gggg'}
+    async uploadFiles () {
+      let response = await comicApi.addPagesToComic(this.comic, this.selectedFiles)
 
       if (response.success) {
         this.uploadSuccessMessage = 'Success updating ' + this.comic.name

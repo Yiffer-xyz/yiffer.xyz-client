@@ -72,11 +72,15 @@
 </template>
 
 <script>
+import comicApi from '../../api/comicApi'
+
 export default {
   name: 'correctComic',
+
   props: {
     artistList: Array,
   },
+
   data: function () {
     return {
       isOpen: false,
@@ -90,11 +94,13 @@ export default {
       successMessage: '',
     }
   },
+
   methods: {
-    submitChanges () {
+    async submitChanges () {
       // todo request
+      // todo check at this.comc faktisk blir sendt med oppdaterte felter, se watch for hvordan de settes
       // this.tag, this.cat, this.artist, this.finished
-      let response = {success: true, message: 'Somethign went wrong'}
+      let response = await comicApi.updateComic(this.comic)
 
       if (response.success) {
         this.successMessage = 'Successfully updated info of ' + this.comic.name
@@ -106,9 +112,12 @@ export default {
         this.successMessage = ''
       }
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
+
   watch: {
     comic: function () {
       if (this.comic) {

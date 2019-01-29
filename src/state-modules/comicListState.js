@@ -3,7 +3,7 @@ import config from '@/config.json'
 
 export default {
 	state: {
-		indexComicList: [],
+		comicList: [],
 		displayedComics: [],
 		filteredComics: [],
 		categoryFilter: ['All'],
@@ -27,20 +27,6 @@ export default {
 		calculateFilteredComics: context => {
 			recalculateFilteredComics(context.state)
 		}
-
-		// recalculateFilteredComics: context => {console.log('recalculating..')
-		// 	if (typeof context.getters.comicList !== "object") { return }
-		// 	let filteredComics = context.getters.comicList
-		// 		.filter(comicObj => context.getters.categoryFilter.indexOf('All')===0 || context.getters.categoryFilter.indexOf(comicObj.tag)>=0)
-		// 		.filter(comicObj => context.getters.tagFilter.indexOf('All')===0 || context.getters.tagFilter.indexOf(comicObj.tag)>=0)
-		// 		.filter(comicObj => {
-		// 			return comicObj.name.toLowerCase().indexOf( context.getters.searchFiltering.toLowerCase() ) >= 0 
-		// 				|| comicObj.artist.toLowerCase().indexOf( context.getters.searchFiltering.toLowerCase() ) >= 0
-		// 		})
-		// 		.filter(comicObj => ! context.getters.selectedKeywords.some(kw => comicObj.keywords.indexOf(kw) === -1))
-		// 	context.commit('setFilteredComics', filteredComics)
-		// 	console.log('new list made, is ', filteredComics)
-		// }
 	},
 
 	mutations: {
@@ -56,6 +42,12 @@ export default {
 		setSorting: (state, newSorting) => {
 			state.sorting = newSorting
 			state.pageNumber = 1
+
+			state.comicList.sort( (c1, c2) => {
+				if ( c1[state.sorting] < c2[state.sorting] ) { return 1 }
+				else if ( c1[state.sorting] > c2[state.sorting] ) { return -1 }
+				else { return 0 }
+			})
 			recalculateFilteredComics(state)
 		},
 		setSearchFiltering: (state, newSearchFiltering) => {
@@ -120,6 +112,15 @@ export default {
 		setFilteredComics: (state, comicList) => {
 			state.filteredComics =  comicList
 		},
+		
+		rateSelectedComic: (context, rating) => {
+			return new Promise( async (resolve) => {
+				let rateResponse = await comicApi.rateComic(context.getters.selectedComic, rating)
+				let updatedComicResponse = await comicApi.getComic(context.getters.selectedComic.name)
+				context.commit('updateOneComicInList', updatedComicResponse.data)
+				resolve(rateResponse.data)
+			})
+		},
 	},
 
 	getters: {
@@ -139,8 +140,8 @@ export default {
 function recalculateFilteredComics (state) {
 	if (typeof state.comicList !== "object") { return }
 	let filteredComics = state.comicList
-		// .filter(comicObj => state.categoryFilter.indexOf('All')===0 || state.categoryFilter.indexOf(comicObj.cat)>=0)
-		.filter(comicObj => state.tagFilter.indexOf('All')===0 || state.tagFilter.indexOf(comicObj.tag)>=0)
+		.filter(comicObj => state.categoryFilter.indexOf('All')===0 || state.categoryFilter.indexOf(comicObj.tag)>=0)
+		.filter(comicObj => state.tagFilter.indexOf('All')===0 || state.tagFilter.indexOf(comicObj.cat)>=0)
 		.filter(comicObj => {
 			return comicObj.name.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0 
 				|| comicObj.artist.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0
