@@ -35,5 +35,12 @@ export default {
     return new Promise(async resolve => {
 			resolve({'success': false, 'message': 'BAD SHIT HAPPEN'})
     })
-  }
+	},
+	
+	async addKeywordSuggestion (keywordName, addOrRemoveKeyword) {
+		// add will be 'add', remove else
+    return new Promise(async resolve => {
+			resolve({'success': true, 'message': 'ty for kw suggestion'})
+    })
+	}
 }

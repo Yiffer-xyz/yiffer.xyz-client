@@ -1,151 +1,159 @@
 <template>
 	<span>
-		<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
-		<div class="upper-body-div-comic">
-			<h1>{{$route.params.comicName}}</h1>
-			<share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
-			<span v-if="comic" class="comic-upper-div">
-				<h2>by 
-					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
-						{{comic.artist}}
+		<span v-if="comic">
+			<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
+			<div class="upper-body-div-comic">
+				<h1>{{$route.params.comicName}}</h1>
+				<share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
+				<span v-if="comic" class="comic-upper-div">
+					<h2>by 
+						<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
+							{{comic.artist}}
+						</router-link>
+					</h2>
+
+					<back-to-index class="margin-top-16"></back-to-index>
+
+					<button v-if="$store.state.authenticated && $store.state.userData.donator" class="y-button">Download comic</button>
+
+					<voting-button
+						:comic="comic"
+						:backgroundColors="{light: 'white', dark: '#091014'}"
+					></voting-button>
+
+					<div class="margin-top-16" v-if="comic">
+						<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
+						<p v-if="comic.links.previousComic">
+							<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
+								
+								<left-arrow/>
+								{{comic.links.previousComic}}
+							</router-link>
+						</p>
+						<p v-if="comic.links.nextComic">
+							<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
+								{{comic.links.nextComic}} 
+								<right-arrow/>
+							</router-link>
+						</p>
+					</div>
+
+					<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
+						<div 
+							class="keyword-static"
+							v-for="keyword in comic.keywords"
+							:key="keyword"
+						>
+							{{keyword}}
+						</div>
+
+						<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
+							add/remove tags
+						</div>
+						<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
+							hide adding/removing tags
+						</div>
+					</div>
+
+					<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
+						<div id="dropdownContainer">
+							<span>
+								<label for="addKeyword">Add tag</label>
+								<select v-model="addKeyword" name="addKeyword">
+									<option v-for="keyword in keywordsNotInComic" :key="keyword">
+										{{keyword}}
+									</option>
+								</select>
+								<button 
+									@click="suggestKeywordChange('add')"
+									:class="{'y-button-disabled': !addKeyword}"
+									class="y-button-small"
+								>
+									Add
+								</button>
+							</span>
+
+							<span style="margin-left: 20px;">
+								<label for="removeKeyword">Remove tag</label>
+								<select v-model="removeKeyword">
+									<option v-for="keyword in comic.keywords" :key="keyword">
+										{{keyword}}
+									</option>
+								</select>
+								<button 
+									@click="suggestKeywordChange('remove')"
+									:class="{'y-button-disabled': !removeKeyword}"
+									class="y-button-small y-button-red"
+								>
+									Remove
+								</button>
+							</span>
+						</div>
+
+						<p class="success-message" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
+						<p class="error-message" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
+					</div>
+
+					<div class="normal-button-row margin-top-16">
+						<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
+						<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
+						<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
+						<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
+					</div>
+				</span>
+
+				
+				<div v-else-if="!comicNotFound">
+					<p style="text-align:center">Loading comic... todo</p>
+				</div>
+
+				<div v-else>
+					Comic not found todo<!--todo check this-->
+					<p style="text-align:center">There is no comic with the name {{$route.params.comicName}}.</p>
+				</div>
+
+			</div>
+		
+			<div v-if="comic" id="comic-page-container" class="margin-top-16 margin-bottom-8">
+				<img 
+					v-for="pageNumber in comic.numberOfPages" 
+					:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+					:alt="`${comic.name} page ${pageNumber}`"
+					:id="'page' + (pageNumber-1)"
+					:key="pageNumber"
+					:class="['img-fit-height', 'comic-page']"
+					@click="cycleOneImageFit(pageNumber-1)"/>
+			</div>
+
+
+
+			<voting-button
+				:comic="comic"
+				:backgroundColors="{light: 'white', dark: '#091014'}"
+				v-if="comic"
+			></voting-button>
+			<br/>
+
+			<div class="margin-top-8 margin-bottom-8" v-if="comic">
+				<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
+				<p v-if="comic.links.previousComic">
+					<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
+						
+						<left-arrow/>
+						{{comic.links.previousComic}}
 					</router-link>
-				</h2>
-
-				<back-to-index class="margin-top-16"></back-to-index>
-
-				<button v-if="$store.state.authenticated && $store.state.userData.donator" class="y-button">Download comic</button>
-
-				<voting-button
-					:comic="comic"
-					:backgroundColors="{light: 'white', dark: '#091014'}"
-				></voting-button>
-
-				<div class="margin-top-16">
-					<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
-					<p v-if="comicLinks.previousComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
-							
-							<left-arrow/>
-							{{comicLinks.previousComic}}
-						</router-link>
-					</p>
-					<p v-if="comicLinks.nextComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comicLinks.nextComic } }">
-							{{comicLinks.nextComic}} 
-							<right-arrow/>
-						</router-link>
-					</p>
-				</div>
-
-				<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
-					<div 
-						class="keyword-static"
-						v-for="keyword in comic.keywords"
-						:key="keyword"
-					>
-						{{keyword}}
-					</div>
-
-					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
-						add/remove tags
-					</div>
-					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
-						hide adding/removing tags
-					</div>
-				</div>
-
-				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
-					<div id="dropdownContainer">
-						<span>
-							<label for="addKeyword">Add tag</label>
-							<select v-model="addKeyword" name="addKeyword">
-								<option v-for="keyword in keywordsNotInComic" :key="keyword">
-									{{keyword}}
-								</option>
-							</select>
-							<button 
-								@click="suggestKeywordChange('add')"
-								:class="{'y-button-disabled': !addKeyword}"
-								class="y-button-small"
-							>
-								Add
-							</button>
-						</span>
-
-						<span style="margin-left: 20px;">
-							<label for="removeKeyword">Remove tag</label>
-							<select v-model="removeKeyword">
-								<option v-for="keyword in comic.keywords" :key="keyword">
-									{{keyword}}
-								</option>
-							</select>
-							<button 
-								@click="suggestKeywordChange('remove')"
-								:class="{'y-button-disabled': !removeKeyword}"
-								class="y-button-small y-button-red"
-							>
-								Remove
-							</button>
-						</span>
-					</div>
-
-					<p class="success-message" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
-					<p class="error-message" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
-				</div>
-
-				<div class="normal-button-row margin-top-16">
-					<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
-					<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
-					<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
-					<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
-				</div>
-			</span>
-
-			<div v-else-if="!comicNotFound">
-				Loading comic
+				</p>
+				<p v-if="comic.links.nextComic">
+					<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
+						{{comic.links.nextComic}} 
+						<right-arrow/>
+					</router-link>
+				</p>
 			</div>
 
-			<div v-else>
-				Comic not found
-			</div>
-		</div>
-	
-		<div v-if="comic" id="comic-page-container" class="margin-top-16 margin-bottom-8">
-			<img 
-				v-for="pageNumber in comic.numberOfPages" 
-				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
-				:alt="`${comic.name} page ${pageNumber}`"
-				:id="'page' + (pageNumber-1)"
-				:key="pageNumber"
-				:class="['img-fit-height', 'comic-page']"
-				@click="cycleOneImageFit(pageNumber-1)"/>
-		</div>
-
-		<voting-button
-			:comic="comic"
-			:backgroundColors="{light: 'white', dark: '#091014'}"
-		></voting-button>
-		<br/>
-
-		<div class="margin-top-8 margin-bottom-8">
-			<p v-if="comicLinks.previousComic || comicLinks.nextComic">This comic is part of a series!</p>
-			<p v-if="comicLinks.previousComic">
-				<router-link :to="{ name: 'comic', params: { comicName: comicLinks.previousComic } }">
-					
-					<left-arrow/>
-					{{comicLinks.previousComic}}
-				</router-link>
-			</p>
-			<p v-if="comicLinks.nextComic">
-				<router-link :to="{ name: 'comic', params: { comicName: comicLinks.nextComic } }">
-					{{comicLinks.nextComic}} 
-					<right-arrow/>
-				</router-link>
-			</p>
-		</div>
-
-		<back-to-index></back-to-index>
-		<div style="margin-top: 16px;"> </div>
+			<back-to-index></back-to-index>
+			<div style="margin-top: 16px;"> </div>
+		</span>
 	</span>
 </template>
 
@@ -156,11 +164,16 @@ import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 
+import comicApi from '../api/comicApi'
+import keywordApi from '../api/keywordApi'
+
 export default {
 	name: 'comic',
+
 	props: {
 		userInfo: Object,
 	},
+
 	components: {
 		'back-to-index': BackToIndex,
 		'voting-button': VotingButton,
@@ -168,13 +181,13 @@ export default {
 		'right-arrow': RightArrow,
 		'share-icon': ShareIcon,
 	},
+
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
 			userIsDonator: true,
 			comicNotFound: false,
 			imageFitArray: [],
-			comicLinks: { previousComic: undefined, nextComic: undefined },
 			keywordSuggestionsActive: false,
 			keywordsNotInComic: [],
 			addKeyword: undefined,
@@ -184,46 +197,53 @@ export default {
 			showShareIcon: true,
 		}
 	},
+
 	methods: {
 		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+
 		setAllImagesFit ( imageFit ) {
 			document.querySelectorAll('.comic-page').forEach(page => {
 				page.classList.remove('img-fit-big', 'img-fit-thumb', 'img-fit-width', 'img-fit-height')
 				page.classList.add('img-fit-' + imageFit)
 			})
 		},
+
 		cycleOneImageFit ( pageNumber ) {
 			let imageElement = document.getElementById('page'+pageNumber)
 			let oldClassList = [...imageElement.classList]
 			let oldFit
-			if (oldClassList.indexOf('img-fit-width') >= 0) { oldFit = 'width' }
+			if (oldClassList.indexOf('img-fit-width') >= 0) 			{ oldFit = 'width' }
 			else if (oldClassList.indexOf('img-fit-height') >= 0) { oldFit = 'height' }
-			else if (oldClassList.indexOf('img-fit-big') >= 0) { oldFit = 'big' }
-			else if (oldClassList.indexOf('img-fit-thumb') >= 0) { oldFit = 'thumb' }
+			else if (oldClassList.indexOf('img-fit-big') >= 0) 		{ oldFit = 'big' }
+			else if (oldClassList.indexOf('img-fit-thumb') >= 0) 	{ oldFit = 'thumb' }
 			let newFit = imageFitCycleOrder[ (imageFitCycleOrder.indexOf(oldFit)+1) % 4 ]
 			imageElement.classList.remove('img-fit-'+oldFit)
 			imageElement.classList.add('img-fit-'+newFit)
 		},
+
 		initializeImageFitArray () {
 			if ( this.comic ) {
 				for (var i=0; i<this.comic.numberOfPages; i++) { this.imageFitArray.push('height') }
 			}
 		},
+
 		toggleKeywordSuggestions () {
 			this.keywordSuggestionsActive = !this.keywordSuggestionsActive
 			if ( this.keywordsNotInComic.length === 0 ) { this.getKeywordsNotInComic() }
 		},
+
 		async getKeywordsNotInComic () {
-			let allKeywords = await mockGetAllKeywords()
+			let allKeywords = await keywordApi.getKeywordList()
 			for ( var keyword of allKeywords ) {
 				if ( this.comic.keywords.indexOf(keyword) < 0 ) {
 					this.keywordsNotInComic.push(keyword)
 				}
 			}
 		},
+
 		async suggestKeywordChange ( typeOfChange ) {
 			let relevantKeyword = typeOfChange==='add' ? this.addKeyword : this.removeKeyword
-			let suggestionResponse = await mockKeywordSuggestion (relevantKeyword)
+			let suggestionResponse = await keywordApi.addKeywordSuggestion(relevantKeyword, typeOfChange)
 
 			if ( suggestionResponse.success ) {
 				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${suggestionResponse.message})`
@@ -241,10 +261,11 @@ export default {
 				}
 			}
 			else {
-				this.keywordErrorMessage = suggestionResponse.message
+				this.keywordErrorMessage = `Error adding keyword ${relevantKeyword}.` // todo better logging
 				this.keywordSuccessMessage = undefined
 			}
 		},
+
 		fitImagesForMobile () {
 			if (window.innerWidth < 900) {
 				let resizeIntervalHook = setInterval(() => {
@@ -255,6 +276,7 @@ export default {
 				}, 30)
 			}
 		},
+
 		async shareClicked () {
 			if (navigator.share === undefined) { return }
 			let shareDataObject = {
@@ -266,59 +288,30 @@ export default {
 			// todo log something
 		}
 	},
+
 	created: async function () {
 		if (navigator.share === undefined) {
 			// this.showShareIcon = false todo
 		}
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', false)
-		this.comicLinks = await mockGetLinks()  //todo big changes, links ska med i comic. hvis kw e s[ why the fuck not
 		if ( !this.comic ) {
-			mockGetComic(this.$route.params.comicName)
-				.then( comic => {
-					this.comic = comic
-					this.$store.commit('setComicForVotingModal', comic)
-					this.initializeImageFitArray()
-					this.fitImagesForMobile()
-				})
+			let response = await comicApi.getComic(this.$route.params.comicName)
+			if (response.success) {
+				this.comic = response.comic
+				this.$store.commit('setComicForVotingModal', this.comic)
+				this.initializeImageFitArray()
+				this.fitImagesForMobile()
+			}
+			else {
+				this.comicNotFound = true
+			}
 		}
 		else {
 			this.initializeImageFitArray()
 			this.fitImagesForMobile()
 		}
 	}
-}
-
-async function mockGetComic () {
-	return await new Promise( (resolve) => {
-		setTimeout(() => {
-			resolve({"tag": "Furry", "name": "Dress to Undress", "keywords": ['asd', 'asdasdasd', 'asdasdasdasd', 'asad asda', 'xccxxc', 'xcxcxcxc ', 'xccx', 'xcxc', 'asdasdasd a', 'asd  a a ', 'asdasd ',"finnick", "chipmunk", "charizard", "footjob", "fisting"], "cat": "MM", "lastUpdateNewPageCount": 0, "updated": "2017-10-24T11:04:46.000Z", "numberOfPages": 21, "userRating": 7.881, "id": 343, "created": "2017-07-01T00:00:00.000Z", "finished": 0, "artist": "Seth-Iova", "yourRating": 0})
-		}, 500)
-	})
-}
-
-async function mockGetLinks () {
-	return await new Promise( (resolve) => {
-		setTimeout(() => {
-			resolve({nextComic: 'Breaking Bad Habits'})
-		}, 500)
-	})
-}
-
-async function mockKeywordSuggestion () {
-	return await new Promise( (resolve) => {
-		setTimeout(() => {
-			resolve({success: false, message: 'nasdnlasd nlaksd lkasdlna n ann nnad nn '})
-		}, 500)
-	})
-}
-
-async function mockGetAllKeywords () {
-	return await new Promise( (resolve) => {
-		setTimeout(() => {
-			resolve(['a', 'bb', 'ccc', 'dd', 'ee', 'dasd', 'asda', 'asdasd', 'add', 'asddd', 'ddda', 'atr', 'dfg', 'dfgd', 'ghjg', 'ghjj', 'wer', 'wrrr'])
-		}, 500)
-	})
 }
 
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
