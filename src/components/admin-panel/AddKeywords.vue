@@ -19,7 +19,7 @@
         <div class="vertical-flex">
           <p class="add-kw-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword.name">{{keyword.name}}</option>
+            <option v-for="keyword in keywordList" :key="keyword.Keyword" :value="keyword.Keyword">{{keyword.Keyword}}</option>
           </select>
           <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
         </div>

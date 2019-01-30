@@ -1,159 +1,156 @@
 <template>
 	<span>
-		<span v-if="comic">
-			<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
-			<div class="upper-body-div-comic">
+		<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
+		<div class="upper-body-div-comic">
+			<span v-if="comic" class="comic-upper-div">
 				<h1>{{$route.params.comicName}}</h1>
 				<share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
-				<span v-if="comic" class="comic-upper-div">
-					<h2>by 
-						<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
-							{{comic.artist}}
+				<h2>by 
+					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
+						{{comic.artist}}
+					</router-link>
+				</h2>
+
+				<back-to-index class="margin-top-16"></back-to-index>
+
+				<button v-if="$store.state.authenticated && $store.state.userData.donator" class="y-button">Download comic</button>
+
+				<voting-button
+					:comic="comic"
+					:backgroundColors="{light: 'white', dark: '#091014'}"
+				></voting-button>
+
+				<div class="margin-top-16" v-if="comic">
+					<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
+					<p v-if="comic.links.previousComic">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
+							
+							<left-arrow/>
+							{{comic.links.previousComic}}
 						</router-link>
-					</h2>
-
-					<back-to-index class="margin-top-16"></back-to-index>
-
-					<button v-if="$store.state.authenticated && $store.state.userData.donator" class="y-button">Download comic</button>
-
-					<voting-button
-						:comic="comic"
-						:backgroundColors="{light: 'white', dark: '#091014'}"
-					></voting-button>
-
-					<div class="margin-top-16" v-if="comic">
-						<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
-						<p v-if="comic.links.previousComic">
-							<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
-								
-								<left-arrow/>
-								{{comic.links.previousComic}}
-							</router-link>
-						</p>
-						<p v-if="comic.links.nextComic">
-							<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
-								{{comic.links.nextComic}} 
-								<right-arrow/>
-							</router-link>
-						</p>
-					</div>
-
-					<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
-						<div 
-							class="keyword-static"
-							v-for="keyword in comic.keywords"
-							:key="keyword"
-						>
-							{{keyword}}
-						</div>
-
-						<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
-							add/remove tags
-						</div>
-						<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
-							hide adding/removing tags
-						</div>
-					</div>
-
-					<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
-						<div id="dropdownContainer">
-							<span>
-								<label for="addKeyword">Add tag</label>
-								<select v-model="addKeyword" name="addKeyword">
-									<option v-for="keyword in keywordsNotInComic" :key="keyword">
-										{{keyword}}
-									</option>
-								</select>
-								<button 
-									@click="suggestKeywordChange('add')"
-									:class="{'y-button-disabled': !addKeyword}"
-									class="y-button-small"
-								>
-									Add
-								</button>
-							</span>
-
-							<span style="margin-left: 20px;">
-								<label for="removeKeyword">Remove tag</label>
-								<select v-model="removeKeyword">
-									<option v-for="keyword in comic.keywords" :key="keyword">
-										{{keyword}}
-									</option>
-								</select>
-								<button 
-									@click="suggestKeywordChange('remove')"
-									:class="{'y-button-disabled': !removeKeyword}"
-									class="y-button-small y-button-red"
-								>
-									Remove
-								</button>
-							</span>
-						</div>
-
-						<p class="success-message" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
-						<p class="error-message" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
-					</div>
-
-					<div class="normal-button-row margin-top-16">
-						<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
-						<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
-						<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
-						<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
-					</div>
-				</span>
-
-				
-				<div v-else-if="!comicNotFound">
-					<p style="text-align:center">Loading comic... todo</p>
+					</p>
+					<p v-if="comic.links.nextComic">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
+							{{comic.links.nextComic}} 
+							<right-arrow/>
+						</router-link>
+					</p>
 				</div>
 
-				<div v-else>
-					Comic not found todo<!--todo check this-->
-					<p style="text-align:center">There is no comic with the name {{$route.params.comicName}}.</p>
+				<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
+					<div 
+						class="keyword-static"
+						v-for="keyword in comic.keywords"
+						:key="keyword"
+					>
+						{{keyword}}
+					</div>
+
+					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
+						add/remove tags
+					</div>
+					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
+						hide adding/removing tags
+					</div>
 				</div>
 
+				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
+					<div id="dropdownContainer">
+						<span>
+							<label for="addKeyword">Add tag</label>
+							<select v-model="addKeyword" name="addKeyword">
+								<option v-for="keyword in keywordsNotInComic" :key="keyword.Keyword">
+									{{keyword.Keyword}}
+								</option>
+							</select>
+							<button 
+								@click="suggestKeywordChange('add')"
+								:class="{'y-button-disabled': !addKeyword}"
+								class="y-button-small"
+							>
+								Add
+							</button>
+						</span>
+
+						<span style="margin-left: 20px;">
+							<label for="removeKeyword">Remove tag</label>
+							<select v-model="removeKeyword">
+								<option v-for="keyword in comic.keywords" :key="keyword">
+									{{keyword}}
+								</option>
+							</select>
+							<button 
+								@click="suggestKeywordChange('remove')"
+								class="y-button-small"
+								:class="{'y-button-disabled': !removeKeyword, 'y-button-red': removeKeyword}"
+							>
+								Remove
+							</button>
+						</span>
+					</div>
+
+					<p class="success-message margin-top-8" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
+					<p class="error-message margin-top-8" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
+				</div>
+
+				<div class="normal-button-row margin-top-16">
+					<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
+					<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
+					<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
+					<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
+				</div>
+			</span>
+
+			
+			<div v-else-if="!comicNotFound">
+				<p style="text-align:center; margin-top: 48px;">Loading comic...</p>
 			</div>
-		
-			<div v-if="comic" id="comic-page-container" class="margin-top-16 margin-bottom-8">
-				<img 
-					v-for="pageNumber in comic.numberOfPages" 
-					:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
-					:alt="`${comic.name} page ${pageNumber}`"
-					:id="'page' + (pageNumber-1)"
-					:key="pageNumber"
-					:class="['img-fit-height', 'comic-page']"
-					@click="cycleOneImageFit(pageNumber-1)"/>
+
+			<div v-else>
+				<p style="text-align:center; margin-top: 48px;"><b>Comic not found</b><br/>There is no comic with the name {{$route.params.comicName}}</p>
 			</div>
 
+		</div>
+	
+		<div v-if="comic" id="comic-page-container" class="margin-top-16 margin-bottom-8">
+			<img 
+				v-for="pageNumber in comic.numberOfPages" 
+				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+				:alt="`${comic.name} page ${pageNumber}`"
+				:id="'page' + (pageNumber-1)"
+				:key="pageNumber"
+				:class="['img-fit-height', 'comic-page']"
+				@click="cycleOneImageFit(pageNumber-1)"/>
+		</div>
 
 
-			<voting-button
-				:comic="comic"
-				:backgroundColors="{light: 'white', dark: '#091014'}"
-				v-if="comic"
-			></voting-button>
-			<br/>
 
-			<div class="margin-top-8 margin-bottom-8" v-if="comic">
-				<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
-				<p v-if="comic.links.previousComic">
-					<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
-						
-						<left-arrow/>
-						{{comic.links.previousComic}}
-					</router-link>
-				</p>
-				<p v-if="comic.links.nextComic">
-					<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
-						{{comic.links.nextComic}} 
-						<right-arrow/>
-					</router-link>
-				</p>
-			</div>
+		<voting-button
+			:comic="comic"
+			:backgroundColors="{light: 'white', dark: '#091014'}"
+			v-if="comic"
+		></voting-button>
+		<br/>
 
-			<back-to-index></back-to-index>
-			<div style="margin-top: 16px;"> </div>
-		</span>
+		<div class="margin-top-8 margin-bottom-8" v-if="comic">
+			<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
+			<p v-if="comic.links.previousComic">
+				<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
+					
+					<left-arrow/>
+					{{comic.links.previousComic}}
+				</router-link>
+			</p>
+			<p v-if="comic.links.nextComic">
+				<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
+					{{comic.links.nextComic}} 
+					<right-arrow/>
+				</router-link>
+			</p>
+		</div>
+
+		<back-to-index></back-to-index>
+		<div style="margin-top: 16px;"> </div>
 	</span>
 </template>
 
@@ -246,17 +243,13 @@ export default {
 			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.Id, relevantKeyword, typeOfChange)
 
 			if ( suggestionResponse.success ) {
-				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${suggestionResponse.message})`
+				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${typeOfChange} ${relevantKeyword+''})`
 				this.keywordErrorMessage = undefined
 
 				if ( typeOfChange === 'add' ) {
-					this.comic.keywords.splice(this.comic.keywords.indexOf(relevantKeyword))
-					this.keywordsNotInComic.push(relevantKeyword)
 					this.addKeyword = undefined
 				}
 				else {
-					this.keywordsNotInComic.splice(this.keywordsNotInComic.indexOf(relevantKeyword))
-					this.comic.keywords.push(relevantKeyword)
 					this.removeKeyword = undefined
 				}
 			}

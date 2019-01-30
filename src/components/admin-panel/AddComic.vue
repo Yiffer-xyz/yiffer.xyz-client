@@ -99,7 +99,7 @@
       <div class="horizontal-flex">
         <div class="vertical-flex">
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword.name">{{keyword.name}}</option>
+            <option v-for="keyword in keywordList" :key="keyword.Keyword" :value="keyword.Keyword">{{keyword.Keyword}}</option>
           </select>
           <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
         </div>
