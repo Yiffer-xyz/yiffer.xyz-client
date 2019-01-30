@@ -67,9 +67,13 @@
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
 
+import comicApi from '../api/comicApi'
+
 export default {
 	name: 'suggestComic',
+
 	components: { 'back-to-index': BackToIndex },
+
 	data: function () {
 		return {
 			comicName: '',
@@ -79,18 +83,18 @@ export default {
 			errorMessage: '',
 		}
 	},
+
 	methods: {
 		async submitButtonClicked () {
-			let response = undefined
+			let response
 			if (!this.comicName || !this.linksComments) {
 				response = {success: false, message: 'Please provide a comic name and some link to some page or an album somehwere.'}
 			}
 			else {
-				// todo API call todo AWAIT
-				response = {success: true, message: ''}
+				response = await comicApi.addComicSuggestion(this.comicName, this.artist, this.linksComments)
 			}
 			if (response.success) {
-				this.successMessage = 'Thank you for helping!'
+				this.successMessage = `Thank you for your suggestion of ${this.comicName+''}!`
 				this.comicName = ''
 				this.artist = ''
 				this.linksComments = ''

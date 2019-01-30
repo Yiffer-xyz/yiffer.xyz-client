@@ -71,5 +71,11 @@ export default {
 		return new Promise(resolve => {
 			resolve({success: true})
 		})
+	},
+
+	async addComicSuggestion (comicName, artist, linksComments) {
+		return new Promise(resolve => {
+			resolve({success: true, message: 'Not no'})
+		})
 	}
 }
