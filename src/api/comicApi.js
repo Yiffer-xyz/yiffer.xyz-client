@@ -65,5 +65,11 @@ export default {
 		return new Promise(resolve => {
 			resolve({'success': true, 'message': 'ok o ko ko kok fine'})
 		})
+	},
+
+	async rateComic (comicId, newRating) {
+		return new Promise(resolve => {
+			resolve({success: true})
+		})
 	}
 }

@@ -13,7 +13,7 @@
 							:key="i"
 							:class="[
 								'vote-box-colored-' + i,
-								{'vote-box-uncolored': currentMouseoverNumber<i}
+								{'vote-box-uncolored': numberToHover<i}
 							]"
 							@mouseover="onNumberMouseover(i)"
 							@mouseout="onNumberMouseOut()"
@@ -36,40 +36,43 @@
 </template>
 
 <script>
+import comicApi from '../api/comicApi'
 
 export default {
 	name: 'voting-modal',
+
 	data: function () {
 		return {
-			currentMouseoverNumber: this.$store.state.comicForVotingModal.yourRating,
+			currentMouseoverNumber: undefined,
 		}
 	},
+
+	computed: {
+		numberToHover: () => this.currentMouseoverNumber || this.$store.state.comicForVotingModal.yourRating || 0
+	},
+
 	methods: {
 		onNumberMouseover ( number ) {
 			this.currentMouseoverNumber = number
 		},
+
 		onNumberMouseOut () {
-			this.currentMouseoverNumber = this.$store.state.comicForVotingModal.yourRating
+			this.currentMouseoverNumber = undefined
 		},
+
 		async onNumberClick ( number ) {
 			this.closeModal()
-			let votingResponse = await mockSendVote(number)
+			let votingResponse = await comicApi.rateComic($store. number)
 			if ( votingResponse.success ) {
-				let updatedComic = await mockGetComicDetails()
+				let updatedComic = await comicApi.getComic(this.$store.state.comicForVotingModal.Name)
 				this.$store.commit('updateOneComicInList', updatedComic)
 			}	
 		},
+
 		closeModal () {
 			this.$store.commit('setVotingModalVisibility', false)
 		}
 	},
-}
-
-async function mockSendVote () {
-	return {success: true}
-}
-async function mockGetComicDetails () {
-	return {"tag": "Furry", "name": "Anarchy", "keywords": ["bird", "fox mccloud", "autofellatio", "cub", "draenei", "animal crossing", "discord"], "cat": "MF", "lastUpdateNewPageCount": 0, "updated": "2015-01-01T00:00:00.000Z", "numberOfPages": 4, "userRating": 7.4, "id": 252, "created": "2017-07-01T00:00:00.000Z", "finished": 1, "artist": "Wolfy-Nail", "yourRating": 0}
 }
 </script>
 
