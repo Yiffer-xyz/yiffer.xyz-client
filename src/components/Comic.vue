@@ -243,7 +243,7 @@ export default {
 
 		async suggestKeywordChange ( typeOfChange ) {
 			let relevantKeyword = typeOfChange==='add' ? this.addKeyword : this.removeKeyword
-			let suggestionResponse = await keywordApi.addKeywordSuggestion(relevantKeyword, typeOfChange)
+			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.Id, relevantKeyword, typeOfChange)
 
 			if ( suggestionResponse.success ) {
 				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${suggestionResponse.message})`

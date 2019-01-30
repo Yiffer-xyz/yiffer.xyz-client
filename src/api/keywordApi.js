@@ -37,7 +37,7 @@ export default {
     })
 	},
 	
-	async addKeywordSuggestion (keywordName, addOrRemoveKeyword) {
+	async addKeywordSuggestion (comicId, keywordName, addOrRemoveKeyword) {
 		// add will be 'add', remove else
     return new Promise(async resolve => {
 			resolve({'success': true, 'message': 'ty for kw suggestion'})
