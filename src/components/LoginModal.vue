@@ -91,11 +91,15 @@
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 
+import authApi from '../api/authApi'
+
 export default {
 	name: 'login-modal',
+
 	components: {
 		'checkbox-icon': CheckboxIcon,
 	},
+
 	data: function () {
 		return {
 			modalContext: 'login',
@@ -117,58 +121,55 @@ export default {
 			forgottenLoading: false,
 		}
 	},
+
 	methods: {
 		setModalContext ( modalContext ) {
 			this.modalContext = modalContext
 			this.emptyInputFields()
 			this.clearErrorMessages()
 		},
-		loginConfirmClicked ( buttonEvent ) {
+
+		async loginConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
 			this.loginLoading = true
-			let mockApiResponse = this.mockLoginSuccess()
-
+			let loginData = {username: this.loginUsername, password: this.loginPassword}
+			let response = await this.$store.dispatch('login', loginData)
 			this.loginLoading = false
-			if ( mockApiResponse.success ) {
-				this.$store.commit('setUserData', mockApiResponse.userData)
-				// this.$store.commit('setUsername', mockApiResponse.username)
+			if ( response.success ) {
 				this.closeModal()
 			}
 			else {
 				this.emptyInputFields()
-				this.loginErrorMessage = mockApiResponse.message
+				this.loginErrorMessage = response.message
 			}
 		},
-		signupConfirmClicked ( buttonEvent ) {
+
+		async signupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
 			this.signupLoading = true
-			let mockApiResponse = this.mockSignupSuccess()
-
+			let signupData = {username: this.signupUsername, password: this.signupPassword, email: this.signupEmail}
+			let response = await this.$store.dispatch('signup', signupData)
 			this.signupLoading = false
-			if ( mockApiResponse.success ) {
-				this.$store.commit('setUserData', mockApiResponse.userData)
-				// this.$store.commit('setUsername', mockApiResponse.username)
-				// this.$store.commit('setUserType', 'admin') //todoooooooooooooooo
+			if ( response.success ) {
 				this.closeModal()
 			}
 			else {
 				this.emptyInputFields()
-				this.signupErrorMessage = mockApiResponse.message
+				this.signupErrorMessage = response.message
 			}
 		},
-		forgottenConfirmClicked ( buttonEvent ) {
-			buttonEvent.preventDefault()
-			this.forgottenLoading = true
-			let mockApiResponse = this.mockForgottenError()
 
-			this.forgottenLoading = false
-			if ( mockApiResponse.success ) {
+		async forgottenConfirmClicked ( buttonEvent ) {
+			buttonEvent.preventDefault()
+			let response = await authApi.forgottenPassword(this.forgottenUsername)
+			if (response.success) {
 				this.forgottenSuccessMessage = 'Link for resetting password sent to your email!'
 			}
 			else {
-				this.forgottenErrorMessage = mockApiResponse.message
+				this.forgottenErrorMessage = 'No such username or email'
 			}
 		},
+
 		emptyInputFields () {
 			this.loginUsername = ''
 			this.loginPassword = ''
@@ -177,11 +178,13 @@ export default {
 			this.signupEmail = ''
 			this.forgottenUsername = ''
 		},
+
 		clearErrorMessages () {
 			this.signupErrorMessage = ''
 			this.loginErrorMessage = ''
 			this.forgottenErrorMessage = ''
 		},
+
 		closeModal () {
 			this.$store.commit('setLoginModalVisibility', false)
 			this.setModalContext('login')
@@ -259,7 +262,7 @@ export default {
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
 
 	.text-button {
-		margin-top: 5px;
+		margin-top: 10px;
 	}
 
 	@media (max-width: 900px) {
@@ -318,11 +321,6 @@ export default {
 	padding: 6px 30px;
 	align-self: center;
 	margin-bottom: 32px;
-}
-
-.modal-header {
-	font-size: 35px;
-	font-weight: 400;
 }
 
 .modal-input-explanation {

@@ -333,10 +333,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 		margin-top: 16px;
 	}
 }
-
-.margin-top-16 {
-	margin-top: 16px;
-}
 .margin-top-8 {
 	margin-top: 8px;
 }

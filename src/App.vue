@@ -40,7 +40,7 @@
 			</router-link>
 
 			<button
-				v-if="!$store.state.authenticated" 
+				v-if="!$store.getters.isAuthenticated" 
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="showLoginModal()" 
@@ -50,7 +50,7 @@
 
 
 			<button 
-				v-if="$store.state.authenticated" 
+				v-if="$store.getters.isAuthenticated" 
 				class="theme-button" 
 				style="margin-left: 3px;"
 				@click="logout()" 
@@ -60,7 +60,7 @@
 
 
 			<router-link 
-				v-if="$store.state.authenticated"
+				v-if="$store.getters.isAuthenticated"
 				style="margin-left: 3px;"
 				:to="{ name: 'profile' }"
 				class="theme-button"
@@ -70,7 +70,7 @@
 
 
 			<router-link 
-				v-if="$store.state.userData.userType === 'mod' || $store.state.userData.userType === 'admin'"
+				v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'mod' || $store.getters.userData.userType === 'admin')"
 				style="margin-left: 3px;"
 				:to="{ name: 'admin' }"
 				class="theme-button"
@@ -119,7 +119,7 @@ export default {
 			this.$store.commit('setLoginModalVisibility', true)
 		},
 		logout () {
-			this.$store.commit('destroyUserData')
+			this.$store.dispatch('logout')
 		}
 	},
 	data: function () {
@@ -370,6 +370,9 @@ option, select, input {
 .margin-top-8 {
 	margin-top: 8px;
 }
+.margin-top-16 {
+	margin-top: 16px;
+}
 .margin-bottom-8 {
 	margin-bottom: 8px;
 }
@@ -391,6 +394,15 @@ h1 {
 }
 .admin-content-box-open {
 	box-shadow: 0 0 20px 1px $themeGray3;
+}
+
+.modal-header {
+	font-size: 35px;
+	font-weight: 400;
+
+	@media (max-width: 900px) {
+		font-size: 25px;
+	}
 }
 
 .whole-body-text {

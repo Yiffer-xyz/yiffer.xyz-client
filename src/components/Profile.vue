@@ -52,7 +52,7 @@
 			<p class="error-message" v-if="errorMessagePassword">{{errorMessagePassword}}</p>
 			<p class="success-message" v-if="successMessagePassword">{{successMessagePassword}}</p>
 			
-			<button @click="submitChangePassword()" class="y-button margin-top-4">Submit password change</button>
+			<button @click="submitChangePassword()" class="y-button margin-top-16">Submit password change</button>
 		</div>
 	</div>
 </template>

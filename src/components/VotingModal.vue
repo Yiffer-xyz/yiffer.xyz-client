@@ -154,11 +154,6 @@ export default {
 
 }
 
-.modal-header {
-	font-size: 35px;
-	font-weight: 400;
-}
-
 .voting-number {
 	width: 10%;
 	font-weight: 600;

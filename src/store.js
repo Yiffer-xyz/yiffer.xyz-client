@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import comic from './state-modules/comicState';
 import comicList from './state-modules/comicListState'
+import auth from './state-modules/authState'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
 	modules: {
 		comic,
-		comicList
+		comicList,
+		auth
 	},
   state: {
 		darkTheme: false,
@@ -30,22 +32,22 @@ export default new Vuex.Store({
 		authenticated: false,
   },
   mutations: {
-		setUserDataFromCookies ( state ) {
-			if ($cookies.isKey('user-data')) {
-				state.userData = $cookies.get('user-data')
-				state.authenticated = true
-			}
-		},
-		setUserData ( state, userData ) {
-			state.userData = userData
-			state.authenticated = true
-			$cookies.set('user-data', userData)
-		},
-		destroyUserData ( state ) {
-			state.userData = {}
-			state.authenticated = false
-			$cookies.remove('user-data')
-		},
+		// setUserDataFromCookies ( state ) {
+		// 	if ($cookies.isKey('user-data')) {
+		// 		state.userData = $cookies.get('user-data')
+		// 		state.authenticated = true
+		// 	}
+		// },
+		// setUserData ( state, userData ) {
+		// 	state.userData = userData
+		// 	state.authenticated = true
+		// 	$cookies.set('user-data', userData)
+		// },
+		// destroyUserData ( state ) {
+		// 	state.userData = {}
+		// 	state.authenticated = false
+		// 	$cookies.remove('user-data')
+		// },
 		setUsername ( state, username ) { state.username = username },
 		setUserType ( state, userType ) { state.userType = userType },
 		clickComic ( state, comic ) { state.clickedComic = comic },
