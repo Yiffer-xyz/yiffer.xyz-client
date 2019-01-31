@@ -5,7 +5,7 @@
 			<h1>Yiffer.xyz</h1>
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
-			<p style="margin-top: 10px;" v-if="!$store.state.authenticated">
+			<p style="margin-top: 10px;" v-if="!$store.getters.isAuthenticated">
 				<button class="y-button" @click="showLoginModal">
 					<i data-feather="log-in"></i> Log in
 				</button> 
@@ -282,19 +282,7 @@ export default {
 			else {
 				this.$store.commit('setPageNumber', pageNumber)
 			}
-			// this.$store.commit('setPageNumber', pageNumber||1)
 
-			// let filteredComics = this.$store.getters.comicList
-			// 	.filter( this.filterComicByTag )
-			// 	.filter( this.filterComicByCategory )
-			// 	.filter( this.filterComicByNameOrArtist )
-			// 	.filter( this.filterComicByKeywords )
-			// this.numberOfFilteredComics = filteredComics.length
-			// this.$store.commit('setDisplayedComics', filteredComics.slice (
-			// 		(this.$store.state.pageNumber-1) * config.comicsPerPage,
-			// 		(this.$store.state.pageNumber) * config.comicsPerPage 
-			// 	)
-			// )
 			this.setRouterQuery()
 		},
 

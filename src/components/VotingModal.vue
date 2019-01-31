@@ -48,7 +48,9 @@ export default {
 	},
 
 	computed: {
-		numberToHover: () => this.currentMouseoverNumber || this.$store.state.comicForVotingModal.yourRating || 0
+		numberToHover () {
+			return this.currentMouseoverNumber || this.$store.state.comicForVotingModal.yourRating || 0
+		}
 	},
 
 	methods: {
@@ -62,10 +64,12 @@ export default {
 
 		async onNumberClick ( number ) {
 			this.closeModal()
-			let votingResponse = await comicApi.rateComic($store. number)
+			let votingResponse = await comicApi.rateComic(this.$store. number)
 			if ( votingResponse.success ) {
-				let updatedComic = await comicApi.getComic(this.$store.state.comicForVotingModal.Name)
-				this.$store.commit('updateOneComicInList', updatedComic)
+				let updatedComicResponse = await comicApi.getComic(this.$store.state.comicForVotingModal.Name)
+				if (updatedComicResponse.success) {
+					this.$store.dispatch('updateOneComicInList', updatedComicResponse.result)
+				}
 			}	
 		},
 

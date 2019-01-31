@@ -1,7 +1,7 @@
 <template>
-	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.authenticated}">
+	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
 		<!-- <span :style="{'background-color': this.backgroundColor}"> -->
-			<span v-if="$store.state.authenticated">Rate</span>
+			<span v-if="$store.getters.isAuthenticated">Rate</span>
 			<span v-else><login-icon/> Log in to rate</span>
 		<!-- </span> -->
 	</button>
@@ -23,7 +23,7 @@ export default {
 	},
 	methods: {
 		showSomeModal () {
-			if (this.$store.state.authenticated) {
+			if (this.$store.getters.isAuthenticated) {
 				this.$store.commit('setComicForVotingModal', this.comic)
 				this.$store.commit('setVotingModalVisibility', true)
 			}

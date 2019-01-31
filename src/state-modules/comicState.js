@@ -7,16 +7,6 @@ export default {
 	},
 
 	actions: {
-		correctComic: (context, updatedComicData) => {
-			return new Promise( async (resolve) => {
-				let updateResponse = await comicApi.updateComic(updatedComicData)
-				if (updateResponse.data.success) {
-					context.commit('updateOneComicInList', updatedComicData)
-				}
-				resolve(updateResponse.data)
-			})
-		},
-
 		addNewComic: (context, {comicData, newPagesList}) => {
 			return new Promise( (resolve) => {
 				// .then syntax here because uploading might fail, and we want to .catch 
@@ -33,29 +23,10 @@ export default {
 					})
 			})
 		},
-
-		addPagetoComic: (context, {comicData, newPagesList}) => {
-			return new Promise( (resolve) => {
-				comicApi.addPagesToComic(comicData, newPagesList)
-					.then( async (addPagesResponse) => {
-						if (addPagesResponse.data.success) {
-							context.commit('updateOneComicInList', comicData)
-						}
-						resolve(addPagesResponse.data)
-					})
-					.catch( error => {
-						console.log(error) // todo something
-					})
-			})
-		}
 	},
 
 	mutations: {
 		setSelectedComic: (state, comicData) => state.selectedComic = comicData,
-		updateOneComicInList: (state, newComicData) => {
-			let selectedComicIndex = state.comicList.findIndex(c => c.id === newComicData.id)
-			Vue.set(state.comicList, selectedComicIndex, newComicData)  // because of list caveat
-		},
 	},
 
 	getters: {

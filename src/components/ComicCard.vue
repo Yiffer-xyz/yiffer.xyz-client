@@ -25,7 +25,7 @@
 		<voting-button
 			:comic="comic"
 			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
-			v-if="$store.state.authenticated && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
+			v-if="$store.getters.isAuthenticated && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
 		></voting-button>
 
 		<!-- <voting-button-single-color

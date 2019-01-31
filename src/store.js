@@ -30,7 +30,17 @@ export default new Vuex.Store({
 		comicForVotingModal: {},
 		userData: {},
 		authenticated: false,
-  },
+	},
+	
+	actions: {
+		updateOneComicInList (context, comicData) {
+			comicData.name = 'Raggis'
+			let selectedComicIndex = context.getters.comicList.findIndex(c => c.id === comicData.id)
+			Vue.set(context.rootState.comicList.comicList, selectedComicIndex, comicData)  // because of list caveat
+			context.dispatch('calculateFilteredComics')
+		}
+	},
+
   mutations: {
 		// setUserDataFromCookies ( state ) {
 		// 	if ($cookies.isKey('user-data')) {
@@ -105,21 +115,21 @@ export default new Vuex.Store({
 		setVotingModalVisibility ( state, isVisible ) { state.votingModalVisibility = isVisible; },
 		setWhiteThemeButtonStyle ( state, isWhite ) { state.whiteThemeButtons = isWhite },
 		setDetailLevel ( state, detailLevel ) { state.detailLevel = detailLevel },
-		updateOneComicInList ( state, updatedComic ) {
-			for ( var i=0; i<state.comicList.length; i++ ) {
-				if ( state.comicList[i].id === updatedComic.id ) {
-					state.comicList[i] = updatedComic
-				}
-			}
-		},
+		// updateOneComicInList ( state, updatedComic ) {
+		// 	for ( var i=0; i<state.comicList.length; i++ ) {
+		// 		if ( state.comicList[i].id === updatedComic.id ) {
+		// 			state.comicList[i] = updatedComic
+		// 		}
+		// 	}
+		// },
 		setComicForVotingModal ( state, comic ) { state.comicForVotingModal = comic },
 		setDarkTheme ( state, isDarkTheme ) { state.darkTheme = isDarkTheme },
 	},
+	
 	getters: {
 		getSelectedKeywords: state => () => state.selectedKeywords,
 		getSorting: state => () => state.sorting,
 		getCategoryFilter: state => () => state.categoryFilter,
 		getTagFilter: state => () => state.tagFilter,
-	},
-  actions: {}
+	}
 })

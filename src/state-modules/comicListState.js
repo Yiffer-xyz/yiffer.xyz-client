@@ -1,5 +1,6 @@
-import comicApi from '../api/comicApi.js';
+import comicApi from '../api/comicApi.js'
 import config from '@/config.json'
+import Vue from 'vue'
 
 export default {
 	state: {
@@ -111,15 +112,6 @@ export default {
 		},
 		setFilteredComics: (state, comicList) => {
 			state.filteredComics =  comicList
-		},
-		
-		rateSelectedComic: (context, rating) => {
-			return new Promise( async (resolve) => {
-				let rateResponse = await comicApi.rateComic(context.getters.selectedComic, rating)
-				let updatedComicResponse = await comicApi.getComic(context.getters.selectedComic.name)
-				context.commit('updateOneComicInList', updatedComicResponse.data)
-				resolve(rateResponse.data)
-			})
 		},
 	},
 

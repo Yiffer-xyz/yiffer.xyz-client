@@ -1,10 +1,10 @@
 <template>
-  <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.authenticated}">
-    {{$store.state.authenticated ? 'Vote' : 'Log in to vote'}}
+  <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
+    {{$store.getters.isAuthenticated ? 'Vote' : 'Log in to vote'}}
   </button>
-	<!-- <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.state.authenticated}">
+	<!-- <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
 		<span :style="{'background-color': this.backgroundColor}">
-			<p v-if="$store.state.authenticated">Vote</p>
+			<p v-if="$store.getters.isAuthenticated">Vote</p>
 			<p v-else>Log in to vote</p>
 		</span>
 	</button> -->
@@ -18,7 +18,7 @@
 		},
 		methods: {
 			showSomeModal () {
-				if (this.$store.state.authenticated) {
+				if (this.$store.getters.isAuthenticated) {
 					this.$store.commit('setComicForVotingModal', this.comic)
 					this.$store.commit('setVotingModalVisibility', true)
 				}
