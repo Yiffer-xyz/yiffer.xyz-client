@@ -23,6 +23,9 @@
 			<label><b>**</b> will only regard updates to comics that you have give a <u>rating of 10</u>.</label>
 			<button @click="submitEmailPreference()" v-if="emailSettingChanged" class="y-button margin-top-4">Save</button>
 			<br/>
+						
+			<p class="error-message" v-if="errorMessageEmail" style="margin-bottom: 16px">{{errorMessageEmail}}</p>
+			<p class="success-message" v-if="successMessageEmail" style="margin-bottom: 16px">{{successMessageEmail}}</p>
 
 			<span><b>Email</b>: {{userEmail}}</span> 
 			<br/>
@@ -46,8 +49,8 @@
 				</tr>
 			</table>
 
-			<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>
-			<p class="success-message" v-if="successMessage">{{successMessage}}</p>
+			<p class="error-message" v-if="errorMessagePassword">{{errorMessagePassword}}</p>
+			<p class="success-message" v-if="successMessagePassword">{{successMessagePassword}}</p>
 			
 			<button @click="submitChangePassword()" class="y-button margin-top-4">Submit password change</button>
 		</div>
@@ -57,9 +60,13 @@
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
 
+import authApi from '../api/authApi'
+
 export default {
 	name: 'account',
+
 	components: { 'back-to-index': BackToIndex },
+
 	data: function () {
 		return {
 			'userData': {
@@ -70,10 +77,13 @@ export default {
 			'currentPassword': '',
 			'newPassword1': '',
 			'newPassword2': '',
-			'errorMessage': '',
-			'successMessage': '',
+			'errorMessagePassword': '',
+			'successMessagePassword': '',
+			'errorMessageEmail': '',
+			'successMessageEmail': '',
 		}
 	},
+
 	methods: {
 		async submitChangePassword () {
 			let response = undefined
@@ -84,34 +94,43 @@ export default {
 				response = {success: false, message: 'New passwords do not match'}
 			}
 			else {
-				response = {'success': true, 'message': 'Password change successful'}
+				response = await authApi.changePassword(this.currentPassword, this.newPassword1, this.newPassword2)
 			}
 			if (response.success) {
-				this.successMessage = 'Password changed successfully!'
-				this.errorMessage = ''
+				this.successMessagePassword = 'Password changed successfully!'
+				this.errorMessagePassword = ''
 				this.currentPassword = ''
 				this.newPassword1 = ''
 				this.newPassword2 = ''
 			}
 			else {
-				this.errorMessage = response.message
-				this.successMessage = ''
+				this.errorMessagePassword = `Error changing password: ${response.message}`
+				this.successMessagePassword = ''
 			}
 		},
-		submitEmailPreference () {
-			let response = {'success': true}
+
+		async submitEmailPreference () {
+			let response = await authApi.setEmailPreference(this.emailSetting)
 			if (response.success) {
 				this.savedEmailSetting = this.emailSetting
 				this.emailSettingChanged = false
+				this.successMessageEmail = 'Email preferences updated!'
+				this.errorMessageEmail = ''
+			}
+			else { //todo test
+				this.errorMessageEmail = 'Error updating email preferences'
+				this.successMessageEmail = ''
 			}
 		}
-  },
-  created: function () {
-		// todo get email setting data and email
-		this.userEmail = 'todo@epost.com'
-		this.savedEmailSetting = 'updates'
-		this.emailSetting = 'updates'
 	},
+	
+  created: async function () {
+		// todo get email setting data and email
+		this.savedEmailSetting = (await authApi.getEmailPreference()).result.preference
+		this.emailSetting = this.savedEmailSetting
+		this.userEmail = 'todo@epost.com'
+	},
+
 	watch: {
 		// Need to use watch instead of computed because vue won't redraw when
 		// submitEmailPreference() is called
