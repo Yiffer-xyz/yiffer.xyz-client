@@ -1,14 +1,4 @@
-# vuenet
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+# Yiffer.xyz, Vue edition
 
 ### Compiles and minifies for production
 ```
