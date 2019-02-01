@@ -397,7 +397,7 @@ export default {
 				.slice(0, 8)
 		},
 		paginationButtons () {
-			let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage)
+			let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage) //todo gettable?
 			let currentPage = this.$store.state.pageNumber
 			let buttonList = []
 			if (pages <= 9) {

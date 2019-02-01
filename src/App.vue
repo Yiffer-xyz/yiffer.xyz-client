@@ -129,7 +129,7 @@ export default {
 		this.$store.dispatch('loadComicList')
 			// .then(response => this.$store.dispatch('recalculateFilteredComics'))
 		this.$cookies.config('60d')
-		this.$store.commit('setUserDataFromCookies')
+		this.$store.dispatch('setUserDataFromCookies')
 		if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
 			this.setTheme('dark')
 		}

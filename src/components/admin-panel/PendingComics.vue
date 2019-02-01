@@ -13,7 +13,7 @@
               <th>Class.</th>
               <th>Finished</th>
               <th>Mod name</th>
-              <th v-if="$store.state.userData.userType === 'admin'">Action</th>
+              <th v-if="$store.getters.userData.userType === 'admin'">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -28,7 +28,7 @@
               <td>{{suggestion.Cat}}</td>
               <td>{{suggestion.Finished ? 'Yes' : 'No'}}</td>
               <td>{{suggestion.ModName}}</td>
-              <td v-if="$store.state.userData.userType === 'admin'">
+              <td v-if="$store.getters.userData.userType === 'admin'">
                 <button @click="processComic(suggestion.Id, true)" class="y-button" style="margin-bottom: 2px;">Approve</button>
                 <button @click="processComic(suggestion.Id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button>
               </td>

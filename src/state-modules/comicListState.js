@@ -14,6 +14,7 @@ export default {
 		searchFiltering: '',
 		selectedKeywords: [],
 		numberOfFilteredComics: 0,
+		detailLevel: 'Medium detail',
 	},
 
 	actions: {
@@ -113,6 +114,9 @@ export default {
 		setFilteredComics: (state, comicList) => {
 			state.filteredComics =  comicList
 		},
+		setDetailLevel ( state, detailLevel ) {
+			state.detailLevel = detailLevel
+		},
 	},
 
 	getters: {
@@ -126,6 +130,7 @@ export default {
 		pageNumber: state => state.pageNumber,
 		searchFiltering: state => state.searchFiltering,
 		selectedKeywords: state => state.selectedKeywords,
+		detailLevel: state => state.detailLevel,
 	}
 }
 

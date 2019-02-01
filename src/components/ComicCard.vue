@@ -26,7 +26,7 @@
 			:comic="comic"
 			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
 			v-if="$store.getters.isAuthenticated && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
-		></voting-button>
+		></voting-button> <!--todo detail level use vuex-->
 
 		<!-- <voting-button-single-color
 			:comic="comic"
@@ -83,7 +83,7 @@ export default {
 			else { return Math.round(number * 10) / 10 }
 		},
 		storeClickedComicData: function () {
-			this.$store.commit('clickComic', this.comic)
+			this.$store.commit('storeClickedComic', this.comic)
 		},
 		addSelectedKeyword (keywordName) {
 			if ( this.clickableKeyword ) { this.$store.commit('addSelectedKeyword', keywordName) }

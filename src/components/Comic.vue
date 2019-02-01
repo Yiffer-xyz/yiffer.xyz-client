@@ -13,7 +13,7 @@
 
 				<back-to-index class="margin-top-16"></back-to-index>
 
-				<button v-if="$store.getters.isAuthenticated && $store.state.userData.donator" class="y-button">Download comic</button>
+				<button v-if="$store.getters.isAuthenticated && $store.getters.userData.donator" class="y-button">Download comic</button>
 
 				<voting-button
 					:comic="comic"
@@ -262,7 +262,7 @@ export default {
 		fitImagesForMobile () {
 			if (window.innerWidth < 900) {
 				let resizeIntervalHook = setInterval(() => {
-					if (document.getElementById('comic-page-container').childElementCount === this.comic.numberOfPages) {
+					if (this.comic && document.getElementById('comic-page-container').childElementCount === this.comic.numberOfPages) {
 						this.setAllImagesFit('width')
 						clearInterval(resizeIntervalHook)
 					}
@@ -291,7 +291,7 @@ export default {
 		if ( !this.comic ) {
 			let response = await comicApi.getComic(this.$route.params.comicName)
 			if (response.success) {
-				this.comic = response.comic
+				this.comic = response.result
 				this.$store.commit('setComicForVotingModal', this.comic)
 				this.initializeImageFitArray()
 				this.fitImagesForMobile()
@@ -333,9 +333,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 		margin-top: 16px;
 	}
 }
-.margin-top-8 {
-	margin-top: 8px;
-}
+
 .margin-bottom-8 {
 	margin-bottom: 8px;
 }

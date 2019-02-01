@@ -3,7 +3,7 @@
 		<div class="whole-body-text whole-body-text-centered">
 
 			<vue-headful :title="'Profile - Yiffer.xyz'"/>
-			<h1 class="upper-body-div-comic">Profile: {{$store.state.userData.username}}</h1>
+			<h1 class="upper-body-div-comic">Profile: {{$store.getters.userData.username}}</h1>
 			<back-to-index></back-to-index>
 			<br/>
 
@@ -30,7 +30,7 @@
 			<span><b>Email</b>: {{userEmail}}</span> 
 			<br/>
 			
-			<span><b>Donator</b>: {{$store.state.userData.donator ? 'yes' : 'no'}}</span>
+			<span><b>Donator</b>: {{$store.getters.userData.donator ? 'yes' : 'no'}}</span>
 			<br/>
 
 			<b>Change password</b>
