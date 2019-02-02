@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2>Correct comic data</h2>
+    <h2 @click="closeComponent" class="cursor-pointer">Correct comic data</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
@@ -113,7 +113,7 @@ export default {
       }
     },
 
-    openComponent () { if (!this.isOpen) { this.isOpen = true } },
+    openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },

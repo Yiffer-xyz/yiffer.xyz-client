@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2>Tag suggestions
+    <h2 @click="closeComponent" class="cursor-pointer">Tag suggestions
       <span v-if="keywordSuggestionList.length>0" class="red-color"> ({{keywordSuggestionList.length}})</span>
       <span v-else style="color: #999;">(0)</span>
     </h2>
@@ -80,7 +80,7 @@ export default {
       }
     },
 
-    openComponent () { if (!this.isOpen) { this.isOpen = true } },
+    openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },

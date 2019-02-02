@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2>Pending comics
+    <h2 @click="closeComponent" class="cursor-pointer">Pending comics
       <span v-if="comicsMissingKeywords>0" class="red-color"> ({{comicsMissingKeywords}})</span>
       <span v-else style="color: #999;">(0)</span>
       
@@ -97,7 +97,7 @@ export default {
       }
     },
 
-    openComponent () { if (!this.isOpen) { this.isOpen = true } },
+    openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },

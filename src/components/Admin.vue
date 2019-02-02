@@ -43,7 +43,6 @@ import BackToIndex from '@/components/BackToIndex.vue'
 
 // re calculate and zip med i correct
 // mod stats
-
 // husk å ta med upload progress
 
 import config from '@/config.json'
@@ -179,6 +178,9 @@ export default {
 	height: auto;
 	&:hover {
 		cursor: initial;
+	}
+	h2 {
+		margin-bottom: 16px;
 	}
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2>Add artist</h2>
+    <h2 @click="closeComponent" class="cursor-pointer">Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
       <div class="horizontal-flex" style="align-items: center;">
@@ -118,7 +118,7 @@ export default {
       }
     },
 
-    openComponent () { if (!this.isOpen) { this.isOpen = true } },
+    openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2>Add pages to comic</h2>
+    <h2 @click="closeComponent" class="cursor-pointer">Add pages to comic</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <p>
         Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
@@ -142,7 +142,7 @@ export default {
       comic.name = comic.name.substring(1, comic.name.length-1)
     },
 
-    openComponent () { if (!this.isOpen) { this.isOpen = true } },
+    openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) },
   },
