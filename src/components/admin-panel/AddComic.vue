@@ -13,13 +13,19 @@
       </p>
 
       <p>
-        Adding a thumbnail is optional! Thumbnails are precisely 200x283 pixels, and have the filename <span class="courier">s.jpg</span>.<br/>
+        Adding a thumbnail is optional. If you don't someone else will later. <br/>
+        Thumbnails are precisely <u>200x283</u> pixels.<br/>
         If the comic has a cover page, this should be used in the thumbnail. Otherwise, choose an image representing the comic well,
         but not too lewd if possible.<br/>
-        GIMP is a great tool for making thumbnails. Don't use MSPaint, it's horrible for scaling.
+        GIMP is a great tool for making thumbnails. Don't use MSPaint, it destroys the image when scaling.
       </p>
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Comic details</p>
+      <p>
+        Adding tags is also optional. Again, someone else will have to do it if you don't. 
+        You can also add tags after finishing this, from the "Pending comics" list.
+      </p>
+
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Comic details <checkbox-icon v-if="detailsFilledIn"/></p>
       <table id="newComicTable">
         <tr>
           <td>
@@ -83,7 +89,7 @@
         </tr>
       </table>
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add pages</p>
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add pages <checkbox-icon v-if="filesAreInput"/></p>
       <form enctype="multipart/form-data" novalidate style="margin-top: 4px;">
         <div class="pretty-input-upload">
           <input type="file" multiple="true" @change="processFileUploadChange" id="newPageFilesAddComic" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -94,7 +100,20 @@
       <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
 
-      <p class="add-kw-mini-header no-margin-bot">Add tags</p>
+      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add thumbnail <checkbox-icon v-if="thumbnailFile"/></p>
+      <form enctype="multipart/form-data" novalidate style="margin: 4px 0;">
+        <div class="pretty-input-upload">
+          <input type="file" @change="processThumbNailUploadChange" id="thumbnailFileInput" accept="image/x-png,image/jpeg" class="input-file"/>
+          <p>Select file</p>
+        </div>
+      </form>
+      <p v-if="thumbnailFile"><b>{{thumbnailFile.length}}</b> Selected file: 
+        <span class="courier">{{thumbnailFile.name}}</span>
+      </p>
+      <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
+
+
+      <p class="add-kw-mini-header no-margin-bot margin-top-16">Add tags <checkbox-icon v-if="selectedKeywords.length"/></p>
       <p>Adding tags is optional, but appreciated!</p>
       <div class="horizontal-flex">
         <div class="vertical-flex">
@@ -132,6 +151,8 @@
 </template>
 
 <script>
+import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+
 import comicApi from '../../api/comicApi'
 
 export default {
@@ -141,6 +162,10 @@ export default {
     artistList: Array,
     keywordList: Array,
   },
+
+	components: {
+		'checkbox-icon': CheckboxIcon,
+	},
 
   data: function () {
     return {
@@ -152,10 +177,11 @@ export default {
       finished: undefined,
       selectedFiles: [],
       selectedKeywords: [],
+      thumbnailFile: undefined,
       selectedKeyword: undefined,
-
       errorMessage: '',
       successMessage: '',
+      errorMessageThumbnail: '',
     }
   },
 
@@ -163,6 +189,29 @@ export default {
     processFileUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
     },
+
+    processThumbNailUploadChange (changeEvent) {
+      this.thumbnailFile = changeEvent.target.files[0]
+      this.processNewThumbnail()
+    },
+
+		async processNewThumbnail () {
+			this.errorMessageThumbnail = ''
+			let fileReader = new FileReader()
+			fileReader.onload = () => {
+				let tempImage = new Image()
+				tempImage.src = fileReader.result
+				tempImage.onload = () => {
+					if (tempImage.width !== 200 || tempImage.height !== 283) {
+						this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
+					}
+					else {
+						this.errorMessageThumbnail = ''
+					}
+				}
+			}
+			fileReader.readAsDataURL(this.thumbnailFile)
+		},
 
     addSelectedKeyword () {
       if (this.selectedKeywords.indexOf(this.selectedKeyword) < 0) {
@@ -184,7 +233,7 @@ export default {
         keywords: this.selectedKeywords
       }
 
-      let response = await comicApi.addNewComic(uploadData, this.selectedFiles)
+      let response = await comicApi.addNewComic(uploadData, this.selectedFiles, this.thumbnailFile)
 
       if (response.success) {
         this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
@@ -214,9 +263,8 @@ export default {
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
-    readyForUpload () {
-      return this.comicName && this.artist && this.tag && this.cat  && this.finished && this.selectedFiles.length>0
-    }
+    detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.finished },
+    readyForUpload () { return this.detailsFilledIn && this.selectedFiles.length>0 && !this.errorMessageThumbnail }
   }
 }
 </script>

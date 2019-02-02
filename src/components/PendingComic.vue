@@ -13,7 +13,7 @@
 				<img :src="`https://yiffer.xyz/comics/${comic.name}/s.jpg`"/>
 			</span>
 			<span style="display: flex; align-items: center; flex-direction: column;">
-				<p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one?</p>
+				<p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one? Find the guidelines in the mod panel's Adding new comic section.</p>
 				<form enctype="multipart/form-data" novalidate style="width: fit-content" class="margin-top-8">
 					<div class="pretty-input-upload">
 						<input type="file" multiple="false" @change="processFileUploadChange" id="newPageFiles" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -25,9 +25,9 @@
 					Add {{thumbnailFile.name}} as thumbnail
 				</button>
 
-				<p class="error-message" v-if="errorMessageThumbnail" style="margin-top: 8px;">{{errorMessageThumbnail}}</p>
-				<p class="success-message" v-if="successMessageThumbnail" style="margin-top: 8px;">{{successMessageThumbnail}}</p>
-				<p class="success-message" v-if="thumbnailUploading" style="margin-top: 8px;">Please wait, uploading...</p>
+				<p class="error-message margin-top-8" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
+				<p class="success-message margin-top-8" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
+				<p class="success-message margin-top-8" v-if="thumbnailUploading">Please wait, uploading...</p>
 			</span>
 
 

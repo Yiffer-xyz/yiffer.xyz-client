@@ -121,7 +121,7 @@ export default {
 		logout () {
 			this.$store.dispatch('logout')
 			if (this.$router.history.current.fullPath == '/profile' || this.$router.history.current.fullPath == '/admin') {
-				console.log(this.$router.replace('/'))
+				this.$router.replace('/')
 			}
 		}
 	},
@@ -464,6 +464,14 @@ h1 {
 		background: $themeRed1;
 		&:hover {
 			background-color: $themeRed0;
+		}
+	}
+
+	.y-button-disabled {
+		background-color: $themeGray7 !important;
+		color: #333;
+		&:hover {
+			background-color: $themeGray7 !important;
 		}
 	}
 

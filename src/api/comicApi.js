@@ -53,7 +53,7 @@ export default {
 		})
 	},
 
-	async addNewComic (comicData, newPagesList) {
+	async addNewComic (comicData, newPagesList, thumbnailFile) {
 		return new Promise(resolve => {
 			resolve({'success': true, 'message': 'asd'})
 		})
