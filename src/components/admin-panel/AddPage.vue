@@ -47,7 +47,7 @@
             <tr>
               <th>Comic name</th>
               <th>Pages</th>
-              <th>Days since update</th>
+              <th>Days since<br/>update</th>
               <th>Last page</th>
             </tr>
           </thead>
@@ -62,10 +62,11 @@
               <td>{{comic.daysSinceUpdate}}</td>
               <td>
                 <span v-if="!comic.lastPageUrl" class="link-color cursor-pointer" @click="showLastPage(comic)">Load image</span>
-                <span v-if="comic.lastPageUrl" class="link-color cursor-pointer" @click="unshowLastPage(comic)">Hide image</span>
                 <a v-if="comic.lastPageUrl" :href="comic.lastPageUrl" target="_blank">
                   <img :src="comic.lastPageUrl" class="last-page-image"/>
                 </a>
+                <br>
+                <span v-if="comic.lastPageUrl" class="link-color cursor-pointer" @click="unshowLastPage(comic)">Hide image</span>
               </td>
             </tr>
           </tbody>
@@ -94,7 +95,6 @@ export default {
       uploadSuccessMessage: '',
       selectedFiles: [],
       showAllUnfinishedComics: false,
-      unfinishedComicList: this.createUnfinishedComicList(),
     }
   },
   methods: {
@@ -119,18 +119,7 @@ export default {
     toggleAllUnfinishedComics () {
       this.showAllUnfinishedComics = !this.showAllUnfinishedComics
     },
-    createUnfinishedComicList () {
-      let unfinishedComicList = this.$store.getters.comicList.filter(comic => !comic.finished).sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
-      let one_day_millisec = 86400000
-      let nowTimestamp = (new Date()).getTime()
-      for (var comic of unfinishedComicList) {
-        let comicUpdatedTimestamp = (new Date(comic.updated)).getTime()
-        comic.daysSinceUpdate = Math.floor((nowTimestamp - comicUpdatedTimestamp) / one_day_millisec)
-      }
-      return unfinishedComicList
-    },
     showLastPage (comic) {
-      // comic.lastPageUrl = '/comics/' + comic.name + '/' + comic.numberOfPages + '.jpg'
       comic.lastPageUrl = `/comics/${comic.name}/${comic.numberOfPages}.jpg`
       comic.name = ' ' + comic.name + ' '
     },
@@ -139,13 +128,24 @@ export default {
       comic.name = comic.name.substring(1, comic.name.length-1)
     },
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
-    closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
+    closeComponent () { setTimeout( () => this.isOpen = false, 15 ) },
   },
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
-	},
+    unfinishedComicList () {
+      return this.$store.getters.comicList
+        .filter(comic => !comic.finished)
+        .sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
+        .map(comic => {
+          comic.daysSinceUpdate = Math.floor((nowTimestamp - (new Date(comic.updated)).getTime()) / 86400000)
+          return comic
+        })
+    }
+  },
 }
+
+let nowTimestamp = (new Date()).getTime()
 </script>
 
 <style lang="scss">

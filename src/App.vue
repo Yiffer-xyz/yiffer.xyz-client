@@ -120,6 +120,9 @@ export default {
 		},
 		logout () {
 			this.$store.dispatch('logout')
+			if (this.$router.history.current.fullPath == '/profile' || this.$router.history.current.fullPath == '/admin') {
+				console.log(this.$router.replace('/'))
+			}
 		}
 	},
 	data: function () {

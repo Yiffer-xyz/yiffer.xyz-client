@@ -27,7 +27,7 @@
 			<p class="error-message" v-if="errorMessageEmail" style="margin-bottom: 16px">{{errorMessageEmail}}</p>
 			<p class="success-message" v-if="successMessageEmail" style="margin-bottom: 16px">{{successMessageEmail}}</p>
 
-			<span><b>Email</b>: {{userEmail}}</span> 
+			<span><b>Email</b>: {{$store.getters.userData.email}}</span> 
 			<br/>
 			
 			<span><b>Donator</b>: {{$store.getters.userData.donator ? 'yes' : 'no'}}</span>

@@ -101,7 +101,7 @@
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
           </select>
-          <button class="y-button y-button-small" @click="addSelectedKeyword()">&rarr;</button>
+          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()">&rarr;</button>
         </div>
       
         <div class="vertical-flex" style="margin-left: 15px;">
@@ -112,11 +112,11 @@
       </div>
 
       <p class="add-kw-mini-header no-margin-bot" style="margin-top: 32px;">Finish</p>
-      <button @click="confirmAddComic()" v-if="readyForUpload" class="y-button" style="margin-top: 4px;">
-        Add comic!
-      </button>
-      <button v-if="!readyForUpload" class="y-button y-button-red" style="margin-top: 4px;">
+      <button v-if="!readyForUpload" class="y-button y-button-disabled" style="margin-top: 4px;">
         Fill in all details and add pages before finishing!
+      </button>
+      <button @click="confirmAddComic()" v-else class="y-button" style="margin-top: 4px;">
+        Add comic!
       </button>
 
       <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
