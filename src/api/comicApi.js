@@ -18,15 +18,25 @@ export default {
 		})
 	},
 
-	async getSuggestedComicList () {
-		return new Promise( resolve => {
-			resolve(config.comicSuggestionList)
+	async getPendingComics () {
+		return new Promise( async resolve => {
+			resolve([
+				{"hasThumbnail": true, "modName": "raggis", "links": {"previousComic": null, "nextComic": "lalalala"} ,"tag": "Furry", "name": "Dress to Undress", "keywords": ["finnick", "chipmunk", "charizard", "footjob", "fisting"], "cat": "MM", "numberOfPages": 21, "id": 343, "created": "2017-07-01T00:00:00.000Z", "finished": 0, "artist": "Seth-Iova"},
+				{"hasThumbnail": false, "modName": "YeahNoIdea", "links": {"previousComic": null, "nextComic": null}, "tag": "Pokemon", "name": "Lost and Found", "keywords": ["creampie", "elf", "fat", "biting", "big penis", "eggs", "discord", "femdom", "feral penis", "canine"], "cat": "MM", "numberOfPages": 52, "id": 813, "created": "2018-02-10T15:40:44.000Z", "finished": 0, "artist": "Edesk"},
+				{"hasThumbnail": false, "modName": "Kit", "links": {"previousComic": null, "nextComic": "asd"}, "tag": "Furry", "name": "Critical Success", "keywords": [], "cat": "I", "numberOfPages": 47, "id": 24, "created": "2017-07-01T00:00:00.000Z", "finished": 1, "artist": "Roanoak", "yourRating": 0}
+			])
 		})
 	},
 
-	async getPendingComics () {
+	async getPendingComic (comicName) {
 		return new Promise( async resolve => {
-			resolve(config.pendingComicList)
+			resolve({"hasThumbnail": false, "modName": "YeahNoIdea", "links": {"previousComic": null, "nextComic": null}, "tag": "Pokemon", "name": "Lost and Found", "keywords": ["creampie", "elf", "fat", "biting", "big penis", "eggs", "discord", "femdom", "feral penis", "canine"], "cat": "MM", "numberOfPages": 52, "id": 813, "created": "2018-02-10T15:40:44.000Z", "finished": 0, "artist": "Edesk"})
+		})
+	},
+
+	async getSuggestedComicList () {
+		return new Promise( resolve => {
+			resolve(config.comicSuggestionList)
 		})
 	},
 

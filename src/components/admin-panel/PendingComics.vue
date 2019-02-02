@@ -1,10 +1,20 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2>Pending comics</h2>
+    <h2>Pending comics
+      <span v-if="comicsMissingKeywords>0" class="red-color"> ({{comicsMissingKeywords}})</span>
+      <span v-else style="color: #999;">(0)</span>
+      
+      <span v-if="comicsMissingThumbnails>0" class="red-color"> ({{comicsMissingThumbnails}})</span>
+      <span v-else style="color: #999;">(0)</span>
+    </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <span v-if="pendingComicList.length > 0">
-        <table class="y-table">
+        <p>You can add keywords or a thumbnail by clicking the comic title. <br/>
+        Comics are approved by admins.<br/>
+        The <span class="red-color">numbers</span> in the title are equal to the amount of pending comics missing tags and thumbnails.</p>
+
+        <table class="y-table" style="margin: 8px auto 0 auto">
           <thead>
             <tr>
               <th>Comic name</th>
@@ -12,22 +22,26 @@
               <th>Category</th>
               <th>Class.</th>
               <th>Finished</th>
+              <th>Tags</th>
+              <th>Thumbnail</th>
               <th>Mod name</th>
               <th v-if="$store.getters.userData.userType === 'admin'">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="suggestion in pendingComicList" :key="suggestion.Id">
-              <td><router-link :to="{ name: 'pendingComic', params: { comicName: `${suggestion.Name }` } }" target="_blank">
-                {{suggestion.Name}}
+              <td><router-link :to="{ name: 'pendingComic', params: {comicName: suggestion.name} }" target="_blank">
+                {{suggestion.name}}
               </router-link></td>
-              <td><router-link :to="{ name: 'artist', params: { artistName: `${suggestion.ArtistName }` } }" target="_blank">
-                {{suggestion.ArtistName}}
+              <td><router-link :to="{ name: 'artist', params: {artistName: suggestion.artist} }" target="_blank">
+                {{suggestion.artist}}
               </router-link></td>
-              <td>{{suggestion.Tag}}</td>
-              <td>{{suggestion.Cat}}</td>
-              <td>{{suggestion.Finished ? 'Yes' : 'No'}}</td>
-              <td>{{suggestion.ModName}}</td>
+              <td>{{suggestion.tag}}</td>
+              <td>{{suggestion.cat}}</td>
+              <td>{{suggestion.finished ? 'Yes' : 'No'}}</td>
+              <td v-if="suggestion.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
+              <td v-if="suggestion.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
+              <td>{{suggestion.modName}}</td>
               <td v-if="$store.getters.userData.userType === 'admin'">
                 <button @click="processComic(suggestion.Id, true)" class="y-button" style="margin-bottom: 2px;">Approve</button>
                 <button @click="processComic(suggestion.Id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button>
@@ -51,14 +65,23 @@
 </template>
 
 <script>
+import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+
 import comicApi from '../../api/comicApi'
 
 export default {
   name: 'pendingComics',
 
+	components: {
+		'checkbox-icon': CheckboxIcon,
+	},
+
   data: function () {
     return {
       isOpen: false,
+      pendingComicList: [],
+      comicsMissingKeywords: 0,
+      comicsMissingThumbnails: 0
     }
   },
 
@@ -79,9 +102,11 @@ export default {
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
 
-  computed: {
-    pendingComicList () {
-      return this.$store.getters.comicList.filter(suggestion => !suggestion.Processed)
+  async created () {
+    this.pendingComicList = await comicApi.getPendingComics()
+    for (var comic of this.pendingComicList) {
+      if (comic.keywords.length == 0) { this.comicsMissingKeywords++ }
+      if (!comic.hasThumbnail) { this.comicsMissingThumbnails++ }
     }
   }
 }

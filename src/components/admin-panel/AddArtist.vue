@@ -82,8 +82,14 @@ export default {
 
   methods: {
     async addNewArtist () {
-      let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
-      let response = await artistApi.addNewArtist(name)
+      let response
+      if (!this.artistName || this.artistName.length < 2) {
+        response = {success: false, message: 'Name must be at least two characters long'}
+      }
+      else {
+        let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
+        response = await artistApi.addNewArtist(name)
+      }
 
       if (response.success) {
         this.newArtistSuccessMessage = 'Success adding artist ' + this.artistName

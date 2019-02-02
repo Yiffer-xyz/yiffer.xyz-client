@@ -128,12 +128,12 @@
 								<div id="keywordResults" v-if="keywordSearchFocused">
 									<div
 										v-for="keywordObject in keywordsMatchingSearch" 
-										:key="keywordObject.name"
-										@click="addSelectedKeyword(keywordObject.name)"
-										@mouseover="keywordResultHovered = keywordObject.name"
+										:key="keywordObject.keyword"
+										@click="addSelectedKeyword(keywordObject.keyword)"
+										@mouseover="keywordResultHovered = keywordObject.keyword"
 										@mouseout="keywordResultHovered = undefined"
 										class="keyword-result">
-											{{keywordObject.name}} ({{keywordObject.count}})
+											{{keywordObject.keyword}} ({{keywordObject.count}})
 									</div>
 								</div>
 							</div>
@@ -228,6 +228,7 @@ import DonateIcon from 'vue-material-design-icons/CurrencyUsd.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 
+import keywordApi from '../api/keywordApi'
 
 export default {
 	name: 'comic-list',
@@ -377,22 +378,20 @@ export default {
 			this.$store.commit('setSearchFiltering', this.searchFiltering)
 		},
 	},
-  created: function() {
+  created: async function() {
 		if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
 		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
-		setTimeout( () => { //todo gtfo of here
-			this.$store.commit('setAllKeywords', config.demoKeywords)
-		}, 800)
 		this.$store.dispatch('calculateFilteredComics')
 		this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
+		this.allKeywords = await keywordApi.getKeywordList()
 	},
 	computed: {
 		keywordsMatchingSearch () {
-			return this.$store.state.keywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
+			return this.allKeywords.filter(keyword => keyword.keyword.startsWith(this.keywordSearch))
 				.sort((kw1, kw2) => kw1.count<kw2.count ? 1 : (kw1.count>kw2.count ? -1 : 0))
 				.slice(0, 8)
 		},

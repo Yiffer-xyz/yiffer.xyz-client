@@ -21,7 +21,6 @@ export default new Vuex.Store({
   mutations: {
 		setDarkTheme (state, isDarkTheme) { state.darkTheme = isDarkTheme },
 		storeClickedComic (state, comic) { state.clickedComic = comic },
-		setAllKeywords (state, keywordList) { state.keywordList = keywordList },
 		setLoginModalVisibility (state, isVisible) { state.loginModalVisibility = isVisible; },
 		setVotingModalVisibility (state, isVisible) { state.votingModalVisibility = isVisible; },
 		setWhiteThemeButtonStyle (state, isWhite) { state.whiteThemeButtons = isWhite },

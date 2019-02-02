@@ -51,14 +51,14 @@ export default new Router({
 			component: Donate
 		},
 		{
-			path: '/:comicName',
-			name: 'comic',
-			component: Comic
-		},
-		{
 			path: '/pendingComics/:comicName',
 			name: 'pendingComic',
 			component: PendingComic
+		},
+		{
+			path: '/:comicName',
+			name: 'comic',
+			component: Comic
 		},
 	],
 	scrollBehavior ( to, from, savedPosition ) {
