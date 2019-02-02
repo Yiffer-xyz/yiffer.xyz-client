@@ -31,44 +31,19 @@
 </script>
 
 <style lang="scss">
-// todo alt
-
 	.voting-button-single-color {
     background: transparent;
-		// background-image: linear-gradient(to top right, $themeBlue 0%, $themeRed 100%);
 		color: #00a84f;
-		// text-decoration: none;
 		border-style: solid;
     border-color: $theme5;
 		padding: 4px 8px;
 		letter-spacing: 1px;
-		// border: none;
 		border-radius: 7px;
-
-		// span {
-		// 	align-items: center;
-		// 	background: white;
-		// 	display: flex;
-		// 	justify-content: center;
-		// 	height: 100%;
-		// 	width: 100%;
-		// 	border-radius: 5px;
-		// 	p {
-		// 		margin: 4px 8px;
-		// 		font-family: 'Open Sans', sans-serif;
-		// 	}
-		// }
 
 		&:hover {
 			cursor: pointer;
       background: $theme5;
       color: white;
-			// span {
-			// 	background: transparent !important;
-			// 	p {
-			// 		color: white;
-			// 	}
-			// }
 		}
 	}
 

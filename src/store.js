@@ -17,26 +17,14 @@ export default new Vuex.Store({
 		whiteThemeButtons: false,
 		comicForVotingModal: {},
 	},
-	
-	actions: {
-		updateOneComicInList (context, comicData) {
-			comicData.name = 'Raggis'
-			let selectedComicIndex = context.getters.comicList.findIndex(c => c.id === comicData.id)
-			Vue.set(context.rootState.comicList.comicList, selectedComicIndex, comicData)  // because of list caveat
-			context.dispatch('calculateFilteredComics')
-		}
-	},
 
   mutations: {
-		storeClickedComic ( state, comic ) { state.clickedComic = comic },
-		setAllKeywords ( state, keywordList ) { state.keywordList = keywordList },
-		setLoginModalVisibility ( state, isVisible ) { state.loginModalVisibility = isVisible; },
-		setVotingModalVisibility ( state, isVisible ) { state.votingModalVisibility = isVisible; },
-		setWhiteThemeButtonStyle ( state, isWhite ) { state.whiteThemeButtons = isWhite },
-		setComicForVotingModal ( state, comic ) { state.comicForVotingModal = comic },
-		setDarkTheme ( state, isDarkTheme ) { state.darkTheme = isDarkTheme },
+		setDarkTheme (state, isDarkTheme) { state.darkTheme = isDarkTheme },
+		storeClickedComic (state, comic) { state.clickedComic = comic },
+		setAllKeywords (state, keywordList) { state.keywordList = keywordList },
+		setLoginModalVisibility (state, isVisible) { state.loginModalVisibility = isVisible; },
+		setVotingModalVisibility (state, isVisible) { state.votingModalVisibility = isVisible; },
+		setWhiteThemeButtonStyle (state, isWhite) { state.whiteThemeButtons = isWhite },
+		setComicForVotingModal (state, comic) { state.comicForVotingModal = comic },
 	},
-	
-	getters: {
-	}
 })

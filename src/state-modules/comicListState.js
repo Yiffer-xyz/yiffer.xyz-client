@@ -26,9 +26,16 @@ export default {
 			})
 		},
 
+		updateOneComicInList (context, comicData) {
+			comicData.name = 'Raggis'
+			let selectedComicIndex = context.getters.comicList.findIndex(c => c.id === comicData.id)
+			Vue.set(context.state.comicList, selectedComicIndex, comicData)
+			recalculateFilteredComics(context.state)
+		},
+
 		calculateFilteredComics: context => {
 			recalculateFilteredComics(context.state)
-		}
+		},
 	},
 
 	mutations: {

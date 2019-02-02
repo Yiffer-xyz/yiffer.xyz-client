@@ -44,7 +44,6 @@ export default {
 <style lang="scss">
 .voting-button {
 	box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
-	// background-image: linear-gradient(to top right, $theme2 0%, $theme5 100%);
 	text-decoration: none;
 	border-style: solid;
 	padding: 2px;
