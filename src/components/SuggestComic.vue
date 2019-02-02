@@ -13,7 +13,7 @@
 						The comic should be at least 4 pages long. If the pages have lots of panels or if the comic is of very high quality, 3-page comics might be accepted.
 					</li>
 					<li>
-						Low-quality comics (visually) will not be accepted.
+						The comic will not be accepted if it is of low quality ("poorly drawn").
 					</li>
 					<li>
 						The comic <i>might</i> not be accepted if it is uncolored.

@@ -117,11 +117,14 @@ export default {
   border-collapse: collapse;
   td, th {
     border: 1px solid #aaa; //todo
-    padding: 2px 4px;
   }
   th {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
+    padding: 8px 5px;
+  }
+  td {
+    padding: 5px;
   }
 }
 </style>

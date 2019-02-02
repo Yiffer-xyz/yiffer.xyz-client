@@ -36,13 +36,13 @@
       <p class="error-message" v-if="uploadErrorMessage">{{uploadErrorMessage}}</p>
       <p class="success-message" v-if="uploadSuccessMessage">{{uploadSuccessMessage}}</p>
 
-      <p class="link-color cursor-pointer" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-         v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!)</p>
-      <p class="link-color cursor-pointer" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-         v-if="showAllUnfinishedComics"> Hide this list</p>
+      <button class="y-button y-button-neutral" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
+         v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!) <down-arrow/></button>
+      <button class="y-button y-button-neutral" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
+         v-if="showAllUnfinishedComics"> Hide this list <up-arrow/></button>
 
       <div v-if="showAllUnfinishedComics" class="vertical-flex;">
-        <table id="unfinishedComicsTable">
+        <table class="y-table">
           <thead>
             <tr>
               <th>Comic name</th>
@@ -83,10 +83,19 @@
 </template>
 
 <script>
+import DownArrow from 'vue-material-design-icons/ArrowDown.vue'
+import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
+
 import comicApi from '../../api/comicApi'
 
 export default {
   name: 'addPage',
+
+	components: {
+		'down-arrow': DownArrow,
+		'up-arrow': UpArrow,
+	},
+
   data: function () {
     return {
       isOpen: false,
@@ -97,10 +106,12 @@ export default {
       showAllUnfinishedComics: false,
     }
   },
+
   methods: {
     processFileUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
     },
+
     async uploadFiles () {
       let response = await comicApi.addPagesToComic(this.comic, this.selectedFiles)
 
@@ -116,23 +127,31 @@ export default {
         this.uploadSuccessMessage = ''
       }
     },
+
     toggleAllUnfinishedComics () {
       this.showAllUnfinishedComics = !this.showAllUnfinishedComics
     },
+
     showLastPage (comic) {
       comic.lastPageUrl = `/comics/${comic.name}/${comic.numberOfPages}.jpg`
       comic.name = ' ' + comic.name + ' '
     },
+
     unshowLastPage (comic) {
       comic.lastPageUrl = undefined
       comic.name = comic.name.substring(1, comic.name.length-1)
     },
+
     openComponent () { if (!this.isOpen) { this.isOpen = true } },
+
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) },
   },
+
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
+
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
+
     unfinishedComicList () {
       return this.$store.getters.comicList
         .filter(comic => !comic.finished)
@@ -186,18 +205,6 @@ let nowTimestamp = (new Date()).getTime()
 
 .last-page-image {
   max-width: 250px;
-}
-
-#unfinishedComicsTable {
-  border-collapse: collapse;
-  th, td {
-    border: 1px solid #aaa;
-    padding: 2px 4px;
-  }
-  th {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-  }
 }
 
 </style>

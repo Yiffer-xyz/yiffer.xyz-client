@@ -16,9 +16,11 @@
 
 	],
 	"comicSuggestionList": [
-		{"Id": 412342, "ComicName": "Double Trouble 3", "Artist": null, "LinksComments": "https://u18chan.com/c/1235234/thread/<br/>Please add this one ok", "User": "Ole fredrik"},
-		{"Id": 4123342, "ComicName": "Double T3", "Artist": "Kabier", "LinksComments": "https://u18chan.com/c/1235234/thread/<br/>https://u18chan.com/c/1235234/thread/", "User": "123.4123.5123.51 123..13..1.1"},
-		{"Id": 4112342, "ComicName": "JayNaylorCOmci", "Artist": "Jay Naylor", "LinksComments": "e ok", "User": "123.53.1.51. 1.21.31.1"}
+		{"processed": false, "id": 412342, "comicName": "Double Trouble 3", "artist": null, "linksComments": "https://u18chan.com/c/1235234/thread/<br/>Please add this one ok", "user": "Ole fredrik"},
+		{"processed": false, "id": 4123342, "comicName": "Double T3", "artist": "Kabier", "linksComments": "https://u18chan.com/c/1235234/thread/<br/>https://u18chan.com/c/1235234/thread/", "user": "123.4123.5123.51 123..13..1.1"},
+		{"processed": false, "id": 4112342, "comicName": "JayNaylorCOmci", "artist": "Jay Naylor", "linksComments": "e ok", "user": "123.53.1.51. 1.21.31.1"},
+		{"processed": true, "mod": "Malann", "verdict": "added", "id": 4112342, "comicName": "JayNaylorCOmci", "artist": "Jay Naylor", "linksComments": "e ok", "user": "123.53.1.51. 1.21.31.1"},
+		{"processed": true, "mod": "Malann", "verdict": "rejected", "id": 4112342, "comicName": "Comic name", "artist": "Shino", "linksComments": "e ok", "user": "22.1.1.33. 1.11.361.331"}
 	],
 	"keywordSuggestionList":
 	[{"ComicName":"Double Trouble","ComicId":773,"Extension":1,"User":"185.71.208.199, 162.158.222.70","keyword":"anon-kun"},{"ComicName":"Double Trouble","ComicId":773,"Extension":1,"User":"185.71.208.199, 162.158.222.70","keyword":"asgore"},{"ComicName":"Double Trouble","ComicId":773,"Extension":0,"User":"185.71.208.199, 162.158.222.70","keyword":"blowjob"},{"ComicName":"Double Trouble","ComicId":773,"Extension":0,"User":"185.71.208.199, 162.158.222.70","keyword":"rape"},{"ComicName":"Dress to Undress","ComicId":343,"Extension":1,"User":"185.71.208.199, 162.158.222.70","keyword":"asriel"}],
