@@ -373,8 +373,14 @@ option, select, input {
 .margin-top-16 {
 	margin-top: 16px;
 }
+.margin-top-32 {
+	margin-top: 32px;
+}
 .margin-bottom-8 {
 	margin-bottom: 8px;
+}
+.margin-bottom-16 {
+	margin-bottom: 16px;
 }
 
 
@@ -609,6 +615,7 @@ h1 {
 			box-shadow: 0 0 10px 1px $theme4;
 		}
 	}
+	
 	.vote-box-colored-1 { background-color: #009FFF; color: white; }
 	.vote-box-colored-2 { background-color: #1A92EB; color: white; }
 	.vote-box-colored-3 { background-color: #3486D7; color: white; }
@@ -641,6 +648,14 @@ h1 {
 			background-color: $themeDark2 !important;
 		}
 	}
+
+  .pretty-input-upload {
+    background: $themeDark1;
+
+    &:hover {
+      background-color: $themeDark2;
+    }
+  }
 }
 
 </style>

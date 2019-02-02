@@ -135,7 +135,7 @@ export default {
     },
 
     async confirmRemoveKeywords () {
-      let response = await keywordApi.removeKeywordsFromComic(this.comic, this.selectedKeywords)
+      let response = await keywordApi.removeKeywordsFromComic(this.comic, this.keywordsToDelete)
 
       if (response.success) {
         this.successMessage = 'Successfully removed tags from ' + this.comic.name

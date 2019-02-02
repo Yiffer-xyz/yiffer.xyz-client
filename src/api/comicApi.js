@@ -59,6 +59,12 @@ export default {
 		})
 	},
 
+	async addThumbnailToPendingComic (comicId, thumbnailImage) {
+		return new Promise( async resolve => {
+			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 1000)
+		})
+	},
+
 	async addPagesToComic (comicData, newPagesList) {
 		return new Promise(resolve => {
 			resolve({'success': true, 'message': 'asd'})

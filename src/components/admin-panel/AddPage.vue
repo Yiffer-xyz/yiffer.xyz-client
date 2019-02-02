@@ -155,7 +155,7 @@ export default {
 	cursor: pointer;
 
 	border-radius: 5px;
-	background: $theme5;
+	background: $themeGray7;
 	padding: 4px 9px;
 
 	display: flex;
@@ -168,7 +168,7 @@ export default {
 	}
 
   &:hover {
-    background-color: $theme4;
+    background-color: $themeDark1;
   }
 }
 
@@ -197,16 +197,6 @@ export default {
   th {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
-  }
-}
-
-.dark {
-  .pretty-input-upload {
-    background: $theme4p5;
-
-    &:hover {
-      background-color: $theme3;
-    }
   }
 }
 
