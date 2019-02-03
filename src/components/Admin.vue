@@ -35,6 +35,8 @@
 				@refresh-pending-comics="refreshPendingComics"
 				@refresh-comic-list="refreshComicList"></pending-comics>
 
+			<mod-scoreboard/>
+
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
 	</div>
@@ -58,6 +60,7 @@ import PendingComics from '@/components/admin-panel/PendingComics.vue'
 import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
 import PageManager from '@/components/admin-panel/PageManager.vue'
+import ModScoreboard from '@/components/admin-panel/ModScoreboard.vue'
 
 import ArtistApi from '../api/artistApi'
 import keywordApi from '../api/keywordApi'
@@ -77,6 +80,7 @@ export default {
 		'keyword-suggestions': KeywordSuggestions,
 		'comic-suggestions': ComicSuggestions,
 		'page-manager': PageManager,
+		'mod-scoreboard': ModScoreboard,
 	},
 	data: function () {
 		return {
