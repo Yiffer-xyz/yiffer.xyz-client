@@ -93,5 +93,29 @@ export default {
 		return new Promise(resolve => {
 			resolve({success: true, message: 'Not no'})
 		})
+	},
+
+	async swapComicPages (comicId, pageNumber1, pageNumber2) {
+		return new Promise( async resolve => {
+			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
+		})
+	},
+
+	async insertComicPage (comicId, insertAfterPageNumber) {
+		return new Promise( async resolve => {
+			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
+		})
+	},
+
+	async deleteComicPage (comicId, pageNumber) {
+		return new Promise( async resolve => {
+			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
+		})
+	},
+
+	async getComicPageChangeDate (comicId) {
+		return new Promise( async resolve => {
+			setTimeout(() => {resolve(new Date('2019-01-30'))}, 500)
+		})
 	}
 }

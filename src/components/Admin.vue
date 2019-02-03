@@ -22,6 +22,9 @@
 			<correct-comic :comicList="comicList" :artistList="artistList"
 				@refresh-comic-list="refreshComicList"></correct-comic>
 
+			<page-manager :comicList="comicList"
+				@refresh-comic-list="refreshComicList"/>
+
 			<add-comic :comicList="comicList" :artistList="artistList" :keywordList="[...keywordList]"
 				@refresh-pending-comics="refreshPendingComics"></add-comic>
 
@@ -54,6 +57,7 @@ import AddArtist from '@/components/admin-panel/AddArtist.vue'
 import PendingComics from '@/components/admin-panel/PendingComics.vue'
 import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
+import PageManager from '@/components/admin-panel/PageManager.vue'
 
 import ArtistApi from '../api/artistApi'
 import keywordApi from '../api/keywordApi'
@@ -72,6 +76,7 @@ export default {
 		'pending-comics': PendingComics,
 		'keyword-suggestions': KeywordSuggestions,
 		'comic-suggestions': ComicSuggestions,
+		'page-manager': PageManager,
 	},
 	data: function () {
 		return {
@@ -181,6 +186,10 @@ export default {
 	}
 	h2 {
 		margin-bottom: 16px;
+	}
+
+	&.admin-content-box-grow {
+		width: 200%;
 	}
 }
 

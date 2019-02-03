@@ -103,7 +103,7 @@
       <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add thumbnail <checkbox-icon v-if="thumbnailFile"/></p>
       <form enctype="multipart/form-data" novalidate style="margin: 4px 0;">
         <div class="pretty-input-upload">
-          <input type="file" @change="processThumbNailUploadChange" id="thumbnailFileInput" accept="image/x-png,image/jpeg" class="input-file"/>
+          <input type="file" @change="processThumbNailUploadChange" accept="image/x-png,image/jpeg" class="input-file"/>
           <p>Select file</p>
         </div>
       </form>
