@@ -205,9 +205,6 @@ export default {
 					if (tempImage.width !== 200 || tempImage.height !== 283) {
 						this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
 					}
-					else {
-						this.errorMessageThumbnail = ''
-					}
 				}
 			}
 			fileReader.readAsDataURL(this.thumbnailFile)

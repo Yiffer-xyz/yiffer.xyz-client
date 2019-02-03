@@ -101,7 +101,7 @@ export default {
 		})
 	},
 
-	async insertComicPage (comicId, insertAfterPageNumber) {
+	async insertComicPage (comicId, imageFile, insertAfterPageNumber) {
 		return new Promise( async resolve => {
 			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
 		})
@@ -116,6 +116,12 @@ export default {
 	async getComicPageChangeDate (comicId) {
 		return new Promise( async resolve => {
 			setTimeout(() => {resolve(new Date('2019-01-30'))}, 500)
+		})
+	},
+
+	async replaceThumbnailImage (comicId, imageFile) {
+		return new Promise( async resolve => {
+			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 1000)
 		})
 	}
 }

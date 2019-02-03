@@ -1,16 +1,16 @@
 <template>
   <div class="admin-content-box admin-content-box-grow" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Insert / remove / swap pages</h2>
+    <h2 @click="closeComponent" class="cursor-pointer">Insert / remove / swap pages / thumbnail</h2>
 
     <span class="admin-content-box-inner" v-if="isOpen">
       <p>
         Because of how the Cloudflare caching works, it might take up to 30 days for these changes to go into effect.
-        While unfortunate, this is unavoidable. This means that the page previews below will be faulty after one such
-        change within a 30-day-period.
+        This is unfortunate, but unavoidable. This means that the page previews below will be faulty after one such
+        change within a 30-day-period. Thumbnail changes are excluded.
       </p>
       <p>
-        So, if a comic has had page changes (other than normal adding pages) within the last 30 days, you may not 
-        use this to do so again. If there are many pages that need to be swapped, inserted or deleted, please
+        So, if a comic has had page changes (other than normal adding of pages) within the last 30 days, you may not 
+        use this to do so again. If there are many pages in a single comic that need to be swapped, inserted or deleted, please
         contact the site owner in the Discord channel.
       </p>
 
@@ -21,6 +21,9 @@
             {{comic.name}}
           </option>
         </select>
+        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic" style="margin-left: 8px;" target="_blank">
+          go to comic <right-arrow/>
+        </router-link>
       </div>
 
       <div v-if="comicHasBeenChangedRecently" class="error-message">
@@ -92,9 +95,7 @@
               <p>Select file</p>
             </div>
           </form>
-          <p v-if="imageToInsert"><b>{{imageToInsert.length}}</b> Selected file: 
-            <span class="courier">{{imageToInsert.name}}</span>
-          </p>
+          <p v-if="imageToInsert">Selected file: <span class="courier">{{imageToInsert.name}}</span></p>
 
           <button @click="insertPage" v-if="imageToInsert" class="y-button margin-top-16">Insert {{imageToInsert.name}}</button>
         </span>
@@ -120,6 +121,21 @@
 
         <p class="error-message" v-if="errorMessageDelete" style="margin-top: 8px;">{{errorMessageDelete}}</p>
         <p class="success-message" v-if="successMessageDelete" style="margin-top: 8px;">{{successMessageDelete}}</p>
+
+
+        <h2 style="margin-top: 32px;">Replace thumbnail</h2>
+        <form enctype="multipart/form-data" novalidate class="no-margin-bot" style="width: fit-content">
+          <div class="pretty-input-upload">
+            <input type="file" @change="processThumbnailUploadChange" accept="image/x-png,image/jpeg" class="input-file"/>
+            <p>Select file</p>
+          </div>
+        </form>
+        <p v-if="thumbnailImageFile">Selected file: <span class="courier">{{thumbnailImageFile.name}}</span></p>
+
+        <button @click="replaceThumbnail" v-if="thumbnailImageFile" class="y-button">Insert {{thumbnailImageFile.name}}</button>
+        <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
+        <p class="success-message margin-top-16" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
+
       </span>
 
 
@@ -134,6 +150,7 @@
 
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
 
@@ -142,6 +159,7 @@ export default {
 
 	components: {
 		'checkbox-icon': CheckboxIcon,
+		'right-arrow': RightArrow,
 	},
 
   data: function () {
@@ -156,6 +174,7 @@ export default {
       deletePageNumber: undefined,
       comicHasBeenChangedRecently: false,
       comicChangeDate: undefined,
+      thumbnailImageFile: undefined,
 
       errorMessageSwap: '',
       successMessageSwap: '',
@@ -163,14 +182,16 @@ export default {
       successMessageInsert: '',
       errorMessageDelete: '',
       successMessageDelete: '',
+      errorMessageThumbnail: '',
+      successMessageThumbnail: '',
     }
   },
 
   methods: {
     async swapPages () {
-      let response = await comicApi.swapComicPages(this.comic.id, this.swapPage1, this.swapPage2)
       this.errorMessageSwap = ''
       this.successMessageSwap = ''
+      let response = await comicApi.swapComicPages(this.comic.id, this.swapPage1, this.swapPage2)
 
       if (response.success) {
         this.successMessageSwap = 'Swap successful! Keep in mind the 30-day period described above.'
@@ -182,13 +203,14 @@ export default {
     },
 
     async insertPage () {
-      let response = await comicApi.insertComicPage(this.comic.id, this.insertPageAfterNumber)
       this.errorMessageInsert = ''
       this.successMessageInsert = ''
+      let response = await comicApi.insertComicPage(this.comic.id, this.imageToInsert, this.insertPageAfterNumber)
 
       if (response.success) {
         this.successMessageInsert = 'Insert successful! Keep in mind the 30-day period described above.'
         this.$store.dispatch('updateOneComicInList', this.comic)
+        this.imageToInsert = undefined
       }
       else {
         this.errorMessageInsert = 'Error inserting page: ' + response.message
@@ -196,9 +218,9 @@ export default {
     },
 
     async deletePage () {
-      let response = await comicApi.deleteComicPage(this.comic.id, this.deletePageNumber)
       this.errorMessageDelete = ''
       this.successMessageDelete = ''
+      let response = await comicApi.deleteComicPage(this.comic.id, this.deletePageNumber)
 
       if (response.success) {
         this.successMessageDelete = 'Delete successful! Keep in mind the 30-day period described above.'
@@ -209,8 +231,22 @@ export default {
       }
     },
 
+    async replaceThumbnail () {
+      this.errorMessageThumbnail = ''
+      this.successMessageThumbnail = ''
+      let response = await comicApi.replaceThumbnailImage(this.comic.id, this.thumbnailImageFile)
+      
+      if (response.success) {
+        this.successMessageThumbnail = 'Successfully replaced thumbnail!'
+        this.thumbnailImageFile = undefined
+      }
+      else {
+        this.errorMessageThumbnail = 'Error replacing thumbnail: ' + response.message
+      }
+    },
+
     async comicChanged () {
-      this.startPageViewing=1
+      this.resetAllInputsAndMessages()
 
       let response = await comicApi.getComicPageChangeDate()
       this.comicHasBeenChangedRecently = ((new Date())-response) < 86400000*30
@@ -219,6 +255,47 @@ export default {
 
     processFileUploadChange (changeEvent) {
       this.imageToInsert = changeEvent.target.files[0]
+    },
+
+    processThumbnailUploadChange (changeEvent) {
+      this.thumbnailImageFile = changeEvent.target.files[0]
+      this.processNewThumbnail()
+    },
+
+		async processNewThumbnail () {
+			this.errorMessageThumbnail = ''
+			let fileReader = new FileReader()
+			fileReader.onload = () => {
+				let tempImage = new Image()
+				tempImage.src = fileReader.result
+				tempImage.onload = () => {
+					if (tempImage.width !== 200 || tempImage.height !== 283) {
+						this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
+					}
+				}
+			}
+			fileReader.readAsDataURL(this.thumbnailImageFile)
+		},
+
+    resetAllInputsAndMessages () {
+      this.startPageViewing = 1
+      this.swapPage1 = undefined
+      this.swapPage2 = undefined
+      this.insertPageAfterNumber = undefined
+      this.imageToInsert = undefined
+      this.deletePageNumber = undefined
+      this.comicHasBeenChangedRecently = false
+      this.comicChangeDate = undefined
+      this.thumbnailImageFile = undefined
+
+      this.errorMessageSwap = ''
+      this.successMessageSwap = ''
+      this.errorMessageInsert = ''
+      this.successMessageInsert = ''
+      this.errorMessageDelete = ''
+      this.successMessageDelete = ''
+      this.errorMessageThumbnail = ''
+      this.successMessageThumbnail = ''
     },
 
 		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
