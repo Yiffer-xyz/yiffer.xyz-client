@@ -244,19 +244,13 @@ textarea {
 
 .y-button-small {
 	font-family: 'Open Sans', sans-serif;
-	// box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
-	// border: 0.8px solid $theme4;
 	border-radius: 5px;
-	// color: $theme4;
-	// background: rgba(0,0,0,0);
 	background: $theme5;
 	color: white;
 	padding: 2px 6px;
 	border: none;
 
 	&:hover {
-		// background-color: $theme4;
-		// color: white;
 		background-color: $theme4;
 		cursor: pointer;
 	}
@@ -285,6 +279,28 @@ textarea {
 	background-color: $themeGray7 !important;
 	&:hover {
 		background-color: $themeDark1 !important;
+	}
+}
+
+.y-button-transparent {
+	background-color: transparent !important;
+	color: $theme4;
+	border: 1px solid $theme4;
+	&:hover {
+		background-color: $theme4 !important;
+		border-color: $theme4;
+		color: white;
+	}
+}
+
+.y-button-transparent2 {
+	background-color: transparent !important;
+	color: $themeGray7;
+	border: 1px solid $themeGray7;
+	&:hover {
+		background-color: $themeGray7 !important;
+		border-color: $themeGray7;
+		color: white;
 	}
 }
 
@@ -518,6 +534,16 @@ h1 {
 	}
 	.admin-content-box-open {
 		background-color: $themeDark4;
+	}
+	.y-button-transparent2 {
+		background-color: transparent !important;
+		color: $themeGray3;
+		border: 1px solid $themeGray3;
+		&:hover {
+			background-color: $themeGray3 !important;
+			border-color: $themeGray3;
+			color: black;
+		}
 	}
 }
 

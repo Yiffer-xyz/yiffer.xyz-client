@@ -4,6 +4,7 @@
 		<div class="loginModal">
 
 			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
+				<button class="y-button y-button-transparent2 close-modal-button" @click="closeModal()">close</button>
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form @submit="loginConfirmClicked" class="login-register-form">
@@ -23,6 +24,7 @@
 
 
 			<div v-if="modalContext==='register'" class="loginModalInnerWrapper">
+				<button class="y-button y-button-transparent2 close-modal-button" @click="closeModal()">close</button>
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form @submit="signupConfirmClicked" class="login-register-form">
@@ -64,6 +66,7 @@
 
 
 			<div v-if="modalContext==='forgotten'" class="loginModalInnerWrapper">
+				<button class="y-button y-button-transparent2 close-modal-button" @click="closeModal()">close</button>
 				<p class="modal-header">Forgotten account details?</p>
 				<p v-if="forgottenErrorMessage" class="modal-error-message">{{forgottenErrorMessage}}</p>
 				<p v-if="forgottenSuccessMessage" style="margin: 20px 0;">
@@ -341,6 +344,12 @@ export default {
 	&:hover {
 		cursor: default !important;
 	}
+}
+
+.close-modal-button {
+	position: absolute;
+	right: 8px;
+	top: 16px;
 }
 
 .dark {
