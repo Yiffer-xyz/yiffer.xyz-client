@@ -111,20 +111,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.y-table {
-  border-collapse: collapse;
-  td, th {
-    border: 1px solid #aaa; //todo
-  }
-  th {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    padding: 8px 5px;
-  }
-  td {
-    padding: 5px;
-  }
-}
-</style>

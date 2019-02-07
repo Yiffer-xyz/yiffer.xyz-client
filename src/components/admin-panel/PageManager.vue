@@ -97,7 +97,7 @@
           </form>
           <p v-if="imageToInsert">Selected file: <span class="courier">{{imageToInsert.name}}</span></p>
 
-          <button @click="insertPage" v-if="imageToInsert" class="y-button margin-top-16">Insert {{imageToInsert.name}}</button>
+          <button @click="insertPage" v-if="imageToInsert" class="y-button margin-top-8">Insert {{imageToInsert.name}}</button>
         </span>
 
         <p class="error-message" v-if="errorMessageInsert" style="margin-top: 8px;">{{errorMessageInsert}}</p>

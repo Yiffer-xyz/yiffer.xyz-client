@@ -439,7 +439,35 @@ h1 {
 	text-align: center;
 }
 
+.y-table {
+  border-collapse: collapse;
+  td, th {
+    border: 1px solid #aaa; //todo
+  }
+  th {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    padding: 8px 5px;
+  }
+  td {
+    padding: 5px;
+  }
+	tr {
+		&:hover {
+			background: rgba(0, 0, 0, 0.05);
+		}
+	}
+}
+
 .dark {
+	.y-table {
+		tr {
+			&:hover {
+				background: rgba(240, 255, 255, 0.1);
+			}
+		}
+	}
+
 	input, textarea {
 		background: rgb(22, 26, 29);
 		border: 1px solid #666;
@@ -451,7 +479,7 @@ h1 {
 		background: rgb(22, 26, 29);
 		color: white;
 		border: 1px solid #666;
-		padding: 1px;
+		padding: 3px 1px;
 	}
 
 	.link-color, a, .theme-button {

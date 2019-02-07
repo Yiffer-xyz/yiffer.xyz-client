@@ -27,7 +27,7 @@
 			</div>
 
 
-			<table class="y-table margin-top-8" style="text-align: left;">
+			<table class="y-table margin-top-8" style="text-align: left; width: 90%; table-layout: fixed">
 				<thead>
 					<tr>
 						<th>Mod name</th>
