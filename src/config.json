@@ -35,5 +35,12 @@
 		{"modName": "yeahnasdasd", "score": 50},
 		{"modName": "lalal", "score": 3},
 		{"modName": "kgnd", "score": 99}
+	],
+	"modLog": [
+		{"modName": "ragnar", "actionType": "Tag suggestion", "action": "add X, comic YY", "date": "Tue Feb 05 2019 12:14:38"},
+		{"modName": "test", "actionType": "Artist", "action": "add XX", "date": "Tue Feb 05 2019 11:00:00"},
+		{"modName": "tes2t", "actionType": "Comic", "action": "add ZZZ", "date": "Mon Feb 04 2019 11:00:00"},
+		{"modName": "test", "actionType": "Artist", "action": "add XX", "date": "Tue Feb 05 2019 13:00:00"},
+		{"modName": "test3", "actionType": "Tag suggestion", "action": "reject ZZ, comic AA", "date": "Wed Feb 06 2019 13:00:00"}
 	]
 }

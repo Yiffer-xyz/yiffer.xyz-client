@@ -8,7 +8,7 @@ export default {
 
 	async signup (username, password, email) {
 		return new Promise( async resolve => {
-			resolve({success: true, result: {username: 'signupbruker99', donator: false, userType: 'normal', email: '99mail.com'}})
+			resolve({success: true, result: {username: 'signupbruker99', donator: false, userType: 'admin', email: '99mail.com'}})
 		})
 	},
 

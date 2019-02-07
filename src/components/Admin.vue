@@ -4,7 +4,7 @@
     <h1>Admin</h1>
     <back-to-index></back-to-index>
 
-		<div class="admin-content-container">
+		<div class="admin-content-container" v-if="$store.getters.isAuthenticated">
 	
 			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"
 				@refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
@@ -37,20 +37,24 @@
 
 			<mod-scoreboard/>
 
+			<mod-log v-if="$store.getters.userData.userType==='admin'"/>
+
+		</div>
+
+		<div v-else class="margin-top-32">
+			<p>Not logged in</p>
+			<button @click="showLoginModal()" class="y-button margin-top-8">
+				<i data-feather="log-in"></i>Log in
+			</button>
 		</div>
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
 	</div>
 </template>
 
 <script>
+import config from '@/config.json'
 import LoginModal from '@/components/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
-
-// re calculate and zip med i correct
-// mod stats
-// husk å ta med upload progress
-
-import config from '@/config.json'
 import AddPage from '@/components/admin-panel/AddPage.vue'
 import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
 import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
@@ -61,6 +65,7 @@ import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
 import PageManager from '@/components/admin-panel/PageManager.vue'
 import ModScoreboard from '@/components/admin-panel/ModScoreboard.vue'
+import ModLog from '@/components/admin-panel/ModLog.vue'
 
 import ArtistApi from '../api/artistApi'
 import keywordApi from '../api/keywordApi'
@@ -81,6 +86,7 @@ export default {
 		'comic-suggestions': ComicSuggestions,
 		'page-manager': PageManager,
 		'mod-scoreboard': ModScoreboard,
+		'mod-log': ModLog,
 	},
 	data: function () {
 		return {
@@ -100,8 +106,9 @@ export default {
 			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
 			this.comicSuggestionList = await comicApi.getSuggestedComicList()
 		},
-
-//todo alleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+		showLoginModal () {
+			this.$store.commit('setLoginModalVisibility', true)			
+		},
 		refreshKeywordSuggestions () {
 			this.keywordSuggestionList.splice(0, 1)
 		},

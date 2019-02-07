@@ -379,6 +379,9 @@ option, select, input {
 .margin-top-32 {
 	margin-top: 32px;
 }
+.margin-bottom-4 {
+	margin-bottom: 4px;
+}
 .margin-bottom-8 {
 	margin-bottom: 8px;
 }
@@ -441,12 +444,14 @@ h1 {
 		background: rgb(22, 26, 29);
 		border: 1px solid #666;
 		color: white;
+		padding: 1px;
 	}
 
 	option, select {
 		background: rgb(22, 26, 29);
 		color: white;
 		border: 1px solid #666;
+		padding: 1px;
 	}
 
 	.link-color, a, .theme-button {
