@@ -124,10 +124,10 @@ export default {
 	},
 	
   created: async function () {
-		// todo get email setting data and email
-		this.savedEmailSetting = (await authApi.getEmailPreference()).result.preference
+		let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
+		if (!loggedin) { this.$router.replace('/') }
+		this.savedEmailSetting = (await authApi.getEmailPreference()).result
 		this.emailSetting = this.savedEmailSetting
-		this.userEmail = 'todo@epost.com'
 	},
 
 	watch: {

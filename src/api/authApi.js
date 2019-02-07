@@ -26,7 +26,7 @@ export default {
 
 	async getEmailPreference () {
 		return new Promise( async resolve => {
-			resolve({success: true, result: {preference: "updates"}})
+			resolve({success: true, result: "updates"})
 		})
 	},
 

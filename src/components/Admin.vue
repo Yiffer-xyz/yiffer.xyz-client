@@ -100,11 +100,11 @@ export default {
 	},
 	methods: {
 		async loadData () {
-			this.keywordList = await keywordApi.getKeywordList()
-			this.artistList = await ArtistApi.getArtistList()
-			this.pendingComicList = await comicApi.getPendingComics()
-			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
-			this.comicSuggestionList = await comicApi.getSuggestedComicList()
+			this.keywordList = keywordApi.getKeywordList()
+			this.artistList = ArtistApi.getArtistList()
+			this.pendingComicList = comicApi.getPendingComics()
+			this.keywordSuggestionList = keywordApi.getKeywordSuggestionList()
+			this.comicSuggestionList = comicApi.getSuggestedComicList()
 		},
 		showLoginModal () {
 			this.$store.commit('setLoginModalVisibility', true)			
@@ -149,6 +149,8 @@ export default {
   },
   async created () {
 		this.loadData()
+		let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
+		if (!loggedin) { this.$router.replace('/') }
   }
 }
 

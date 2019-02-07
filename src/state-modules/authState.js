@@ -51,11 +51,19 @@ export default {
 			context.dispatch('destroyUserData')
 		},
 
-		setUserDataFromCookies (context) {
-			if ($cookies.isKey('user-data')) {
-				context.commit('setUserData', $cookies.get('user-data'))
-				context.commit('setIsAuthenticated', true)
-			}
+		checkAndSetLoginStatus (context) {
+			return new Promise( async resolve => {
+				if ($cookies.isKey('user-data')) {
+					context.commit('setUserData', $cookies.get('user-data'))
+					context.commit('setIsAuthenticated', true)
+					resolve(true)
+				}
+				else {
+					context.commit('setIsAuthenticated', false)
+					context.commit('setUserData', undefined)
+					resolve(false)
+				}
+			})
 		},
 
 		setUserData (context, userData) {
