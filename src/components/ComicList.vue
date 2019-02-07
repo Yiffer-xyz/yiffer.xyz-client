@@ -182,13 +182,13 @@
 								</td>
 								<td
 									@click="setDetailLevel('Medium detail')"
-									:class="{'button-selected': detailLevel === 'Medium detail'}"
+									:class="{'button-selected': $store.getters.detailLevel === 'Medium detail'}"
 								>
 									Medium detail
 								</td>
 								<td
 									@click="setDetailLevel('High detail')"
-									:class="{'button-selected': detailLevel === 'High detail'}"
+									:class="{'button-selected': $store.getters.detailLevel === 'High detail'}"
 								>
 									High detail
 								</td>
@@ -212,7 +212,7 @@
 		</div>
 
 		<div class="comic-card-container">
-			<comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic" :detailLevel="detailLevel">
+			<comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic">
 			</comic-card>
 		</div>
 	</div>
@@ -362,7 +362,7 @@ export default {
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
 		setDetailLevel ( detailLevel ) {
-			this.detailLevel = detailLevel
+			this.$store.commit('setDetailLevel', detailLevel)
 			this.$cookies.set('detail', detailLevel)
 		},
 		handleResize () {

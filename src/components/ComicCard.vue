@@ -1,7 +1,8 @@
 <template>
 	<div class="comic-card">
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
+			<img :src="`/comics/tests.jpg`" @click="storeClickedComicData()">
+			<!-- <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()"> -->
 		</router-link>
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 			<p class="comic-card-comic-title">{{comic.name}}</p>
@@ -10,13 +11,13 @@
 			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
 		</router-link>
 
-		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
+		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
 			<p><pages-icon/> {{comic.numberOfPages}}</p>
 			<p><users-icon/> {{formatRating(comic.userRating)}}</p>
 			<p v-if="comic.yourRating"><user-icon/> {{comic.yourRating}}</p>
 		</div>
 
-		<div class="horiz-card-row" v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'">
+		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
 			<div v-if="isNewComic" class="circled-text circled-text-red">NEW</div>
 			<div v-if="recentlyFinished" class="circled-text circled-text-red" title="Recently finished">RF</div>
 			<div v-if="!comic.finished" class="circled-text" title="Work in progress (comic not finished)">WIP</div>
@@ -25,16 +26,10 @@
 		<voting-button
 			:comic="comic"
 			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
-			v-if="$store.getters.isAuthenticated && (detailLevel === 'Medium detail' || detailLevel === 'High detail')"
+			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
 		></voting-button> <!--todo detail level use vuex-->
 
-		<!-- <voting-button-single-color
-			:comic="comic"
-			v-if="detailLevel === 'Medium detail' || detailLevel === 'High detail'"
-			style="margin-top: 10px;"
-		></voting-button-single-color> -->
-
-		<div class="keyword-container" v-if="detailLevel === 'High detail'">
+		<div class="keyword-container" v-if="$store.getters.detailLevel === 'High detail'">
 			<div 
 				:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
 				v-for="keyword in comic.keywords"
@@ -44,6 +39,12 @@
 				{{keyword}}
 			</div>
 		</div>
+
+		<p v-if="$store.getters.detailLevel === 'High detail'" class="margin-top-4" style="font-size: 12px;">
+			<label title="Updated on"><refresh-icon/> {{prettyDate(comic.updated)}}</label> <br/>
+			<label title="Created on"><plus-icon/> {{prettyDate(comic.added)}}</label>
+		</p>
+
 	</div>
 </template>
 
@@ -53,6 +54,8 @@ import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
 import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
 import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 
 export default {
 	name: 'comic-card',
@@ -62,10 +65,11 @@ export default {
 		'pages-icon': PagesIcon,
 		'user-icon': UserIcon,
 		'users-icon': UsersIcon,
+		'plus-icon': PlusIcon,
+		'refresh-icon': RefreshIcon,
 	},
 	props: {
 		comic: Object,
-		detailLevel: String,
 		clickableKeyword: {
 			type: Boolean,
 			default: true
@@ -82,6 +86,7 @@ export default {
 			if (number > 8.5) { return Math.round(number * 100) / 100 }
 			else { return Math.round(number * 10) / 10 }
 		},
+		prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
 		storeClickedComicData: function () {
 			this.$store.commit('storeClickedComic', this.comic)
 		},
@@ -99,6 +104,7 @@ export default {
 	margin: 1px 3px;
 	padding: 0.5px 6px 1px 6px;
 	border-radius: 10px;
+	font-weight: 300;
 }
 .keyword:hover {
 	color: $theme4 !important;

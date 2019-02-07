@@ -3,7 +3,7 @@
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
 			<span style="display: flex; flex-direction: column;">
-				<p class="modal-header margin-top-16">Vote for {{$store.state.comicForVotingModal.name}}</p>
+				<p class="modal-header">Vote for {{$store.state.comicForVotingModal.name}}</p>
 				<p class="margin-top-16">User rating: {{$store.state.comicForVotingModal.userRating}}</p>
 
 				<table class="voting-numbers-table margin-top-16">
@@ -115,7 +115,7 @@ export default {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background: rgba(255, 255, 255, 0.95);
+	background: rgba(255, 255, 255, 0.6);
 	z-index: 5;
 	&:hover {
 		cursor: pointer;
@@ -198,7 +198,7 @@ export default {
 	}
 
 	.modal-backdrop {
-		background-color: rgba(0, 0, 0, 0.7);
+		background-color: rgba(255, 255, 255, 0.4);
 	}
 }
 </style>
