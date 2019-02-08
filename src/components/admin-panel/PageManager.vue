@@ -15,7 +15,7 @@
       </p>
 
       <div class="horizontal-flex" style="margin-top: 8px;">
-        <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
+        <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic" @change="comicChanged">
           <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
             {{comic.name}}
@@ -32,7 +32,7 @@
       </div>
 
       <div v-if="comic" class="horizontal-flex" style="margin-top: 8px;">
-        <p class="add-kw-mini-header" style="margin-right: 8px;">Start page viewing range:</p>
+        <p class="admin-mini-header" style="margin-right: 8px;">Start page viewing range:</p>
         <select v-model="startPageViewing">
           <option v-for="pageNumber in comic.numberOfPages" :key="pageNumber" :value="pageNumber">
             &nbsp;&nbsp;{{pageNumber}}&nbsp;&nbsp;&nbsp;
@@ -316,8 +316,8 @@ export default {
 </script>
 
 <style lang="scss">
-  .page-manager-image {
-    max-height: 350px;
-    max-width: 300px;
-  }
+.page-manager-image {
+	max-height: 350px;
+	max-width: 300px;
+}
 </style>

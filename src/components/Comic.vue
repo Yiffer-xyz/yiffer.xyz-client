@@ -1,8 +1,8 @@
 <template>
 	<span>
 		<vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
-		<div class="upper-body-div-comic">
-			<span v-if="comic" class="comic-upper-div">
+		<div id="upperBodyDivComic">
+			<span v-if="comic" id="comicUpperDiv">
 				<h1>{{$route.params.comicName}}</h1>
 				<share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
 				<h2>by 
@@ -93,7 +93,7 @@
 					<p class="error-message margin-top-8" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
 				</div>
 
-				<div class="normal-button-row margin-top-16">
+				<div id="comicSizingButtonsRow" class="margin-top-16">
 					<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
 					<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
 					<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
@@ -112,7 +112,7 @@
 
 		</div>
 	
-		<div v-if="comic" id="comic-page-container" class="margin-top-16 margin-bottom-8">
+		<div v-if="comic" id="comicPageContainer" class="margin-top-16 margin-bottom-8">
 			<img 
 				v-for="pageNumber in comic.numberOfPages" 
 				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
@@ -262,7 +262,7 @@ export default {
 		fitImagesForMobile () {
 			if (window.innerWidth < 900) {
 				let resizeIntervalHook = setInterval(() => {
-					if (this.comic && document.getElementById('comic-page-container').childElementCount === this.comic.numberOfPages) {
+					if (this.comic && document.getElementById('comicPageContainer').childElementCount === this.comic.numberOfPages) {
 						this.setAllImagesFit('width')
 						clearInterval(resizeIntervalHook)
 					}
@@ -308,9 +308,7 @@ export default {
 }
 
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
-
 </script>
-
 
 <style lang="scss">
 .share-icon {
@@ -323,7 +321,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	}
 }
 
-.comic-upper-div {
+#comicUpperDiv {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -332,10 +330,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	.y-button {
 		margin-top: 16px;
 	}
-}
-
-.margin-bottom-8 {
-	margin-bottom: 8px;
 }
 
 #comicKeywords {
@@ -366,7 +360,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	justify-content: center;
 }
 
-.upper-body-div-comic {
+#upperBodyDivComic {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -388,7 +382,7 @@ a {
 	text-decoration: none;
 }
 
-#comic-page-container {
+#comicPageContainer {
 	img {
 		margin-bottom: 16px;
 		display: block;
@@ -408,7 +402,7 @@ a {
 	max-height: 90px;
 }
 
-.normal-button-row {
+#comicSizingButtonsRow {
 	.y-button {
 		margin: 0px 2px;
 	}

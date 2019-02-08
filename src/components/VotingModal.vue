@@ -6,7 +6,7 @@
 				<p class="modal-header">Vote for {{$store.state.comicForVotingModal.name}}</p>
 				<p class="margin-top-16">User rating: {{$store.state.comicForVotingModal.userRating}}</p>
 
-				<table class="voting-numbers-table margin-top-16">
+				<table id="votingNumbersTable" class="margin-top-16">
 					<tr>
 						<td 
 							v-for="i in 10"
@@ -100,7 +100,7 @@ export default {
 	color: #222;
 }
 
-.voting-numbers-table {
+#votingNumbersTable {
 	border-collapse: collapse;
 	td {
 		&:hover {

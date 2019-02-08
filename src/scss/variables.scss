@@ -1,43 +1,197 @@
-$theme0: #0d201b;
-$theme1: #0e4736;
-$theme2: #006d4d;
-$theme3: #00855e;
-$theme3p5: #008f65;
-$theme4: #00986b;
-$theme4p5: #00ab79;
-$theme5: #00d596;
-$theme6: #78fdd6;
-$theme7: #a9ffe6;
-$theme8: #dbfff4;
+@import "colors.scss";
+@import "button-styles.scss";
+@import "text-styles.scss";
 
-$themeGray0: #fafafa;
-$themeGray0p5: #f1f1f1;
-$themeGray1: #e7e7e7;
-$themeGray2: #dcdcdc;
-$themeGray3: #cbcbcb;
-$themeGray4: #b0b0b0;
-$themeGray3p5: #bababa;
-$themeGray5: #a6a6a6;
-$themeGray6: #9a9a9a;
-$themeGray7: #8e8e8e;
-$themeGray8: #7e7e7e;
+#app {
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+	text-align: center;
+}
 
-$themeDark1: #484e54;
-$themeDark2: #383f45;
-$themeDark3: #26302c;
-$themeDark4: #1a201f;
-$themeDark5: #0a0e0c;
+div, table, span, img, body, h1, h2, h3, p {
+	margin: 0px;
+}
 
-$themeRed: #ec2f4b; //todo
-$themeRed0: #6b090b;
-$themeRed1: #a90509;
-$themeRed2: #c80005;
-$themeRed3: #fd8f91;
+textarea {
+	font-family: 'Open Sans', sans-serif;
+}
 
-$themeBlue0: #090f14;
-$themeBlue0p5: #0b1116;
-$themeBlue1: #0e1a27;
+::selection {
+	background: rgba(120, 253, 214, 0.5);
+}
 
-$cardBgColorDark: #222426; //todo
-$cardTextColorLight: #222; //todo
-$themeBlue: #009fff; //todo big i comicList
+body {
+	background-color: #fafafa;
+}
+
+.dark {
+	background-color: #090f14;
+	p, h1, h2, div, td, h3 {
+		color: #ddd;
+	}
+}
+
+option, select, input {
+	font-family: 'Open Sans', sans-serif;
+}
+
+select {
+	padding: 3px 1px;
+}
+
+.vertical-flex {
+	display: flex;
+	flex-direction: column;
+}
+
+.cursor-pointer {
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.no-margin-bot {
+	p, select, button {
+		margin-bottom: 0 !important;
+	}
+	margin-bottom: 0 !important;
+}
+
+.no-margin-top {
+	margin-top: 0 !important;
+}
+.margin-top-4 {
+	margin-top: 4px;
+}
+.margin-top-8 {
+	margin-top: 8px;
+}
+.margin-top-16 {
+	margin-top: 16px;
+}
+.margin-top-32 {
+	margin-top: 32px;
+}
+.margin-bottom-4 {
+	margin-bottom: 4px;
+}
+.margin-bottom-8 {
+	margin-bottom: 8px;
+}
+.margin-bottom-16 {
+	margin-bottom: 16px;
+}
+
+.admin-content-box {
+	box-shadow: 0 0 12px 0px $themeGray2;
+	&:hover {
+		box-shadow: 0 0 20px 1px $themeGray3;
+	}
+}
+.admin-content-box-open {
+	box-shadow: 0 0 20px 1px $themeGray3;
+}
+
+.y-table {
+  border-collapse: collapse;
+  td, th {
+    border: 1px solid #aaa; //todo
+  }
+  th {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    padding: 8px 5px;
+  }
+  td {
+    padding: 5px;
+  }
+	tr {
+		&:hover {
+			background: rgba(0, 0, 0, 0.05);
+		}
+	}
+}
+
+.admin-mini-header {
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.selected-add-keyword {
+  &:hover {
+    cursor: pointer;
+    text-decoration: line-through;
+    color: $themeRed;
+  }
+  font-size: 14px;
+}
+
+.keyword-to-be-deleted {
+  color: $themeRed !important;
+  text-decoration: line-through;
+}
+
+.comic-card-container {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.keyword, .keyword-static {
+	font-size: 12px;
+	border: 0.5px solid #ccc; //todo
+	margin: 1px 3px;
+	padding: 0.5px 6px 1px 6px;
+	border-radius: 10px;
+	font-weight: 300;
+}
+.keyword:hover {
+	color: $theme4 !important;
+	cursor: pointer;
+	border-color: $theme4;
+}
+.keyword-static:hover {
+	cursor: default;
+}
+
+.dark {
+	.y-table {
+		tr {
+			&:hover {
+				background: rgba(240, 255, 255, 0.1);
+			}
+		}
+	}
+
+	input, textarea {
+		background: rgb(22, 26, 29);
+		border: 1px solid #666;
+		color: white;
+		padding: 1px;
+	}
+
+	option, select {
+		background: rgb(22, 26, 29);
+		color: white;
+		border: 1px solid #666;
+	}
+
+	.admin-content-box {
+		box-shadow: none;
+		border-color: $themeGray7;
+		&:hover {
+			background-color: $themeDark4	
+		}
+	}
+	.admin-content-box-open {
+		background-color: $themeDark4;
+	}
+
+	.keyword, .keyword-static {
+		border-color: #555; //todo
+		color: #ddd;
+	}
+}

@@ -94,14 +94,6 @@ function mockGetArtist (artistName) {
   }
 }
 
-.comic-card-container {
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-	flex-wrap: wrap;
-	justify-content: center;
-}
-
 #artistComicsTitle, #artistLinksTitle {
   @media (max-width: 900px) {
     font-size: 22px

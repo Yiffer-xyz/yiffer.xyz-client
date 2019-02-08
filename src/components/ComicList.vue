@@ -1,7 +1,7 @@
 <template>
 	<div style="width: 100%">
 		<vue-headful title="Yiffer.xyz"/>
-		<div class="upper-body-div">
+		<div class="upperBodyDiv">
 			<h1>Yiffer.xyz</h1>
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
@@ -23,7 +23,7 @@
 			</span>
 
 			<div class="buttons-container">
-				<span class="upper-body-width buttons-container-inner">
+				<span id="upperBodyWidth" class="buttons-container-inner">
 					<div class="upper-body-horiz-row">
 						<table class="horiz-row-inner" id="catTable">
 							<tr>
@@ -426,7 +426,7 @@ export default {
 	}
 }
 
-.upper-body-div {
+#upperBodyDiv {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -659,7 +659,7 @@ export default {
 		border-top: 1px solid $themeDark2;
 		border-bottom: 1px solid $themeDark2;
 	}
-	.upper-body-div {
+	#upperBodyDiv {
 		background: linear-gradient(to top right, $themeBlue1, #0D1C23, $theme0);
 		h1 {
 			color: white;
@@ -694,7 +694,7 @@ export default {
 	}
 }
 	
-.upper-body-width {
+#upperBodyWidth {
 	width: 50%;
 	@media (max-width: 900px) {
 		width: 100%;

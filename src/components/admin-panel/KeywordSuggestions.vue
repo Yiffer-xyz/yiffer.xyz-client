@@ -23,8 +23,19 @@
               <td>{{suggestion.Extension ? 'ADD' : 'REMOVE'}} {{suggestion.Keyword}}</td>
               <td>{{suggestion.User}}</td>
               <td>
-                <button @click="processKeyword(suggestion.ComicId, suggestion.Keyword, true)" class="y-button no-margin-bot">Approve</button>
-                <button @click="processKeyword(suggestion.ComicId, suggestion.Keyword, false)" class="y-button y-button-red no-margin-bot">Reject</button>
+								<div class="horizontal-flex">
+									<button
+										@click="processKeyword(suggestion.ComicId, suggestion.Keyword, true)"
+										class="y-button no-margin-bot"
+										style="margin-right: 2px;">
+										Approve
+									</button>
+									<button
+										@click="processKeyword(suggestion.ComicId, suggestion.Keyword, false)"
+										class="y-button y-button-red no-margin-bot">
+										Reject
+									</button>
+								</div>
               </td>
             </tr>
           </tbody>

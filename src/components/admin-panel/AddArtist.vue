@@ -2,7 +2,7 @@
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Add artist</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-      <p class="add-kw-mini-header no-margin-bot">Add new artist</p>
+      <p class="admin-mini-header no-margin-bot">Add new artist</p>
       <div class="horizontal-flex" style="align-items: center;">
         <p style="margin-right: 8px;">Artist name:</p>
         <input type="text" v-model="artistName"/>

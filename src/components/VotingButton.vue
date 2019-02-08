@@ -77,21 +77,4 @@ export default {
 		}
 	}
 }
-
-.dark {
-	.comic-card {
-		.y-button {
-			background-color: $theme4p5;
-			span {
-				background-color: $theme4p5;
-			}
-			&:hover {
-				background-color: $theme3;
-				span {
-					background-color: $theme3;
-				}
-			}
-		}
-	}
-}
 </style>

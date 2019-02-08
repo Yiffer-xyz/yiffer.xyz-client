@@ -6,7 +6,7 @@
       <p>Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
 
       <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
-        <p class="add-kw-mini-header" style="margin-right: 8px;">Comic:</p>
+        <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
           <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
             {{comic.name}}
@@ -17,7 +17,7 @@
   
       <div class="horizontal-flex" style="width: 100%; justify-content: space-evenly; margin-top: 8px;" v-if="comic">
         <div class="vertical-flex">
-          <p class="add-kw-mini-header">Tag list</p>
+          <p class="admin-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
           </select>
@@ -25,7 +25,7 @@
         </div>
       
         <div class="vertical-flex">
-          <p class="add-kw-mini-header">Tags you're adding</p>
+          <p class="admin-mini-header">Tags you're adding</p>
           <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
              :key="keyword" class="selected-add-keyword">{{keyword}}</p>
@@ -36,7 +36,7 @@
         </div>
       
         <div class="vertical-flex">
-          <p class="add-kw-mini-header">This comic's tags</p>
+          <p class="admin-mini-header">This comic's tags</p>
           <p v-if="comic.keywords.length > 0" style="margin-bottom: 6px;">
             Click tags to <span class="red-color">remove</span>
           </p>
@@ -170,25 +170,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.add-kw-mini-header {
-  font-weight: 400;
-  margin-bottom: 6px;
-}
-
-.selected-add-keyword {
-  &:hover {
-    cursor: pointer;
-    text-decoration: line-through;
-    color: $themeRed;
-  }
-  font-size: 14px;
-}
-
-.keyword-to-be-deleted {
-  color: $themeRed !important;
-  text-decoration: line-through;
-}
-
-</style>

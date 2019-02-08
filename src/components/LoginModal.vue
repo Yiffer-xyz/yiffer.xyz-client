@@ -4,7 +4,7 @@
 		<div class="loginModal">
 
 			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
-				<button class="y-button y-button-transparent2 close-modal-button" @click="closeModal()">close</button>
+				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()">close</button>
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form @submit="loginConfirmClicked" class="login-register-form">
@@ -24,7 +24,7 @@
 
 
 			<div v-if="modalContext==='register'" class="loginModalInnerWrapper">
-				<button class="y-button y-button-transparent2 close-modal-button" @click="closeModal()">close</button>
+				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()">close</button>
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form @submit="signupConfirmClicked" class="login-register-form">
@@ -66,7 +66,7 @@
 
 
 			<div v-if="modalContext==='forgotten'" class="loginModalInnerWrapper">
-				<button class="y-button y-button-transparent2 close-modal-button" @click="closeModal()">close</button>
+				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()">close</button>
 				<p class="modal-header">Forgotten account details?</p>
 				<p v-if="forgottenErrorMessage" class="modal-error-message">{{forgottenErrorMessage}}</p>
 				<p v-if="forgottenSuccessMessage" style="margin: 20px 0;">
@@ -279,10 +279,8 @@ export default {
 
 	position: absolute;
 	content: "";
-	// background: linear-gradient(to right, rgb(0, 159, 255), rgb(236, 47, 75));
 	background: linear-gradient(to right, $theme2, $theme6);
 	top: -3px;
-
 }
 
 .login-register-form {
@@ -338,7 +336,7 @@ export default {
 }
 
 .pleasewait-button {
-	background-color: $theme5; //todo wut
+	background-color: $theme5;
 	color: white;
 	cursor: pointer;
 	&:hover {

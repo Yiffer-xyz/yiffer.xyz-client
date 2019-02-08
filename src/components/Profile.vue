@@ -3,7 +3,7 @@
 		<div class="whole-body-text whole-body-text-centered">
 
 			<vue-headful :title="'Profile - Yiffer.xyz'"/>
-			<h1 class="upper-body-div-comic">Profile: {{$store.getters.userData.username}}</h1>
+			<h1>Profile: {{$store.getters.userData.username}}</h1>
 			<back-to-index></back-to-index>
 			<br/>
 
@@ -33,7 +33,7 @@
 			<br/>
 
 			<b>Change password</b>
-			<table class="change-password-table">
+			<table id="changePasswordTable">
 				<tr>
 					<td><label>Current password: </label> </td>
 					<td><input v-model="currentPassword" type="password" class="margin-top-4"/></td>
@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss">
-.change-password-table {
+#changePasswordTable {
 	border: none;
 	td {
 		text-align: left;

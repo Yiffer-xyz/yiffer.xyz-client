@@ -63,7 +63,7 @@
               <td>
                 <span v-if="!comic.lastPageUrl" class="link-color cursor-pointer" @click="showLastPage(comic)">Load image</span>
                 <a v-if="comic.lastPageUrl" :href="comic.lastPageUrl" target="_blank">
-                  <img :src="comic.lastPageUrl" class="last-page-image"/>
+                  <img :src="comic.lastPageUrl" style="max-width: 250px;"/>
                 </a>
                 <br>
                 <span v-if="comic.lastPageUrl" class="link-color cursor-pointer" @click="unshowLastPage(comic)">Hide image</span>
@@ -166,45 +166,3 @@ export default {
 
 let nowTimestamp = (new Date()).getTime()
 </script>
-
-<style lang="scss">
-
-.pretty-input-upload {
-	position: relative;
-	cursor: pointer;
-
-	border-radius: 5px;
-	background: $themeGray7;
-	padding: 4px 9px;
-
-	display: flex;
-	align-items: center;
-
-	p {
-		font-size: 13px;
-    color: white;
-    font-weight: 400;
-	}
-
-  &:hover {
-    background-color: $themeDark1;
-  }
-}
-
-.input-file {
-	opacity: 0;
-	cursor: pointer;
-	position: absolute;
-	width: 100%;
-	left: 0;
-}
-
-.arrow-symbol {
-  font-size: 28px;
-}
-
-.last-page-image {
-  max-width: 250px;
-}
-
-</style>

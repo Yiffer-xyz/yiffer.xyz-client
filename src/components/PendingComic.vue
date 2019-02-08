@@ -35,7 +35,7 @@
 			<p v-if="comic.keywords.length === 0">No tags have been added.</p>
       <div class="horizontal-flex" style="width: 100%; margin-top: 8px;">
         <div class="vertical-flex" style="margin: 0 12px 0 0;">
-          <p class="add-kw-mini-header">Tag list</p>
+          <p class="admin-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordsNotInComic" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
           </select>
@@ -43,7 +43,7 @@
         </div>
       
         <div class="vertical-flex" style="margin: 0 12px 0 12px;">
-          <p class="add-kw-mini-header">Tags you're adding</p>
+          <p class="admin-mini-header">Tags you're adding</p>
           <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
              :key="keyword" class="selected-add-keyword">{{keyword}}</p>
@@ -54,7 +54,7 @@
         </div>
       
         <div class="vertical-flex" style="margin: 0 0 0 12px;">
-          <p class="add-kw-mini-header">This comic's tags</p>
+          <p class="admin-mini-header">This comic's tags</p>
           <p v-if="comic.keywords.length > 0" style="margin-bottom: 6px;">
             Click tags to <span class="red-color">remove</span>
           </p>
@@ -239,15 +239,15 @@ export default {
 </script>
 
 <style lang="scss">
-	.image-fit-full {
-		max-width: 100vw;
-		max-height: 100vh;
-	}
-	.image-fit-small {
-		max-width: 240px;
-		max-width: 240px;
-	}
-	.comic-page-pending {
-		margin: 6px;
-	}
+.image-fit-full {
+	max-width: 100vw;
+	max-height: 100vh;
+}
+.image-fit-small {
+	max-width: 240px;
+	max-width: 240px;
+}
+.comic-page-pending {
+	margin: 6px;
+}
 </style>

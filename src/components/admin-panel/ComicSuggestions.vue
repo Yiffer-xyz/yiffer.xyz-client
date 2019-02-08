@@ -33,8 +33,19 @@
               <td style="word-break: break-word;">{{suggestion.linksComments}}</td>
               <td>{{suggestion.user}}</td>
               <td>
-                <button @click="processSuggestion(suggestion.id, suggestion.user, true, suggestion.comicName)" class="y-button no-margin-bot">Added</button>
-                <button @click="processSuggestion(suggestion.id, suggestion.user, false, suggestion.comicName)" class="y-button y-button-red no-margin-bot">Reject</button>
+								<div class="horizontal-flex">
+									<button 
+										@click="processSuggestion(suggestion.id, suggestion.user, true, suggestion.comicName)"
+										class="y-button no-margin-bot"
+										style="margin-right: 2px;">
+										Added
+									</button>
+									<button
+										@click="processSuggestion(suggestion.id, suggestion.user, false, suggestion.comicName)"
+										class="y-button y-button-red no-margin-bot">
+										Reject
+									</button>
+								</div>
               </td>
             </tr>
           </tbody>

@@ -25,7 +25,7 @@
         You can also add tags after finishing this, from the "Pending comics" list.
       </p>
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Comic details <checkbox-icon v-if="detailsFilledIn"/></p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Comic details <checkbox-icon v-if="detailsFilledIn"/></p>
       <table id="newComicTable">
         <tr>
           <td>
@@ -89,7 +89,7 @@
         </tr>
       </table>
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add pages <checkbox-icon v-if="filesAreInput"/></p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add pages <checkbox-icon v-if="filesAreInput"/></p>
       <form enctype="multipart/form-data" novalidate style="margin-top: 4px;">
         <div class="pretty-input-upload">
           <input type="file" multiple="true" @change="processFileUploadChange" id="newPageFilesAddComic" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -100,7 +100,7 @@
       <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 16px;">Add thumbnail <checkbox-icon v-if="thumbnailFile"/></p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add thumbnail <checkbox-icon v-if="thumbnailFile"/></p>
       <form enctype="multipart/form-data" novalidate style="margin: 4px 0;">
         <div class="pretty-input-upload">
           <input type="file" @change="processThumbNailUploadChange" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -113,7 +113,7 @@
       <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
 
 
-      <p class="add-kw-mini-header no-margin-bot margin-top-16">Add tags <checkbox-icon v-if="selectedKeywords.length"/></p>
+      <p class="admin-mini-header no-margin-bot margin-top-16">Add tags <checkbox-icon v-if="selectedKeywords.length"/></p>
       <p>Adding tags is optional, but appreciated!</p>
       <div class="horizontal-flex">
         <div class="vertical-flex">
@@ -130,7 +130,7 @@
         </div>
       </div>
 
-      <p class="add-kw-mini-header no-margin-bot" style="margin-top: 32px;">Finish</p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 32px;">Finish</p>
       <button v-if="!readyForUpload" class="y-button y-button-disabled" style="margin-top: 4px;">
         Fill in all details and add pages before finishing!
       </button>
@@ -279,9 +279,5 @@ export default {
   td {
     padding: 2px 4px;
   }
-}
-
-.no-margin-bot {
-  margin-bottom: 0px !important;
 }
 </style>

@@ -3,7 +3,7 @@
 		<div class="whole-body-text whole-body-text-centered">
 
 			<vue-headful :title="'Profile - Yiffer.xyz'"/>
-			<h1 class="upper-body-div-comic">Suggest new comic</h1>
+			<h1>Suggest new comic</h1>
 			<back-to-index></back-to-index>
 
 			<p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
@@ -27,7 +27,7 @@
 				</ul>
 			</span>
 
-			<table class="suggest-table">
+			<table id="suggestTable">
 				<tr>
 					<td class="label-cell">
 						<label>Comic name:</label>
@@ -110,7 +110,7 @@ export default {
 </script>
 
 <style lang="scss">
-.suggest-table {
+#suggestTable {
 	input, textarea {
 		width: 100%;
 	}

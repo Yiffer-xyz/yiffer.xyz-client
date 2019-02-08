@@ -98,22 +98,6 @@ export default {
 </script>
 
 <style lang="scss">
-.keyword, .keyword-static {
-	font-size: 12px;
-	border: 0.5px solid #ccc; //todo
-	margin: 1px 3px;
-	padding: 0.5px 6px 1px 6px;
-	border-radius: 10px;
-	font-weight: 300;
-}
-.keyword:hover {
-	color: $theme4 !important;
-	cursor: pointer;
-	border-color: $theme4;
-}
-.keyword-static:hover {
-	cursor: default;
-}
 .circled-text {
 	display: flex;
 	align-items: center;
@@ -140,11 +124,6 @@ export default {
 	.circled-text {
 		background-color: #333;
 		color: #bbb !important; //todo
-	}
-
-	.keyword, .keyword-static {
-		border-color: #555; //todo
-		color: #ddd;
 	}
 }
 
@@ -218,18 +197,4 @@ export default {
 	flex-flow: row wrap;
 	justify-content: center;
 }
-
-.dark {
-	.comic-card {
-		background-color: $cardBgColorDark;
-		p, div, .fas {
-			color: #ddd; //todo
-		}
-		box-shadow: none;
-		&:hover {
-			box-shadow: 0 0 10px 1px $theme3;
-		}
-	}
-}
-
 </style>
