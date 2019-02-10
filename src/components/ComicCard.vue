@@ -7,18 +7,21 @@
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 			<p class="comic-card-comic-title">{{comic.name}}</p>
 		</router-link>
+
 		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
 			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
 		</router-link>
 
 		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
-			<p><pages-icon/> {{comic.numberOfPages}}</p>
-			<p><users-icon/> {{formatRating(comic.userRating)}}</p>
-			<p v-if="comic.yourRating"><user-icon/> {{comic.yourRating}}</p>
+			<p title="Number of pages"><pages-icon/> {{comic.numberOfPages}}</p>
+			<p title="User rating"><users-icon/> {{formatRating(comic.userRating)}}</p>
+			<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon/> {{comic.yourRating || '-'}}</p>
 		</div>
 
 		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
-			<div v-if="isNewComic" class="circled-text circled-text-red">NEW</div>
+			<div class="circled-text circled-text-autowidth">{{comic.cat}}</div>
+			<div class="circled-text circled-text-autowidth">{{comic.tag}}</div>
+			<div v-if="isNewComic" title="Added within 7 days" class="circled-text circled-text-red">NEW</div>
 			<div v-if="recentlyFinished" class="circled-text circled-text-red" title="Recently finished">RF</div>
 			<div v-if="!comic.finished" class="circled-text" title="Work in progress (comic not finished)">WIP</div>
 		</div>
@@ -114,6 +117,11 @@ export default {
 	&:hover {
 		cursor: default;
 	}
+}
+
+.circled-text-autowidth {
+	min-width: 33px;
+	width: auto;
 }
 
 .circled-text-red {

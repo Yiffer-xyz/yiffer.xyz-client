@@ -122,7 +122,6 @@ export default {
 	}
 }
 
-
 .voting-modal {
 	position: fixed;
 	top: 50%;

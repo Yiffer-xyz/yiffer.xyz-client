@@ -123,29 +123,27 @@
 
 .pretty-input-upload {
 	position: relative;
-	cursor: pointer;
 
 	border-radius: 5px;
 	background: $themeGray7;
-	padding: 4px 9px;
+	padding: 5px 10px;
 
 	display: flex;
 	align-items: center;
 
 	p {
-		font-size: 13px;
+		font-size: 14px;
     color: white;
     font-weight: 400;
 	}
 
   &:hover {
-    background-color: $themeDark1;
-  }
+		background-color: $themeDark1;
+	}
 }
 
 .input-file {
 	opacity: 0;
-	cursor: pointer;
 	position: absolute;
 	width: 100%;
 	left: 0;

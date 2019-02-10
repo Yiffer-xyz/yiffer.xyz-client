@@ -162,7 +162,6 @@ export default {
 }
 .close-component-arrow {
 	margin-top: 16px;
-
   &:hover {
     cursor: pointer;
   }
