@@ -20,7 +20,7 @@
           <tbody>
             <tr v-for="(suggestion, index) in keywordSuggestionList" :key="index">
               <td>{{suggestion.ComicName}}</td>
-              <td>{{suggestion.Extension ? 'ADD' : 'REMOVE'}} {{suggestion.Keyword}}</td>
+              <td>{{suggestion.Extension ? 'ADD' : 'REMOVE'}} {{suggestion.keyword}}</td>
               <td>{{suggestion.User}}</td>
               <td>
 								<div class="horizontal-flex">

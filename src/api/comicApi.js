@@ -1,12 +1,17 @@
 import config from '@/config.json'
+import axios from 'axios'
+
+let baseUrl = 'http://localhost:9000'
 
 export default {
 	async getComics () {
-		return new Promise( resolve => {
-			setTimeout(() => {
-				resolve({data: config.comicList}) // todo kanskje egen for admin og egen for ComicList?
-			}, 1000)
-		})
+		// return new Promise( resolve => {
+		// 	setTimeout(() => {
+		// 		resolve({data: config.comicList}) // todo kanskje egen for admin og egen for ComicList?
+		// 	}, 1000)
+		// })
+		let response = await axios.get(baseUrl + '/comics')
+		return response.data
 	},
 
 	async getComic (comicName) {

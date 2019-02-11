@@ -21,8 +21,8 @@ export default {
 		loadComicList: context => {
 			return new Promise (async (resolve) => {
 				let response = await comicApi.getComics()
-				context.commit('setComicList', response.data)
-				resolve(response.data)
+				context.commit('setComicList', response)
+				resolve(response)
 			})
 		},
 

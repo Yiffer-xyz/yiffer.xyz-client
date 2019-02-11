@@ -1,8 +1,8 @@
 <template>
 	<div class="comic-card">
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-			<img :src="`/comics/tests.jpg`" @click="storeClickedComicData()">
-			<!-- <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()"> -->
+			<!-- <img :src="`/comics/tests.jpg`" @click="storeClickedComicData()"> -->
+			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 			<p class="comic-card-comic-title">{{comic.name}}</p>

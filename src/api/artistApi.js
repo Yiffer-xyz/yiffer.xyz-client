@@ -4,7 +4,7 @@ export default {
   async getArtistList () {
     return new Promise(resolve => {
 			resolve(config.artistList)
-    })
+		})
   },
 
   async addNewArtist (artistName) {
