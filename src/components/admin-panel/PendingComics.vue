@@ -21,6 +21,7 @@
               <th>Artist</th>
               <th>Category</th>
               <th>Class.</th>
+              <th>Pages</th>
               <th>Finished</th>
               <th>Tags</th>
               <th>Thumbnail</th>
@@ -29,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="suggestion in pendingComicList" :key="suggestion.Id">
+            <tr v-for="suggestion in pendingComicList" :key="suggestion.id">
               <td><router-link :to="{ name: 'pendingComic', params: {comicName: suggestion.name} }" target="_blank">
                 {{suggestion.name}}
               </router-link></td>
@@ -38,13 +39,14 @@
               </router-link></td>
               <td>{{suggestion.tag}}</td>
               <td>{{suggestion.cat}}</td>
+              <td>{{suggestion.numberOfPages}}</td>
               <td>{{suggestion.finished ? 'Yes' : 'No'}}</td>
               <td v-if="suggestion.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
               <td v-if="suggestion.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
               <td>{{suggestion.modName}}</td>
               <td v-if="$store.getters.userData.userType === 'admin'">
-                <button @click="processComic(suggestion.Id, true)" class="y-button" style="margin-bottom: 2px;">Approve</button>
-                <button @click="processComic(suggestion.Id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button>
+                <button @click="processComic(suggestion.id, true)" class="y-button" style="margin-bottom: 2px;">Approve</button>
+                <button @click="processComic(suggestion.id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button>
               </td>
             </tr>
           </tbody>
