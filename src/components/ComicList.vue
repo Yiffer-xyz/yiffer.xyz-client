@@ -210,7 +210,6 @@
 				</span>
 			</div>
 		</div>
-
 		<div class="comic-card-container">
 			<comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic">
 			</comic-card>
@@ -397,14 +396,14 @@ export default {
 		},
 		paginationButtons () {
 			let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage) //todo gettable?
-			let currentPage = this.$store.state.pageNumber
+			let currentPage = this.$store.getters.pageNumber
 			let buttonList = []
 			if (pages <= 9) {
 				for (var i = 1; i < pages+1; i++) { buttonList.push(i) }
 				return buttonList
 			}
 			if (currentPage <= 5) {
-				return [1, 2, 3, 4, 5, 6, 7, 8, '...', pages]
+				return [1, 2, 3, 4, 5, 6, 7, '...', pages]
 			}
 			if (currentPage >= pages-4) {
 				return [1, '...', pages-6, pages-5, pages-4, pages-3, pages-2, pages-1, pages]
@@ -507,10 +506,10 @@ export default {
 
 .pagination-button {
 	padding: 5px;
+	flex: 1;
 	&:not(:first-child) {
 		border-left: none;
 	}
-	flex-grow: 1;
 }
 
 .buttons-container {

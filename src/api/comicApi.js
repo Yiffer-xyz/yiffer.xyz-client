@@ -16,7 +16,6 @@ export default {
 	async getComic (comicName) {
 		let response = await axios.get(baseUrl + '/comics/' + comicName)
 		if (!response.data.error) {
-			console.log(response.data)
 			return {success: true, result: response.data}
 		}
 		else {
