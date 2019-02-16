@@ -21,17 +21,17 @@
 				></voting-button>
 
 				<div class="margin-top-16" v-if="comic">
-					<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
-					<p v-if="comic.links.previousComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
+					<p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
+					<p v-if="comic.previousComic">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }">
 							
 							<left-arrow/>
-							{{comic.links.previousComic}}
+							{{comic.previousComic}}
 						</router-link>
 					</p>
-					<p v-if="comic.links.nextComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
-							{{comic.links.nextComic}} 
+					<p v-if="comic.nextComic">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }">
+							{{comic.nextComic}} 
 							<right-arrow/>
 						</router-link>
 					</p>
@@ -133,17 +133,17 @@
 		<br/>
 
 		<div class="margin-top-8 margin-bottom-8" v-if="comic">
-			<p v-if="comic.links.previousComic || comic.links.nextComic">This comic is part of a series!</p>
-			<p v-if="comic.links.previousComic">
-				<router-link :to="{ name: 'comic', params: { comicName: comic.links.previousComic } }">
+			<p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
+			<p v-if="comic.previousComic">
+				<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }">
 					
 					<left-arrow/>
-					{{comic.links.previousComic}}
+					{{comic.previousComic}}
 				</router-link>
 			</p>
-			<p v-if="comic.links.nextComic">
-				<router-link :to="{ name: 'comic', params: { comicName: comic.links.nextComic } }">
-					{{comic.links.nextComic}} 
+			<p v-if="comic.nextComic">
+				<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }">
+					{{comic.nextComic}} 
 					<right-arrow/>
 				</router-link>
 			</p>

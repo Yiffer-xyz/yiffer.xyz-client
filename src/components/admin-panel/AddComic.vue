@@ -138,6 +138,7 @@
         Add comic!
       </button>
 
+      <p class="success-message" v-if="uploadPercent" style="margin-top: 8px;">Uploading ({{uploadPercent}}%)</p>
       <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
       <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
@@ -178,7 +179,8 @@ export default {
       selectedFiles: [],
       selectedKeywords: [],
       thumbnailFile: undefined,
-      selectedKeyword: undefined,
+			selectedKeyword: undefined,
+			uploadPercent: undefined,
       errorMessage: '',
       successMessage: '',
       errorMessageThumbnail: '',
@@ -228,13 +230,14 @@ export default {
         cat: this.cat,
         finished: this.finished,
         keywords: this.selectedKeywords
-      }
-
-      let response = await comicApi.addNewComic(uploadData, this.selectedFiles, this.thumbnailFile)
-
-      if (response.success) {
+			}
+			
+			let response = await comicApi.addNewComic(uploadData, {pageFiles: this.selectedFiles, thumbnailFile: this.thumbnailFile}, this.updateUploadProgress)
+	
+			if (response.success) {
         this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
-          and then (hopefully) add it! Your suggested comic will now appear under "Pending comics".`
+					and then (hopefully) add it! Your suggested comic will now appear under "Pending comics".`
+				this.uploadPercent = undefined,
         this.errorMessage = ''
         this.comicName = ''
         this.artist = undefined
@@ -250,7 +253,11 @@ export default {
         this.errorMessage = 'Error adding comic: ' + response.message
         this.successMessage = ''
       }
-    },
+		},
+		
+		updateUploadProgress (progressEvent) {
+			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
@@ -263,6 +270,10 @@ export default {
     detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.finished },
     readyForUpload () { return this.detailsFilledIn && this.selectedFiles.length>0 && !this.errorMessageThumbnail }
   }
+}
+
+function progress (event) {
+	console.log(event)
 }
 </script>
 

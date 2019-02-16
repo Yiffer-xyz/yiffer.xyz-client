@@ -45,7 +45,7 @@
 
 		<p v-if="$store.getters.detailLevel === 'High detail'" class="margin-top-4" style="font-size: 12px;">
 			<label title="Updated on"><refresh-icon/> {{prettyDate(comic.updated)}}</label> <br/>
-			<label title="Created on"><plus-icon/> {{prettyDate(comic.added)}}</label>
+			<label title="Created on"><plus-icon/> {{prettyDate(comic.created)}}</label>
 		</p>
 
 	</div>

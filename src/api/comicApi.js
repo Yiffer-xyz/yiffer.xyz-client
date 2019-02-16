@@ -1,39 +1,38 @@
 import config from '@/config.json'
 import axios from 'axios'
 
-let baseUrl = 'http://localhost:9000'
+let baseUrl = 'http://localhost:8012/api'
 
 export default {
 	async getComics () {
-		// return new Promise( resolve => {
-		// 	setTimeout(() => {
-		// 		resolve({data: config.comicList}) // todo kanskje egen for admin og egen for ComicList?
-		// 	}, 1000)
-		// })
 		let response = await axios.get(baseUrl + '/comics')
+		for (var comic of response.data) {
+			comic.created = new Date(comic.created)
+			comic.updated = new Date(comic.updated)
+		}
 		return response.data
 	},
 
 	async getComic (comicName) {
-		return new Promise( resolve => {
-			// if comic exists
-			resolve({success: true, result: {"links": {"nextComic": "asddda", "previousComic": undefined}, "tag": "Furry", "name": "Dress to Undress", "keywords": ['asd', 'asdasdasd', 'asdasdasdasd', 'asad asda', 'xccxxc', 'xcxcxcxc ', 'xccx', 'xcxc', 'asdasdasd a', 'asd  a a ', 'asdasd ',"finnick", "chipmunk", "charizard", "footjob", "fisting"], "cat": "MM", "lastUpdateNewPageCount": 0, "updated": "2017-10-24T11:04:46.000Z", "numberOfPages": 21, "userRating": 7.881, "id": 343, "created": "2017-07-01T00:00:00.000Z", "finished": 0, "artist": "Seth-Iova", "yourRating": 0}})
-			// else 
-			// resolve({success: false})
-		})
+		let response = await axios.get(baseUrl + '/comics/' + comicName)
+		if (!response.data.error) {
+			console.log(response.data)
+			return {success: true, result: response.data}
+		}
+		else {
+			return {error: 'No comic with that name'}
+		}
 	},
 
-	async getPendingComics () {
-		return new Promise( async resolve => {
-			resolve([
-				{"hasThumbnail": true, "modName": "raggis", "links": {"previousComic": null, "nextComic": "lalalala"} ,"tag": "Furry", "name": "Dress to Undress", "keywords": ["finnick", "chipmunk", "charizard", "footjob", "fisting"], "cat": "MM", "numberOfPages": 21, "id": 343, "created": "2017-07-01T00:00:00.000Z", "finished": 0, "artist": "Seth-Iova"},
-				{"hasThumbnail": false, "modName": "YeahNoIdea", "links": {"previousComic": null, "nextComic": null}, "tag": "Pokemon", "name": "Lost and Found", "keywords": ["creampie", "elf", "fat", "biting", "big penis", "eggs", "discord", "femdom", "feral penis", "canine"], "cat": "MM", "numberOfPages": 52, "id": 813, "created": "2018-02-10T15:40:44.000Z", "finished": 0, "artist": "Edesk"},
-				{"hasThumbnail": false, "modName": "Kit", "links": {"previousComic": null, "nextComic": "asd"}, "tag": "Furry", "name": "Critical Success", "keywords": [], "cat": "I", "numberOfPages": 47, "id": 24, "created": "2017-07-01T00:00:00.000Z", "finished": 1, "artist": "Roanoak", "yourRating": 0}
-			])
-		})
+	async getPendingComics () {//todo create. Need the add pending comic first to test
+		let response = await axios.get(baseUrl + '/pendingcomics')
+		console.log(response.data)
+		return response.data
 	},
 
-	async getPendingComic (comicName) {
+	async getPendingComic (comicName) {//todo create. Wait, same as above
+		// let response = await axios.get(baseUrl + '/pendingComics/' + comicName)
+		// return response.data
 		return new Promise( async resolve => {
 			resolve({"hasThumbnail": false, "modName": "YeahNoIdea", "links": {"previousComic": null, "nextComic": null}, "tag": "Pokemon", "name": "Lost and Found", "keywords": ["creampie", "elf", "fat", "biting", "big penis", "eggs", "discord", "femdom", "feral penis", "canine"], "cat": "MM", "numberOfPages": 52, "id": 813, "created": "2018-02-10T15:40:44.000Z", "finished": 0, "artist": "Edesk"})
 		})
@@ -45,12 +44,6 @@ export default {
 		})
 	},
 
-	async getComicLinks (comicId) {
-		return new Promise( resolve => {
-			resolve({data: {'NextComic': 'einelleraen neste', 'PreviousComic': 'forrige'}})
-		})
-	},
-
 	// bare sett de tingene som kan bli satt. Antar at ved success: true, s[ stemmer det sendte inn
 	async updateComic (updatedComicData) {
 		return new Promise(resolve => {
@@ -58,10 +51,22 @@ export default {
 		})
 	},
 
-	async addNewComic (comicData, newPagesList, thumbnailFile) {
-		return new Promise(resolve => {
-			resolve({'success': true, 'message': 'asd'})
-		})
+	async addNewComic (comicData, {pageFiles, thumbnailFile}, progressFunction) {
+		let formData = new FormData()
+		for (var key in comicData) {
+			formData.append(key, comicData[key])
+		}
+		for (var pageFile of pageFiles) { formData.append('pageFile', pageFile) }
+		if (thumbnailFile) { formData.append('thumbnailFile', thumbnailFile) }
+
+		let response = await axios.post(baseUrl + '/comics',
+			formData, {
+				headers: {'Content-Type': 'multipart/form-data'},
+				onUploadProgress: progressEvent => progressFunction(progressEvent)
+			}
+		)
+		if (!response.data.error) { return {success: true} }
+		else { return {error: response.data.error} }
 	},
 
 	async addThumbnailToPendingComic (comicId, thumbnailImage) {
