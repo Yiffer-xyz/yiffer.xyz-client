@@ -23,6 +23,7 @@ export default {
 				let response = await comicApi.getComics()
 				context.commit('setComicList', response)
 				resolve(response)
+				context.commit('setSorting')
 			})
 		},
 
@@ -48,9 +49,9 @@ export default {
 			recalculateDisplayedComics(state)
 		},
 		setSorting: (state, newSorting) => {
+			if (!newSorting) { newSorting = state.sorting }
 			state.sorting = newSorting
 			state.pageNumber = 1
-
 			state.comicList.sort( (c1, c2) => {
 				if ( c1[state.sorting] < c2[state.sorting] ) { return 1 }
 				else if ( c1[state.sorting] > c2[state.sorting] ) { return -1 }
