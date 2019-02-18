@@ -25,7 +25,6 @@ export default {
 
 	async getPendingComics () {//todo create. Need the add pending comic first to test
 		let response = await axios.get(baseUrl + '/pendingcomics')
-		console.log(response.data)
 		if (!response.data.error) { return response.data }
 		else { return [] }
 	},
@@ -88,9 +87,9 @@ export default {
 	},
 
 	async processPendingComic (comicId, isApproved) {
-		return new Promise(resolve => {
-			resolve({'success': true, 'message': 'ok o ko ko kok fine'})
-		})
+		let response = await axios.put(baseUrl + '/pendingcomics', {comicId: comicId, isApproved: isApproved})
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true} }
 	},
 
 	async rateComic (comicId, newRating) {

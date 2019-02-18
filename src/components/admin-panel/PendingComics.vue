@@ -30,27 +30,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="suggestion in pendingComicList" :key="suggestion.id">
-              <td><router-link :to="{ name: 'pendingComic', params: {comicName: suggestion.name} }" target="_blank">
-                {{suggestion.name}}
+            <tr v-for="pendingComic in pendingComicList" :key="pendingComic.id">
+              <td><router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank">
+                {{pendingComic.name}}
               </router-link></td>
-              <td><router-link :to="{ name: 'artist', params: {artistName: suggestion.artist} }" target="_blank">
-                {{suggestion.artist}}
+              <td><router-link :to="{ name: 'artist', params: {artistName: pendingComic.artist} }" target="_blank">
+                {{pendingComic.artist}}
               </router-link></td>
-              <td>{{suggestion.tag}}</td>
-              <td>{{suggestion.cat}}</td>
-              <td>{{suggestion.numberOfPages}}</td>
-              <td>{{suggestion.finished ? 'Yes' : 'No'}}</td>
-              <td v-if="suggestion.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
-              <td v-if="suggestion.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
-              <td>{{suggestion.modName}}</td>
+              <td>{{pendingComic.tag}}</td>
+              <td>{{pendingComic.cat}}</td>
+              <td>{{pendingComic.numberOfPages}}</td>
+              <td>{{pendingComic.finished ? 'Yes' : 'No'}}</td>
+              <td v-if="pendingComic.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
+              <td v-if="pendingComic.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
+              <td>{{pendingComic.modName}}</td>
               <td v-if="$store.getters.userData.userType === 'admin'">
-                <button @click="processComic(suggestion.id, true)" class="y-button" style="margin-bottom: 2px;">Approve</button>
-                <button @click="processComic(suggestion.id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button>
+                <button @click="processComic(pendingComic.id, true, pendingComic.name)" class="y-button" style="margin-bottom: 2px;">Approve</button>
+                <!-- <button @click="processComic(pendingComic.id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button> -->
               </td>
             </tr>
           </tbody>
         </table>
+
+				<p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
+				<p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
       </span>
 
       <span v-else>
@@ -83,20 +86,28 @@ export default {
       isOpen: false,
       pendingComicList: [],
       comicsMissingKeywords: 0,
-      comicsMissingThumbnails: 0
+			comicsMissingThumbnails: 0,
+			errorMessage: '',
+			successMessage: '',
     }
   },
 
   methods: {
-    processComic (comicId, isApproved) {
-      let response = comicApi.processPendingComic(comicId, isApproved)
+    async processComic (comicId, isApproved, comicName) {
+			this.errorMessage = ''
+			this.successMessage = ''
+			let response = await comicApi.processPendingComic(comicId, isApproved)
       
       if (response.success) {
 				this.getPendingComicList()
         if (isApproved) {
           this.$emit('refresh-comic-list')
-        }
-      }
+				}
+				this.successMessage = 'Success approving ' + comicName
+			}
+			else {
+				this.errorMessage = response.message
+			}
 		},
 		
 		async getPendingComicList () {

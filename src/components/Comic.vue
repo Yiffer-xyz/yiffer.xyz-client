@@ -115,7 +115,7 @@
 		<div v-if="comic" id="comicPageContainer" class="margin-top-16 margin-bottom-8">
 			<img 
 				v-for="pageNumber in comic.numberOfPages" 
-				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+				:src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
 				:alt="`${comic.name} page ${pageNumber}`"
 				:id="'page' + (pageNumber-1)"
 				:key="pageNumber"
