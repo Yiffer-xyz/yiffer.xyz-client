@@ -26,7 +26,8 @@ export default {
 	async getPendingComics () {//todo create. Need the add pending comic first to test
 		let response = await axios.get(baseUrl + '/pendingcomics')
 		console.log(response.data)
-		return response.data
+		if (!response.data.error) { return response.data }
+		else { return [] }
 	},
 
 	async getPendingComic (comicName) {//todo create. Wait, same as above
@@ -65,7 +66,7 @@ export default {
 			}
 		)
 		if (!response.data.error) { return {success: true} }
-		else { return {error: response.data.error} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async addThumbnailToPendingComic (comicId, thumbnailImage) {

@@ -12,7 +12,7 @@
       <span v-if="pendingComicList.length > 0">
         <p>You can add keywords or a thumbnail by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
-        The <span class="red-color">numbers</span> in the title are equal to the amount of pending comics missing tags and thumbnails.</p>
+        The <span class="red-color">numbers</span> in the header are equal to the amount of pending comics missing tags and thumbnails.</p>
 
         <table class="y-table" style="margin: 8px auto 0 auto">
           <thead>
@@ -92,12 +92,20 @@ export default {
       let response = comicApi.processPendingComic(comicId, isApproved)
       
       if (response.success) {
-        this.$emit('refresh-pending-comics')
+				this.getPendingComicList()
         if (isApproved) {
           this.$emit('refresh-comic-list')
         }
       }
-    },
+		},
+		
+		async getPendingComicList () {
+			this.pendingComicList = await comicApi.getPendingComics()
+			for (var comic of this.pendingComicList) {
+				if (comic.keywords.length == 0) { this.comicsMissingKeywords++ }
+				if (!comic.hasThumbnail) { this.comicsMissingThumbnails++ }
+			}
+		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
@@ -105,11 +113,7 @@ export default {
   },
 
   async created () {
-    this.pendingComicList = await comicApi.getPendingComics()
-    for (var comic of this.pendingComicList) {
-      if (comic.keywords.length == 0) { this.comicsMissingKeywords++ }
-      if (!comic.hasThumbnail) { this.comicsMissingThumbnails++ }
-    }
+		this.getPendingComicList()
   }
 }
 </script>

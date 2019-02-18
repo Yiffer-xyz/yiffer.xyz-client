@@ -31,8 +31,7 @@
 			<add-artist :artistList="artistList"
 				@refresh-artist-list="refreshArtistList"></add-artist>
 
-			<pending-comics :comicList="pendingComicList"
-				@refresh-pending-comics="refreshPendingComics"
+			<pending-comics ref="PendingComics"
 				@refresh-comic-list="refreshComicList"></pending-comics>
 
 			<mod-scoreboard/>
@@ -131,17 +130,8 @@ export default {
 		refreshKeywordList () {
 			this.keywordList.push({name: 'KW DEMO TEST', count: 0})
 		},
-		refreshPendingComics () {
-			let temp = []
-			let ting = false
-			for (var x of config.pendingComicList) {
-				if (!x.Processed && !ting) {
-					x.Processed = 1
-					ting = true
-				}
-				temp.push(x)
-			}
-			this.pendingComicList = temp
+		async refreshPendingComics () {
+			this.$refs.PendingComics.getPendingComicList()
 		},
 		refreshArtistList () {
 			this.artistList.push({name: 'Artisten raggi', id: 1231233})
