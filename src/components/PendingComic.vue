@@ -79,12 +79,15 @@
 			<br/>
 			<img  
 				v-for="pageNumber in comic.numberOfPages" 
-				:src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+				:src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
 				:key="pageNumber"
 				:class="['comic-page', 'image-fit-full', 'comic-page-pending']"/>
 
 			<br/>
 			<button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
+		</span>
+		<span v-if="comicLoadErrorMessage">
+			<p class="error-message margin-top-32">{{comicLoadErrorMessage}}</p>
 		</span>
 	</span>
 </template>
@@ -117,6 +120,7 @@ export default {
 			thumbnailUploading: false,
 			errorMessageKeywords: '',
 			successMessageKeywords: '',
+			comicLoadErrorMessage: '',
 		}
 	},
 
@@ -221,8 +225,14 @@ export default {
 		},
 
 		async reloadComic () {
-			this.comic = await comicApi.getPendingComic(this.$route.params.comicName)
-			this.keywordsNotInComic = (await keywordApi.getKeywordList()).filter(kw => this.comic.keywords.indexOf(kw.keyword) === -1)
+			let response = await comicApi.getPendingComic(this.$route.params.comicName)
+			if (response.success) {
+				this.comic = response.result
+				this.keywordsNotInComic = (await keywordApi.getKeywordList()).filter(kw => this.comic.keywords.indexOf(kw.keyword) === -1)
+			}
+			else {
+				this.comicLoadErrorMessage = response.message
+			}
 		},
 
 		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,

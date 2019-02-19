@@ -15,26 +15,20 @@ export default {
 
 	async getComic (comicName) {
 		let response = await axios.get(baseUrl + '/comics/' + comicName)
-		if (!response.data.error) {
-			return {success: true, result: response.data}
-		}
-		else {
-			return {error: 'No comic with that name'}
-		}
+		if (!response.data.error) { return {success: true, result: response.data} }
+		else { return {message: 'No comic with that name'} }
 	},
 
-	async getPendingComics () {//todo create. Need the add pending comic first to test
+	async getPendingComics () {
 		let response = await axios.get(baseUrl + '/pendingcomics')
 		if (!response.data.error) { return response.data }
 		else { return [] }
 	},
 
 	async getPendingComic (comicName) {//todo create. Wait, same as above
-		// let response = await axios.get(baseUrl + '/pendingComics/' + comicName)
-		// return response.data
-		return new Promise( async resolve => {
-			resolve({"hasThumbnail": false, "modName": "YeahNoIdea", "links": {"previousComic": null, "nextComic": null}, "tag": "Pokemon", "name": "Lost and Found", "keywords": ["creampie", "elf", "fat", "biting", "big penis", "eggs", "discord", "femdom", "feral penis", "canine"], "cat": "MM", "numberOfPages": 52, "id": 813, "created": "2018-02-10T15:40:44.000Z", "finished": 0, "artist": "Edesk"})
-		})
+		let response = await axios.get(baseUrl + '/pendingComics/' + comicName)
+		if (!response.data.error) { return {success: true, result: response.data} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async getSuggestedComicList () {
