@@ -1,4 +1,7 @@
 import config from '@/config.json'
+import axios from 'axios'
+
+let baseUrl = 'http://localhost:8012/api'
 
 export default {
   async getKeywordList () {
@@ -29,7 +32,25 @@ export default {
     return new Promise(async resolve => {
 			resolve({'success': false, 'message': 'The something not logged in or someting'})
     })
-  },
+	},
+
+	async addKeywordsToPendingComic (comicData, keywordList) {
+		let response = await axios.post(`${baseUrl}/pendingcomics/${comicData.id}/addkeywords`, {
+			keywords: keywordList
+		})
+
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
+	},
+
+	async removeKeywordsFromPendingComic (comicData, keywordList) {
+		let response = await axios.post(`${baseUrl}/pendingcomics/${comicData.id}/removeKeywords`, {
+			keywords: keywordList
+		})
+
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
+	},
 
   async createKeyword (keywordName) {
     return new Promise(async resolve => {

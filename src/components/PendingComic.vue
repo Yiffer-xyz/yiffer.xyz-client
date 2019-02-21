@@ -10,7 +10,7 @@
 
 			<h2>Thumbnail</h2>
 			<span v-if="comic.hasThumbnail">
-				<img :src="`https://yiffer.xyz/comics/${comic.name}/s.jpg`"/>
+				<img :src="`/comics/${comic.name}/s.jpg`"/>
 			</span>
 			<span style="display: flex; align-items: center; flex-direction: column;">
 				<p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one? Find the guidelines in the mod panel's Adding new comic section.</p>
@@ -73,10 +73,30 @@
 			
 
 			<h2 class="margin-top-32">Comic pages</h2>
-			<button @click="fitImages('full')" class="y-button y-button-neutral" style="margin: 4px;">Full size</button>
-			<button @click="fitImages('fit')" class="y-button y-button-neutral" style="margin: 4px;">Fit images to page</button>
-			<button @click="fitImages('small')" class="y-button y-button-neutral" style="margin: 4px;">Small</button>
-			<br/>
+			<button v-if="!appendPages" @click="appendPages = true" class="y-button y-button-neutral">Append pages</button>
+			<span v-if="appendPages" style="display: flex; align-items: center; flex-direction: column;">
+				<form enctype="multipart/form-data" novalidate>
+					<div class="pretty-input-upload">
+						<input type="file" multiple="true" @change="processApendFilesUploadChange" id="appendPagesFiles" accept="image/x-png,image/jpeg" class="input-file"/>
+						<p>Select files</p>
+					</div>
+				</form>
+
+				<p v-if="filesAreInput" class="margin-top-4 no-margin-bot"><b>{{selectedFiles.length}}</b> Selected files:</p>
+				<p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
+
+				<button v-if="selectedFiles.length" @click="uploadAppendPages" class="y-button margin-top-8">Submit {{selectedFiles.length}} pages</button>
+			</span>
+
+      <p class="success-message" v-if="uploadPercent" style="margin-top: 8px;">Uploading ({{uploadPercent}}%)</p>
+      <p class="error-message" v-if="errorMessageAppendFiles" style="margin-top: 8px;">{{errorMessageAppendFiles}}</p>
+      <p class="success-message" v-if="successMessageAppendFiles" style="margin-top: 8px;">{{successMessageAppendFiles}}</p>
+
+			<div class="horizontal-flex margin-top-16">
+				<button @click="fitImages('full')" class="y-button y-button-neutral" style="margin: 4px;">Full size</button>
+				<button @click="fitImages('fit')" class="y-button y-button-neutral" style="margin: 4px;">Fit images to page</button>
+				<button @click="fitImages('small')" class="y-button y-button-neutral" style="margin: 4px;">Small</button>
+			</div>
 			<img  
 				v-for="pageNumber in comic.numberOfPages" 
 				:src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
@@ -115,11 +135,16 @@ export default {
 			selectedKeywords: [],
 			keywordsToDelete: [],
 			thumbnailFile: undefined,
+			appendPages: false,
+			selectedFiles: [],
+			uploadPercent: undefined,
 			errorMessageThumbnail: '',
 			successMessageThumbnail: '',
 			thumbnailUploading: false,
 			errorMessageKeywords: '',
 			successMessageKeywords: '',
+			errorMessageAppendFiles: '',
+			successMessageAppendFiles: '',
 			comicLoadErrorMessage: '',
 		}
 	},
@@ -150,7 +175,7 @@ export default {
 
 		async uploadThumbnailImage () {
 			this.thumbnailUploading = true
-			let response = await comicApi.addThumbnailToPendingComic(this.comic.id, this.thumbnailFile)
+			let response = await comicApi.addThumbnailToPendingComic(this.comic.name, this.thumbnailFile)
 			this.thumbnailUploading = false
 			if (response.success) {
 				this.successMessageThumbnail = 'Success adding thumbnail!'
@@ -182,7 +207,7 @@ export default {
     },
 		
     async confirmAddKeywords () {
-      let response = await keywordApi.addKeywordsToComic(this.comic, this.selectedKeywords)
+      let response = await keywordApi.addKeywordsToPendingComic(this.comic, this.selectedKeywords)
 
       if (response.success) {
         this.successMessageKeywords = 'Successfully added tags!'
@@ -197,7 +222,7 @@ export default {
 		},
 
     async confirmRemoveKeywords () {
-      let response = await keywordApi.removeKeywordsFromComic(this.comic, this.keywordsToDelete)
+      let response = await keywordApi.removeKeywordsFromPendingComic(this.comic, this.keywordsToDelete)
 
       if (response.success) {
         this.successMessageKeywords = 'Successfully removed tags!'
@@ -209,7 +234,32 @@ export default {
         this.errorMessageKeywords = 'Error removing tags: ' + response.message
         this.successMessageKeywords = ''
       }
-    },
+		},
+		
+    processApendFilesUploadChange (changeEvent) {
+      this.selectedFiles = [...changeEvent.target.files]
+		},
+		
+		async uploadAppendPages () {
+			let response = await comicApi.addPagesToPendingComic(this.comic, this.selectedFiles, this.updateUploadProgress)
+			this.errorMessageAppendFiles = ''
+			this.successMessageAppendFiles = ''
+			this.uploadPercent = undefined
+
+			if (response.success) {
+				this.successMessageAppendFiles = `Success adding ${this.selectedFiles.length} pages to comic!`
+				this.selectedFiles = []
+				this.appendPages = false
+				this.reloadComic()
+			}
+			else {
+				this.errorMessageAppendFiles = response.message
+			}
+		},
+		
+		updateUploadProgress (progressEvent) {
+			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+		},
 
 		fitImages (fit) {
 			document.querySelectorAll('.comic-page').forEach(page => {
@@ -244,7 +294,13 @@ export default {
 
 	async created () {
 		this.reloadComic()
-	}
+	},
+
+  computed: {
+    filesAreInput () { return this.selectedFiles.length > 0 },
+    selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
+  }
+
 }
 </script>
 

@@ -10,7 +10,7 @@
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <span v-if="pendingComicList.length > 0">
-        <p>You can add keywords or a thumbnail by <u>clicking the comic title</u>. <br/>
+        <p>You can add keywords, a thumbnail, or more pages by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
         The <span class="red-color">numbers</span> in the header are equal to the amount of pending comics missing tags and thumbnails.</p>
 

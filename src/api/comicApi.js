@@ -62,16 +62,38 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 
-	async addThumbnailToPendingComic (comicId, thumbnailImage) {
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 1000)
-		})
+	async addThumbnailToPendingComic (comicName, thumbnailImage) {
+		let formData = new FormData()
+		formData.append('thumbnailFile', thumbnailImage)
+
+		let response = await axios.post(`${baseUrl}/pendingcomics/${comicName}/addthumbnail`,
+			formData, {
+				headers: {'Content-Type': 'multipart/form-data'}
+			}
+		)
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async addPagesToComic (comicData, newPagesList) {
 		return new Promise(resolve => {
 			resolve({'success': true, 'message': 'asd'})
 		})
+	},
+
+	async addPagesToPendingComic (comicData, newPagesList, progressFunction) {
+		let formData = new FormData()
+		formData.append('comicName', comicData.name)
+		for (var newPageFile of newPagesList) { formData.append('newPages', newPageFile) }
+
+		let response = await axios.post(`${baseUrl}/pendingcomics/${comicData.id}/addpages`,
+			formData, {
+				headers: {'Content-Type': 'multipart/form-data'},
+				onUploadProgress: progressEvent => progressFunction(progressEvent)
+			}
+		)
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async processComicSuggestion (comicId, user, isApproved) {
@@ -81,7 +103,7 @@ export default {
 	},
 
 	async processPendingComic (comicId, isApproved) {
-		let response = await axios.put(baseUrl + '/pendingcomics', {comicId: comicId, isApproved: isApproved})
+		let response = await axios.put(baseUrl + '/pendingcomics/' + comicId, {isApproved: isApproved})
 		if (response.data.error) { return {success: false, message: response.data.error} }
 		if (!response.data.error) { return {success: true} }
 	},
