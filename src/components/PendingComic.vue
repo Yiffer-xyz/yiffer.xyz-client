@@ -250,6 +250,7 @@ export default {
 				this.successMessageAppendFiles = `Success adding ${this.selectedFiles.length} pages to comic!`
 				this.selectedFiles = []
 				this.appendPages = false
+				this.comic.numberOfPages = 0
 				this.reloadComic()
 			}
 			else {

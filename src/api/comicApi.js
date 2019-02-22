@@ -32,9 +32,9 @@ export default {
 	},
 
 	async getSuggestedComicList () {
-		return new Promise( resolve => {
-			resolve(config.comicSuggestionList)
-		})
+		let response = await axios.get(baseUrl + '/comicsuggestions')
+		if (!response.data.error) { return {success: true, result: response.data} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	// bare sett de tingene som kan bli satt. Antar at ved success: true, s[ stemmer det sendte inn
