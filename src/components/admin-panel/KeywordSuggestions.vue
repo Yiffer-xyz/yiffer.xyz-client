@@ -19,19 +19,19 @@
           </thead>
           <tbody>
             <tr v-for="(suggestion, index) in keywordSuggestionList" :key="index">
-              <td>{{suggestion.ComicName}}</td>
-              <td>{{suggestion.Extension ? 'ADD' : 'REMOVE'}} {{suggestion.keyword}}</td>
-              <td>{{suggestion.User}}</td>
+              <td>{{suggestion.comicName}}</td>
+              <td>{{suggestion.addKeyword ? 'ADD' : 'REMOVE'}} {{suggestion.keyword}}</td>
+              <td>{{suggestion.user}}</td>
               <td>
 								<div class="horizontal-flex">
 									<button
-										@click="processKeyword(suggestion.ComicId, suggestion.Keyword, true)"
+										@click="processKeyword(suggestion.comicId, suggestion.Keyword, true)"
 										class="y-button no-margin-bot"
 										style="margin-right: 2px;">
 										Approve
 									</button>
 									<button
-										@click="processKeyword(suggestion.ComicId, suggestion.Keyword, false)"
+										@click="processKeyword(suggestion.comicId, suggestion.Keyword, false)"
 										class="y-button y-button-red no-margin-bot">
 										Reject
 									</button>

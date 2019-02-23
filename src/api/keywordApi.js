@@ -1,4 +1,3 @@
-import config from '@/config.json'
 import axios from 'axios'
 
 let baseUrl = 'http://localhost:8012/api'
@@ -11,9 +10,9 @@ export default {
   },
 
   async getKeywordSuggestionList () {
-    return new Promise(async resolve => {
-      resolve(config.keywordSuggestionList)
-    })
+		let response = await axios.get(baseUrl + '/keywordsuggestions')
+		if (!response.data.error) { return response.data }
+		else { return [] }
   },
 
   async processKeywordSuggestion (comicId, keywordName, isApproved) {
@@ -59,9 +58,9 @@ export default {
 	},
 	
 	async addKeywordSuggestion (comicId, keywordName, addOrRemoveKeyword) {
-		// add will be 'add', remove else
-    return new Promise(async resolve => {
-			resolve({'success': true, 'message': 'ty for kw suggestion'})
-    })
+		let response = await axios.post(baseUrl + '/keywordsuggestions', 
+			{comicId: comicId, keyword: keywordName, extension: addOrRemoveKeyword=='add'})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }	
 	}
 }

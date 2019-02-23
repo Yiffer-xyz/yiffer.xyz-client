@@ -59,8 +59,8 @@
 						<span>
 							<label for="addKeyword">Add tag</label>
 							<select v-model="addKeyword" name="addKeyword">
-								<option v-for="keyword in keywordsNotInComic" :key="keyword.Keyword">
-									{{keyword.Keyword}}
+								<option v-for="keyword in keywordsNotInComic" :key="keyword.keyword">
+									{{keyword.keyword}}
 								</option>
 							</select>
 							<button 
@@ -240,7 +240,7 @@ export default {
 
 		async suggestKeywordChange ( typeOfChange ) {
 			let relevantKeyword = typeOfChange==='add' ? this.addKeyword : this.removeKeyword
-			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.Id, relevantKeyword, typeOfChange)
+			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeyword, typeOfChange)
 
 			if ( suggestionResponse.success ) {
 				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${typeOfChange} ${relevantKeyword+''})`
@@ -254,7 +254,7 @@ export default {
 				}
 			}
 			else {
-				this.keywordErrorMessage = `Error adding keyword ${relevantKeyword}.` // todo better logging
+				this.keywordErrorMessage = suggestionResponse.message
 				this.keywordSuccessMessage = undefined
 			}
 		},
