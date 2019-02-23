@@ -36,7 +36,6 @@ export default {
 		else { return [] }
 	},
 
-	// bare sett de tingene som kan bli satt. Antar at ved success: true, s[ stemmer det sendte inn
 	async updateComic (updatedComicData) {
 		let response = await axios.post(`${baseUrl}/comics/${updatedComicData.id}/updatedetails`, updatedComicData)
 		if (!response.data.error) { return {success: true} }
@@ -61,11 +60,12 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 
-	async addThumbnailToPendingComic (comicName, thumbnailImage) {
+	async addThumbnailToPendingComic (comicData, thumbnailImage) {
 		let formData = new FormData()
 		formData.append('thumbnailFile', thumbnailImage)
+		formData.append('comicName', comicData.name)
 
-		let response = await axios.post(`${baseUrl}/pendingcomics/${comicName}/addthumbnail`,
+		let response = await axios.post(`${baseUrl}/pendingcomics/${comicData.id}/addthumbnail`,
 			formData, {
 				headers: {'Content-Type': 'multipart/form-data'}
 			}
@@ -102,7 +102,7 @@ export default {
 	},
 
 	async processPendingComic (comicId, isApproved) {
-		let response = await axios.put(baseUrl + '/pendingcomics/' + comicId, {isApproved: isApproved})
+		let response = await axios.post(baseUrl + '/pendingcomics/' + comicId, {isApproved: isApproved})
 		if (response.data.error) { return {success: false, message: response.data.error} }
 		if (!response.data.error) { return {success: true} }
 	},

@@ -175,7 +175,7 @@ export default {
 
 		async uploadThumbnailImage () {
 			this.thumbnailUploading = true
-			let response = await comicApi.addThumbnailToPendingComic(this.comic.name, this.thumbnailFile)
+			let response = await comicApi.addThumbnailToPendingComic(this.comic, this.thumbnailFile)
 			this.thumbnailUploading = false
 			if (response.success) {
 				this.successMessageThumbnail = 'Success adding thumbnail!'
