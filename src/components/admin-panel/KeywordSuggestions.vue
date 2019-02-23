@@ -25,13 +25,13 @@
               <td>
 								<div class="horizontal-flex">
 									<button
-										@click="processKeyword(suggestion.comicId, suggestion.Keyword, true)"
+										@click="processKeyword(suggestion, true)"
 										class="y-button no-margin-bot"
 										style="margin-right: 2px;">
 										Approve
 									</button>
 									<button
-										@click="processKeyword(suggestion.comicId, suggestion.Keyword, false)"
+										@click="processKeyword(suggestion, false)"
 										class="y-button y-button-red no-margin-bot">
 										Reject
 									</button>
@@ -77,11 +77,11 @@ export default {
   },
 
   methods: {
-    async processKeyword (comicId, keyword, isApproved) {
-      let response = await keywordApi.processKeywordSuggestion(comicId, keyword, isApproved)
+    async processKeyword (suggestion, isApproved) {
+			let response = await keywordApi.processKeywordSuggestion(suggestion, isApproved)
 
       if (response.success) {
-        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} tag ${keyword}`
+        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} tag ${suggestion.keyword}`
         this.errorMessage = ''
         this.$emit('refresh-keyword-suggestions')
       }

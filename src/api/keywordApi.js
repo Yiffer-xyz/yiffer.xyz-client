@@ -15,10 +15,11 @@ export default {
 		else { return [] }
   },
 
-  async processKeywordSuggestion (comicId, keywordName, isApproved) {
-    return new Promise(async resolve => {
-			resolve({'success': true})
-		})
+  async processKeywordSuggestion (suggestion, isApproved) {
+		let response = await axios.post(baseUrl + '/keywordsuggestions/process', 
+			{suggestion: suggestion, isApproved: isApproved})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
   },
 
   async addKeywordsToComic (comicData, keywordList) {
