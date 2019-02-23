@@ -13,9 +13,16 @@
 
       <span v-if="comic" style="width: 100%;">
 
+				<button @click="toggleRename(true)" v-if="!renameActive" class="y-button y-button-neutral margin-bottom-16">Rename comic</button>
+				<span v-if="renameActive" class="horizontal-flex margin-bottom-16" style="align-items: center;">
+					<input type="text" v-model="newComicName" style="width: 240px; height: 18px;"/>
+					<button @click="toggleRename(false)" class="y-button y-button-neutral no-margin-bot" style="margin-left: 8px;"><cross-icon/> Cancel rename</button>
+				</span>
+				
+
         <div class="horizontal-flex horiz-space-items-8px" style="flex-wrap: wrap;">
           <div class="vertical-flex">
-            <p>Artist</p>
+            <p style="text-align: left;">Artist</p>
             <select v-model="artist">
               <option v-for="artist in artistList" :key="artist.name" :value="artist.name">
                 {{artist.name}}
@@ -24,7 +31,7 @@
           </div>
 
           <div class="vertical-flex">
-            <p>Category</p>
+            <p style="text-align: left;">Category</p>
             <select v-model="tag">
               <option value="Furry">Furry</option>
               <option value="MLP">MLP</option>
@@ -34,7 +41,7 @@
           </div>
 
           <div class="vertical-flex">
-            <p>Classification</p>
+            <p style="text-align: left;">Classification</p>
             <select v-model="cat">
               <option value="M">M</option>
               <option value="F">F</option>
@@ -47,7 +54,7 @@
           </div>
           
           <div class="vertical-flex">
-            <p>Finished</p>
+            <p style="text-align: left;">Finished</p>
             <select v-model="finished">
               <option value="true">Finished</option>
               <option value="false">Unfinished</option>
@@ -55,7 +62,11 @@
           </div>
 
         </div>
-        <button @click="submitChanges()" class="y-button no-margin-bot">Submit changes</button>
+
+				<span class="horizontal-flex no-margin-bot">
+        	<button @click="submitChanges()" class="y-button" style="margin-right: 4px;">Submit changes</button>
+        	<button @click="resetFields()" class="y-button y-button-neutral" style="margin-left: 4px;"><refresh-icon/> Reset</button>
+				</span>
       </span>
 
 
@@ -72,10 +83,18 @@
 </template>
 
 <script>
+import CrossIcon from 'vue-material-design-icons/Close.vue'
+import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
+
 import comicApi from '../../api/comicApi'
 
 export default {
-  name: 'correctComic',
+	name: 'correctComic',
+	
+	components: {
+		'cross-icon': CrossIcon,
+		'refresh-icon': RefreshIcon,
+	},
 
   props: {
     artistList: Array,
@@ -83,6 +102,8 @@ export default {
 
   data: function () {
     return {
+			renameActive: false,
+			newComicName: '',
       isOpen: false,
       comic: undefined,
       artist: undefined,
@@ -97,21 +118,39 @@ export default {
 
   methods: {
     async submitChanges () {
-      // todo request
-      // todo check at this.comc faktisk blir sendt med oppdaterte felter, se watch for hvordan de settes
-      // this.tag, this.cat, this.artist, this.finished
-      let response = await comicApi.updateComic(this.comic)
+      let response = await comicApi.updateComic({
+				id: this.comic.id,
+				name: (this.renameActive && this.newComicName.length>0) ? this.newComicName : this.comic.name,
+				cat: this.cat,
+				tag: this.tag,
+				finished: this.finished=='true' ? 1 : 0,
+				artist: this.artist
+			})
 
       if (response.success) {
         this.successMessage = 'Successfully updated info of ' + this.comic.name
-        this.errorMessage = ''
+				this.errorMessage = ''
+				this.toggleRename(false)
         this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error updating comic: ' + response.message
         this.successMessage = ''
       }
-    },
+		},
+		
+		toggleRename (isActive) {
+			this.renameActive = isActive
+			if (!isActive) { this.newComicName = '' }
+		},
+
+		resetFields () {
+        this.tag = this.comic.tag + ''
+        this.cat = this.comic.cat + ''
+        this.finished = this.comic.finished ? 'true' : 'false'
+        this.artist = this.comic.artist + ''
+				this.toggleRename(false)
+		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
@@ -120,12 +159,7 @@ export default {
 
   watch: {
     comic: function () {
-      if (this.comic) {
-        this.tag = this.comic.tag
-        this.cat = this.comic.cat
-        this.finished = this.comic.finished ? 'true' : 'false'
-        this.artist = this.comic.artist
-      }
+      if (this.comic) { this.resetFields() }
     }
   }
 }

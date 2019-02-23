@@ -39,9 +39,9 @@ export default {
 
 	// bare sett de tingene som kan bli satt. Antar at ved success: true, s[ stemmer det sendte inn
 	async updateComic (updatedComicData) {
-		return new Promise(resolve => {
-			resolve({'success': true, 'message': 'asd'})
-		})
+		let response = await axios.post(`${baseUrl}/comics/${updatedComicData.id}/updatedetails`, {updatedComicData})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async addNewComic (comicData, {pageFiles, thumbnailFile}, progressFunction) {

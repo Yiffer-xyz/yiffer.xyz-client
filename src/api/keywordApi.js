@@ -5,9 +5,9 @@ let baseUrl = 'http://localhost:8012/api'
 
 export default {
   async getKeywordList () {
-		return new Promise(resolve => {
-			resolve(config.demoKeywords)
-		})
+		let response = await axios.get(baseUrl + '/keywords')
+		if (!response.data.error) { return response.data }
+		else { return [] }
   },
 
   async getKeywordSuggestionList () {
