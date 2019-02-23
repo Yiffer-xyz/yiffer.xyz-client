@@ -28,9 +28,9 @@
           </thead>
           <tbody>
             <tr v-for="(suggestion, index) in unprocessedSuggestions" :key="index">
-              <td>{{suggestion.comicName}}</td>
+              <td>{{suggestion.name}}</td>
               <td>{{suggestion.artist || ''}}</td>
-              <td style="word-break: break-word;">{{suggestion.linksComments}}</td>
+              <td style="word-break: break-word;">{{suggestion.description}}</td>
               <td>{{suggestion.user}}</td>
               <td>
 								<div class="horizontal-flex">
@@ -78,9 +78,9 @@
         </thead>
         <tbody>
           <tr v-for="(suggestion, index) in processedSuggestions" :key="index">
-            <td>{{suggestion.comicName}}</td>
+            <td>{{suggestion.name}}</td>
             <td>{{suggestion.artist || ''}}</td>
-            <td style="word-break: break-word;">{{suggestion.linksComments}}</td>
+            <td style="word-break: break-word;">{{suggestion.description}}</td>
             <td>{{suggestion.user}}</td>
             <td>{{suggestion.mod}}</td>
             <td v-if="suggestion.verdict === 'added'"><checkbox-icon/> Added</td>
