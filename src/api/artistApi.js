@@ -1,10 +1,12 @@
-import config from '@/config.json'
+import axios from 'axios'
+
+let baseUrl = 'http://localhost:8012/api'
 
 export default {
   async getArtistList () {
-    return new Promise(resolve => {
-			resolve(config.artistList)
-		})
+		let response = await axios.get(baseUrl + '/artists')
+		if (!response.data.error) { return response.data }
+		else { return [] }
   },
 
   async addNewArtist (artistName) {

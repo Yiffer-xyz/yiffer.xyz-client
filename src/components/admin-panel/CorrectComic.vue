@@ -121,6 +121,7 @@ export default {
       let response = await comicApi.updateComic({
 				id: this.comic.id,
 				name: (this.renameActive && this.newComicName.length>0) ? this.newComicName : this.comic.name,
+				oldName: this.comic.name,
 				cat: this.cat,
 				tag: this.tag,
 				finished: this.finished=='true' ? 1 : 0,

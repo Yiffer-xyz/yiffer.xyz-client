@@ -99,6 +99,7 @@ export default {
 	},
 	methods: {
 		async loadData () {
+			this.comicList = await comicApi.getComics()
 			this.keywordList = await keywordApi.getKeywordList()
 			this.artistList = await ArtistApi.getArtistList()
 			this.pendingComicList = await comicApi.getPendingComics()
@@ -114,18 +115,8 @@ export default {
 		refreshComicSuggestions() {
 			this.comicSuggestionList.splice(0, 1)
 		},
-		refreshComicList () {
-			let ret = []
-			for (var c of config.comicList) {
-				c.cat = 'I'
-				c.tag = 'Other'
-				c.numberOfPages = 999
-				c.artist = 'Adamwan'
-				c.keywords.push('RAGNAR')
-				c.keywords.push('BAGNAR')
-				ret.push(c)
-			}
-			this.comicList = ret
+		async refreshComicList () {
+			this.comicList = await comicApi.getComics()
 		},
 		refreshKeywordList () {
 			this.keywordList.push({name: 'KW DEMO TEST', count: 0})

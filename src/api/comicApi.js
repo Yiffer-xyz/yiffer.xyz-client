@@ -1,4 +1,3 @@
-import config from '@/config.json'
 import axios from 'axios'
 
 let baseUrl = 'http://localhost:8012/api'
@@ -33,13 +32,13 @@ export default {
 
 	async getSuggestedComicList () {
 		let response = await axios.get(baseUrl + '/comicsuggestions')
-		if (!response.data.error) { return {success: true, result: response.data} }
-		else { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return response.data }
+		else { return [] }
 	},
 
 	// bare sett de tingene som kan bli satt. Antar at ved success: true, s[ stemmer det sendte inn
 	async updateComic (updatedComicData) {
-		let response = await axios.post(`${baseUrl}/comics/${updatedComicData.id}/updatedetails`, {updatedComicData})
+		let response = await axios.post(`${baseUrl}/comics/${updatedComicData.id}/updatedetails`, updatedComicData)
 		if (!response.data.error) { return {success: true} }
 		else { return {success: false, message: response.data.error} }
 	},
