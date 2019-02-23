@@ -5,7 +5,7 @@
       <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
-          <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -97,6 +97,7 @@ export default {
 	},
 
   props: {
+    comicList: Array,
     artistList: Array,
   },
 
@@ -132,7 +133,8 @@ export default {
         this.successMessage = 'Successfully updated info of ' + this.comic.name
 				this.errorMessage = ''
 				this.toggleRename(false)
-        this.$emit('refresh-comic-list')
+				this.$emit('refresh-comic-list')
+				this.emptyFields()
       }
       else {
         this.errorMessage = 'Error updating comic: ' + response.message
@@ -146,11 +148,20 @@ export default {
 		},
 
 		resetFields () {
-        this.tag = this.comic.tag + ''
-        this.cat = this.comic.cat + ''
-        this.finished = this.comic.finished ? 'true' : 'false'
-        this.artist = this.comic.artist + ''
-				this.toggleRename(false)
+			this.tag = this.comic.tag + ''
+			this.cat = this.comic.cat + ''
+			this.finished = this.comic.finished ? 'true' : 'false'
+			this.artist = this.comic.artist + ''
+			this.toggleRename(false)
+		},
+
+		emptyFields () {
+			this.tag = undefined
+			this.cat = undefined
+			this.finished = undefined
+			this.artist = undefined
+			this.comic = undefined
+			this.toggleRename(false)
 		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
@@ -161,7 +172,7 @@ export default {
   watch: {
     comic: function () {
       if (this.comic) { this.resetFields() }
-    }
+		}
   }
 }
 </script>

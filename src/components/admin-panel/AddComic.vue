@@ -247,7 +247,8 @@ export default {
         this.selectedFiles = []
         this.selectedKeywords = []
         document.getElementById('newPageFilesAddComic').value = ''
-        this.$emit('refresh-pending-comics')
+				this.$emit('refresh-pending-comics')
+        this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error adding comic: ' + response.message

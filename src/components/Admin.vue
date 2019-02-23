@@ -12,20 +12,20 @@
 			<comic-suggestions :comicSuggestionList="comicSuggestionList"
 				@refresh-comic-suggestions="refreshComicSuggestions"></comic-suggestions>
 
-			<add-page :comicList="comicList"
+			<add-page :comicList="alphabeticComicList"
 				@refresh-comic-list="refreshComicList"></add-page>
 
-			<add-keywords :comicList="comicList" :keywordList="[...keywordList]"
+			<add-keywords :comicList="alphabeticComicList" :keywordList="[...keywordList]"
 				@refresh-comic-list="refreshComicList"
 				@refresh-keyword-list="refreshKeywordList"></add-keywords>
 
-			<correct-comic :comicList="comicList" :artistList="artistList"
+			<correct-comic :comicList="alphabeticComicList" :artistList="artistList"
 				@refresh-comic-list="refreshComicList"></correct-comic>
 
-			<page-manager :comicList="comicList"
+			<page-manager :comicList="alphabeticComicList"
 				@refresh-comic-list="refreshComicList"/>
 
-			<add-comic :comicList="comicList" :artistList="artistList" :keywordList="[...keywordList]"
+			<add-comic :artistList="artistList" :keywordList="[...keywordList]"
 				@refresh-pending-comics="refreshPendingComics"></add-comic>
 
 			<add-artist :artistList="artistList"
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import config from '@/config.json'
 import LoginModal from '@/components/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import AddPage from '@/components/admin-panel/AddPage.vue'
@@ -89,7 +88,7 @@ export default {
 	},
 	data: function () {
 		return {
-			comicList: [],
+			alphabeticComicList: [],
 			keywordList: [],
 			artistList: [],
 			pendingComicList: [],
@@ -99,24 +98,24 @@ export default {
 	},
 	methods: {
 		async loadData () {
-			this.comicList = await comicApi.getComics()
 			this.keywordList = await keywordApi.getKeywordList()
 			this.artistList = await ArtistApi.getArtistList()
 			this.pendingComicList = await comicApi.getPendingComics()
 			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
 			this.comicSuggestionList = await comicApi.getSuggestedComicList()
+			this.alphabeticComicList = this.$store.getters.comicList.sort((c1, c2) => c1.name>c2.name ? 1 : -1)
 		},
 		showLoginModal () {
 			this.$store.commit('setLoginModalVisibility', true)			
+		},
+		async refreshComicList () {
+			this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
 		},
 		refreshKeywordSuggestions () {
 			this.keywordSuggestionList.splice(0, 1)
 		},
 		refreshComicSuggestions() {
 			this.comicSuggestionList.splice(0, 1)
-		},
-		async refreshComicList () {
-			this.comicList = await comicApi.getComics()
 		},
 		refreshKeywordList () {
 			this.keywordList.push({name: 'KW DEMO TEST', count: 0})

@@ -101,7 +101,7 @@ export default {
       if (response.success) {
 				this.getPendingComicList()
         if (isApproved) {
-          this.$emit('refresh-comic-list')
+					this.$store.dispatch('loadComicList')
 				}
 				this.successMessage = 'Success approving ' + comicName
 			}
