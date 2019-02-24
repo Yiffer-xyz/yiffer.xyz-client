@@ -95,10 +95,10 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 
-	async processComicSuggestion (comicId, user, isApproved) {
-		return new Promise(resolve => {
-			resolve({'success': true, 'message': 'ok o ko ko kok fine'})
-		})
+	async processComicSuggestion (suggestion) {
+		let response = await axios.post(baseUrl + '/comicsuggestions/process', suggestion)
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async processPendingComic (comicId, isApproved) {

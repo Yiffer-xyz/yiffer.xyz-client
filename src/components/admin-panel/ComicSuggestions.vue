@@ -35,13 +35,13 @@
               <td>
 								<div class="horizontal-flex">
 									<button 
-										@click="processSuggestion(suggestion.id, suggestion.user, true, suggestion.comicName)"
+										@click="processSuggestion(suggestion, true)"
 										class="y-button no-margin-bot"
 										style="margin-right: 2px;">
 										Added
 									</button>
 									<button
-										@click="processSuggestion(suggestion.id, suggestion.user, false, suggestion.comicName)"
+										@click="processSuggestion(suggestion, false)"
 										class="y-button y-button-red no-margin-bot">
 										Reject
 									</button>
@@ -131,11 +131,11 @@ export default {
   },
 
   methods: {
-    async processSuggestion (comicId, user, isApproved, comicName) {
-      let response = await comicApi.processComicSuggestion(comicId, user, isApproved)
+    async processSuggestion (suggestionData, isApproved) {
+      let response = await comicApi.processComicSuggestion({suggestionId: suggestionData.id, isApproved: isApproved})
 
       if (response.success) {
-        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} comic ${comicName}`
+        this.successMessage = `Successfully processed suggestion of ${suggestionData.name} (${isApproved ? 'added' : 'rejected'})`
         this.errorMessage = ''
         this.$emit('refresh-comic-suggestions')
       }
