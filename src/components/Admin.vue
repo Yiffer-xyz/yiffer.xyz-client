@@ -98,7 +98,6 @@ export default {
 	},
 	methods: {
 		async loadData () {
-			this.keywordList = await keywordApi.getKeywordList()
 			this.artistList = await ArtistApi.getArtistList()
 			this.pendingComicList = await comicApi.getPendingComics()
 			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()

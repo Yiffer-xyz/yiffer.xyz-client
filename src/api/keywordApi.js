@@ -52,10 +52,10 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 
-  async createKeyword (keywordName) {
-    return new Promise(async resolve => {
-			resolve({'success': false, 'message': 'BAD SHIT HAPPEN'})
-    })
+  async createKeyword (keyword) {
+		let response = await axios.post(baseUrl + '/keywords', {keyword: keyword})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 	
 	async addKeywordSuggestion (comicId, keywordName, addOrRemoveKeyword) {

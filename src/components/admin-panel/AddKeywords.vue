@@ -80,10 +80,6 @@ import keywordApi from '../../api/keywordApi'
 export default {
   name: 'addKeywords',
 
-  props: {
-    keywordList: Array,
-  },
-
   data: function () {
     return {
       isOpen: false,
@@ -158,14 +154,18 @@ export default {
       if (response.success) {
         this.newKwSuccessMessage = 'Successfully created tag ' + this.newKeyword
         this.newKwErrorMessage = ''
-        this.newKeyword = ''
-        this.$emit('refresh-keyword-list')
+				this.newKeyword = ''
+				this.refreshKeywordList()
       }
       else {
         this.newKwErrorMessage = 'Error creating tag: ' + response.message
         this.newKwSuccessMessage = ''
       }
-    },
+		},
+		
+		async refreshKeywordList () {
+			this.keywordList = await keywordApi.getKeywordList()
+		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
@@ -173,6 +173,8 @@ export default {
 	},
 
 	mounted () {
+		this.refreshKeywordList()
+
 		this.$store.watch(this.$store.getters.comicListF, () => {
 			this.comic = this.$store.getters.comicList.find(c => c.id===this.lastComicId)
 		})
