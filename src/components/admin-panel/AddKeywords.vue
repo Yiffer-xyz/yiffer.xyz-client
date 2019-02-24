@@ -95,7 +95,8 @@ export default {
       selectedKeywords: [],
       selectedKeyword: undefined,
       keywordsToDelete: [],
-      newKeyword: '',
+			newKeyword: '',
+			lastComicId: undefined,
     }
   },
 
@@ -125,7 +126,8 @@ export default {
       if (response.success) {
         this.successMessage = 'Successfully added tags to ' + this.comic.name
         this.errorMessage = ''
-        this.selectedKeywords = []
+				this.selectedKeywords = []
+				this.lastComicId = this.comic.id
         this.$emit('refresh-comic-list')
       }
       else {
@@ -141,6 +143,7 @@ export default {
         this.successMessage = 'Successfully removed tags from ' + this.comic.name
         this.errorMessage = ''
         this.keywordsToDelete = []
+				this.lastComicId = this.comic.id
         this.$emit('refresh-comic-list')
       }
       else {
@@ -167,6 +170,12 @@ export default {
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
-  }
+	},
+
+	mounted () {
+		this.$store.watch(this.$store.getters.comicListF, () => {
+			this.comic = this.$store.getters.comicList.find(c => c.id===this.lastComicId)
+		})
+	}
 }
 </script>

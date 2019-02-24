@@ -23,15 +23,15 @@ export default {
   },
 
   async addKeywordsToComic (comicData, keywordList) {
-		return new Promise(async resolve => {
-			resolve({'success': false, 'message': 'ok adding the KWs my fren'})
-		})
+		let response = await axios.post(baseUrl + '/keywords/addtocomic', {comicId: comicData.id, keywords: keywordList})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
   },
 
   async removeKeywordsFromComic (comicData, keywordList) {
-    return new Promise(async resolve => {
-			resolve({'success': false, 'message': 'The something not logged in or someting'})
-    })
+		let response = await axios.post(baseUrl + '/keywords/removefromcomic', {comicId: comicData.id, keywords: keywordList})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async addKeywordsToPendingComic (comicData, keywordList) {

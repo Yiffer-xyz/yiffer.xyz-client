@@ -275,10 +275,6 @@ export default {
     readyForUpload () { return this.detailsFilledIn && this.selectedFiles.length>0 && !this.errorMessageThumbnail }
   }
 }
-
-function progress (event) {
-	console.log(event)
-}
 </script>
 
 <style lang="scss">
