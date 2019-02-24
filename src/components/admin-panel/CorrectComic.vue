@@ -9,6 +9,9 @@
             {{comic.name}}
           </option>
         </select>
+        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic" style="margin-left: 8px;" target="_blank">
+          go to comic <right-arrow/>
+        </router-link>
       </div>
 
       <span v-if="comic" style="width: 100%;">
@@ -85,6 +88,7 @@
 <script>
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
 
@@ -94,6 +98,7 @@ export default {
 	components: {
 		'cross-icon': CrossIcon,
 		'refresh-icon': RefreshIcon,
+		'right-arrow': RightArrow,
 	},
 
   props: {
@@ -111,6 +116,7 @@ export default {
       tag: undefined,
       cat: undefined,
       finished: undefined,
+			lastComicId: undefined,
 
       errorMessage: '',
       successMessage: '',
@@ -133,8 +139,8 @@ export default {
         this.successMessage = 'Successfully updated info of ' + this.comic.name
 				this.errorMessage = ''
 				this.toggleRename(false)
+				this.lastComicId = this.comic.id
 				this.$emit('refresh-comic-list')
-				this.emptyFields()
       }
       else {
         this.errorMessage = 'Error updating comic: ' + response.message
@@ -173,7 +179,13 @@ export default {
     comic: function () {
       if (this.comic) { this.resetFields() }
 		}
-  }
+  },
+
+	mounted () {
+		this.$store.watch(this.$store.getters.comicListF, () => {
+			this.comic = this.$store.getters.comicList.find(c => c.id===this.lastComicId)
+		})
+	}
 }
 </script>
 

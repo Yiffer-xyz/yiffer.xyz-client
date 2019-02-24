@@ -15,7 +15,7 @@
 			<add-page :comicList="alphabeticComicList"
 				@refresh-comic-list="refreshComicList"></add-page>
 
-			<add-keywords :comicList="alphabeticComicList" :keywordList="[...keywordList]"
+			<add-keywords :comicList="alphabeticComicList"
 				@refresh-comic-list="refreshComicList"
 				@refresh-keyword-list="refreshKeywordList"></add-keywords>
 
@@ -25,7 +25,7 @@
 			<page-manager :comicList="alphabeticComicList"
 				@refresh-comic-list="refreshComicList"/>
 
-			<add-comic :artistList="artistList" :keywordList="[...keywordList]"
+			<add-comic :artistList="artistList"
 				@refresh-pending-comics="refreshPendingComics"></add-comic>
 
 			<add-artist :artistList="artistList"

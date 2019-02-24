@@ -12,6 +12,9 @@
             {{comic.name}}
           </option>
         </select>
+        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic" style="margin-left: 8px;" target="_blank">
+          go to comic <right-arrow/>
+        </router-link>
       </div>
 
   
@@ -21,7 +24,7 @@
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
           </select>
-          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()">&rarr;</button>
+          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
         </div>
       
         <div class="vertical-flex">
@@ -75,10 +78,16 @@
 </template>
 
 <script>
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+
 import keywordApi from '../../api/keywordApi'
 
 export default {
-  name: 'addKeywords',
+	name: 'addKeywords',
+
+	components: {
+		'right-arrow': RightArrow,
+	},
 
   data: function () {
     return {

@@ -120,7 +120,7 @@
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
           </select>
-          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()">&rarr;</button>
+          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
         </div>
       
         <div class="vertical-flex" style="margin-left: 15px;">
@@ -154,24 +154,26 @@
 
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
+import keywordApi from '../../api/keywordApi'
 
 export default {
   name: 'correctComic',
 
   props: {
     artistList: Array,
-    keywordList: Array,
   },
 
 	components: {
 		'checkbox-icon': CheckboxIcon,
+		'right-arrow': RightArrow,
 	},
 
   data: function () {
     return {
-      isOpen: false,
+			isOpen: false,
       comicName: '',
       artist: undefined,
       tag: undefined,
@@ -180,6 +182,7 @@ export default {
       selectedFiles: [],
       selectedKeywords: [],
       thumbnailFile: undefined,
+			keywordList: [],
 			selectedKeyword: undefined,
 			uploadPercent: undefined,
       errorMessage: '',
@@ -273,7 +276,11 @@ export default {
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
     detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.finished },
     readyForUpload () { return this.detailsFilledIn && this.selectedFiles.length>0 && !this.errorMessageThumbnail }
-  }
+	},
+	
+	async mounted () {
+		this.keywordList = await keywordApi.getKeywordList()
+	}
 }
 </script>
 
