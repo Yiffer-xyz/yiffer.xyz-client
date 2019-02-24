@@ -74,10 +74,21 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 
-	async addPagesToComic (comicData, newPagesList) {
-		return new Promise(resolve => {
-			resolve({'success': true, 'message': 'asd'})
-		})
+	async addPagesToComic (comicData, newPagesList, progressFunction) {
+		let formData = new FormData()
+		formData.append('comicName', comicData.name)
+		for (var file of newPagesList) { formData.append('newPages', file)	}
+
+		let response = await axios.post(
+			`${baseUrl}/comics/${comicData.id}/addpages`,
+			formData,
+			{
+				headers: {'Content-Type': 'multipart/form-data'},
+				onUploadProgress: progressEvent => progressFunction(progressEvent)
+			}
+		)
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
 	},
 
 	async addPagesToPendingComic (comicData, newPagesList, progressFunction) {

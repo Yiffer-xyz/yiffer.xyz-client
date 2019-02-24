@@ -33,6 +33,7 @@
 
       <button @click="uploadFiles()" v-if="filesAreInput && comic" class="y-button">Upload files{{ comic.finished ? ' (NOTE: this comic is marked as finished!)' : ''}}</button>
 
+      <p class="success-message" v-if="uploadPercent">Uploading ({{uploadPercent}}%)</p>
       <p class="error-message" v-if="uploadErrorMessage">{{uploadErrorMessage}}</p>
       <p class="success-message" v-if="uploadSuccessMessage">{{uploadSuccessMessage}}</p>
 
@@ -99,7 +100,8 @@ export default {
   data: function () {
     return {
       isOpen: false,
-      comic: undefined,
+			comic: undefined,
+			uploadPercent: undefined,
       uploadErrorMessage: '',
       uploadSuccessMessage: '',
       selectedFiles: [],
@@ -113,7 +115,7 @@ export default {
     },
 
     async uploadFiles () {
-      let response = await comicApi.addPagesToComic(this.comic, this.selectedFiles)
+      let response = await comicApi.addPagesToComic(this.comic, this.selectedFiles, this.updateUploadProgress)
 
       if (response.success) {
         this.uploadSuccessMessage = 'Success updating ' + this.comic.name
@@ -126,7 +128,11 @@ export default {
         this.uploadErrorMessage = 'Error updating: ' + response.message
         this.uploadSuccessMessage = ''
       }
-    },
+		},
+		
+		updateUploadProgress (progressEvent) {
+			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+		},
 
     toggleAllUnfinishedComics () {
       this.showAllUnfinishedComics = !this.showAllUnfinishedComics

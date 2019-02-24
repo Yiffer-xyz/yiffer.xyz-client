@@ -107,7 +107,7 @@
           <p>Select file</p>
         </div>
       </form>
-      <p v-if="thumbnailFile"><b>{{thumbnailFile.length}}</b> Selected file: 
+      <p v-if="thumbnailFile">Selected file: 
         <span class="courier">{{thumbnailFile.name}}</span>
       </p>
       <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
@@ -139,6 +139,7 @@
       </button>
 
       <p class="success-message" v-if="uploadPercent" style="margin-top: 8px;">Uploading ({{uploadPercent}}%)</p>
+			<p class="success-message" v-if="uploadPercent==100 && !errorMessage && !successMessage">Processing...</p>
       <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
       <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
@@ -223,6 +224,9 @@ export default {
     },
 
     async confirmAddComic () {
+			this.errorMessage = ''
+			this.successMessage = ''
+
       let uploadData = {
         comicName: this.comicName,
         artistId: this.artist.id,
@@ -238,21 +242,20 @@ export default {
         this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
 					and then (hopefully) add it! Your suggested comic will now appear under "Pending comics".`
 				this.uploadPercent = undefined,
-        this.errorMessage = ''
         this.comicName = ''
         this.artist = undefined
         this.cat = undefined
         this.tag = undefined
         this.finished = undefined
         this.selectedFiles = []
-        this.selectedKeywords = []
+				this.selectedKeywords = []
+				this.thumbnailFile = undefined
         document.getElementById('newPageFilesAddComic').value = ''
 				this.$emit('refresh-pending-comics')
         this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error adding comic: ' + response.message
-        this.successMessage = ''
       }
 		},
 		
