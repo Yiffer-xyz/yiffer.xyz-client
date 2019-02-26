@@ -176,16 +176,14 @@ export default {
   },
 
   watch: {
-    comic: function () {
+    comic () {
       if (this.comic) { this.resetFields() }
-		}
-  },
+		},
 
-	mounted () {
-		this.$store.watch(this.$store.getters.comicListF, () => {
-			this.comic = this.$store.getters.comicList.find(c => c.id===this.lastComicId)
-		})
-	}
+		comicList () {
+			this.comic = this.comicList.find(c => c.id===this.lastComicId)
+		} 
+  },
 }
 </script>
 

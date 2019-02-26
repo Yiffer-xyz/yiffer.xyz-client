@@ -143,7 +143,7 @@ export default {
 		})
 	},
 
-	async deleteComicPage (comicId, pageNumber) {
+	async deleteComicPage (comicId, pageNumber) { //todo MOVE OUT OF HERE, TO MISC
 		return new Promise( async resolve => {
 			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
 		})

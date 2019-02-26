@@ -8,7 +8,7 @@
       <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
-          <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -87,6 +87,10 @@ export default {
 
 	components: {
 		'right-arrow': RightArrow,
+	},
+
+	props: {
+		comicList: Array
 	},
 
   data: function () {
@@ -181,12 +185,14 @@ export default {
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
 	},
 
+	watch: {
+		comicList () {
+			this.comic = this.comicList.find(c => c.id===this.lastComicId)
+		} 
+	},
+
 	mounted () {
 		this.refreshKeywordList()
-
-		this.$store.watch(this.$store.getters.comicListF, () => {
-			this.comic = this.$store.getters.comicList.find(c => c.id===this.lastComicId)
-		})
 	}
 }
 </script>

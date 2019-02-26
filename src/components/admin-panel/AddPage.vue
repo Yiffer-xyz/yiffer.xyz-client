@@ -15,10 +15,13 @@
       <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
-          <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
           </option>
         </select>
+        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic" style="margin-left: 8px;" target="_blank">
+          go to comic <right-arrow/>
+        </router-link>
       </div>
       
       <form enctype="multipart/form-data" novalidate>
@@ -86,6 +89,7 @@
 <script>
 import DownArrow from 'vue-material-design-icons/ArrowDown.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
 
@@ -95,6 +99,11 @@ export default {
 	components: {
 		'down-arrow': DownArrow,
 		'up-arrow': UpArrow,
+		'right-arrow': RightArrow,
+	},
+
+	props: {
+		comicList: Array
 	},
 
   data: function () {
@@ -159,7 +168,7 @@ export default {
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
 
     unfinishedComicList () {
-      return this.$store.getters.comicList
+      return this.comicList
         .filter(comic => !comic.finished)
         .sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
         .map(comic => {

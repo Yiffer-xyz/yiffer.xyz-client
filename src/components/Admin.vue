@@ -102,7 +102,7 @@ export default {
 			this.pendingComicList = await comicApi.getPendingComics()
 			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
 			this.comicSuggestionList = await comicApi.getSuggestedComicList()
-			this.alphabeticComicList = this.$store.getters.comicList.sort((c1, c2) => c1.name>c2.name ? 1 : -1)
+			this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
 		},
 		showLoginModal () {
 			this.$store.commit('setLoginModalVisibility', true)			
@@ -126,10 +126,14 @@ export default {
 			this.artistList.push({name: 'Artisten raggi', id: 1231233})
 		},
   },
-  async created () {
+  async mounted () {
 		this.loadData()
 		let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
 		if (!loggedin) { this.$router.replace('/') }
+
+		this.$store.watch(this.$store.getters.comicListF, () => {
+			this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
+		})
   }
 }
 

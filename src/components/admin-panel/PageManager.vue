@@ -17,7 +17,7 @@
       <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic" @change="comicChanged">
-          <option v-for="comic in $store.getters.comicList" :key="comic.id" :value="comic">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
@@ -160,6 +160,10 @@ export default {
 	components: {
 		'checkbox-icon': CheckboxIcon,
 		'right-arrow': RightArrow,
+	},
+
+	props: {
+		comicList: Array
 	},
 
   data: function () {
