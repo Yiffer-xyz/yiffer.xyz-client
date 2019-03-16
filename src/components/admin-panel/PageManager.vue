@@ -195,7 +195,7 @@ export default {
     async swapPages () {
       this.errorMessageSwap = ''
       this.successMessageSwap = ''
-      let response = await comicApi.swapComicPages(this.comic.id, this.swapPage1, this.swapPage2)
+      let response = await comicApi.swapComicPages(this.comic.name, this.comic.id, this.swapPage1, this.swapPage2)
 
       if (response.success) {
         this.successMessageSwap = 'Swap successful! Keep in mind the 30-day period described above.'
@@ -252,9 +252,10 @@ export default {
     async comicChanged () {
       this.resetAllInputsAndMessages()
 
-      let response = await comicApi.getComicPageChangeDate()
-      this.comicHasBeenChangedRecently = ((new Date())-response) < 86400000*30
-      this.comicChangeDate = response.toString().substring(0,10)
+			let response = await comicApi.getComicPageChangeDate()
+			this.comicHasBeenChangedRecently = response.result.lastUpdated && ((new Date())-response.result.lastUpdated) < 86400000*30
+			if (this.comicHasBeenChangedRecently) { this.comicChangeDate = response.result.toString().substring(0,10) }
+			else { this.comicChangeDate = undefined }
     },
 
     processFileUploadChange (changeEvent) {

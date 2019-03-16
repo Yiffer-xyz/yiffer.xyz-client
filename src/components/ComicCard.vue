@@ -30,7 +30,7 @@
 			:comic="comic"
 			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
 			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
-		></voting-button> <!--todo detail level use vuex-->
+		></voting-button>
 
 		<div class="keyword-container" v-if="$store.getters.detailLevel === 'High detail'">
 			<div 

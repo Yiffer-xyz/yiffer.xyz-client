@@ -131,11 +131,12 @@ export default {
 		if (!response.data.error) { return {success: true} }
 	},
 
-	async swapComicPages (comicId, pageNumber1, pageNumber2) {
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
-		})
-	},
+	async swapComicPages (comicName, comicId, pageNumber1, pageNumber2) {
+		let response = await axios.post(baseUrl + '/swapcomicpages',
+			{comicName: comicName, comicId: comicId, pageNumber1: pageNumber1, pageNumber2: pageNumber2})
+			if (response.data.error) { return {success: false, message: response.data.error} }
+			if (!response.data.error) { return {success: true} }
+		},
 
 	async insertComicPage (comicId, imageFile, insertAfterPageNumber) {
 		return new Promise( async resolve => {
@@ -150,9 +151,9 @@ export default {
 	},
 
 	async getComicPageChangeDate (comicId) {
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve(new Date('2019-01-30'))}, 500)
-		})
+		let response = await axios.get(baseUrl + '/comicpagechanges', {params: {comicId: comicId}})
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true, result: response.data} }
 	},
 
 	async replaceThumbnailImage (comicId, imageFile) {
