@@ -1,6 +1,16 @@
 <template>
 	<div class="comic-card">
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+		<div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
+			<div class="triangle-inner">
+				<label class="triangle-label" title="Added within 7 days">NEW</label>
+			</div>
+		</div>
+		<div class="triangle-wrapper triangle-wrapper-right" v-if="!comic.finished">
+			<div class="triangle-inner">
+				<label class="triangle-label" title="Comic not finished">WIP</label>
+			</div>
+		</div>
 			<!-- <img :src="`/comics/tests.jpg`" @click="storeClickedComicData()"> -->
 			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
@@ -21,9 +31,6 @@
 		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
 			<div class="circled-text circled-text-autowidth">{{comic.cat}}</div>
 			<div class="circled-text circled-text-autowidth">{{comic.tag}}</div>
-			<div v-if="isNewComic" title="Added within 7 days" class="circled-text circled-text-red">NEW</div>
-			<div v-if="recentlyFinished" class="circled-text circled-text-red" title="Recently finished">RF</div>
-			<div v-if="!comic.finished" class="circled-text" title="Work in progress (comic not finished)">WIP</div>
 		</div>
 
 		<voting-button
@@ -101,6 +108,48 @@ export default {
 </script>
 
 <style lang="scss">
+.triangle-wrapper {
+	position: absolute; top: 0;
+}
+.triangle-wrapper-left {
+	left: 0;
+	.triangle-inner {
+		border-width: 60px 60px 0 0;
+		border-color: $themeGray0p5 transparent transparent transparent;
+		.triangle-label {
+			color: $theme5;
+			position: absolute;
+			top: 10px;
+			transform: rotate(-45deg);
+			left: 2px;
+			font-weight: 400;
+		}
+	}
+}
+.triangle-wrapper-right {
+	right: 0;
+	.triangle-inner {
+		border-width: 0 60px 60px 0;
+		border-color: transparent $themeGray0p5 transparent transparent;
+		.triangle-label {
+			position: absolute;
+			color: $themeDark1;
+			top: 10px;
+			font-weight: 400;
+			transform: rotate(45deg);
+			right: 5px;
+		}
+	}
+}
+.triangle-inner {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	.triangle-label {
+		cursor: pointer;
+	}
+}
+
 .circled-text {
 	display: flex;
 	align-items: center;
@@ -136,6 +185,7 @@ export default {
 }
 
 .comic-card {
+	position: relative;
 	width: 200px;
 	display: flex;
 	flex-direction: column;
