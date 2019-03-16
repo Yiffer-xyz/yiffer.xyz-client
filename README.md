@@ -1,3 +1,3 @@
 # Yiffer.xyz, Vue edition
 
-### Compiles and minifies for production: `npm run build`
+New front-end for https://yiffer.xyz, written in Vue!
