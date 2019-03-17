@@ -14,11 +14,11 @@
 			<!-- <img :src="`/comics/tests.jpg`" @click="storeClickedComicData()"> -->
 			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
-		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
 			<p class="comic-card-comic-title">{{comic.name}}</p>
 		</router-link>
 
-		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }">
+		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }" class="comic-card-link">
 			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
 		</router-link>
 
@@ -28,18 +28,16 @@
 			<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon/> {{comic.yourRating || '-'}}</p>
 		</div>
 
-		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
-			<div class="circled-text circled-text-autowidth">{{comic.cat}}</div>
-			<div class="circled-text circled-text-autowidth">{{comic.tag}}</div>
+		<div class="keyword-container" 
+         v-if="!showKeywords && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')">
+			<div class="emphasized-keyword">{{comic.cat}}</div>
+			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
+			<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">show tags</div>
 		</div>
 
-		<voting-button
-			:comic="comic"
-			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
-			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
-		></voting-button>
-
-		<div class="keyword-container" v-if="$store.getters.detailLevel === 'High detail'">
+		<div class="keyword-container" v-if="showKeywords">
+			<div class="emphasized-keyword">{{comic.cat}}</div>
+			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
 			<div 
 				:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
 				v-for="keyword in comic.keywords"
@@ -49,6 +47,16 @@
 				{{keyword}}
 			</div>
 		</div>
+
+
+		<voting-button
+			:comic="comic"
+			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
+			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
+		></voting-button>
+
+		<!-- <div class="keyword-container" v-if="$store.getters.detailLevel === 'High detail'">
+		</div> -->
 
 		<p v-if="$store.getters.detailLevel === 'High detail'" class="margin-top-4" style="font-size: 12px;">
 			<label title="Updated on"><refresh-icon/> {{prettyDate(comic.updated)}}</label> <br/>
@@ -88,7 +96,8 @@ export default {
 	data: function () {
 		return {
 			isNewComic: new Date() - new Date(this.comic.created) < 55*604800000,  // todo 1 week = 604800000
-			recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000)
+			recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000),
+			showLocalKeywords: false
 		}
 	},
 	methods: {
@@ -102,6 +111,14 @@ export default {
 		},
 		addSelectedKeyword (keywordName) {
 			if ( this.clickableKeyword ) { this.$store.commit('addSelectedKeyword', keywordName) }
+		},
+		convertTagName (tagName) {
+			return tagName=='Pokemon' ? 'Pkmn' : tagName
+		}
+	},
+	computed: {
+		showKeywords () {
+			return this.$store.getters.detailLevel==='High detail' || this.showLocalKeywords
 		}
 	}
 }
@@ -147,6 +164,50 @@ export default {
 	border-style: solid;
 	.triangle-label {
 		cursor: pointer;
+	}
+}
+
+.emphasized-keyword {
+	font-size: 12px;
+	border: 0.5px solid #a6a6a6;
+	margin: 1px 3px;
+	padding: 0.5px 6px 1px 6px;
+	border-radius: 10px;
+	background: $themeGray5;
+	color: white !important;
+	font-weight: bold !important;
+	&:hover {
+		cursor: default;
+	}
+}
+
+@media (max-width: 900px) {
+	.triangle-wrapper-left {
+		.triangle-inner {
+			border-width: 40px 40px 0 0;
+			.triangle-label {
+				font-size: 10px;
+				top: 7px;
+				left: 2px;
+			}
+		}
+	}
+	.triangle-wrapper-right {
+		.triangle-inner {
+			border-width: 0 40px 40px 0;
+			.triangle-label {
+				font-size: 10px;
+				top: 7px;
+				right: 7px;
+			}
+		}
+	}
+}
+
+.comic-card-link {
+	width: 100%;
+	p {
+		word-wrap: break-word;
 	}
 }
 
