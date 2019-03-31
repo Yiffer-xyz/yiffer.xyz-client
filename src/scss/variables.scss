@@ -7,6 +7,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 	text-align: center;
+	@media (max-width: 900px) {
+		margin-top: 20px;
+  }
 }
 
 div, table, span, img, body, h1, h2, h3, p {

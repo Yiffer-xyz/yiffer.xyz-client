@@ -2,7 +2,7 @@
 	<div style="width: 100%">
 		<vue-headful title="Yiffer.xyz"/>
 		<div class="upperBodyDiv">
-			<h1>Yiffer.xyz</h1>
+			<h1 class="yifferTitle">Yiffer.xyz</h1>
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p style="margin-top: 10px;" v-if="!$store.getters.isAuthenticated">
@@ -380,6 +380,7 @@ export default {
 		},
 		clearKeywordSearchField () {
 			this.keywordSearch = ''
+			this.setKeywordSearchFocused(false)
 		},
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
@@ -408,7 +409,6 @@ export default {
 	computed: {
 		keywordsMatchingSearch () {
 			return this.allKeywords.filter(keyword => keyword.keyword.startsWith(this.keywordSearch))
-				.sort((kw1, kw2) => kw1.count<kw2.count ? 1 : (kw1.count>kw2.count ? -1 : 0))
 				.slice(0, 8)
 		},
 		paginationButtons () {
