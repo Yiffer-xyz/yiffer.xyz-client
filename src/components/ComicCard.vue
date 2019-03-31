@@ -234,6 +234,11 @@ export default {
 		color: #bbb !important; //todo
 	}
 
+	.emphasized-keyword {
+		background: $themeGray8;
+		border-color: $themeGray8;
+	}
+
 	.triangle-wrapper-right {
 		.triangle-inner {
 			border-color: transparent $themeDark3 transparent transparent;

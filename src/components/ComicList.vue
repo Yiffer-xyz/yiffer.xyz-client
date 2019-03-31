@@ -107,13 +107,18 @@
 						<div class="two-search-row">
 							<div class="search-wrapper">
 								<div class="one-searchbox-container" id="mainSearchBox">
-									<span class="input-icon-wrapper"><search-icon/></span>
-									<input v-model="searchFiltering" type="text" name="someName" placeholder="name or artist" class="upper-body-searchbox"/>
+									<span class="input-icon-wrapper input-icon-wrapper-left" style="cursor: pointer"><search-icon/></span>
+									<input v-model="searchFiltering" type="text" placeholder="title or artist" class="upper-body-searchbox"/>
+									<span class="input-icon-wrapper input-icon-wrapper-right cursor-pointer"
+												v-show="searchFiltering"
+												@click="clearSearchField()">
+										<cross-icon/>
+									</span>
 								</div>
 							</div>
 
 							<div class="search-wrapper">
-								<span class="input-icon-wrapper"><tags-icon/></span>
+								<span class="input-icon-wrapper input-icon-wrapper-left"><tags-icon/></span>
 								<input 
 									type="text"
 									name="someName" 
@@ -125,6 +130,11 @@
 									@focus="setKeywordSearchFocused(true)"
 									@blur="setKeywordSearchFocused(false)"
 								/>
+								<span class="input-icon-wrapper input-icon-wrapper-right cursor-pointer"
+											v-show="keywordSearch"
+											@click="clearKeywordSearchField()">
+									<cross-icon/>
+								</span>
 								<div id="keywordResults" v-if="keywordSearchFocused">
 									<div
 										v-for="keywordObject in keywordsMatchingSearch" 
@@ -364,6 +374,12 @@ export default {
 			this.$store.commit('setDetailLevel', detailLevel)
 			this.$cookies.set('detail', detailLevel)
 		},
+		clearSearchField () {
+			this.searchFiltering = ''
+		},
+		clearKeywordSearchField () {
+			this.keywordSearch = ''
+		},
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
 		},
@@ -585,6 +601,7 @@ export default {
 	border-radius: 20px;
 	td {
 		text-align: center;
+		font-weight: 400;
 	}
 }
 
@@ -615,10 +632,29 @@ export default {
 	color: $themeDark1;
 	position: absolute;
 	display: block;
-	left: 9px; top: 6px;
+	top: 6px;
+	@media (max-width: 900px) {
+		top: 3px;
+	}
+}
+
+.input-icon-wrapper-right {
+	right: 9px;
+	@media (max-width: 900px) {
+		right: 6px;
+	}
+	&:hover {
+		color: $themeRed;
+	}
+}
+
+.input-icon-wrapper-left {
+	left: 9px;
 	@media (max-width: 900px) {
 		left: 6px;
-		top: 3px;
+	}
+	&:hover {
+		color: $themeRed;
 	}
 }
 
@@ -657,6 +693,10 @@ export default {
 		box-shadow: 0px 0px 16px 0px rgba(255, 255, 255, 0.04);
 		border-top: 1px solid $themeDark2;
 		border-bottom: 1px solid $themeDark2;
+	}
+	.button-selected {
+		background: $theme4p5 !important;
+		color: white;
 	}
 	#upperBodyDiv {
 		background: linear-gradient(to top right, $themeBlue1, #0D1C23, $theme0);

@@ -28,7 +28,11 @@ body {
 .dark {
 	background-color: #090f14;
 	p, h1, h2, div, td, h3 {
-		color: #ddd;
+		color: #eee;
+	}
+
+	::selection {
+		background: rgba(120, 253, 214, 0.7);
 	}
 }
 
@@ -170,7 +174,6 @@ select {
 		background: rgb(22, 26, 29);
 		border: 1px solid #666;
 		color: white;
-		padding: 1px;
 	}
 
 	option, select {
