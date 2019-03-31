@@ -63,5 +63,9 @@ export default {
 			{comicId: comicId, keyword: keywordName, extension: addOrRemoveKeyword=='add'})
 		if (!response.data.error) { return {success: true} }
 		else { return {success: false, message: response.data.error} }	
+	},
+
+	logKeywordSearch (keyword) {
+		axios.post(baseUrl + '/keywords/log', {keyword: keyword})
 	}
 }

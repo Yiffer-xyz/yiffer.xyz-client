@@ -303,6 +303,7 @@ export default {
 				this.keywordSearchFocused = undefined
 				this.keywordSearch = ''
 			}
+			keywordApi.logKeywordSearch(keywordName)
 		},
 
 		removeSelectedKeyword ( keywordName ) {
