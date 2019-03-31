@@ -1,9 +1,7 @@
 <template>
 	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
-		<!-- <span :style="{'background-color': this.backgroundColor}"> -->
-			<span v-if="$store.getters.isAuthenticated">Rate</span>
-			<span v-else><login-icon/> Log in to rate</span>
-		<!-- </span> -->
+		<span v-if="$store.getters.isAuthenticated">Rate</span>
+		<span v-else><login-icon/> Log in to rate</span>
 	</button>
 </template>
 
@@ -16,10 +14,6 @@ export default {
 	},
 	props: {
 		comic: Object,
-		backgroundColors: {
-			type: Object,
-			default: () => { return {light: 'blue', dark: 'red'} }
-		},
 	},
 	methods: {
 		showSomeModal () {
@@ -30,12 +24,6 @@ export default {
 			else {
 				this.$store.commit('setLoginModalVisibility', true)
 			}
-		}
-	},
-	computed: {
-		backgroundColor: function () {
-			if (this.$store.state.darkTheme) { return this.backgroundColors.dark }
-			else { return this.backgroundColors.light }
 		}
 	}
 }

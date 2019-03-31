@@ -11,7 +11,6 @@
 				<label class="triangle-label" title="Comic not finished">WIP</label>
 			</div>
 		</div>
-			<!-- <img :src="`/comics/tests.jpg`" @click="storeClickedComicData()"> -->
 			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
@@ -47,16 +46,13 @@
 				{{keyword}}
 			</div>
 		</div>
+		<div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">hide tags</div>
 
 
 		<voting-button
 			:comic="comic"
-			:backgroundColors="{light: '#f1f1f1', dark: '#222426'}"
 			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
 		></voting-button>
-
-		<!-- <div class="keyword-container" v-if="$store.getters.detailLevel === 'High detail'">
-		</div> -->
 
 		<p v-if="$store.getters.detailLevel === 'High detail'" class="margin-top-4" style="font-size: 12px;">
 			<label title="Updated on"><refresh-icon/> {{prettyDate(comic.updated)}}</label> <br/>
@@ -119,12 +115,16 @@ export default {
 	computed: {
 		showKeywords () {
 			return this.$store.getters.detailLevel==='High detail' || this.showLocalKeywords
+		},
+		showHideKeywordsButton () {
+			return this.showLocalKeywords && this.$store.getters.detailLevel!=='High detail'
 		}
 	}
 }
 </script>
 
 <style lang="scss">
+@import "../scss/colors.scss";
 .triangle-wrapper {
 	position: absolute; top: 0;
 }
@@ -192,16 +192,6 @@ export default {
 			}
 		}
 	}
-	.triangle-wrapper-right {
-		.triangle-inner {
-			border-width: 0 40px 40px 0;
-			.triangle-label {
-				font-size: 10px;
-				top: 7px;
-				right: 7px;
-			}
-		}
-	}
 }
 
 .comic-card-link {
@@ -242,6 +232,20 @@ export default {
 	.circled-text {
 		background-color: #333;
 		color: #bbb !important; //todo
+	}
+
+	.triangle-wrapper-right {
+		.triangle-inner {
+			border-color: transparent $themeDark3 transparent transparent;
+			.triangle-label {
+				color: inherit;
+			}
+		}
+	}
+	.triangle-wrapper-left {
+		.triangle-inner {
+			border-color: $themeDark3 transparent transparent transparent;
+		}
 	}
 }
 
