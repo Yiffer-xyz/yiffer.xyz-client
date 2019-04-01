@@ -20,8 +20,8 @@
 					:backgroundColors="{light: 'white', dark: '#091014'}"
 				></voting-button>
 
-				<div class="margin-top-16" v-if="comic">
-					<p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
+				<div class="margin-top-16" v-if="comic && (comic.previousComic || comic.nextComic)">
+					<p>This comic is part of a series!</p>
 					<p v-if="comic.previousComic">
 						<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }">
 							

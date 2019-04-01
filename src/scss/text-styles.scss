@@ -4,13 +4,21 @@ router-link, p, td, li {
 
 h1, h2, h3, h4, p, div {
 	color: #111;
+	margin: 0;
+}
+
+p, li, label {
+	@media (max-width: 900px) {
+		font-size: 14px;
+	}
 }
 
 h1 {
 	font-weight: 300;
 	font-size: 70px;
-	margin-top: 32px;
+	margin-top: 24px;
 	@media (max-width: 900px) {
+		margin-top: 12px;
 		font-size: 32px;
 		&.yifferTitle {
 			font-size: 42px;

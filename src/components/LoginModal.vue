@@ -18,8 +18,8 @@
 					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button @click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
-				<button @click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
+				<button @click="setModalContext('register')" class="text-button margin-top-10">Click here to <u>sign up</u></button>
+				<button @click="setModalContext('forgotten')" class="text-button margin-top-10"><u>Forgot</u> account details?</button>
 			</div>
 
 
@@ -60,8 +60,8 @@
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button @click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
-				<button @click="setModalContext('forgotten')" class="text-button"><u>Forgot</u> account details?</button>
+				<button @click="setModalContext('login')" class="text-button margin-top-10">Click here to <u>log in</u></button>
+				<button @click="setModalContext('forgotten')" class="text-button margin-top-10"><u>Forgot</u> account details?</button>
 			</div>
 
 
@@ -84,8 +84,8 @@
 					<button v-if="forgottenLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button @click="setModalContext('login')" class="text-button">Click here to <u>log in</u></button>
-				<button @click="setModalContext('register')" class="text-button">Click here to <u>sign up</u></button>
+				<button @click="setModalContext('login')" class="text-button margin-top-10">Click here to <u>log in</u></button>
+				<button @click="setModalContext('register')" class="text-button margin-top-10">Click here to <u>sign up</u></button>
 			</div>
 		</div>
 	</div>
@@ -263,10 +263,6 @@ export default {
 	padding: 40px 180px;
 	background-color: white;
 	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
-
-	.text-button {
-		margin-top: 10px;
-	}
 
 	@media (max-width: 900px) {
 		padding: 40px 0px;

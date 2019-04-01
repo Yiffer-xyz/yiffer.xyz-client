@@ -5,14 +5,14 @@
 			<h1 class="yifferTitle">Yiffer.xyz</h1>
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
-			<p style="margin-top: 10px;" v-if="!$store.getters.isAuthenticated">
+			<p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
 				<button class="y-button" @click="showLoginModal">
-					<i data-feather="log-in"></i> Log in
+					<login-icon/> Log in to rate comics
 				</button> 
-				&nbsp;to vote
 			</p>
+			<p v-else class="margin-top-10">Welcome, {{$store.getters.userData.username}}</p>
 
-			<span class="donate-link">
+			<div class="donate-link">
 				<router-link :to="{name: 'donate'}" style="margin-right: 16px;">
 					<donate-icon/> Donate?
 				</router-link>
@@ -20,7 +20,7 @@
 				<router-link :to="{name: 'suggestComic'}" style="margin-left: 16px;">
 					<plus-icon/> Suggest comic?
 				</router-link>
-			</span>
+			</div>
 
 			<div class="buttons-container">
 				<span id="upperBodyWidth" class="buttons-container-inner">
@@ -207,7 +207,7 @@
 					</div>
 
 					<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row">
-						<div @click="paginate('down')" class="pagination-button pagination-arrow">&larr;</div>
+						<div @click="paginate('down')" class="pagination-button"><left-arrow/></div>
 						<div v-for="(pageNo, index) in paginationButtons"
 								:key="index"
 								:class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
@@ -215,7 +215,7 @@
 								@click="paginate(pageNo)">
 							{{pageNo}}
 						</div>
-						<div @click="paginate('up')" class="pagination-button pagination-arrow">&rarr;</div>
+						<div @click="paginate('up')" class="pagination-button"><right-arrow/></div>
 					</div>
 				</span>
 			</div>
@@ -236,6 +236,9 @@ import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
 import DonateIcon from 'vue-material-design-icons/CurrencyUsd.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import LoginIcon from 'vue-material-design-icons/Login.vue'
 
 import keywordApi from '../api/keywordApi'
 
@@ -248,7 +251,10 @@ export default {
 		'tags-icon': TagsIcon,
 		'donate-icon': DonateIcon,
 		'plus-icon': PlusIcon,
-		'cross-icon': CrossIcon
+		'cross-icon': CrossIcon,
+		'left-arrow': LeftArrow,
+		'right-arrow': RightArrow,
+		'login-icon': LoginIcon,
 	},
 	data: function () {
 		// Initially attempted to not use references like this (and instead only use
@@ -436,7 +442,7 @@ export default {
 
 <style lang="scss">
 .donate-link {
-	margin-top: 16px;
+	margin-top: 10px;
 	@media (max-width: 900px) {
 		margin-top: 8px;
 	}
@@ -544,7 +550,7 @@ export default {
 		margin: 7px 0px;
 	}
 	@media (max-width: 900px) {
-		margin-top: 12px;
+		margin-top: 20px;
 		padding: 10px 0;
 		>div, >table {
 			margin: 5px 0px;
@@ -557,7 +563,7 @@ export default {
 	margin: 7px 0;
 
 	@media (max-width: 900px) {
-		margin: 4px 0;
+		margin: 6px 0;
 	}
 }
 
@@ -582,16 +588,6 @@ export default {
 #catTable td {
 	@media (max-width: 900px) {
 		padding: 4px 1px;
-	}
-}
-
-.pagination-arrow {
-	padding-bottom: 10px;
-	padding-top: 6px;
-
-	@media (max-width: 900px) {
-		padding-bottom: 6px;
-		padding-top: 2px;
 	}
 }
 
@@ -635,7 +631,7 @@ export default {
 	display: block;
 	top: 6px;
 	@media (max-width: 900px) {
-		top: 3px;
+		top: 4px;
 	}
 }
 
@@ -662,12 +658,18 @@ export default {
 .search-wrapper {
 	width: 47%;
 	position: relative;
+	@media (max-width: 900px) {
+		width: 49%;
+	}
 }
 
 .two-search-row {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	@media (max-width: 900px) {
+		justify-content: space-evenly;
+	}
 }
 
 ::placeholder {
@@ -684,7 +686,7 @@ export default {
 	justify-content: center;
 
 	@media (max-width: 900px) {
-		margin-top: 8px;
+		margin-top: 12px;
 	}
 }
 
@@ -705,6 +707,9 @@ export default {
 			color: white;
 		}
 	}
+	.upper-body-horiz-row {
+		border: 1px solid $themeDark2;
+	}
 	.horiz-row-inner td, .pagination-button {
 		background: rgba(0, 0, 0, 0.3);
 		&:hover {
@@ -713,7 +718,7 @@ export default {
 		}
 	}
 	.one-searchbox-container input, #keywordSearch {
-		border-color: #111;
+		border-color: $themeDark2;
 		background: rgba(0, 0, 0, 0.1);
 
 	}

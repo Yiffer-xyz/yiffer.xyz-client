@@ -5,6 +5,7 @@
 	padding: 5px 10px;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
+	font-weight: 400;
 	background-color: $theme5;
 	color: white;
 	border: none;
@@ -61,22 +62,11 @@
 
 .y-button-transparent {
 	background-color: transparent !important;
-	color: $theme4;
-	border: 1px solid $theme4;
+	color: $themeGray8;
+	border: 1px solid $themeGray8;
 	&:hover {
-		background-color: $theme4 !important;
-		border-color: $theme4;
-		color: white;
-	}
-}
-
-.y-button-transparent {
-	background-color: transparent !important;
-	color: $themeGray7;
-	border: 1px solid $themeGray7;
-	&:hover {
-		background-color: $themeGray7 !important;
-		border-color: $themeGray7;
+		background-color: $themeGray8 !important;
+		border-color: $themeGray8;
 		color: white;
 	}
 }
@@ -85,7 +75,7 @@
 .text-button {
 	font-size: 14px;
 	text-align: center;
-	font-weight: 300;
+	font-weight: 400;
 	font-family: 'Open Sans', sans-serif;
 	background: transparent;
 	border: none;

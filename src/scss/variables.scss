@@ -12,7 +12,7 @@
   }
 }
 
-div, table, span, img, body, h1, h2, h3, p {
+img, body{
 	margin: 0px;
 }
 
@@ -73,6 +73,9 @@ select {
 }
 .margin-top-8 {
 	margin-top: 8px;
+}
+.margin-top-10 {
+	margin-top: 10px;
 }
 .margin-top-16 {
 	margin-top: 16px;
@@ -150,7 +153,7 @@ select {
 .keyword, .keyword-static {
 	font-size: 12px;
 	border: 0.5px solid #ccc; //todo
-	margin: 1px 3px;
+	margin: 1.5px 3px;
 	padding: 0.5px 6px 1px 6px;
 	border-radius: 10px;
 	font-weight: 300;

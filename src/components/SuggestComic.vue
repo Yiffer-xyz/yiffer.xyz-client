@@ -54,7 +54,8 @@
 				</tr>
 			</table>
 
-			<label>Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have.</label>
+			<p class="no-margin-top">Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), 
+				 and any other helpful comments you may have.</p>
 
 			<p class="success-message" v-if="successMessage">{{successMessage}}</p>
 			<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>

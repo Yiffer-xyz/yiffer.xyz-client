@@ -48,10 +48,10 @@
 			<router-link 
 				v-if="$store.getters.isAuthenticated"
 				style="margin-left: 3px;"
-				:to="{ name: 'profile' }"
+				:to="{ name: 'account' }"
 				class="theme-button"
 			>
-				<button class="theme-button">Profile</button>
+				<button class="theme-button">Account</button>
 			</router-link>
 
 

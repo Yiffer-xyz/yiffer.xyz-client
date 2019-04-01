@@ -2,8 +2,8 @@
 	<div style="width: 100%">
 		<div class="whole-body-text whole-body-text-centered">
 
-			<vue-headful :title="'Profile - Yiffer.xyz'"/>
-			<h1>Profile: {{$store.getters.userData.username}}</h1>
+			<vue-headful :title="'Account - Yiffer.xyz'"/>
+			<h1>Account: {{$store.getters.userData.username}}</h1>
 			<back-to-index></back-to-index>
 			<br/>
 

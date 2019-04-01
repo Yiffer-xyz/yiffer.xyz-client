@@ -7,7 +7,7 @@ import Artist from './components/Artist.vue'
 import Admin from './components/Admin.vue'
 import PendingComic from './components/PendingComic.vue'
 import Donate from './components/Donate.vue'
-import Profile from './components/Profile.vue'
+import Account from './components/Account.vue'
 import SuggestComic from './components/SuggestComic.vue'
 
 Vue.use(Router)
@@ -36,9 +36,9 @@ export default new Router({
 			component: Admin
 		},
 		{
-			path: '/profile',
-			name: 'profile',
-			component: Profile
+			path: '/account',
+			name: 'account',
+			component: Account
 		},
 		{
 			path: '/suggestcomic',
