@@ -15,7 +15,7 @@ p, li, label {
 
 h1 {
 	font-weight: 300;
-	font-size: 70px;
+	font-size: 46px;
 	margin-top: 24px;
 	@media (max-width: 900px) {
 		margin-top: 12px;
@@ -26,9 +26,13 @@ h1 {
 	}
 }
 
+.yifferTitle {
+	font-size: 70px;
+}
+
 h2 {
 	font-weight: 300;
-	font-size: 35px;
+	font-size: 30px;
 }
 
 a {
@@ -114,7 +118,7 @@ label {
 }
 
 .dark {
-	.link-color, a, .theme-button {
+	.link-color, a, .theme-button, .navigation-button {
 		color: $theme5 !important;
 	}
 }

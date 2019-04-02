@@ -1,20 +1,15 @@
 <template>
   <div id="app">
 		<div class="theme-button-container">
-			<button
-				class="theme-button" 
+			<span
+				class="navigation-button underline-link" 
 				@click="setTheme('light')" 
-				style="margin-left:10px;"
-			>
-				Light
-			</button>
+			>Light</span>
 
-			<button 
-				class="theme-button" 
+			<span
+				class="navigation-button underline-link" 
 				@click="setTheme('dark')"  
-			>
-				Dark
-			</button>
+			>Dark</span>
 		</div>
 
 		<div class="theme-button-container theme-button-container-left">

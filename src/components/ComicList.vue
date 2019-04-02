@@ -542,6 +542,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	overflow: hidden;
 	margin-top: 20px;
 	background: $themeGray1;
 	padding: 24px 0;

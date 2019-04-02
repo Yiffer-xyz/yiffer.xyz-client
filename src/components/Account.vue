@@ -3,36 +3,14 @@
 		<div class="whole-body-text whole-body-text-centered">
 
 			<vue-headful :title="'Account - Yiffer.xyz'"/>
-			<h1>Account: {{$store.getters.userData.username}}</h1>
+			<h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
 			<back-to-index></back-to-index>
-			<br/>
 
-			<span><b>Email notifications on updates</b>: 
-			<select v-model="emailSetting">
-				<option value="none">No emails</option>
-				<option value="updates">Emails for updates*</option>
-				<option value="updates10">Emails for updates (10)**</option>
-				<option value="new">Emails for new comics</option>
-				<option value="updatesAndNew">Emails for updates* and new comics</option>
-				<option value="updatesAndNew10">Emails for updates (10)** and new comics</option>
-			</select>
-			</span>
-			<label>Turn these on if you would like to be notified via email when your selected comics
-				are updated, or when new comics are uploaded!</label>
-			<label><b>*</b> will only regard updates to comics that you have given <u>some rating</u>.</label>
-			<label><b>**</b> will only regard updates to comics that you have give a <u>rating of 10</u>.</label>
-			<button @click="submitEmailPreference()" v-if="emailSettingChanged" class="y-button margin-top-4 no-margin-bot">Save</button>
-						
-			<p class="error-message" v-if="errorMessageEmail" style="margin-bottom: 16px">{{errorMessageEmail}}</p>
-			<p class="success-message" v-if="successMessageEmail" style="margin-bottom: 16px">{{successMessageEmail}}</p>
+			<span class="margin-top-8"><b>Email</b>: {{$store.getters.userData.email}}</span> 
 
-			<span class="margin-top-16"><b>Email</b>: {{$store.getters.userData.email}}</span> 
-			<br/>
-			
-			<span><b>Donator</b>: {{$store.getters.userData.donator ? 'yes' : 'no'}}</span>
-			<br/>
+			<span class="margin-top-8"><b>Donator</b>: {{$store.getters.userData.donator ? 'yes' : 'no'}}</span>
 
-			<b>Change password</b>
+			<b class="margin-top-8">Change password</b>
 			<table id="changePasswordTable">
 				<tr>
 					<td><label>Current password: </label> </td>
