@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 		<div class="theme-button-container">
-			<button 
+			<button
 				class="theme-button" 
 				@click="setTheme('light')" 
 				style="margin-left:10px;"
@@ -20,49 +20,28 @@
 		<div class="theme-button-container theme-button-container-left">
 			<router-link 
 				:to="{ name: 'comicList' }"
-				class="theme-button"
-			>
-				<button class="theme-button">Home</button>
-			</router-link>
-
-			<button
-				v-if="!$store.getters.isAuthenticated" 
-				class="theme-button" 
-				style="margin-left: 3px;"
-				@click="showLoginModal()" 
-			>
-				Log in
-			</button>
-
-
-			<button 
-				v-if="$store.getters.isAuthenticated" 
-				class="theme-button" 
-				style="margin-left: 3px;"
-				@click="logout()" 
-			>
-				Log out
-			</button>
-
+				class="navigation-button underline-link"
+				style="margin-left: 2px;">Home</router-link>
 
 			<router-link 
 				v-if="$store.getters.isAuthenticated"
-				style="margin-left: 3px;"
 				:to="{ name: 'account' }"
-				class="theme-button"
-			>
-				<button class="theme-button">Account</button>
-			</router-link>
-
+				class="navigation-button underline-link">Account</router-link>
 
 			<router-link 
 				v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'mod' || $store.getters.userData.userType === 'admin')"
-				style="margin-left: 3px;"
 				:to="{ name: 'admin' }"
-				class="theme-button"
-			>
-				<button class="theme-button">Admin</button>
-			</router-link>
+				class="navigation-button underline-link">Admin</router-link>
+
+			<span
+				v-show="!$store.getters.isAuthenticated" 
+				class="navigation-button underline-link" 
+				@click="showLoginModal()">Log in</span>
+
+			<span 
+				v-show="$store.getters.isAuthenticated" 
+				class="navigation-button underline-link" 
+				@click="logout()">Log out</span>
 		</div>
 
 		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>

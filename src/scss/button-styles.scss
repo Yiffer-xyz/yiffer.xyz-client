@@ -102,6 +102,24 @@
 	background-color: transparent;
 	border: none;
 	color: $theme4;
+	font-size: 13px;
+	margin: 0 5px;
+	&:hover {
+		cursor: pointer;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+	&:focus {
+		outline: none;
+	}
+}
+
+.navigation-button {
+	background-color: transparent;
+	border: none;
+	color: $theme4;
+	font-size: 13px;
+	margin: 0 5px;
+	font-weight: 300;
 	&:hover {
 		cursor: pointer;
 		background-color: rgba(255, 255, 255, 0.1);

@@ -6,7 +6,7 @@
 				<h1>{{$route.params.comicName}}</h1>
 				<share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
 				<h2>by 
-					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" style="font-weight:300;">
+					<router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" class="underline-link" style="font-weight:300;">
 						{{comic.artist}}
 					</router-link>
 				</h2>
@@ -384,9 +384,8 @@ a {
 
 #comicPageContainer {
 	img {
-		margin-bottom: 16px;
+		margin: 0 auto 16px auto;
 		display: block;
-		margin: auto;
 	}
 }
 
