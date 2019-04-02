@@ -12,25 +12,24 @@ export default {
 				let response = await authApi.login(username, password)
 				if (response.success) {
 					context.dispatch('setUserData', response.result)
-					resolve({success: true}) 
+					resolve({success: true})
 				}
 				else {
-					// todo her, ta response-messagen, som er raw fra API og lage gode messages
-					resolve({success: false, message: 'Todo temp feilmelding'})
+					resolve({success: false, message: response.message})
 				}
 			})
 		},
 
-		async signup (context, {username, password, email}) {
+		async signup (context, {username, password, password2}) {
+			if (password != password2) { return {success: false, message: 'Passwords do not match'} }
 			return new Promise( async resolve => {
-				let response = await authApi.signup(username, password, email )
+				let response = await authApi.signup(username, password)
 				if (response.success) {
 					context.dispatch('setUserData', response.result)
 					resolve({success: true})
 				}
 				else {
-					// todo her, lag error msg basert på bla bla 
-					resolve({success: false, message: 'Todo feilmelding blabla'})
+					resolve({success: false, message: response.message})
 				}
 			})
 		},

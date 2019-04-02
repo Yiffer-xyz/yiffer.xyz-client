@@ -1,15 +1,18 @@
+import axios from 'axios'
+
+let baseUrl = 'http://localhost:8012'
+
 export default {
 	async login (username, password) {
-		return new Promise( async resolve => {
-			// resolve({success: true, result: {username: 'tullebruker23', donator: false, userType: 'normal', email: 'testemail.com'}})
-			resolve({success: false, message: 'U bad bro'})
-		})
+		let response = await axios.post(baseUrl + '/login', {username: username, password: password})
+		if (response.data.success) { return {success: true, result: response.data.userData } }
+		else { return {success: false, message: response.data.message} }
 	},
 
-	async signup (username, password, email) {
-		return new Promise( async resolve => {
-			resolve({success: true, result: {username: 'signupbruker99', donator: false, userType: 'admin', email: '99mail.com'}})
-		})
+	async signup (username, password) {
+		let response = await axios.post(baseUrl + '/register', {username: username, password: password})
+		if (response.data.success) { return {success: true, result: response.data.userData} }
+		else { return {success: false, message: response.data.message} }
 	},
 
 	async changePassword (oldPassword, newPassword1, newPassword2) {

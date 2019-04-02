@@ -6,8 +6,6 @@
 			<h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
 			<back-to-index></back-to-index>
 
-			<span class="margin-top-8"><b>Email</b>: {{$store.getters.userData.email}}</span> 
-
 			<span class="margin-top-8"><b>Donator</b>: {{$store.getters.userData.donator ? 'yes' : 'no'}}</span>
 
 			<b class="margin-top-8">Change password</b>
@@ -46,18 +44,11 @@ export default {
 
 	data: function () {
 		return {
-			'userData': {
-				'email': '',
-			},
-			'emailSetting': 'none',
-			'emailSettingChanged': false,
 			'currentPassword': '',
 			'newPassword1': '',
 			'newPassword2': '',
 			'errorMessagePassword': '',
 			'successMessagePassword': '',
-			'errorMessageEmail': '',
-			'successMessageEmail': '',
 		}
 	},
 
@@ -85,38 +76,13 @@ export default {
 				this.successMessagePassword = ''
 			}
 		},
-
-		async submitEmailPreference () {
-			let response = await authApi.setEmailPreference(this.emailSetting)
-			if (response.success) {
-				this.savedEmailSetting = this.emailSetting
-				this.emailSettingChanged = false
-				this.successMessageEmail = 'Email preferences updated!'
-				this.errorMessageEmail = ''
-			}
-			else { //todo test
-				this.errorMessageEmail = 'Error updating email preferences'
-				this.successMessageEmail = ''
-			}
-		}
 	},
 	
   created: async function () {
 		let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
 		if (!loggedin) { this.$router.replace('/') }
-		this.savedEmailSetting = (await authApi.getEmailPreference()).result
-		this.emailSetting = this.savedEmailSetting
 	},
-
-	watch: {
-		// Need to use watch instead of computed because vue won't redraw when
-		// submitEmailPreference() is called
-		emailSetting () {
-			this.emailSettingChanged = this.emailSetting != this.savedEmailSetting
-		}
-	}
 }
-
 </script>
 
 <style lang="scss">

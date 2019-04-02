@@ -3,30 +3,28 @@
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="loginModal">
 
-			<div v-if="$store.getters.loginModalContext==='login'" class="login-modal-inner-warpper">
+			<div v-if="$store.getters.loginModalContext==='login'" class="login-modal-inner-wrapper">
 				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
 					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form @submit="loginConfirmClicked" class="login-register-form">
-					<label for="loginUsername">Username or email</label>
+					<label for="loginUsername">Username</label>
 					<input v-model="loginUsername" name="loginUsername" type="text"/>
 
 					<label for="loginPassword">Password</label>
 					<input v-model="loginPassword" name="loginPassword" type="password"/>
 
 					<button v-if="!loginLoading" type="submit" class="y-button login-button">Log in</button>
-					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
+					<button v-if="loginLoading" class="y-button y-button-neutral login-button pleasewait-button">Please wait...</button>
 				</form>
 
 				<span @click="setModalContext('register')" class="margin-top-4 underline-link link-color"
 					>Click here to <b>sign up</b></span>
-				<span @click="setModalContext('forgotten')" class="margin-top-4 underline-link link-color"
-					><b>Forgot</b> account details?</span>
 			</div>
 
 
-			<div v-if="$store.getters.loginModalContext==='register'" class="login-modal-inner-warpper">
+			<div v-if="$store.getters.loginModalContext==='register'" class="login-modal-inner-wrapper">
 				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
 					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Sign up</p>
@@ -48,17 +46,13 @@
 						type="password"
 					/>
 
-					<label for="signupEmail">Email <span style="font-size: 10px">(no spam!)</span></label>
-					<input 
-						v-model="signupEmail" 
-						:class="{'valid-input': emailValidity===true, 'invalid-input': emailValidity===false}"
-						name="signupEmail" 
-						type="text" 
-						style="margin-bottom: 5px;"
+					<label for="signupPassword2">Repeat password</label>
+					<input
+						v-model="signupPassword2"
+						:class="{'valid-input': passwordValidity2===true, 'invalid-input': passwordValidity2===false}"
+						name="signupPassword2"
+						type="password"
 					/>
-					<p class="modal-input-explanation">Email required only for recovery purposes. By default, 
-						<u>no</u> emails will be sent, except for a "welcome" message. If you wish to be notified 
-						of new comics or updates to existing ones, you may turn this on in your account settings.</p>
 
 					<button v-if="!signupLoading" type="submit" class="y-button login-button">Sign up</button>
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
@@ -66,36 +60,6 @@
 
 				<span @click="setModalContext('login')" class="margin-top-4 underline-link link-color"
 					>Click here to <b>log in</b></span>
-				<span @click="setModalContext('forgotten')" class="margin-top-4 underline-link link-color"
-					><b>Forgot</b> account details?</span>
-
-			</div>
-
-
-			<div v-if="$store.getters.loginModalContext==='forgotten'" class="login-modal-inner-warpper">
-				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
-					><cross-icon title="" :size="40"/></button>
-				<p class="modal-header">Forgotten account details?</p>
-				<p v-if="forgottenErrorMessage" class="modal-error-message">{{forgottenErrorMessage}}</p>
-				<p v-if="forgottenSuccessMessage" style="margin: 20px 0;">
-					<checkbox-icon/> {{forgottenSuccessMessage}}
-				</p>
-				<form @submit="forgottenConfirmClicked" v-if="!forgottenSuccessMessage" class="login-register-form">
-					<label for="forgottenUsername">Username or email</label>
-					<input v-model="forgottenUsername" name="forgottenUsername" type="text" style="margin-bottom: 5px;">
-
-					<p class="modal-input-explanation">Link for creating a new password will be sent to the input email, or the 
-						email address associated with the input username.</p>
-
-
-					<button v-if="!forgottenLoading" type="submit" class="y-button login-button">Submit</button>
-					<button v-if="forgottenLoading" class="y-button login-button pleasewait-button">Please wait...</button>
-				</form>
-
-				<span @click="setModalContext('login')" class="margin-top-4 underline-link link-color"
-					>Click here to <b>log in</b></span>
-				<span @click="setModalContext('register')" class="margin-top-4 underline-link link-color"
-					>Click here to <b>sign up</b></span>
 			</div>
 		</div>
 	</div>
@@ -124,14 +88,9 @@ export default {
 
 			signupUsername: '',
 			signupPassword: '',
-			signupEmail: '',
+			signupPassword2: '',
 			signupErrorMessage: '',
 			signupLoading: false,
-
-			forgottenUsername: '',
-			forgottenErrorMessage: '',
-			forgottenSuccessMessage: '',
-			forgottenLoading: false,
 		}
 	},
 
@@ -160,7 +119,7 @@ export default {
 		async signupConfirmClicked ( buttonEvent ) {
 			buttonEvent.preventDefault()
 			this.signupLoading = true
-			let signupData = {username: this.signupUsername, password: this.signupPassword, email: this.signupEmail}
+			let signupData = {username: this.signupUsername, password: this.signupPassword, password2: this.signupPassword2}
 			let response = await this.$store.dispatch('signup', signupData)
 			this.signupLoading = false
 			if ( response.success ) {
@@ -172,30 +131,17 @@ export default {
 			}
 		},
 
-		async forgottenConfirmClicked ( buttonEvent ) {
-			buttonEvent.preventDefault()
-			let response = await authApi.forgottenPassword(this.forgottenUsername)
-			if (response.success) {
-				this.forgottenSuccessMessage = 'Link for resetting password sent to your email!'
-			}
-			else {
-				this.forgottenErrorMessage = 'No such username or email'
-			}
-		},
-
 		emptyInputFields () {
 			this.loginUsername = ''
 			this.loginPassword = ''
 			this.signupUsername = ''
 			this.signupPassword = ''
-			this.signupEmail = ''
-			this.forgottenUsername = ''
+			this.signupPassword2 = ''
 		},
 
 		clearErrorMessages () {
 			this.signupErrorMessage = ''
 			this.loginErrorMessage = ''
-			this.forgottenErrorMessage = ''
 		},
 
 		closeModal () {
@@ -216,12 +162,6 @@ export default {
 		mockSignupSuccess () {
 			return { success: true, userData: {username: 'tullebruker22', donator: true, userType: 'admin'} }
 		},
-		mockForgottenSuccess () {
-			return { success: true }
-		},
-		mockForgottenError () {
-			return { success: true, message: 'Username/email does not exist' }
-		}
 	},
 	computed: {
 		usernameValidity () {
@@ -233,11 +173,10 @@ export default {
 			if ( this.signupPassword.length === 0 ) { return undefined }
 			else { return this.signupPassword.length >= 6 }
 		},
-		emailValidity() {
-			let validEmailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-			if ( this.signupEmail.length === 0 ) { return undefined }
-			else { return validEmailPattern.test( this.signupEmail ) }
-		}
+		passwordValidity2 () {
+			if ( this.signupPassword2.length === 0 ) { return undefined }
+			else { return this.signupPassword2.length >= 6 && this.signupPassword2 === this.signupPassword }
+		},
 	}
 }
 </script>
@@ -257,7 +196,7 @@ export default {
 	}
 }
 
-.login-modal-inner-warpper {
+.login-modal-inner-wrapper {
 	width: 240px;
 	display: flex;
 	flex-direction: column;
