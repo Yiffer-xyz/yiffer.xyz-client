@@ -4,7 +4,8 @@
 		<div class="loginModal">
 
 			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
-				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()">close</button>
+				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
+					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form @submit="loginConfirmClicked" class="login-register-form">
@@ -93,6 +94,7 @@
 
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+import CrossIcon from 'vue-material-design-icons/Close.vue'
 
 import authApi from '../api/authApi'
 
@@ -101,6 +103,7 @@ export default {
 
 	components: {
 		'checkbox-icon': CheckboxIcon,
+		'cross-icon': CrossIcon,
 	},
 
 	data: function () {

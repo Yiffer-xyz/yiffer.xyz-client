@@ -64,10 +64,16 @@
 	background-color: transparent !important;
 	color: $themeGray8;
 	border: 1px solid $themeGray8;
+	path {
+		color: $themeGray8;	
+	}
 	&:hover {
 		background-color: $themeGray8 !important;
 		border-color: $themeGray8;
 		color: white;
+		path {
+			color: white;	
+		}
 	}
 }
 

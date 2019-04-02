@@ -15,11 +15,11 @@
 
 			<div class="donate-link">
 				<router-link :to="{name: 'donate'}" class="underline-link" style="margin-right: 16px;">
-					<donate-icon/> Donate?
+					<donate-icon title=""/> Donate?
 				</router-link>
 
 				<router-link :to="{name: 'suggestComic'}" class="underline-link" style="margin-left: 16px;">
-					<plus-icon/> Suggest comic?
+					<plus-icon title=""/> Suggest comic?
 				</router-link>
 			</div>
 
@@ -108,18 +108,18 @@
 						<div class="two-search-row">
 							<div class="search-wrapper">
 								<div class="one-searchbox-container" id="mainSearchBox">
-									<span class="input-icon-wrapper input-icon-wrapper-left" style="cursor: pointer"><search-icon/></span>
+									<span class="input-icon-wrapper input-icon-wrapper-left"><search-icon title=""/></span>
 									<input v-model="searchFiltering" type="text" placeholder="title or artist" class="upper-body-searchbox"/>
 									<span class="input-icon-wrapper input-icon-wrapper-right cursor-pointer"
 												v-show="searchFiltering"
 												@click="clearSearchField()">
-										<cross-icon/>
+										<cross-icon title="Clear"/>
 									</span>
 								</div>
 							</div>
 
 							<div class="search-wrapper">
-								<span class="input-icon-wrapper input-icon-wrapper-left"><tags-icon/></span>
+								<span class="input-icon-wrapper input-icon-wrapper-left"><tags-icon title=""/></span>
 								<input 
 									type="text"
 									name="someName" 
@@ -134,7 +134,7 @@
 								<span class="input-icon-wrapper input-icon-wrapper-right cursor-pointer"
 											v-show="keywordSearch"
 											@click="clearKeywordSearchField()">
-									<cross-icon/>
+									<cross-icon title="Clear"/>
 								</span>
 								<div id="keywordResults" v-if="keywordSearchFocused">
 									<div

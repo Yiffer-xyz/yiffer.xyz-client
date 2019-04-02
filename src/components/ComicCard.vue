@@ -22,9 +22,9 @@
 		</router-link>
 
 		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
-			<p title="Number of pages"><pages-icon/> {{comic.numberOfPages}}</p>
-			<p title="User rating"><users-icon/> {{formatRating(comic.userRating)}}</p>
-			<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon/> {{comic.yourRating || '-'}}</p>
+			<p title="Number of pages"><pages-icon title="Number of pages"/> {{comic.numberOfPages}}</p>
+			<p title="User rating"><users-icon title="User rating"/> {{formatRating(comic.userRating)}}</p>
+			<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
 		</div>
 
 		<div class="keyword-container" 
@@ -55,8 +55,8 @@
 		></voting-button>
 
 		<p v-if="$store.getters.detailLevel === 'High detail'" class="margin-top-4" style="font-size: 12px;">
-			<label title="Updated on"><refresh-icon/> {{prettyDate(comic.updated)}}</label> <br/>
-			<label title="Created on"><plus-icon/> {{prettyDate(comic.created)}}</label>
+			<label title="Updated on"><refresh-icon title="Updated on"/> {{prettyDate(comic.updated)}}</label> <br/>
+			<label title="Created on"><plus-icon title="Created on"/> {{prettyDate(comic.created)}}</label>
 		</p>
 
 	</div>
