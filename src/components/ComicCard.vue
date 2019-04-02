@@ -17,8 +17,8 @@
 			<p class="comic-card-comic-title">{{comic.name}}</p>
 		</router-link>
 
-		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }" class="comic-card-link">
-			<p class="link-color" style="font-weight: 400;">{{comic.artist}}</p>
+		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }" class="comic-card-link underline-link">
+			{{comic.artist}}
 		</router-link>
 
 		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
@@ -277,7 +277,6 @@ export default {
 	}
 	a {
 		text-decoration: none;
-		color: $theme5;
 	}
 	p, div {
 		color: $cardTextColorLight;

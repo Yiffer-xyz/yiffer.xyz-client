@@ -7,17 +7,18 @@
 
 			<p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
 				<button class="y-button" @click="showLoginModal">
-					<login-icon/> Log in to rate comics
+					<login-icon/> Log in
 				</button> 
+				to rate comics
 			</p>
 			<p v-else class="margin-top-10">Welcome, {{$store.getters.userData.username}}</p>
 
 			<div class="donate-link">
-				<router-link :to="{name: 'donate'}" style="margin-right: 16px;">
+				<router-link :to="{name: 'donate'}" class="underline-link" style="margin-right: 16px;">
 					<donate-icon/> Donate?
 				</router-link>
 
-				<router-link :to="{name: 'suggestComic'}" style="margin-left: 16px;">
+				<router-link :to="{name: 'suggestComic'}" class="underline-link" style="margin-left: 16px;">
 					<plus-icon/> Suggest comic?
 				</router-link>
 			</div>
@@ -541,7 +542,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 30px;
+	margin-top: 20px;
 	background: $themeGray1;
 	padding: 24px 0;
 	border-top: 1px solid $themeGray3;
@@ -550,7 +551,6 @@ export default {
 		margin: 7px 0px;
 	}
 	@media (max-width: 900px) {
-		margin-top: 20px;
 		padding: 10px 0;
 		>div, >table {
 			margin: 5px 0px;

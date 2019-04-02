@@ -1,5 +1,5 @@
 <template>
-	<router-link :to="'/'">
+	<router-link :to="'/'" class="underline-link">
 		<home-icon/> back to index
 	</router-link>
 </template>
