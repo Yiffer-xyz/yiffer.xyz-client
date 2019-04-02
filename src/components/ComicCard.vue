@@ -193,6 +193,17 @@ export default {
 			}
 		}
 	}
+
+	.triangle-wrapper-right {
+		.triangle-inner {
+			border-width: 0 40px 40px 0;
+			.triangle-label {
+				font-size: 10px;
+				top: 8px;
+				right: 3px;
+			}
+		}
+	}
 }
 
 .comic-card-link {

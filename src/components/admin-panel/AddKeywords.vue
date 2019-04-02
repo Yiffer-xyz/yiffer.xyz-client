@@ -12,8 +12,9 @@
             {{comic.name}}
           </option>
         </select>
-        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic" style="margin-left: 8px;" target="_blank">
-          go to comic <right-arrow/>
+        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
+                     v-if="comic" style="margin-left: 8px;" target="_blank" class="underline-link">
+          Go to comic <right-arrow/>
         </router-link>
       </div>
 
@@ -58,7 +59,7 @@
 
 
       <h2 style="margin-top: 32px;">Create new tag</h2>
-      <p>If a tag is not in the list above, create it here.</p>
+      <p>If a tag is not in the list above, create it here. Double check first though, please.</p>
       <div class="horizontal-flex" style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">New tag name:</p>
         <input type="text" v-model="newKeyword"/>

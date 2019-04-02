@@ -19,8 +19,9 @@
             {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
           </option>
         </select>
-        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic" style="margin-left: 8px;" target="_blank">
-          go to comic <right-arrow/>
+        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
+                     v-if="comic" style="margin-left: 8px;" target="_blank" class="underline-link">
+          Go to comic <right-arrow/>
         </router-link>
       </div>
       
@@ -58,7 +59,8 @@
           <tbody>
             <tr v-for="comic in unfinishedComicList" :key="comic.id">
               <td>
-                <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" target="_blank">
+                <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }"
+                             target="_blank" class="underline-link">
                   {{comic.name}}
                 </router-link>
               </td>

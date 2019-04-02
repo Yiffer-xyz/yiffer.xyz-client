@@ -10,7 +10,7 @@
 				Click 'Added' when the comic has been added to suggestions (here, in the admin panel, via <i>Add new comic</i>).
 				<br/>
 				Click 'Reject' if the comic fails to meet the criteria listed  
-				<router-link :to="{name: 'suggestComic'}" target="_blank">here</router-link>. 
+				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. 
 				<br/>
 				Please don't hesitate to ask for opinions in the mod discord chat!
 			</p>
