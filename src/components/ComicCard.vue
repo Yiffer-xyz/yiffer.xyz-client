@@ -50,6 +50,7 @@
 
 
 		<voting-button
+			style="margin-top: 7px;"
 			:comic="comic"
 			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
 		></voting-button>

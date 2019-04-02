@@ -13,6 +13,7 @@ export default new Vuex.Store({
 		darkTheme: false,
 		clickedComic: undefined,
 		loginModalVisibility: false,
+		loginModalContext: 'login',
 		votingModalVisibility: false,
 		whiteThemeButtons: false,
 		comicForVotingModal: {},
@@ -22,8 +23,13 @@ export default new Vuex.Store({
 		setDarkTheme (state, isDarkTheme) { state.darkTheme = isDarkTheme },
 		storeClickedComic (state, comic) { state.clickedComic = comic },
 		setLoginModalVisibility (state, isVisible) { state.loginModalVisibility = isVisible; },
+		setLoginModalContext (state, context) { state.loginModalContext = context; },
 		setVotingModalVisibility (state, isVisible) { state.votingModalVisibility = isVisible; },
 		setWhiteThemeButtonStyle (state, isWhite) { state.whiteThemeButtons = isWhite },
 		setComicForVotingModal (state, comic) { state.comicForVotingModal = comic },
 	},
+
+	getters: {
+		loginModalContext: state => state.loginModalContext
+	}
 })

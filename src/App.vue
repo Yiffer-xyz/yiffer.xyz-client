@@ -33,6 +33,11 @@
 				class="navigation-button underline-link" 
 				@click="showLoginModal()">Log in</span>
 
+			<span
+				v-show="!$store.getters.isAuthenticated" 
+				class="navigation-button underline-link" 
+				@click="showSignupModal()">Sign up</span>
+
 			<span 
 				v-show="$store.getters.isAuthenticated" 
 				class="navigation-button underline-link" 
@@ -77,6 +82,10 @@ export default {
 		},
 		showLoginModal () {
 			this.$store.commit('setLoginModalVisibility', true)
+		},
+		showSignupModal () {
+			this.$store.commit('setLoginModalContext', 'register')
+			this.showLoginModal()
 		},
 		logout () {
 			this.$store.dispatch('logout')

@@ -3,7 +3,7 @@
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="loginModal">
 
-			<div v-if="modalContext==='login'" class="loginModalInnerWrapper">
+			<div v-if="$store.getters.loginModalContext==='login'" class="login-modal-inner-warpper">
 				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
 					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Log in</p>
@@ -19,13 +19,16 @@
 					<button v-if="loginLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button @click="setModalContext('register')" class="text-button margin-top-10">Click here to <u>sign up</u></button>
-				<button @click="setModalContext('forgotten')" class="text-button margin-top-10"><u>Forgot</u> account details?</button>
+				<span @click="setModalContext('register')" class="margin-top-4 underline-link link-color"
+					>Click here to <b>sign up</b></span>
+				<span @click="setModalContext('forgotten')" class="margin-top-4 underline-link link-color"
+					><b>Forgot</b> account details?</span>
 			</div>
 
 
-			<div v-if="modalContext==='register'" class="loginModalInnerWrapper">
-				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()">close</button>
+			<div v-if="$store.getters.loginModalContext==='register'" class="login-modal-inner-warpper">
+				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
+					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form @submit="signupConfirmClicked" class="login-register-form">
@@ -61,13 +64,17 @@
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button @click="setModalContext('login')" class="text-button margin-top-10">Click here to <u>log in</u></button>
-				<button @click="setModalContext('forgotten')" class="text-button margin-top-10"><u>Forgot</u> account details?</button>
+				<span @click="setModalContext('login')" class="margin-top-4 underline-link link-color"
+					>Click here to <b>log in</b></span>
+				<span @click="setModalContext('forgotten')" class="margin-top-4 underline-link link-color"
+					><b>Forgot</b> account details?</span>
+
 			</div>
 
 
-			<div v-if="modalContext==='forgotten'" class="loginModalInnerWrapper">
-				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()">close</button>
+			<div v-if="$store.getters.loginModalContext==='forgotten'" class="login-modal-inner-warpper">
+				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
+					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Forgotten account details?</p>
 				<p v-if="forgottenErrorMessage" class="modal-error-message">{{forgottenErrorMessage}}</p>
 				<p v-if="forgottenSuccessMessage" style="margin: 20px 0;">
@@ -85,8 +92,10 @@
 					<button v-if="forgottenLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<button @click="setModalContext('login')" class="text-button margin-top-10">Click here to <u>log in</u></button>
-				<button @click="setModalContext('register')" class="text-button margin-top-10">Click here to <u>sign up</u></button>
+				<span @click="setModalContext('login')" class="margin-top-4 underline-link link-color"
+					>Click here to <b>log in</b></span>
+				<span @click="setModalContext('register')" class="margin-top-4 underline-link link-color"
+					>Click here to <b>sign up</b></span>
 			</div>
 		</div>
 	</div>
@@ -108,8 +117,6 @@ export default {
 
 	data: function () {
 		return {
-			modalContext: 'login',
-
 			loginUsername: '',
 			loginPassword: '',
 			loginErrorMessage: '',
@@ -130,7 +137,7 @@ export default {
 
 	methods: {
 		setModalContext ( modalContext ) {
-			this.modalContext = modalContext
+			this.$store.commit('setLoginModalContext', modalContext)
 			this.emptyInputFields()
 			this.clearErrorMessages()
 		},
@@ -193,6 +200,7 @@ export default {
 
 		closeModal () {
 			this.$store.commit('setLoginModalVisibility', false)
+			this.$store.commit('setLoginModalContext', 'login')
 			this.setModalContext('login')
 		},
 
@@ -249,10 +257,11 @@ export default {
 	}
 }
 
-.loginModalInnerWrapper {
+.login-modal-inner-warpper {
 	width: 240px;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 }
 
 .loginModal {
@@ -270,6 +279,13 @@ export default {
 	@media (max-width: 900px) {
 		padding: 40px 0px;
 		width: 100%;
+	}
+
+	.underline-link {
+		font-size: 14px;
+		&:hover {
+			cursor: pointer;
+		}
 	}
 }
 .loginModal:before {

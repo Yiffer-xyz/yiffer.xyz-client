@@ -6,8 +6,12 @@
 			<p style="font-size: 20px">A collection of high-quality comics</p>
 
 			<p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
-				<button class="y-button" @click="showLoginModal">
+				<button class="underline-link text-button link-color" @click="showLoginModal" style="margin: 0 3px 0 0; font-size: 16px;">
 					<login-icon/> Log in
+				</button> 
+				or
+				<button class="underline-link text-button link-color" @click="showSignupModal" style="margin: 0 3px; font-size: 16px;">
+					<signup-icon/> Sign up
 				</button> 
 				to rate comics
 			</p>
@@ -240,6 +244,7 @@ import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import LoginIcon from 'vue-material-design-icons/Login.vue'
+import SignupIcon from 'vue-material-design-icons/AccountPlusOutline.vue'
 
 import keywordApi from '../api/keywordApi'
 
@@ -256,6 +261,7 @@ export default {
 		'left-arrow': LeftArrow,
 		'right-arrow': RightArrow,
 		'login-icon': LoginIcon,
+		'signup-icon': SignupIcon,
 	},
 	data: function () {
 		// Initially attempted to not use references like this (and instead only use
@@ -368,6 +374,11 @@ export default {
 		},
 		showLoginModal ( clickEvent ) {
 			clickEvent.preventDefault()
+			this.$store.commit('setLoginModalVisibility', true)
+		},
+		showSignupModal (clickEvent) {
+			clickEvent.preventDefault()
+			this.$store.commit('setLoginModalContext', 'register')
 			this.$store.commit('setLoginModalVisibility', true)
 		},
 		setKeywordSearchFocused ( isFocused ) {
@@ -650,9 +661,6 @@ export default {
 	left: 9px;
 	@media (max-width: 900px) {
 		left: 6px;
-	}
-	&:hover {
-		color: $themeRed;
 	}
 }
 
