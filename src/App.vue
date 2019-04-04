@@ -44,8 +44,8 @@
 				@click="logout()">Log out</span>
 		</div>
 
-		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
-		<voting-modal v-if="$store.state.votingModalVisibility"></voting-modal>
+		<login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
+		<voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
     <router-view/>
   </div>
 </template>

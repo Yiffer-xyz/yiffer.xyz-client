@@ -48,6 +48,7 @@ export default {
 
 		async logout (context) {
 			context.dispatch('destroyUserData')
+			authApi.logout()
 		},
 
 		checkAndSetLoginStatus (context) {
@@ -80,6 +81,7 @@ export default {
 
 	mutations: {
 		setUserData (state, userData) {
+			console.log('userdata set.....', userData)
 			state.userData = userData
 		},
 

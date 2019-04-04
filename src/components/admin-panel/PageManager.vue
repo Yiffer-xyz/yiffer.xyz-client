@@ -99,6 +99,8 @@
           <p v-if="imageToInsert">Selected file: <span class="courier">{{imageToInsert.name}}</span></p>
 
           <button @click="insertPage" v-if="imageToInsert" class="y-button margin-top-8">Insert {{imageToInsert.name}}</button>
+
+          <p class="success-message" v-if="uploadPercent">Uploading ({{uploadPercent}}%)</p>
         </span>
 
         <p class="error-message" v-if="errorMessageInsert" style="margin-top: 8px;">{{errorMessageInsert}}</p>
@@ -176,6 +178,7 @@ export default {
       swapPage2: undefined,
       insertPageAfterNumber: undefined,
       imageToInsert: undefined,
+      uploadPercent: undefined,
       deletePageNumber: undefined,
       comicHasBeenChangedRecently: false,
       comicChangeDate: undefined,
@@ -210,8 +213,10 @@ export default {
     async insertPage () {
       this.errorMessageInsert = ''
       this.successMessageInsert = ''
-      let response = await comicApi.insertComicPage(this.comic.id, this.imageToInsert, this.insertPageAfterNumber)
+      let response = await comicApi.insertComicPage(this.comic.name, this.comic.id, this.imageToInsert,
+        this.insertPageAfterNumber, this.updateUploadProgress)
 
+      this.uploadPercent = undefined
       if (response.success) {
         this.successMessageInsert = 'Insert successful! Keep in mind the 30-day period described above.'
         this.$store.dispatch('updateOneComicInList', this.comic)
@@ -225,7 +230,7 @@ export default {
     async deletePage () {
       this.errorMessageDelete = ''
       this.successMessageDelete = ''
-      let response = await comicApi.deleteComicPage(this.comic.id, this.deletePageNumber)
+      let response = await comicApi.deleteComicPage(this.comic.name, this.comic.id, this.deletePageNumber)
 
       if (response.success) {
         this.successMessageDelete = 'Delete successful! Keep in mind the 30-day period described above.'
@@ -249,6 +254,10 @@ export default {
         this.errorMessageThumbnail = 'Error replacing thumbnail: ' + response.message
       }
     },
+
+		updateUploadProgress (progressEvent) {
+			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+		},
 
     async comicChanged () {
       this.resetAllInputsAndMessages()

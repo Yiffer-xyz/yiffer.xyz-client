@@ -1,4 +1,5 @@
 import axios from 'axios'
+axios.defaults.withCredentials = true
 
 let baseUrl = 'http://localhost:8012'
 
@@ -13,6 +14,10 @@ export default {
 		let response = await axios.post(baseUrl + '/register', {username: username, password: password})
 		if (response.data.success) { return {success: true, result: response.data.userData} }
 		else { return {success: false, message: response.data.message} }
+	},
+	
+	logout () {
+		axios.get(baseUrl + '/logout')
 	},
 
 	async changePassword (oldPassword, newPassword1, newPassword2) {

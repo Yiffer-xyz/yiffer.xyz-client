@@ -4,13 +4,11 @@
 		<div class="loginModal">
 
 			<div v-if="$store.getters.loginModalContext==='login'" class="login-modal-inner-wrapper">
-				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
-					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Log in</p>
 				<p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
 				<form @submit="loginConfirmClicked" class="login-register-form">
 					<label for="loginUsername">Username</label>
-					<input v-model="loginUsername" name="loginUsername" type="text"/>
+					<input v-model="loginUsername" ref="loginUsernameInput" name="loginUsername" type="text"/>
 
 					<label for="loginPassword">Password</label>
 					<input v-model="loginPassword" name="loginPassword" type="password"/>
@@ -19,20 +17,19 @@
 					<button v-if="loginLoading" class="y-button y-button-neutral login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<span @click="setModalContext('register')" class="margin-top-4 underline-link link-color"
-					>Click here to <b>sign up</b></span>
+				<button @click="setModalContext('register')" class="margin-top-4 underline-link link-color text-button"
+					>Click here to <b>sign up</b></button>
 			</div>
 
 
 			<div v-if="$store.getters.loginModalContext==='register'" class="login-modal-inner-wrapper">
-				<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
-					><cross-icon title="" :size="40"/></button>
 				<p class="modal-header">Sign up</p>
 				<p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
 				<form @submit="signupConfirmClicked" class="login-register-form">
 					<label for="signupUsername">Username</label>
 					<input
 						v-model="signupUsername"
+						ref="signupUsernameInput"
 						:class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
 						name="signupUsername"
 						type="text"
@@ -58,9 +55,12 @@
 					<button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
 				</form>
 
-				<span @click="setModalContext('login')" class="margin-top-4 underline-link link-color"
-					>Click here to <b>log in</b></span>
+				<button @click="setModalContext('login')" class="margin-top-4 underline-link link-color text-button"
+					>Click here to <b>log in</b></button>
 			</div>
+
+			<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
+				><cross-icon title="" :size="40"/></button>
 		</div>
 	</div>
 </template>
@@ -177,6 +177,18 @@ export default {
 			if ( this.signupPassword2.length === 0 ) { return undefined }
 			else { return this.signupPassword2.length >= 6 && this.signupPassword2 === this.signupPassword }
 		},
+	},
+	mounted () {
+		this.$store.watch(this.$store.getters.getLoginModalVisibility, (visibility) => {
+			if (visibility) {
+				if (this.$store.getters.loginModalContext==='login') {
+					this.$refs.loginUsernameInput.focus()
+				}
+				else {
+					this.$refs.signupUsernameInput.focus()
+				}
+			}
+		})
 	}
 }
 </script>

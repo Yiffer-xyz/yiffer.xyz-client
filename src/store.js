@@ -30,6 +30,7 @@ export default new Vuex.Store({
 	},
 
 	getters: {
-		loginModalContext: state => state.loginModalContext
+		loginModalContext: state => state.loginModalContext,
+		getLoginModalVisibility: state => () => state.loginModalVisibility,
 	}
 })

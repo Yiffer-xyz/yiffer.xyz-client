@@ -234,7 +234,6 @@
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
-import LoginModal from '@/components/LoginModal.vue'
 import config from '@/config.json'
 import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
@@ -252,7 +251,6 @@ export default {
 	name: 'comic-list',
 	components: {
 		'comic-card': ComicCard,
-		'login-modal': LoginModal,
 		'search-icon': SearchIcon,
 		'tags-icon': TagsIcon,
 		'donate-icon': DonateIcon,

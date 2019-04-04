@@ -134,20 +134,33 @@ export default {
 	async swapComicPages (comicName, comicId, pageNumber1, pageNumber2) {
 		let response = await axios.post(baseUrl + '/swapcomicpages',
 			{comicName: comicName, comicId: comicId, pageNumber1: pageNumber1, pageNumber2: pageNumber2})
-			if (response.data.error) { return {success: false, message: response.data.error} }
-			if (!response.data.error) { return {success: true} }
-		},
-
-	async insertComicPage (comicId, imageFile, insertAfterPageNumber) {
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
-		})
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true} }
 	},
 
-	async deleteComicPage (comicId, pageNumber) { //todo MOVE OUT OF HERE, TO MISC
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 500)
-		})
+	async insertComicPage (comicName, comicId, imageFile, insertAfterPageNumber, progressFunction) {
+		let formData = new FormData()
+		formData.append('comicName', comicName)
+		formData.append('comicId', comicId)
+		formData.append('insertAfterPageNumber', insertAfterPageNumber)
+		formData.append('newPageFile', imageFile)
+
+		let response = await axios.post(baseUrl + '/insertcomicpage',
+			formData, {
+				headers: {'Content-Type': 'multipart/form-data'},
+				onUploadProgress: progressEvent => progressFunction(progressEvent)
+			}
+		)
+
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true} }
+	},
+
+	async deleteComicPage (comicName, comicId, pageNumber) { //todo MOVE OUT OF HERE, TO MISC
+		let response = await axios.post(baseUrl + '/deletecomicpage',
+			{comicName: comicName, comicId: comicId, pageNumber: pageNumber})
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true} }
 	},
 
 	async getComicPageChangeDate (comicId) {
