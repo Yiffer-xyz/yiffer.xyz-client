@@ -4,11 +4,7 @@
     :class="{'new-comic-border': isNewComic, 'wip-comic-border': !comic.finished && !isNewComic, 'comic-card-small': true, 'simple-shadow': true}"
     >
 
-    <div v-if="isNewComic || !comic.finished" 
-      style="position: absolute; right: 0; bottom: 0; margin: 0;
-      font-size: 10px; color: white; display: flex; flex-direction: row;
-      border-top-left-radius: 8px; overflow: hidden;"
-      >
+    <div v-if="isNewComic || !comic.finished" class="label-box-container">
       <!-- WIP LABEL -->
       <div class="wip-label-box" v-if="!comic.finished" 
       >WIP</div>
@@ -48,8 +44,8 @@
       </div>
 
       <!-- TAGS -->
-      <div v-if="$store.getters.detailLevel==='high'" style="display: flex; flex-direction: row; flex-wrap: wrap; margin-right: 15px;
-      margin-top: 2px;">
+      <div v-if="$store.getters.detailLevel==='high'" style="display: flex; flex-direction: row; flex-wrap: wrap; margin-top: 2px;"
+      :style="{'margin-right': keywordsMarginRight}">
         <div 
           class="keyword keyword2"
           v-for="keyword in comic.keywords"
@@ -123,19 +119,25 @@ export default {
 		},
 		showHideKeywordsButton () {
 			return this.showLocalKeywords && this.$store.getters.detailLevel!=='High detail'
-		}
+    },
+    keywordsMarginRight () {
+      if (this.isNewComic && !this.comic.finished) { return '56px' }
+      else if (!this.isNewComic && this.comic.finished) { return '0' }
+      else { return '30px' }
+    }
 	}
 }
 </script>
 
 <style lang="scss">
 @import "../scss/colors.scss";
+$comicCardSmallPadding: 6px;
 
 .comic-card-small {
   display: flex;
   width: 97%;
   flex-direction: row;
-  padding: 6px;
+  padding: $comicCardSmallPadding;
   box-sizing: border-box;
   background-color: $themeGray0p5;
   margin: 6px 4px;
@@ -144,22 +146,29 @@ export default {
   &:hover {
     cursor: pointer;
   }
-  &.new-comic-border {
-    // border: 1px solid $theme5;
-  }
-  &.wip-comic-border {
-    // border: 1px solid $themeGray6;
+  .label-box-container {
+    position: absolute;
+    right: $comicCardSmallPadding;
+    bottom: $comicCardSmallPadding;
+    margin: 0;
+    font-size: 10px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
   }
   .wip-label-box, .new-label-box {
     font-weight: 600;
-    color: white; padding: 1px 3.5px 0.5px 4.5px;
-    border-top-left-radius: 2px;
+    // color: white; 
+    padding: 1px 3.5px;
+    border-top-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: transparent;
   }
   .new-label-box {
-    background: $theme5;
+    color: $theme5;
   }
   .wip-label-box {
-    background: $themeGray6;
+    color: $themeGray6;
   }
   .not-rounded-new-box {
     border-top-left-radius: 0px;
