@@ -54,7 +54,7 @@
           class="keyword keyword2"
           v-for="keyword in comic.keywords"
           :key="keyword"
-          @click="addSelectedKeyword(keyword)">
+          @click="addSelectedKeyword(keyword, $event)">
           {{keyword}}
         </div>
       </div>
@@ -109,7 +109,8 @@ export default {
 		storeClickedComicData: function () {
 			this.$store.commit('storeClickedComic', this.comic)
 		},
-		addSelectedKeyword (keywordName) {
+		addSelectedKeyword (keywordName, clickEvent) {
+      clickEvent.stopPropagation()
 			if ( this.clickableKeyword ) { this.$store.commit('addSelectedKeyword', keywordName) }
 		},
 		convertTagName (tagName) {
@@ -137,22 +138,22 @@ export default {
   padding: 6px;
   box-sizing: border-box;
   background-color: $themeGray0p5;
-  margin: 4px;
+  margin: 6px 4px;
   position: relative;
   border-radius: 4px;
   &:hover {
     cursor: pointer;
   }
   &.new-comic-border {
-    border: 1px solid $theme5;
+    // border: 1px solid $theme5;
   }
   &.wip-comic-border {
-    border: 1px solid $themeGray6;
+    // border: 1px solid $themeGray6;
   }
   .wip-label-box, .new-label-box {
     font-weight: 600;
     color: white; padding: 1px 3.5px 0.5px 4.5px;
-    border-top-left-radius: 4px;
+    border-top-left-radius: 2px;
   }
   .new-label-box {
     background: $theme5;

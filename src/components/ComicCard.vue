@@ -1,66 +1,74 @@
 <template>
 	<div class="comic-card simple-shadow">
+
+		<!-- NEW AND WIP TRIANGLES, IMAGE -->
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-		<div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
-			<div class="triangle-inner">
-				<label class="triangle-label" title="Added within 7 days">NEW</label>
+			<div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
+				<div class="triangle-inner">
+					<label class="triangle-label" title="Added within 7 days">NEW</label>
+				</div>
 			</div>
-		</div>
-		<div class="triangle-wrapper triangle-wrapper-right" v-if="!comic.finished">
-			<div class="triangle-inner">
-				<label class="triangle-label" title="Comic not finished">WIP</label>
+			<div class="triangle-wrapper triangle-wrapper-right" v-if="!comic.finished">
+				<div class="triangle-inner">
+					<label class="triangle-label" title="Comic not finished">WIP</label>
+				</div>
 			</div>
-		</div>
 			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
-		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
-			<p class="comic-card-comic-title">{{comic.name}}</p>
-		</router-link>
 
-		<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }" class="comic-card-link underline-link">
-			{{comic.artist}}
-		</router-link>
+		<div class="comic-card-inner-container">
+			<div>
+				<!-- NAME -->
+				<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
+					<p class="comic-card-comic-title">{{comic.name}}</p>
+				</router-link>
 
-		<!-- PAGES AND RATINGS -->
-		<div class="horiz-card-row">
-			<p title="Number of pages"><pages-icon title="Number of pages"/> {{comic.numberOfPages}}</p>
-			<p title="User rating"><users-icon title="User rating"/> {{formatRating(comic.userRating)}}</p>
-			<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
-		</div>
-
-		<!-- ALL KEYWORDS -->
-		<div class="keyword-container" v-if="showKeywords || $store.getters.detailLevel === 'high'">
-			<div class="emphasized-keyword">{{comic.cat}}</div>
-			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
-			<div 
-				:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
-				v-for="keyword in comic.keywords"
-				:key="keyword"
-				@click="addSelectedKeyword(keyword)"
-			>
-				{{keyword}}
+				<!-- ARTIST -->
+				<router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }" class="comic-card-link underline-link">
+					{{comic.artist}}
+				</router-link>
 			</div>
+
+			<!-- PAGES AND RATINGS -->
+			<div class="horiz-card-row">
+				<p title="Number of pages"><pages-icon title="Number of pages"/> {{comic.numberOfPages}}</p>
+				<p title="User rating"><users-icon title="User rating"/> {{formatRating(comic.userRating)}}</p>
+				<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
+			</div>
+
+			<!-- ALL KEYWORDS -->
+			<div class="keyword-container" v-if="showKeywords || $store.getters.detailLevel === 'high'">
+				<div class="emphasized-keyword">{{comic.cat}}</div>
+				<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
+				<div 
+					:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
+					v-for="keyword in comic.keywords"
+					:key="keyword"
+					@click="addSelectedKeyword(keyword)"
+				>
+					{{keyword}}
+				</div>
+			</div>
+			<div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">hide tags</div>
+
+			<!-- KEYWORDS, CAT, TAG -->
+			<div class="keyword-container" v-if="!showKeywords && $store.getters.detailLevel === 'low'">
+				<div class="emphasized-keyword">{{comic.cat}}</div>
+				<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
+				<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">show tags</div>
+			</div>
+
+
+			<voting-button
+				style="margin-top: 7px;"
+				:comic="comic"
+				v-if="$store.getters.isAuthenticated"></voting-button>
+
+			<p v-if="$store.getters.detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
+				<label title="Updated on"><refresh-icon title="Updated on"/> {{prettyDate(comic.updated)}}</label> <br/>
+				<label title="Created on"><plus-icon title="Created on"/> {{prettyDate(comic.created)}}</label>
+			</p>
 		</div>
-		<div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">hide tags</div>
-
-		<!-- KEYWORDS, CAT, TAG -->
-		<div class="keyword-container" v-if="!showKeywords && $store.getters.detailLevel === 'low'">
-			<div class="emphasized-keyword">{{comic.cat}}</div>
-			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
-			<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">show tags</div>
-		</div>
-
-
-		<voting-button
-			style="margin-top: 7px;"
-			:comic="comic"
-			v-if="$store.getters.isAuthenticated"></voting-button>
-
-		<p v-if="$store.getters.detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
-			<label title="Updated on"><refresh-icon title="Updated on"/> {{prettyDate(comic.updated)}}</label> <br/>
-			<label title="Created on"><plus-icon title="Created on"/> {{prettyDate(comic.created)}}</label>
-		</p>
-
 	</div>
 </template>
 
@@ -93,7 +101,7 @@ export default {
 	},
 	data: function () {
 		return {
-			isNewComic: new Date() - new Date(this.comic.created) < 55*604800000,  // todo 1 week = 604800000
+			isNewComic: new Date() - new Date(this.comic.created) < 2*604800000,  // todo 1 week = 604800000
 			recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000),
 			showLocalKeywords: false
 		}
@@ -274,11 +282,9 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	border-radius: 2px;
-	overflow: hidden;
 	margin: 10px;
 	padding-bottom: 8px;
 	background-color: $themeGray0p5;
-	justify-content: space-between;
 	img {
 		width: 100%;
 		height: 283px;
@@ -289,10 +295,17 @@ export default {
 	p, div {
 		color: $cardTextColorLight;
 	}
+	.comic-card-inner-container {
+		display: flex; flex-direction: column;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+		justify-content: space-between;
+	}
 	.horiz-card-row {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-around;
+		justify-content: space-evenly;
 		width: 90%;
 		p:hover {
 			cursor: default;
