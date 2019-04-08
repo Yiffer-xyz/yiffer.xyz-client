@@ -59,7 +59,7 @@
 					>Click here to <b>log in</b></button>
 			</div>
 
-			<button class="y-button y-button-transparent close-modal-button" @click="closeModal()"
+			<button class="y-button-close" @click="closeModal()" style="	position: absolute; right: 8px; top: 16px;"
 				><cross-icon title="" :size="40"/></button>
 		</div>
 	</div>
@@ -308,12 +308,6 @@ export default {
 	&:hover {
 		cursor: default !important;
 	}
-}
-
-.close-modal-button {
-	position: absolute;
-	right: 8px;
-	top: 16px;
 }
 
 .dark {

@@ -185,27 +185,41 @@
 							</tr>
 						</table>
 					</div>
+					
 
-					<div class="upper-body-horiz-row" style="display: flex; justify-content: center;">
+					<div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly;">
+						<!-- MOBILE VIEW: LIST OR CARD -->
+						<table class="horiz-row-inner" style="width: auto;" v-if="$breakpoint.xsOnly">
+							<tr>
+								<td
+									@click="setViewMode('list')"
+									:class="{'button-selected': $store.getters.viewMode === 'list'}"
+								>
+									List
+								</td>
+								<td
+									@click="setViewMode('card')"
+									:class="{'button-selected': $store.getters.viewMode === 'card'}"
+								>
+									Cards
+								</td>
+							</tr>
+						</table>
+						
+						<!-- BIG VIEW: DETAIL LEVEL -->
 						<table class="horiz-row-inner" style="width: auto;">
 							<tr>
 								<td
-									@click="setDetailLevel('No detail')"
-									:class="{'button-selected': $store.getters.detailLevel === 'No detail'}"
+									@click="setDetailLevel('low')"
+									:class="{'button-selected': $store.getters.detailLevel === 'low'}"
 								>
-									No detail
+									Simple
 								</td>
 								<td
-									@click="setDetailLevel('Medium detail')"
-									:class="{'button-selected': $store.getters.detailLevel === 'Medium detail'}"
+									@click="setDetailLevel('high')"
+									:class="{'button-selected': $store.getters.detailLevel === 'high'}"
 								>
-									Medium detail
-								</td>
-								<td
-									@click="setDetailLevel('High detail')"
-									:class="{'button-selected': $store.getters.detailLevel === 'High detail'}"
-								>
-									High detail
+									Detailed
 								</td>
 							</tr>
 						</table>
@@ -225,15 +239,23 @@
 				</span>
 			</div>
 		</div>
-		<div class="comic-card-container">
+
+		<div class="comic-card-small-container" v-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
+			<comic-card-small v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic"/>
+		</div>
+		<div class="comic-card-container" v-else>
 			<comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic">
 			</comic-card>
 		</div>
+
+		<expanded-comic-card v-if="$store.getters.comicCardExpanded"/>
 	</div>
 </template>
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
+import ComicCardSmall from '@/components/ComicCardSmall.vue'
+import ExpandedComicCard from '@/components/ExpandedComicCard.vue'
 import config from '@/config.json'
 import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
@@ -251,6 +273,8 @@ export default {
 	name: 'comic-list',
 	components: {
 		'comic-card': ComicCard,
+		'comic-card-small': ComicCardSmall,
+		'expanded-comic-card': ExpandedComicCard,
 		'search-icon': SearchIcon,
 		'tags-icon': TagsIcon,
 		'donate-icon': DonateIcon,
@@ -273,7 +297,6 @@ export default {
 			keywordResultHovered: undefined,
 			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
 			smallPagination: undefined,
-			detailLevel: 'Medium detail',
 			searchFiltering: '',
 		}
 	},
@@ -391,6 +414,10 @@ export default {
 			this.$store.commit('setDetailLevel', detailLevel)
 			this.$cookies.set('detail', detailLevel)
 		},
+		setViewMode (viewMode) {
+			this.$store.commit('setViewMode', viewMode)
+			this.$cookies.set('viewmode', viewMode)
+		},
 		clearSearchField () {
 			this.searchFiltering = ''
 		},
@@ -413,6 +440,7 @@ export default {
 	},
   created: async function() {
 		if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
+		if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
 		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.commit('setWhiteThemeButtonStyle', true)
@@ -482,9 +510,11 @@ export default {
 #keywordResults {
 	position: absolute;
 	min-width: 100%;
+	overflow: auto;
 	flex-direction: column;
 	justify-content: center;
 	z-index: 2;
+	background: rgba(255, 255, 255, 0.95);
 	box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
 }
 
@@ -494,7 +524,6 @@ export default {
 	color: #444 !important;
 	font-size: 12px;
 	padding: 3px 0px;
-	background: rgba(255, 255, 255, 0.9);
 	font-weight: 300;
 	&:hover {
 		background-color: $themeGray1;
@@ -695,6 +724,13 @@ export default {
 	@media (max-width: 900px) {
 		margin-top: 12px;
 	}
+}
+
+.comic-card-small-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 6px;
 }
 
 .dark {

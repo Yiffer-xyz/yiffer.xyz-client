@@ -1,3 +1,5 @@
+@import "shadows.scss";
+
 .y-button, .vote-button {
 	border: 0.8px solid $theme4;
 	border-radius: 5px;
@@ -77,6 +79,20 @@
 	}
 }
 
+.y-button-close {
+	font-weight: 400;
+	border-radius: 40px;
+	border: 1px solid $themeGray7;
+	color: $themeGray7;
+	background: transparent;
+	height: 26px;
+	width: 26px;
+	padding: 0;
+	&:hover {
+		cursor: pointer;
+	}
+	@include simpleshadow;
+}
 
 .text-button {
 	font-size: 14px;

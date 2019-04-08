@@ -14,7 +14,10 @@ export default {
 		searchFiltering: '',
 		selectedKeywords: [],
 		numberOfFilteredComics: 0,
-		detailLevel: 'Medium detail',
+		detailLevel: 'low',
+		viewMode: 'list',
+		comicCardExpanded: false,
+		expandedComic: undefined,
 	},
 
 	actions: {
@@ -124,6 +127,16 @@ export default {
 		setDetailLevel ( state, detailLevel ) {
 			state.detailLevel = detailLevel
 		},
+		setViewMode (state, viewMode) {
+			state.viewMode = viewMode
+		},
+		setExpandedComic (state, comic) {
+			if (!comic) { state.comicCardExpanded = false }
+			else {
+				state.comicCardExpanded = true
+				state.expandedComic = comic
+			}
+		},
 	},
 
 	getters: {
@@ -139,6 +152,9 @@ export default {
 		searchFiltering: state => state.searchFiltering,
 		selectedKeywords: state => state.selectedKeywords,
 		detailLevel: state => state.detailLevel,
+		viewMode: state => state.viewMode,
+		comicCardExpanded: state => state.comicCardExpanded,
+		expandedComic: state => state.expandedComic,
 	}
 }
 

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "better-vue-breakpoints": "^0.1.4",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "style-resources-loader": "^1.2.1",

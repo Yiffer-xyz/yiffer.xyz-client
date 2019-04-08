@@ -1,6 +1,7 @@
 @import "colors.scss";
 @import "button-styles.scss";
 @import "text-styles.scss";
+@import "shadows.scss";
 
 #app {
   font-family: 'Open Sans', sans-serif;
@@ -165,6 +166,10 @@ select {
 }
 .keyword-static:hover {
 	cursor: default;
+}
+
+.simple-shadow {
+	@include simpleshadow;
 }
 
 .dark {

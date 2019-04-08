@@ -1,5 +1,5 @@
 <template>
-	<div class="comic-card">
+	<div class="comic-card simple-shadow">
 		<router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
 		<div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
 			<div class="triangle-inner">
@@ -21,20 +21,15 @@
 			{{comic.artist}}
 		</router-link>
 
-		<div class="horiz-card-row" v-if="$store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail'">
+		<!-- PAGES AND RATINGS -->
+		<div class="horiz-card-row">
 			<p title="Number of pages"><pages-icon title="Number of pages"/> {{comic.numberOfPages}}</p>
 			<p title="User rating"><users-icon title="User rating"/> {{formatRating(comic.userRating)}}</p>
 			<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
 		</div>
 
-		<div class="keyword-container" 
-         v-if="!showKeywords && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')">
-			<div class="emphasized-keyword">{{comic.cat}}</div>
-			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
-			<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">show tags</div>
-		</div>
-
-		<div class="keyword-container" v-if="showKeywords">
+		<!-- ALL KEYWORDS -->
+		<div class="keyword-container" v-if="showKeywords || $store.getters.detailLevel === 'high'">
 			<div class="emphasized-keyword">{{comic.cat}}</div>
 			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
 			<div 
@@ -48,14 +43,20 @@
 		</div>
 		<div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">hide tags</div>
 
+		<!-- KEYWORDS, CAT, TAG -->
+		<div class="keyword-container" v-if="!showKeywords && $store.getters.detailLevel === 'low'">
+			<div class="emphasized-keyword">{{comic.cat}}</div>
+			<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
+			<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">show tags</div>
+		</div>
+
 
 		<voting-button
 			style="margin-top: 7px;"
 			:comic="comic"
-			v-if="$store.getters.isAuthenticated && ($store.getters.detailLevel === 'Medium detail' || $store.getters.detailLevel === 'High detail')"
-		></voting-button>
+			v-if="$store.getters.isAuthenticated"></voting-button>
 
-		<p v-if="$store.getters.detailLevel === 'High detail'" class="margin-top-4" style="font-size: 12px;">
+		<p v-if="$store.getters.detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
 			<label title="Updated on"><refresh-icon title="Updated on"/> {{prettyDate(comic.updated)}}</label> <br/>
 			<label title="Created on"><plus-icon title="Created on"/> {{prettyDate(comic.created)}}</label>
 		</p>
@@ -115,10 +116,10 @@ export default {
 	},
 	computed: {
 		showKeywords () {
-			return this.$store.getters.detailLevel==='High detail' || this.showLocalKeywords
+			return this.$store.getters.detailLevel==='high' || this.showLocalKeywords
 		},
 		showHideKeywordsButton () {
-			return this.showLocalKeywords && this.$store.getters.detailLevel!=='High detail'
+			return this.showLocalKeywords && this.$store.getters.detailLevel!=='high'
 		}
 	}
 }
@@ -272,17 +273,12 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	border-radius: 8px;
+	border-radius: 2px;
 	overflow: hidden;
 	margin: 10px;
 	padding-bottom: 8px;
 	background-color: $themeGray0p5;
 	justify-content: space-between;
-	box-shadow: 0 0 8px 0px $themeGray3p5;
-	&:hover {
-		// box-shadow: 0 0 10px 1px $theme4;
-		box-shadow: 0 0 10px 1px $themeGray6;
-	}
 	img {
 		width: 100%;
 		height: 283px;

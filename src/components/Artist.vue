@@ -8,7 +8,7 @@
     <div class="artist-link-container">
       <div v-for="link in artistData.links" :key="link.linkUrl" class="artist-link">
         <img :src="`/icons/${link.linkType}.png`" style="height: 18px;"/>
-        <a :href="link.linkUrl" target="_blank" class="underline-link">{{prettifyUrl(link.linkUrl)}}</a>
+        <a :href="link.linkUrl" target="_blank" class="underline-link" style="word-break: break-all;">{{prettifyUrl(link.linkUrl)}}</a>
       </div>
     </div>
 
