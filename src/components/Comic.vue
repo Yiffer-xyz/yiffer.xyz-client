@@ -59,8 +59,8 @@
 						<span>
 							<label for="addKeyword">Add tag</label>
 							<select v-model="addKeyword" name="addKeyword">
-								<option v-for="keyword in keywordsNotInComic" :key="keyword.keyword">
-									{{keyword.keyword}}
+								<option v-for="keyword in keywordsNotInComic" :key="keyword">
+									{{keyword}}
 								</option>
 							</select>
 							<button 
@@ -226,16 +226,15 @@ export default {
 
 		toggleKeywordSuggestions () {
 			this.keywordSuggestionsActive = !this.keywordSuggestionsActive
-			if ( this.keywordsNotInComic.length === 0 ) { this.getKeywordsNotInComic() }
+			if ( this.keywordsNotInComic.length === 0 ) { this.setKeywordsNotInComic() }
 		},
 
-		async getKeywordsNotInComic () {
+		async setKeywordsNotInComic () {
 			let allKeywords = await keywordApi.getKeywordList()
-			for ( var keyword of allKeywords ) {
-				if ( this.comic.keywords.indexOf(keyword) < 0 ) {
-					this.keywordsNotInComic.push(keyword)
-				}
-			}
+			this.keywordsNotInComic = allKeywords
+				.filter(kw => this.comic.keywords.indexOf(kw.keyword) == -1)
+				.map(kw => kw.keyword)
+				.sort()
 		},
 
 		async suggestKeywordChange ( typeOfChange ) {

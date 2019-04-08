@@ -140,6 +140,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../scss/shadows.scss";
+
 .mdi-arrow {
 	font-size: 28px;
 }
@@ -160,6 +162,7 @@ export default {
 }
 
 .admin-content-box {
+	@include simpleshadow;
 	width: 300px;
 	border: 1px solid #aaa; //todo
 	margin: 16px;
@@ -174,6 +177,7 @@ export default {
 }
 
 .admin-content-box-open {
+	@include simpleshadow-active;
 	width: 100%;
 	height: auto;
 	&:hover {

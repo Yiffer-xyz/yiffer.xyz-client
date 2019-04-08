@@ -19,7 +19,8 @@
           </thead>
           <tbody>
             <tr v-for="(suggestion, index) in keywordSuggestionList" :key="index">
-              <td>{{suggestion.comicName}}</td>
+              <td><router-link :to="{name: 'comic', params: {'comicName': suggestion.comicName}}" target="_blank">
+                {{suggestion.comicName}}</router-link></td>
               <td>{{suggestion.addKeyword ? 'ADD' : 'REMOVE'}} {{suggestion.keyword}}</td>
               <td>{{suggestion.user}}</td>
               <td>

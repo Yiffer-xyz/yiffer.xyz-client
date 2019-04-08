@@ -94,16 +94,6 @@ select {
 	margin-bottom: 16px;
 }
 
-.admin-content-box {
-	box-shadow: 0 0 12px 0px $themeGray2;
-	&:hover {
-		box-shadow: 0 0 20px 1px $themeGray3;
-	}
-}
-.admin-content-box-open {
-	box-shadow: 0 0 20px 1px $themeGray3;
-}
-
 .y-table {
   border-collapse: collapse;
   td, th {
@@ -201,7 +191,6 @@ select {
 	}
 
 	.admin-content-box {
-		box-shadow: none;
 		border-color: $themeGray7;
 		&:hover {
 			background-color: $themeDark4	
