@@ -119,9 +119,9 @@ export default {
 	},
 
 	async rateComic (comicId, newRating) {
-		return new Promise(resolve => {
-			resolve({success: true})
-		})
+		let response = await axios.post(`${baseUrl}/comics/${comicId}/rate`, {rating: newRating})
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true} }
 	},
 
 	async addComicSuggestion (comicName, artist, linksComments) {

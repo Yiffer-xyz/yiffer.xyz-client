@@ -3,8 +3,8 @@
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
 			<span style="display: flex; flex-direction: column;">
-				<p class="modal-header">Vote for {{$store.state.comicForVotingModal.name}}</p>
-				<p class="margin-top-16">User rating: {{$store.state.comicForVotingModal.userRating}}</p>
+				<p class="modal-header">Vote for {{$store.getters.comicForVotingModal.name}}</p>
+				<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating}}</p>
 
 				<table id="votingNumbersTable" class="margin-top-16">
 					<tr>
@@ -25,7 +25,7 @@
 					</tr>
 				</table>
 
-				<button @click="onNumberClick(0)" v-if="$store.state.comicForVotingModal.yourRating" 
+				<button @click="onNumberClick(0)" v-if="$store.getters.comicForVotingModal.yourRating" 
 				id="deleteVoteButton" class="margin-top-16 y-button">
 					Delete vote
 				</button>
@@ -49,7 +49,7 @@ export default {
 
 	computed: {
 		numberToHover () {
-			return this.currentMouseoverNumber || this.$store.state.comicForVotingModal.yourRating || 0
+			return this.currentMouseoverNumber || this.$store.getters.comicForVotingModal.yourRating || 0
 		}
 	},
 
@@ -64,11 +64,13 @@ export default {
 
 		async onNumberClick ( number ) {
 			this.closeModal()
-			let votingResponse = await comicApi.rateComic(this.$store. number)
+			let votingResponse = await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, number)
 			if ( votingResponse.success ) {
-				let updatedComicResponse = await comicApi.getComic(this.$store.state.comicForVotingModal.Name)
+				let updatedComicResponse = await comicApi.getComic(this.$store.getters.comicForVotingModal.name)
 				if (updatedComicResponse.success) {
-					this.$store.dispatch('updateOneComicInList', updatedComicResponse.result)
+					let updatedComic = this.$store.getters.comicForVotingModal
+					updatedComic.yourRating = number
+					this.$store.dispatch('updateOneComicInList', updatedComic)
 				}
 			}	
 		},

@@ -9,6 +9,7 @@ export default new Vuex.Store({
 		comicList,
 		auth
 	},
+
   state: {
 		darkTheme: false,
 		clickedComic: undefined,
@@ -32,5 +33,6 @@ export default new Vuex.Store({
 	getters: {
 		loginModalContext: state => state.loginModalContext,
 		getLoginModalVisibility: state => () => state.loginModalVisibility,
+		comicForVotingModal: state => state.comicForVotingModal,
 	}
 })
