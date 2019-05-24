@@ -25,7 +25,7 @@
 			<page-manager :comicList="alphabeticComicList"
 				@refresh-comic-list="refreshComicList"/>
 
-			<add-comic :artistList="artistList"
+			<add-comic :artistList="artistList" :comicList="alphabeticComicList"
 				@refresh-pending-comics="refreshPendingComics"></add-comic>
 
 			<add-artist :artistList="artistList"
