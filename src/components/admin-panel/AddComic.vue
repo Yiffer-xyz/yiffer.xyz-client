@@ -89,6 +89,34 @@
         </tr>
       </table>
 
+      <!-- PREVIOUS AND NEXT COMIC LINKS -->
+      <p class="admin-mini-header" style="margin-top: 16px; margin-bottom: 4px;">Comic links</p>
+      <div class="horizontal-flex">
+        <p>Previous comic </p>
+        <select v-model="previousComic" style="margin-left: 6px;">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
+            {{comic.name}}
+          </option>
+        </select>
+        <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
+                style="margin-left: 4px;" @click="removePreviousLink()">
+          <cross-icon/> remove link
+        </button>
+      </div>
+      <div class="horizontal-flex">
+        <p>Next comic </p>
+        <select v-model="nextComic" style="margin-left: 6px;">
+          <option v-for="comic in comicList" :key="comic.id" :value="comic">
+            {{comic.name}}
+          </option>
+        </select>
+        <button v-if="nextComic" class="y-button y-button-neutral button-with-icon" 
+                style="margin-left: 4px;" @click="removeNextLink()">
+          <cross-icon/> remove link
+        </button>
+      </div>
+
+
       <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add pages <checkbox-icon v-if="filesAreInput"/></p>
       <form enctype="multipart/form-data" novalidate style="margin-top: 4px;">
         <div class="pretty-input-upload">
@@ -155,6 +183,7 @@
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import CrossIcon from 'vue-material-design-icons/Close.vue'
 
 import comicApi from '../../api/comicApi'
 import keywordApi from '../../api/keywordApi'
@@ -164,11 +193,13 @@ export default {
 
   props: {
     artistList: Array,
+    comicList: Array,
   },
 
 	components: {
 		'checkbox-icon': CheckboxIcon,
 		'right-arrow': RightArrow,
+		'cross-icon': CrossIcon,
 	},
 
   data: function () {
@@ -179,6 +210,8 @@ export default {
       tag: undefined,
       cat: undefined,
       finished: undefined,
+      previousComic: undefined,
+      nextComic: undefined,
       selectedFiles: [],
       selectedKeywords: [],
       thumbnailFile: undefined,
@@ -192,6 +225,12 @@ export default {
   },
 
   methods: {
+    removePreviousLink () {
+      this.previousComic = undefined
+    },
+    removeNextLink () {
+      this.nextComic = undefined
+    },
     processFileUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
     },
@@ -229,14 +268,15 @@ export default {
     async confirmAddComic () {
 			this.errorMessage = ''
 			this.successMessage = ''
-
       let uploadData = {
         comicName: this.comicName,
         artistId: this.artist.id,
         tag: this.tag,
         cat: this.cat,
         finished: this.finished,
-        keywords: this.selectedKeywords
+        keywords: this.selectedKeywords,
+        previousComic: this.previousComic ? this.previousComic.id : null,
+        nextComic: this.nextComic ? this.nextComic.id : null
 			}
 			
 			let response = await comicApi.addNewComic(uploadData, {pageFiles: this.selectedFiles, thumbnailFile: this.thumbnailFile}, this.updateUploadProgress)

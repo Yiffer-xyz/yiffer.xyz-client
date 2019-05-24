@@ -64,12 +64,46 @@
               <option value="false">Unfinished</option>
             </select>
           </div>
-
         </div>
 
-				<span class="horizontal-flex no-margin-bot">
-        	<button @click="submitChanges()" class="y-button" style="margin-right: 4px;">Submit changes</button>
-        	<button @click="resetFields()" class="y-button y-button-neutral" style="margin-left: 4px;"><refresh-icon/> Reset</button>
+        <!-- PREVIOUS COMIC -->
+        <p class="admin-mini-header" style="margin-top: 32px;">Add previous or next comic</p>
+          <p>Previous comic 
+          </p>
+        <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+            <select v-model="previousComic">
+              <option v-for="comic in comicList" :key="comic.id" :value="comic">
+                {{comic.name}}
+              </option>
+            </select>
+          <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
+                  style="margin-left: 4px;" @click="removePreviousLink()">
+            <cross-icon/> remove link
+          </button>
+        </div>
+        <!-- NEXT COMIC -->
+          <p>Next comic
+          </p>
+        <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+            <select v-model="nextComic">
+              <option v-for="comic in comicList" :key="comic.id" :value="comic">
+                {{comic.name}}
+              </option>
+            </select>
+          <button v-if="nextComic" class="y-button y-button-neutral button-with-icon"
+                  style="margin-left: 4px;" @click="removeNextLink()">
+            <cross-icon/> remove link
+          </button>
+        </div>
+
+				<span class="horizontal-flex no-margin-bot" style="margin-top: 16px;">
+        	<button @click="submitChanges()" class="y-button" style="margin-right: 4px;">
+            Submit changes
+          </button>
+        	<button @click="resetFields()"
+                  class="y-button y-button-neutral button-with-icon" style="margin-left: 4px;">
+            <refresh-icon/> Reset
+          </button>
 				</span>
       </span>
 
@@ -117,7 +151,9 @@ export default {
       tag: undefined,
       cat: undefined,
       finished: undefined,
-			lastComicId: undefined,
+      lastComicId: undefined,
+      previousComic: undefined,
+      nextComic: undefined,
 
       errorMessage: '',
       successMessage: '',
@@ -133,7 +169,9 @@ export default {
 				cat: this.cat,
 				tag: this.tag,
 				finished: this.finished=='true' ? 1 : 0,
-				artist: this.artist
+        artist: this.artist,
+        previousComic: this.previousComic ? this.previousComic.id : null,
+        nextComic: this.nextComic ? this.nextComic.id : null
 			})
 
       if (response.success) {
@@ -152,15 +190,34 @@ export default {
 		toggleRename (isActive) {
 			this.renameActive = isActive
 			if (!isActive) { this.newComicName = '' }
-		},
+    },
+    
+    removePreviousLink () {
+      this.previousComic = undefined
+    },
+
+    removeNextLink () {
+      this.nextComic = undefined
+    },
 
 		resetFields () {
 			this.tag = this.comic.tag + ''
 			this.cat = this.comic.cat + ''
 			this.finished = this.comic.finished ? 'true' : 'false'
 			this.artist = this.comic.artist + ''
-			this.toggleRename(false)
-		},
+      this.toggleRename(false)
+      this.findComicLinks()      
+    },
+    
+    async findComicLinks () {
+      let comicData = await comicApi.getComic(this.comic.name)
+      this.previousComic = comicData.result.previousComic ? 
+        this.previousComic = this.comicList.find(c => c.name === comicData.result.previousComic)
+        : undefined
+      this.nextComic = comicData.result.nextComic ? 
+        this.nextComic = this.comicList.find(c => c.name === comicData.result.nextComic)
+        : undefined
+    },
 
 		emptyFields () {
 			this.tag = undefined
