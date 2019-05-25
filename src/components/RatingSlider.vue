@@ -2,26 +2,71 @@
   <div class="rating-slider">
     <label>Rating</label>
     <input type="range" min="0" max="10" v-model="ratingSliderValue"
-           :class="{'rating-slider-norating': ratingSliderValue==0}">
+           :class="{'rating-slider-norating': ratingSliderValue==0}"
+           @change="onNewRatingSet">
     <label :class="{'rating-number': ratingSliderValue>0, 'none-text': ratingSliderValue==0}">
       {{convertSliderValue(ratingSliderValue)}}</label>
   </div>
 </template>
 
 <script>
+import comicApi from '../api/comicApi'
+
 export default {
   name: 'rating-slider',
-  
+
   data: function () {
     return {
-      ratingSliderValue: 0
+      ratingSliderValue: 0,
+      isRecentlyOpened: false,
+			lastRatingSetTime: new Date(),
+			ratingSpamBlocked: undefined
     }
   },
 
   methods: {
     convertSliderValue (sliderNumber) {
       return sliderNumber==0 ? 'None' : sliderNumber
+    },
+
+    setRatingSliderValue () {
+      this.ratingSliderValue = this.$store.getters.comicForVotingModal.yourRating || 0
+    },
+
+		async onNewRatingSet (newRating) {
+       newRating = Number(newRating.target.value)
+			if (new Date() - this.lastRatingSetTime > 500) {
+				this.ratingSpamBlocked = undefined
+        this.lastRatingSetTime = new Date()
+        this.setNewRating(newRating)
+			}
+			else {
+				this.ratingSpamBlocked = newRating
+				setTimeout(
+					() => this.assignNewRatingFromTimeout(newRating), 
+					500
+				)
+			}
+		},
+
+		assignNewRatingFromTimeout (newRating) {
+			if (newRating != this.ratingSpamBlocked) {
+				return
+			}
+			this.lastRatingSetTime = new Date()
+      this.ratingSpamBlocked = undefined
+      this.setNewRating(newRating)
+    },
+    
+    async setNewRating (newRating) {
+      await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, newRating)
+      await this.$store.dispatch('refreshOneComicInList', this.$store.getters.comicForVotingModal.name)
+      this.$store.dispatch('refreshComicForVotingModal')
     }
+  },
+  
+  created () {
+		this.$store.watch(this.$store.getters.getComicForVotingModal, this.setRatingSliderValue)
   }
 }
 </script>

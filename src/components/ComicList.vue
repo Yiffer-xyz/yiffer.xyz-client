@@ -248,7 +248,7 @@
 			</comic-card>
 		</div>
 
-		<expanded-comic-card v-if="$store.getters.comicCardExpanded"/>
+		<expanded-comic-card v-show="$store.getters.comicCardExpanded"/>
 	</div>
 </template>
 

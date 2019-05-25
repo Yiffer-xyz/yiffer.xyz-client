@@ -96,6 +96,7 @@ export default {
 	methods: {
     onCardClicked () {
       this.$store.commit('setExpandedComic', this.comic)
+			this.$store.commit('setComicForVotingModal', this.comic)
     },
 		formatRating: function (number) {
 			if (number > 8.5) { return Math.round(number * 100) / 100 }

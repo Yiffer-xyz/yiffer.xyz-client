@@ -5,6 +5,7 @@ let baseUrl = 'http://localhost:8012/api'
 export default {
 	async getComics () {
 		let response = await axios.get(baseUrl + '/comics')
+		// err.response
 		for (var comic of response.data) {
 			comic.created = new Date(comic.created)
 			comic.updated = new Date(comic.updated)

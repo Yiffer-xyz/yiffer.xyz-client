@@ -20,6 +20,14 @@ export default new Vuex.Store({
 		comicForVotingModal: {},
 	},
 
+	actions: {
+		refreshComicForVotingModal (context) {
+			let upToDateComicForVotingModal = 
+				context.state.comicList.comicList.find(c => c.id===context.state.comicForVotingModal.id)
+			context.commit('setComicForVotingModal', upToDateComicForVotingModal)
+		}
+	},
+
   mutations: {
 		setDarkTheme (state, isDarkTheme) { state.darkTheme = isDarkTheme },
 		storeClickedComic (state, comic) { state.clickedComic = comic },
@@ -34,5 +42,6 @@ export default new Vuex.Store({
 		loginModalContext: state => state.loginModalContext,
 		getLoginModalVisibility: state => () => state.loginModalVisibility,
 		comicForVotingModal: state => state.comicForVotingModal,
+		getComicForVotingModal: state => () => state.comicForVotingModal,
 	}
 })

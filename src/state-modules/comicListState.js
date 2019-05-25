@@ -17,7 +17,7 @@ export default {
 		detailLevel: 'low',
 		viewMode: 'list',
 		comicCardExpanded: false,
-		expandedComic: undefined,
+		expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
 	},
 
 	actions: {
@@ -34,6 +34,14 @@ export default {
 			let selectedComicIndex = context.getters.comicList.findIndex(c => c.id === comicData.id)
 			Vue.set(context.state.comicList, selectedComicIndex, comicData)
 			recalculateFilteredComics(context.state)
+		},
+
+		refreshOneComicInList (context, comicName) {
+			return new Promise (async (resolve) => {
+				let response = await comicApi.getComic(comicName)
+				context.dispatch('updateOneComicInList', response.result)
+				resolve()
+			})
 		},
 
 		calculateFilteredComics: context => {
@@ -133,8 +141,8 @@ export default {
 		setExpandedComic (state, comic) {
 			if (!comic) { state.comicCardExpanded = false }
 			else {
-				state.comicCardExpanded = true
 				state.expandedComic = comic
+				state.comicCardExpanded = true
 			}
 		},
 	},

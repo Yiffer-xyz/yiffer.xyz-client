@@ -3,36 +3,36 @@
     <div class="expanded-comic-card" @click="onCardClick">
       <button class="y-button-close" @click="closeCard"><cross-icon :size="28"/></button>
 
-      <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
-        <img :src="`/comics/${comic.name}/s.jpg`" class="expanded-card-image">
+      <router-link :comic="$store.getters.expandedComic" :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }">
+        <img :src="`/comics/${$store.getters.expandedComic.name}/s.jpg`" class="expanded-card-image">
       </router-link>
 
 
       <!-- COMIC NAME AND ARTIST -->
-      <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" 
+      <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }" 
         class="comic-card-link underline-link" style="font-size: 16px;">
-        {{comic.name}}
+        {{$store.getters.expandedComic.name}}
       </router-link>
       <p>
-        by <router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }"
+        by <router-link :comic="$store.getters.expandedComic" :to="{ name: 'artist', params: { artistName: $store.getters.expandedComic.artist } }"
         class="comic-card-link underline-link">
-          {{comic.artist}}
+          {{$store.getters.expandedComic.artist}}
         </router-link>
       </p>
 
       <!-- PAGES & RATING -->
       <div class="horiz-card-row" style="margin-top: 8px;">
-        <p title="Number of pages"><pages-icon title="Number of pages"/> {{comic.numberOfPages}}</p>
-        <p title="User rating"><users-icon title="User rating"/> {{formatRating(comic.userRating)}}</p>
-        <p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
+        <p title="Number of pages"><pages-icon title="Number of pages"/> {{$store.getters.expandedComic.numberOfPages}}</p>
+        <p title="User rating"><users-icon title="User rating"/> {{formatRating($store.getters.expandedComic.userRating)}}</p>
+        <p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{$store.getters.expandedComic.yourRating || '-'}}</p>
       </div>
 
       <!-- ADDED & CREATED -->
       <div class="added-created-container">
         <label title="Updated on"><refresh-icon title="Updated on"/>
-          {{prettyDate(comic.updated)}}</label>
+          {{prettyDate($store.getters.expandedComic.updated)}}</label>
         <label title="Created on"><plus-icon title="Created on"/>
-          {{prettyDate(comic.created)}}</label>
+          {{prettyDate($store.getters.expandedComic.created)}}</label>
       </div>
 
       <!-- RATING SLIDER -->
@@ -40,11 +40,11 @@
 
       <!-- KEYWORDS -->
       <div class="keyword-container" style="margin-top: 0;">
-        <div class="emphasized-keyword">{{comic.cat}}</div>
-        <div class="emphasized-keyword">{{comic.tag}}</div>
+        <div class="emphasized-keyword">{{$store.getters.expandedComic.cat}}</div>
+        <div class="emphasized-keyword">{{$store.getters.expandedComic.tag}}</div>
         <div 
           class="keyword"
-          v-for="keyword in comic.keywords"
+          v-for="keyword in $store.getters.expandedComic.keywords"
           :key="keyword"
           @click="addSelectedKeyword(keyword)"
         >

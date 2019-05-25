@@ -2,79 +2,25 @@
 	<div id="modalAndBackdropWrapper">
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
-			<span style="display: flex; flex-direction: column;">
-				<p class="modal-header">Vote for {{$store.getters.comicForVotingModal.name}}</p>
-				<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating}}</p>
+			<p class="modal-header">Vote for {{$store.getters.comicForVotingModal.name}}</p>
+			<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating || 'None'}}</p>
 
-				<table id="votingNumbersTable" class="margin-top-16">
-					<tr>
-						<td 
-							v-for="i in 10"
-							:key="i"
-							:class="[
-								'vote-box-colored-' + i,
-								{'vote-box-uncolored': numberToHover<i}
-							]"
-							@mouseover="onNumberMouseover(i)"
-							@mouseout="onNumberMouseOut()"
-							@click="onNumberClick(i)"
-							class="voting-number"
-						>
-							{{i}}
-						</td>
-					</tr>
-				</table>
-
-				<button @click="onNumberClick(0)" v-if="$store.getters.comicForVotingModal.yourRating" 
-				id="deleteVoteButton" class="margin-top-16 y-button">
-					Delete vote
-				</button>
-
-			</span>
+			<rating-slider/>
 		</div>
 	</div>
 </template>
 
 <script>
-import comicApi from '../api/comicApi'
+import RatingSlider from '@/components/RatingSlider.vue'
 
 export default {
 	name: 'voting-modal',
 
-	data: function () {
-		return {
-			currentMouseoverNumber: undefined,
-		}
-	},
-
-	computed: {
-		numberToHover () {
-			return this.currentMouseoverNumber || this.$store.getters.comicForVotingModal.yourRating || 0
-		}
+	components: {
+		'rating-slider': RatingSlider,
 	},
 
 	methods: {
-		onNumberMouseover ( number ) {
-			this.currentMouseoverNumber = number
-		},
-
-		onNumberMouseOut () {
-			this.currentMouseoverNumber = undefined
-		},
-
-		async onNumberClick ( number ) {
-			this.closeModal()
-			let votingResponse = await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, number)
-			if ( votingResponse.success ) {
-				let updatedComicResponse = await comicApi.getComic(this.$store.getters.comicForVotingModal.name)
-				if (updatedComicResponse.success) {
-					let updatedComic = this.$store.getters.comicForVotingModal
-					updatedComic.yourRating = number
-					this.$store.dispatch('updateOneComicInList', updatedComic)
-				}
-			}	
-		},
-
 		closeModal () {
 			this.$store.commit('setVotingModalVisibility', false)
 		}
@@ -84,33 +30,6 @@ export default {
 
 
 <style lang="scss">
-.vote-box-colored-1 { background-color: #006D4D; color: white; }
-.vote-box-colored-2 { background-color: #007C57; color: white; }
-.vote-box-colored-3 { background-color: #008B62; color: white; }
-.vote-box-colored-4 { background-color: #009B6D; color: white; }
-.vote-box-colored-5 { background-color: #00AA78; color: white; }
-.vote-box-colored-6 { background-color: #00BA83; color: white; }
-.vote-box-colored-7 { background-color: #00C98E; color: white; }
-.vote-box-colored-8 { background-color: #00D999; color: white; }
-.vote-box-colored-9 { background-color: #00E8A4; color: white; }
-.vote-box-colored-10 { background-color: #00F8AF; color: white; }
-.vote-box-colored {
-	color: white;
-}
-.vote-box-uncolored {
-	background-color: #f7f7f7;
-	color: #222;
-}
-
-#votingNumbersTable {
-	border-collapse: collapse;
-	td {
-		&:hover {
-			cursor: pointer;
-		}
-	}
-}
-
 .modal-backdrop {
 	width: 100%;
 	height: 100%;
@@ -131,7 +50,9 @@ export default {
 	z-index: 6;
 	transform: translateX(-50%) translateY(-50%);
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
+	align-items: center;
 	padding: 50px 0px 40px 0px;
 	width: 50%;
 	background-color: white;
@@ -159,34 +80,7 @@ export default {
 
 }
 
-.voting-number {
-	width: 10%;
-	font-weight: 600;
-	padding: 24px 0;
-
-	@media (max-width: 900px) {
-		padding: 18px 0;
-	}
-	@media (max-width: 500px) {
-		padding: 6px 0;
-	}
-}
-
-#deleteVoteButton {
-	width: 100px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
 .dark {
-	.vote-box-uncolored {
-		color: white;
-	}
-
-	.vote-box-uncolored {
-		background-color: transparent;
-	}
-	
 	.voting-modal {
 		background-color: $themeBlue0p5;
 		color: white;
@@ -202,9 +96,4 @@ export default {
 		background-color: rgba(255, 255, 255, 0.4);
 	}
 }
-</style>
-
-<style>
-	@media (max-width: 795px) {
-	}
 </style>
