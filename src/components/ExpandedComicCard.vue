@@ -3,19 +3,26 @@
     <div class="expanded-comic-card" @click="onCardClick">
       <button class="y-button-close" @click="closeCard"><cross-icon :size="28"/></button>
 
-      <router-link :comic="$store.getters.expandedComic" :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }">
+      <router-link :comic="$store.getters.expandedComic" 
+        :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }"
+        @click.native="closeCard">
         <img :src="`/comics/${$store.getters.expandedComic.name}/s.jpg`" class="expanded-card-image">
       </router-link>
 
 
       <!-- COMIC NAME AND ARTIST -->
-      <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }" 
+      <router-link :comic="comic" 
+        :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }" 
+        @click.native="closeCard"
         class="comic-card-link underline-link" style="font-size: 16px;">
         {{$store.getters.expandedComic.name}}
       </router-link>
       <p>
-        by <router-link :comic="$store.getters.expandedComic" :to="{ name: 'artist', params: { artistName: $store.getters.expandedComic.artist } }"
-        class="comic-card-link underline-link">
+        by
+        <router-link :comic="$store.getters.expandedComic" 
+          :to="{ name: 'artist', params: { artistName: $store.getters.expandedComic.artist } }"
+          @click.native="closeCard"
+          class="comic-card-link underline-link">
           {{$store.getters.expandedComic.artist}}
         </router-link>
       </p>

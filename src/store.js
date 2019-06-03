@@ -21,11 +21,6 @@ export default new Vuex.Store({
 	},
 
 	actions: {
-		refreshComicForVotingModal (context) {
-			let upToDateComicForVotingModal = 
-				context.state.comicList.comicList.find(c => c.id===context.state.comicForVotingModal.id)
-			context.commit('setComicForVotingModal', upToDateComicForVotingModal)
-		}
 	},
 
   mutations: {

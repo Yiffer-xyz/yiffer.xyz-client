@@ -1,5 +1,5 @@
 <template>
-	<button class="y-button" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
+	<button class="y-button" @click="showVotingOrLoginModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
 		<span v-if="$store.getters.isAuthenticated">Rate</span>
 		<span v-else><login-icon/> Log in to rate</span>
 	</button>
@@ -16,7 +16,7 @@ export default {
 		comic: Object,
 	},
 	methods: {
-		showSomeModal () {
+		showVotingOrLoginModal () {
 			if (this.$store.getters.isAuthenticated) {
 				this.$store.commit('setComicForVotingModal', this.comic)
 				this.$store.commit('setVotingModalVisibility', true)

@@ -40,8 +40,14 @@ export default {
 			return new Promise (async (resolve) => {
 				let response = await comicApi.getComic(comicName)
 				context.dispatch('updateOneComicInList', response.result)
-				resolve()
+				resolve(response.result)
 			})
+		},
+
+		refreshExpandedComicIfExpanded (context, newComic) {
+			if (context.state.comicCardExpanded) {
+				context.commit('setExpandedComic', newComic)
+			}
 		},
 
 		calculateFilteredComics: context => {
@@ -139,7 +145,10 @@ export default {
 			state.viewMode = viewMode
 		},
 		setExpandedComic (state, comic) {
-			if (!comic) { state.comicCardExpanded = false }
+			if (!comic) {
+				state.comicCardExpanded = false
+				state.expandedComic = {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''}
+			}
 			else {
 				state.expandedComic = comic
 				state.comicCardExpanded = true

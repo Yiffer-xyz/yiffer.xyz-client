@@ -60,8 +60,9 @@ export default {
     
     async setNewRating (newRating) {
       await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, newRating)
-      await this.$store.dispatch('refreshOneComicInList', this.$store.getters.comicForVotingModal.name)
-      this.$store.dispatch('refreshComicForVotingModal')
+      let updatedComic = await this.$store.dispatch('refreshOneComicInList', this.$store.getters.comicForVotingModal.name)
+      this.$store.dispatch('refreshExpandedComicIfExpanded', updatedComic)
+			this.$store.commit('setComicForVotingModal', updatedComic)
     }
   },
   
