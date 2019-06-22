@@ -30,10 +30,10 @@
 			</div>
 
 			<!-- PAGES AND RATINGS -->
-			<div class="horiz-card-row">
-				<p title="Number of pages"><pages-icon title="Number of pages"/> {{comic.numberOfPages}}</p>
-				<p title="User rating"><users-icon title="User rating"/> {{formatRating(comic.userRating)}}</p>
-				<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
+			<div class="horiz-card-row icons-and-numbers-row">
+				<p title="Number of pages"><pages-icon title="Number of pages"/>{{comic.numberOfPages}}</p>
+				<p title="User rating"><users-icon title="User rating"/>{{formatRating(comic.userRating)}}</p>
+				<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/>{{comic.yourRating || '-'}}</p>
 			</div>
 
 			<!-- ALL KEYWORDS -->

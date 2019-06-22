@@ -119,6 +119,17 @@ label {
 	text-align: center;
 }
 
+.icons-and-numbers-row {
+	span {
+		margin-right: 4px;
+
+		@media (max-width: 900px) {
+			margin-right: 0px;
+		}
+	}
+
+}
+
 .dark {
 	.link-color, a, .theme-button, .navigation-button {
 		color: $theme5 !important;
