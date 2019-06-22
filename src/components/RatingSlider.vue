@@ -20,13 +20,14 @@ export default {
       ratingSliderValue: 0,
       isRecentlyOpened: false,
 			lastRatingSetTime: new Date(),
-			ratingSpamBlocked: undefined
+      ratingSpamBlocked: undefined,
+      vuexWatcher: undefined,
     }
   },
 
   methods: {
     convertSliderValue (sliderNumber) {
-      return sliderNumber==0 ? 'None' : sliderNumber
+      return sliderNumber===0 ? 'None' : sliderNumber
     },
 
     setRatingSliderValue () {
@@ -67,8 +68,14 @@ export default {
   },
   
   created () {
-		this.$store.watch(this.$store.getters.getComicForVotingModal, this.setRatingSliderValue)
-  }
+    this.vuexWatcher = this.$store.watch(
+      this.$store.getters.getComicForVotingModal, this.setRatingSliderValue)
+    this.setRatingSliderValue()
+  },
+
+	beforeDestroy () {
+    this.vuexWatcher()
+	}
 }
 </script>
 
@@ -78,7 +85,7 @@ export default {
 .rating-slider {
   max-width: 340px;
   height: 22px;
-  margin: 8px 0;
+  margin: 8px auto;
   padding: 4px;
   box-sizing: border-box;
   display: flex;

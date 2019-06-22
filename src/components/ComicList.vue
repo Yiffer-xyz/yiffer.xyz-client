@@ -443,7 +443,6 @@ export default {
 		if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
 		this.setFiltersFromRouterQuery()
 		this.$store.commit('setLoginModalVisibility', false)
-		this.$store.commit('setWhiteThemeButtonStyle', true)
 		this.$store.dispatch('calculateFilteredComics')
 		this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
 		this.handleResize()

@@ -104,7 +104,7 @@ export default {
 		},
 		prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
 		storeClickedComicData: function () {
-			this.$store.commit('storeClickedComic', this.comic)
+			this.$store.dispatch('storeClickedComic', this.comic)
 		},
 		addSelectedKeyword (keywordName, clickEvent) {
       clickEvent.stopPropagation()

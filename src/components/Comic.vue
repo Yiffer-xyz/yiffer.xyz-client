@@ -15,27 +15,31 @@
 
 				<button v-if="$store.getters.isAuthenticated && $store.getters.userData.donator" class="y-button">Download comic</button>
 
-				<voting-button
-					:comic="comic"
-					:backgroundColors="{light: 'white', dark: '#091014'}"
-				></voting-button>
-
 				<div class="margin-top-16" v-if="comic && (comic.previousComic || comic.nextComic)">
 					<p>This comic is part of a series!</p>
 					<p v-if="comic.previousComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link" style="font-weight: 400;">
 							
 							<left-arrow/>
 							{{comic.previousComic}}
 						</router-link>
 					</p>
 					<p v-if="comic.nextComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link" style="font-weight: 400;">
 							{{comic.nextComic}} 
 							<right-arrow/>
 						</router-link>
 					</p>
 				</div>
+
+				<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating}}</p>
+				<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;"/>
+				<p v-else> 
+					<button class="underline-link text-button link-color" 
+									@click="$store.commit('setLoginModalVisibility', true)">
+						<login-icon/> Log in
+					</button> to rate comic
+				</p>
 
 				<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
 					<div 
@@ -123,43 +127,43 @@
 				@click="cycleOneImageFit(pageNumber-1)"/>
 		</div>
 
-
-
-		<voting-button
-			:comic="comic"
-			:backgroundColors="{light: 'white', dark: '#091014'}"
-			v-if="comic"
-		></voting-button>
-		<br/>
-
 		<div class="margin-top-8 margin-bottom-8" v-if="comic">
 			<p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
 			<p v-if="comic.previousComic">
-				<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }">
-					
+				<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link" style="font-weight: 400;">
 					<left-arrow/>
 					{{comic.previousComic}}
 				</router-link>
 			</p>
 			<p v-if="comic.nextComic">
-				<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }">
+				<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link" style="font-weight: 400;">
 					{{comic.nextComic}} 
 					<right-arrow/>
 				</router-link>
 			</p>
 		</div>
 
-		<back-to-index></back-to-index>
+		<p class="margin-top-8">User rating: {{$store.getters.comicForVotingModal.userRating}}</p>
+		<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
+		<p v-else class="margin-bottom-16"> 
+			<button class="underline-link text-button link-color" 
+							@click="$store.commit('setLoginModalVisibility', true)">
+				<login-icon/> Log in
+			</button> to rate comic
+		</p>
+
+		<back-to-index/>
 		<div style="margin-top: 16px;"> </div>
 	</span>
 </template>
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import VotingButton from '@/components/VotingButton.vue'
+import RatingSlider from '@/components/RatingSlider.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
+import LoginIcon from 'vue-material-design-icons/Login.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
@@ -173,10 +177,11 @@ export default {
 
 	components: {
 		'back-to-index': BackToIndex,
-		'voting-button': VotingButton,
+		'rating-slider': RatingSlider,
 		'left-arrow': LeftArrow,
 		'right-arrow': RightArrow,
 		'share-icon': ShareIcon,
+		'login-icon': LoginIcon,
 	},
 
 	data: function () {
@@ -286,7 +291,6 @@ export default {
 			// this.showShareIcon = false todo
 		}
 		this.$store.commit('setLoginModalVisibility', false)
-		this.$store.commit('setWhiteThemeButtonStyle', false)
 		if ( !this.comic ) {
 			let response = await comicApi.getComic(this.$route.params.comicName)
 			if (response.success) {
@@ -303,7 +307,7 @@ export default {
 			this.initializeImageFitArray()
 			this.fitImagesForMobile()
 		}
-	}
+	},
 }
 
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']

@@ -2,7 +2,7 @@
 	<div id="modalAndBackdropWrapper">
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
-			<p class="modal-header">Vote for {{$store.getters.comicForVotingModal.name}}</p>
+			<p class="modal-header">Rate {{$store.getters.comicForVotingModal.name}}</p>
 			<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating || 'None'}}</p>
 
 			<rating-slider/>
