@@ -108,6 +108,7 @@ export default {
 	},
 	methods: {
 		formatRating: function (number) {
+			if (number == 0 || !number) { return '-' }
 			if (number > 8.5) { return Math.round(number * 100) / 100 }
 			else { return Math.round(number * 10) / 10 }
 		},
