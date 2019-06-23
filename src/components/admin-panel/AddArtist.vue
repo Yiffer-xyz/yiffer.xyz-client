@@ -92,7 +92,7 @@ export default {
       }
 
       if (response.success) {
-        this.newArtistSuccessMessage = 'Success adding artist ' + this.artistName
+        this.newArtistSuccessMessage = `Success adding artist ${this.artistName}. Artist can be found in the dropdown below, please add links!`
         this.newArtistErrorMessage = ''
         this.artistName = ''
         this.$emit('refresh-artist-list')

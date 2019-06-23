@@ -122,8 +122,8 @@ export default {
 		async refreshPendingComics () {
 			this.$refs.PendingComics.getPendingComicList()
 		},
-		refreshArtistList () {
-			this.artistList.push({name: 'Artisten raggi', id: 1231233})
+		async refreshArtistList () {
+			this.artistList = await ArtistApi.getArtistList()
 		},
   },
   async mounted () {

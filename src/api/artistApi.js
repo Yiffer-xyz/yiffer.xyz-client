@@ -16,20 +16,14 @@ export default {
   },
 
   async addNewArtist (artistName) {
-    let response = await axios.post(baseUrl + '/artist')
+    let response = await axios.post(baseUrl + '/artists', {artistName: artistName})
 		if (!response.data.error) { return {success: true, result: response.data} }
 		else { return {success: false, message: response.data.error} }
-
-    return new Promise(resolve => {
-      // todo note add new artist id
-			resolve({success: true, message: 'artist no adderino', results: {artistId: 9123}})
-    })
   },
 
   async addArtistLinks (artistId, linkList) {
-    return new Promise(resolve => {
-      // todo note add new artist id
-			resolve({success: true, message: 'artist linkerino no adderino'})
-    })
+    let response = await axios.post(baseUrl + '/artistlinks', {artistId: artistId, links: linkList})
+		if (!response.data.error) { return {success: true} }
+		else { return {success: false, message: response.data.error} }
   }
 }
