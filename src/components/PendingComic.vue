@@ -4,7 +4,7 @@
 		<h1>Pending: {{$route.params.comicName}}</h1>
 		<span v-if="comic">
 
-			<router-link :to="'/admin'">
+			<router-link :to="'/admin'" class="underline-link">
 				<back-arrow/> back to admin
 			</router-link>
 
@@ -18,7 +18,7 @@
 					<div class="pretty-input-upload">
 						<input type="file" multiple="false" @change="processFileUploadChange" id="newPageFiles" accept="image/x-png,image/jpeg" class="input-file"/>
 						<p v-if="!comic.hasThumbnail">Select file</p>
-						<p v-else>Upload new thumbnail</p>
+						<p v-else>Add new thumbnail</p>
 					</div>
 				</form>
 				<button v-if="thumbnailFile" @click="processNewThumbnail()" class="y-button margin-top-8">
@@ -36,7 +36,7 @@
       <div class="horizontal-flex" style="width: 100%; margin-top: 8px;">
         <div class="vertical-flex" style="margin: 0 12px 0 0;">
           <p class="admin-mini-header">Tag list</p>
-          <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
+          <select size="8" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordsNotInComic" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
           </select>
           <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()">&rarr;</button>
@@ -179,7 +179,7 @@ export default {
 			this.thumbnailUploading = false
 			if (response.success) {
 				this.successMessageThumbnail = 'Success adding thumbnail!'
-				this.reloadComic()
+				window.location.reload()
 				this.thumbnailFile = undefined
 			}
 			else {

@@ -32,7 +32,7 @@
 					</p>
 				</div>
 
-				<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating}}</p>
+				<p class="margin-top-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
 				<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;"/>
 				<p v-else> 
 					<button class="underline-link text-button link-color" 
@@ -119,7 +119,7 @@
 		<div v-if="comic" id="comicPageContainer" class="margin-top-16 margin-bottom-8">
 			<img 
 				v-for="pageNumber in comic.numberOfPages" 
-				:src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+				:src="`/comics/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
 				:alt="`${comic.name} page ${pageNumber}`"
 				:id="'page' + (pageNumber-1)"
 				:key="pageNumber"
@@ -143,7 +143,7 @@
 			</p>
 		</div>
 
-		<p class="margin-top-8">User rating: {{$store.getters.comicForVotingModal.userRating}}</p>
+		<p class="margin-top-8">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
 		<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
 		<p v-else class="margin-bottom-16"> 
 			<button class="underline-link text-button link-color" 
@@ -201,7 +201,13 @@ export default {
 	},
 
 	methods: {
-		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+		formatPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+
+		formatRating: function (number) {
+			if (!number) { return 'None' }
+			if (number > 8.5) { return Math.round(number * 100) / 100 }
+			else { return Math.round(number * 10) / 10 }
+		},
 
 		setAllImagesFit ( imageFit ) {
 			document.querySelectorAll('.comic-page').forEach(page => {
