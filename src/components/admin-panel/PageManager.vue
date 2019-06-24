@@ -27,11 +27,6 @@
         </router-link>
       </div>
 
-      <div v-if="comicHasBeenChangedRecently" class="error-message">
-        This comic was changed on {{comicChangeDate}}, and can not be changed again until 
-        30 days have passed.
-      </div>
-
       <div v-if="comic" class="horizontal-flex" style="margin-top: 8px;">
         <p class="admin-mini-header" style="margin-right: 8px;">Start page viewing range:</p>
         <select v-model="startPageViewing">
@@ -44,9 +39,9 @@
       <div v-if="comic" class="horizontal-flex" style="height: 386px">
         <div v-for="i in pagesToShow" :key="i" class="vertical-flex" style="margin: 4px;">
           <p>Page {{i}}</p>
-          <a :href="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(i)}.jpg`" target="_blank">
-            <img :src="`https://yiffer.xyz/comics/${comic.name}/${formattedPageNumber(i)}.jpg`" 
-              class="page-manager-image"/> <!-- todo server change url -->
+          <a :href="`/comics/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" target="_blank">
+            <img :src="`/comics/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" 
+              class="page-manager-image"/>
           </a>
         </div>
       </div>
@@ -180,7 +175,6 @@ export default {
       imageToInsert: undefined,
       uploadPercent: undefined,
       deletePageNumber: undefined,
-      comicHasBeenChangedRecently: false,
       comicChangeDate: undefined,
       thumbnailImageFile: undefined,
 
@@ -261,11 +255,6 @@ export default {
 
     async comicChanged () {
       this.resetAllInputsAndMessages()
-
-			let response = await comicApi.getComicPageChangeDate()
-			this.comicHasBeenChangedRecently = response.result.lastUpdated && ((new Date())-response.result.lastUpdated) < 86400000*30
-			if (this.comicHasBeenChangedRecently) { this.comicChangeDate = response.result.toString().substring(0,10) }
-			else { this.comicChangeDate = undefined }
     },
 
     processFileUploadChange (changeEvent) {
@@ -299,7 +288,6 @@ export default {
       this.insertPageAfterNumber = undefined
       this.imageToInsert = undefined
       this.deletePageNumber = undefined
-      this.comicHasBeenChangedRecently = false
       this.comicChangeDate = undefined
       this.thumbnailImageFile = undefined
 
@@ -313,7 +301,17 @@ export default {
       this.successMessageThumbnail = ''
     },
 
-		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+    generateRandomQueryString () {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq';
+      const charactersLength = characters.length
+      let queryString = ''
+      for (var i=0; i<4; i++) {
+        queryString += characters.charAt(Math.floor(Math.random() * charactersLength))
+      }
+      return queryString
+    },
+
+		formattedPageNumber: pageNumber => pageNumber<100 ? '00'+pageNumber : pageNumber<10 ? '0'+pageNumber : pageNumber,
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 

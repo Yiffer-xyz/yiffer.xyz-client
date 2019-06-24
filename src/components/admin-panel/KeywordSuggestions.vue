@@ -82,7 +82,7 @@ export default {
 			let response = await keywordApi.processKeywordSuggestion(suggestion, isApproved)
 
       if (response.success) {
-        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} tag ${suggestion.keyword}`
+        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} ${suggestion.addKeyword ? 'adding' : 'removing'} of tag ${suggestion.keyword}`
         this.errorMessage = ''
         this.$emit('refresh-keyword-suggestions')
       }

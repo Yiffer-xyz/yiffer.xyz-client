@@ -33,6 +33,7 @@
 						<th>Mod name</th>
 						<th>Type</th>
 						<th>Action</th>
+						<th>Details</th>
 						<th>Date</th>
 					</tr>
 				</thead>
@@ -41,6 +42,10 @@
 						<td>{{row.modName}}</td>
 						<td>{{row.actionType}}</td>
 						<td>{{row.action}}</td>
+						<td>
+							<p v-if="row.detailsExpanded" @click="row.detailsExpanded=false" class="cursor-pointer">{{row.actionDetails}}</p>
+							<p v-else-if="row.actionDetails" @click="row.detailsExpanded=true" class="link-color cursor-pointer">Show</p>
+						</td>
 						<td>{{prettyDate(row.date)}}</td>
 					</tr>
 				</tbody>
@@ -111,9 +116,10 @@ export default {
 	},
 	
 	async created () {
-		this.modLog = (await miscApi.getModLog()).result
-			.map(l => new Object({modName: l.modName, actionType: l.actionType, action: l.action, date: new Date(l.date)}))
-			.sort((l1, l2) => l1.date < l2.date ? 1 : -1)
+		let modLogResponse = await miscApi.getModLog()
+		this.modLog = modLogResponse
+			.map(l => new Object({modName: l.username, actionType: l.actionType, action: l.actionDescription, 
+														actionDetails: l.actionDetails, detailsExpanded: false, date: new Date(l.timestamp)}))
 	}
 }
 </script>

@@ -25,7 +25,7 @@ export default {
 		else { return [] }
 	},
 
-	async getPendingComic (comicName) {//todo create. Wait, same as above
+	async getPendingComic (comicName) {
 		let response = await axios.get(baseUrl + '/pendingComics/' + comicName)
 		if (!response.data.error) { return {success: true, result: response.data} }
 		else { return {success: false, message: response.data.error} }
@@ -162,12 +162,6 @@ export default {
 			{comicName: comicName, comicId: comicId, pageNumber: pageNumber})
 		if (response.data.error) { return {success: false, message: response.data.error} }
 		if (!response.data.error) { return {success: true} }
-	},
-
-	async getComicPageChangeDate (comicId) {
-		let response = await axios.get(baseUrl + '/comicpagechanges', {params: {comicId: comicId}})
-		if (response.data.error) { return {success: false, message: response.data.error} }
-		if (!response.data.error) { return {success: true, result: response.data} }
 	},
 
 	async replaceThumbnailImage (comicId, imageFile) {
