@@ -3,17 +3,6 @@
     <h2 @click="closeComponent" class="cursor-pointer">Insert / remove / swap pages / thumbnail</h2>
 
     <span class="admin-content-box-inner" v-if="isOpen">
-      <p>
-        Because of how the Cloudflare caching works, it might take up to 30 days for these changes to go into effect.
-        This is unfortunate, but unavoidable. This means that the page previews below will be faulty after one such
-        change within a 30-day-period. Thumbnail changes are excluded.
-      </p>
-      <p>
-        So, if a comic has had page changes (other than normal adding of pages) within the last 30 days, you may not 
-        use this to do so again. If there are many pages in a single comic that need to be swapped, inserted or deleted, please
-        contact the site owner in the Discord channel.
-      </p>
-
       <div class="horizontal-flex" style="margin-top: 8px;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic" @change="comicChanged">
@@ -130,10 +119,10 @@
         </form>
         <p v-if="thumbnailImageFile">Selected file: <span class="courier">{{thumbnailImageFile.name}}</span></p>
 
-        <button @click="replaceThumbnail" v-if="thumbnailImageFile" class="y-button">Insert {{thumbnailImageFile.name}}</button>
+        <button @click="replaceThumbnail" v-if="thumbnailImageFile && !thumbnailImageWrongFormat" 
+                class="y-button">Insert {{thumbnailImageFile.name}}</button>
         <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
         <p class="success-message margin-top-16" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
-
       </span>
 
 
@@ -177,6 +166,7 @@ export default {
       deletePageNumber: undefined,
       comicChangeDate: undefined,
       thumbnailImageFile: undefined,
+      thumbnailImageWrongFormat: false,
 
       errorMessageSwap: '',
       successMessageSwap: '',
@@ -196,7 +186,7 @@ export default {
       let response = await comicApi.swapComicPages(this.comic.name, this.comic.id, this.swapPage1, this.swapPage2)
 
       if (response.success) {
-        this.successMessageSwap = 'Swap successful! Keep in mind the 30-day period described above.'
+        this.successMessageSwap = `Successfully swapped pages ${this.swapPage1} and ${this.swapPage2}`
         this.$store.dispatch('updateOneComicInList', this.comic)
       }
       else {
@@ -212,7 +202,7 @@ export default {
 
       this.uploadPercent = undefined
       if (response.success) {
-        this.successMessageInsert = 'Insert successful! Keep in mind the 30-day period described above.'
+        this.successMessageInsert = 'Successfully inserted new page ' + (Number(this.insertPageAfterNumber)+1)
         this.$store.dispatch('updateOneComicInList', this.comic)
         this.imageToInsert = undefined
       }
@@ -227,7 +217,7 @@ export default {
       let response = await comicApi.deleteComicPage(this.comic.name, this.comic.id, this.deletePageNumber)
 
       if (response.success) {
-        this.successMessageDelete = 'Delete successful! Keep in mind the 30-day period described above.'
+        this.successMessageDelete = `Successfully deleted page ${this.deletePageNumber}`
         this.$store.dispatch('updateOneComicInList', this.comic)
       }
       else {
@@ -238,7 +228,7 @@ export default {
     async replaceThumbnail () {
       this.errorMessageThumbnail = ''
       this.successMessageThumbnail = ''
-      let response = await comicApi.replaceThumbnailImage(this.comic.id, this.thumbnailImageFile)
+      let response = await comicApi.replaceThumbnailImage(this.comic.name, this.comic.id, this.thumbnailImageFile)
       
       if (response.success) {
         this.successMessageThumbnail = 'Successfully replaced thumbnail!'
@@ -274,8 +264,12 @@ export default {
 				tempImage.src = fileReader.result
 				tempImage.onload = () => {
 					if (tempImage.width !== 200 || tempImage.height !== 283) {
+            this.thumbnailImageWrongFormat = true
 						this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
-					}
+          }
+          else {
+            this.thumbnailImageWrongFormat = false
+          }
 				}
 			}
 			fileReader.readAsDataURL(this.thumbnailImageFile)
@@ -311,7 +305,9 @@ export default {
       return queryString
     },
 
-		formattedPageNumber: pageNumber => pageNumber<100 ? '00'+pageNumber : pageNumber<10 ? '0'+pageNumber : pageNumber,
+    formattedPageNumber (pageNumber) {
+      return pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber
+    },   
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 

@@ -164,9 +164,15 @@ export default {
 		if (!response.data.error) { return {success: true} }
 	},
 
-	async replaceThumbnailImage (comicId, imageFile) {
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve({'success': true, 'message': 'asd'})}, 1000)
-		})
+	async replaceThumbnailImage (comicName, comicId, thumbnailFile) {
+		let formData = new FormData()
+		formData.append('comicName', comicName)
+		formData.append('comicId', comicId)
+		formData.append('thumbnailFile', thumbnailFile)
+
+		let response = await axios.post(`${baseUrl}/comics/${comicId}/addthumbnail`, 
+			formData, { headers: {'Content-Type': 'multipart/form-data'} })
+		if (response.data.error) { return {success: false, message: response.data.error} }
+		if (!response.data.error) { return {success: true} }
 	}
 }
