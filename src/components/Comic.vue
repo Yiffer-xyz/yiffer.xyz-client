@@ -152,7 +152,9 @@
 			</button> to rate comic
 		</p>
 
-		<back-to-index/>
+		<button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
+		<br>
+		<back-to-index />
 		<div style="margin-top: 16px;"> </div>
 	</span>
 </template>
@@ -164,6 +166,7 @@ import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 import LoginIcon from 'vue-material-design-icons/Login.vue'
+import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
@@ -182,6 +185,7 @@ export default {
 		'right-arrow': RightArrow,
 		'share-icon': ShareIcon,
 		'login-icon': LoginIcon,
+		'up-arrow': UpArrow,
 	},
 
 	data: function () {
@@ -289,6 +293,10 @@ export default {
 			}
 			await navigator.share(shareDataObject)
 			// todo log something
+		},
+
+		scrollToTop () {
+			window.scrollTo(0, 0)
 		}
 	},
 

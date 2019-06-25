@@ -7,9 +7,9 @@ let baseUrl = 'http://localhost:8012/api'
 
 export default {
 	async getModScores () {
-		return new Promise( async resolve => {
-			setTimeout(() => {resolve({'success': true, 'message': 'asd', 'result': config.modScores})}, 1000)
-		})
+		let response = await axios.get(baseUrl + '/modscores')
+		if (!response.data.error) { return response.data }
+		else { return [] }
 	},
 
 	async getModLog () {

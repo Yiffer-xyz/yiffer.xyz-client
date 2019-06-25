@@ -17,7 +17,7 @@
 				</thead>
 				<tbody>
 					<tr v-for="row in modScoreList" :key="row.modName">
-						<td>{{row.modName}}</td>
+						<td>{{row.username}}</td>
 						<td>{{row.score}}</td>
 					</tr>
 				</tbody>
@@ -51,8 +51,7 @@ export default {
 	},
 	
 	async created () {
-		this.modScoreList = (await miscApi.getModScores()).result
-			.sort((a, b) => a.score<b.score ? 1 : -1)
+		this.modScoreList = (await miscApi.getModScores())
 	}
 }
 </script>
