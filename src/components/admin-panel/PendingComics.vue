@@ -1,18 +1,25 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Pending comics
-      <span v-if="comicsMissingKeywords>0" class="red-color"> ({{comicsMissingKeywords}})</span>
-      <span v-else style="color: #999;">(0)</span>
-      
-      <span v-if="comicsMissingThumbnails>0" class="red-color"> ({{comicsMissingThumbnails}})</span>
-      <span v-else style="color: #999;">(0)</span>
+      <span style="margin-right: 3px;">
+        <span v-if="pendingComicList.length>0" class="red-color">({{pendingComicList.length}})</span>
+        <span v-else style="color: #999;">(0)</span>
+      </span>
+      <span style="margin-right: 3px;">
+        <span v-if="comicsMissingKeywords>0"> ({{comicsMissingKeywords}})</span>
+        <span v-else style="color: #999;">(0)</span>
+      </span>
+      <span>
+        <span v-if="comicsMissingThumbnails>0"> ({{comicsMissingThumbnails}})</span>
+        <span v-else style="color: #999;">(0)</span>
+      </span>
     </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <span v-if="pendingComicList.length > 0">
         <p>You can add keywords, a thumbnail, or more pages by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
-        The <span class="red-color">numbers</span> in the header are equal to the amount of pending comics missing tags and thumbnails.</p>
+        The <span class="red-color">numbers</span> in the header mean (1) amount of pending comics, (2) how many are missing tags, and (3) how many are missing a thumbnail.</p>
 
         <table class="y-table" style="margin: 8px auto 0 auto">
           <thead>
@@ -45,8 +52,8 @@
               <td v-if="pendingComic.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
               <td>{{pendingComic.modName}}</td>
               <td v-if="$store.getters.userData.userType === 'admin'">
-                <button @click="processComic(pendingComic.id, true, pendingComic.name)" class="y-button" style="margin-bottom: 2px;">Approve</button>
-                <!-- <button @click="processComic(pendingComic.id, false)" class="y-button y-button-red" style="margin-bottom: 0;">Reject</button> -->
+                <button @click="processComic(pendingComic.id, true, pendingComic.name)" class="y-button">Approve</button>
+                <button @click="processComic(pendingComic.id, false, pendingComic.name)" class="y-button y-button-red">Reject</button>
               </td>
             </tr>
           </tbody>
@@ -99,11 +106,11 @@ export default {
 			let response = await comicApi.processPendingComic(comicId, isApproved)
       
       if (response.success) {
+				this.successMessage = `Success ${isApproved ? 'approving' : 'rejecting'} ${comicName}`
 				this.getPendingComicList()
         if (isApproved) {
 					this.$store.dispatch('loadComicList')
 				}
-				this.successMessage = 'Success approving ' + comicName
 			}
 			else {
 				this.errorMessage = response.message
