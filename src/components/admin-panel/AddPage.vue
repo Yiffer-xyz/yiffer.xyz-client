@@ -150,7 +150,7 @@ export default {
     },
 
     showLastPage (comic) {
-      comic.lastPageUrl = `/comics/${comic.name}/${comic.numberOfPages}.jpg`
+      comic.lastPageUrl = `/comics/${comic.name}/${this.formattedPageNumber(comic.numberOfPages)}.jpg`
       comic.name = ' ' + comic.name + ' '
     },
 
@@ -158,6 +158,10 @@ export default {
       comic.lastPageUrl = undefined
       comic.name = comic.name.substring(1, comic.name.length-1)
     },
+
+    formattedPageNumber (pageNumber) {
+      return pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber
+    },  
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 

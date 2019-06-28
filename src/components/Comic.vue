@@ -143,17 +143,19 @@
 			</p>
 		</div>
 
-		<p class="margin-top-8">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
-		<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
-		<p v-else class="margin-bottom-16"> 
-			<button class="underline-link text-button link-color" 
-							@click="$store.commit('setLoginModalVisibility', true)">
-				<login-icon/> Log in
-			</button> to rate comic
-		</p>
+		<span v-if="comic">
+			<p class="margin-top-8">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
+			<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
+			<p v-else class="margin-bottom-16"> 
+				<button class="underline-link text-button link-color" 
+								@click="$store.commit('setLoginModalVisibility', true)">
+					<login-icon/> Log in
+				</button> to rate comic
+			</p>
 
-		<button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
-		<br>
+			<button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
+			<br>
+		</span>
 		<back-to-index />
 		<div style="margin-top: 16px;"> </div>
 	</span>

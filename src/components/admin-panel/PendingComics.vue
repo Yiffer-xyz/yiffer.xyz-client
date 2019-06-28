@@ -1,16 +1,16 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Pending comics
-      <span style="margin-right: 3px;">
+      <span style="margin-right: 5px;">
         <span v-if="pendingComicList.length>0" class="red-color">({{pendingComicList.length}})</span>
-        <span v-else style="color: #999;">(0)</span>
+        <span v-else style="color: #999; margin-right: 5px;">(0)</span>
       </span>
-      <span style="margin-right: 3px;">
-        <span v-if="comicsMissingKeywords>0"> ({{comicsMissingKeywords}})</span>
-        <span v-else style="color: #999;">(0)</span>
+      <span style="margin-right: 5px;">
+        <span v-if="comicsMissingKeywords>0">({{comicsMissingKeywords}})</span>
+        <span v-else style="color: #999; margin-right: 5px;">(0)</span>
       </span>
       <span>
-        <span v-if="comicsMissingThumbnails>0"> ({{comicsMissingThumbnails}})</span>
+        <span v-if="comicsMissingThumbnails>0">({{comicsMissingThumbnails}})</span>
         <span v-else style="color: #999;">(0)</span>
       </span>
     </h2>
