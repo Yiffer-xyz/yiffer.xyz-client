@@ -1,16 +1,23 @@
 <template>
 	<button class="y-button" @click="showVotingOrLoginModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
-		<span v-if="$store.getters.isAuthenticated">Rate</span>
-		<span v-else><login-icon/> Log in to rate</span>
+		<span v-if="$store.getters.isAuthenticated">
+			<star-icon/> Rate
+		</span>
+		<span v-else>
+			<login-icon/> Log in to rate
+		</span>
 	</button>
 </template>
 
 <script>
 import LoginIcon from 'vue-material-design-icons/Login.vue'
+import StarIcon from 'vue-material-design-icons/Star.vue'
+
 export default {
 	name: 'votingButton',
 	components: {
 		'login-icon': LoginIcon,
+		'star-icon': StarIcon,
 	},
 	props: {
 		comic: Object,

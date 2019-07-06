@@ -410,7 +410,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	max-width: 90%;
+	width: 90%;
 
 	.y-button {
 		margin-top: 16px;
@@ -421,7 +421,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-zipContent: center;
+	justify-content: center;
 }
 
 .keyword-button {

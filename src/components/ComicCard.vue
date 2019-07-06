@@ -49,13 +49,17 @@
 					{{keyword}}
 				</div>
 			</div>
-			<div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">hide tags</div>
+			<div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">
+				<hide-tags/> hide tags
+			</div>
 
 			<!-- KEYWORDS, CAT, TAG -->
 			<div class="keyword-container" v-if="!showKeywords && $store.getters.detailLevel === 'low'">
 				<div class="emphasized-keyword">{{comic.cat}}</div>
 				<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
-				<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">show tags</div>
+				<div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">
+					<tags/> Show tags
+				</div>
 			</div>
 
 
@@ -80,6 +84,8 @@ import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
 import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
+import Tags from 'vue-material-design-icons/TagMultiple.vue'
+import HideTags from 'vue-material-design-icons/TagRemove.vue'
 
 export default {
 	name: 'comic-card',
@@ -91,6 +97,8 @@ export default {
 		'users-icon': UsersIcon,
 		'plus-icon': PlusIcon,
 		'refresh-icon': RefreshIcon,
+		'tags': Tags,
+		'hide-tags': HideTags,
 	},
 	props: {
 		comic: Object,

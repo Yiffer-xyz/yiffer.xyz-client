@@ -2,6 +2,8 @@
 	<div id="modalAndBackdropWrapper">
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
+      <button class="y-button-close" @click="closeModal"><cross-icon :size="28"/></button>
+
 			<p class="modal-header">Rate {{$store.getters.comicForVotingModal.name}}</p>
 			<p class="margin-top-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
 
@@ -12,12 +14,14 @@
 
 <script>
 import RatingSlider from '@/components/RatingSlider.vue'
+import CrossIcon from 'vue-material-design-icons/Close.vue'
 
 export default {
 	name: 'voting-modal',
 
 	components: {
 		'rating-slider': RatingSlider,
+		'cross-icon': CrossIcon,
 	},
 
 	methods: {
@@ -72,6 +76,12 @@ export default {
 
 	@media (max-width: 900px) {
 		width: 100%;
+	}
+
+	.y-button-close {
+		position: absolute;
+		right: 10px;
+		top: 14px;
 	}
 }
 

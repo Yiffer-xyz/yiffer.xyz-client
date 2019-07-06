@@ -14,7 +14,7 @@
       </div>
 
       <h2 id="artistComicsTitle" class="margin-top-16">Comics</h2>
-      <div class="comic-card-container" id="comicCardContainerArtist">
+      <div class="comic-card-container" id="comicCardContainerArtist" style="margin-top: 0;">
         <comic-card v-for="comic in this.artistData.comics" :key="comic.id" :clickableKeyword="false" :comic="comic" :detailLevel="'High detail'"></comic-card>
       </div>
 
