@@ -13,7 +13,21 @@
 
 				<back-to-index class="margin-top-16"></back-to-index>
 
-				<button v-if="$store.getters.isAuthenticated && $store.getters.userData.donator" class="y-button">Download comic</button>
+				<button @click="downloadZippedComic()"
+								v-if="$store.getters.isAuthenticated 
+											&& $store.getters.userData.donator 
+											&& !isZipping 
+											&& !downloadStarted" 
+								class="y-button">
+					<download/>  Download comic
+				</button>
+				<p v-if="$store.getters.isAuthenticated && $store.getters.userData.donator && isZipping"
+					 class="margin-top-16">
+					Zipping, please wait..
+				</p>
+				<p v-if="downloadStarted" class="margin-top-16">
+					Download started!
+				</p>
 
 				<div class="margin-top-16" v-if="comic && (comic.previousComic || comic.nextComic)">
 					<p>This comic is part of a series!</p>
@@ -65,7 +79,7 @@
 					</div>
 				</div>
 				<div v-if="!showKeywords" @click="showKeywords=true" class="keyword-static keyword-button">
-					Show tags
+					<tags/> Show tags
 				</div>
 
 				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
@@ -81,7 +95,7 @@
 								@click="suggestKeywordChange('add')"
 								:class="{'y-button-disabled': !addKeyword}"
 								class="y-button-small"
-								style="width: fit-content; margin-top: 2px;"
+								style="width: fit-zipContent; margin-top: 2px;"
 							>
 								Add
 							</button>
@@ -98,7 +112,7 @@
 								@click="suggestKeywordChange('remove')"
 								class="y-button-small"
 								:class="{'y-button-disabled': !removeKeyword, 'y-button-red': removeKeyword}"
-								style="width: fit-content; margin-top: 2px;"
+								style="width: fit-zipContent; margin-top: 2px;"
 							>
 								Remove
 							</button>
@@ -185,9 +199,13 @@ import LoginIcon from 'vue-material-design-icons/Login.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import ExpandWidth from 'vue-material-design-icons/ArrowExpandHorizontal.vue'
 import ExpandHeight from 'vue-material-design-icons/ArrowExpandVertical.vue'
+import Download from 'vue-material-design-icons/Download.vue'
+import Tags from 'vue-material-design-icons/TagMultiple.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
+
+const jsZipper = require('jszip')
 
 export default {
 	name: 'comic',
@@ -206,6 +224,8 @@ export default {
 		'up-arrow': UpArrow,
 		'expand-width': ExpandWidth,
 		'expand-height': ExpandHeight,
+		'download': Download,
+		'tags': Tags,
 	},
 
 	data: function () {
@@ -222,6 +242,8 @@ export default {
 			keywordSuccessMessage: '',
 			keywordErrorMessage: '',
 			showShareIcon: true,
+			isZipping: false,
+			downloadStarted: false,
 		}
 	},
 
@@ -316,12 +338,37 @@ export default {
 			// todo log something
 		},
 
+		async downloadZippedComic () {
+			this.isZipping = true
+			var jsZipper = new JSZip()
+			let imageFiles = document.getElementsByClassName('comic-page')
+			for (var i=1; i<imageFiles.length+1; i++) {
+				let imageResponse = await fetch(`/comics/${this.comic.name}/${this.formatPageNumber(i)}.jpg`)
+				jsZipper.file(this.formatPageNumber(i)+'.jpg', imageResponse.blob())
+			}
+
+			let zipContent = await jsZipper.generateAsync({type:"blob"})
+			saveAs(zipContent, `${this.comic.name}.zip`)
+			this.isZipping = false
+			this.downloadStarted = true
+		},
+
 		scrollToTop () {
 			window.scrollTo(0, 0)
 		}
 	},
 
-	created: async function () {
+	async created () {
+		try { let x = JSZip || saveAs } 
+		catch (err) {
+			const jsZipScript = document.createElement('script')
+			jsZipScript.setAttribute('src', 'scripts/jszip.min.js')
+			document.head.appendChild(jsZipScript)
+			const fileSaverScript = document.createElement('script')
+			fileSaverScript.setAttribute('src', 'scripts/Filesaver.min.js')
+			document.head.appendChild(fileSaverScript)
+		}
+
 		if (navigator.share === undefined) {
 			// this.showShareIcon = false todo
 		}
@@ -374,7 +421,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-zipContent: center;
 }
 
 .keyword-button {
@@ -395,7 +442,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 #dropdownContainer {
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	justify-zipContent: center;
 }
 
 #upperBodyDivComic {
