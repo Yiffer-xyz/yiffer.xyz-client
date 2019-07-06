@@ -267,7 +267,7 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   }
 
 }
-.rating-slider-norating   {
+.rating-slider-norating {
   &::-webkit-slider-runnable-track {
     background: $track-background-norating !important;
   }

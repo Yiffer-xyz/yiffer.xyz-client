@@ -12,7 +12,7 @@
 				Click 'Reject' if the comic fails to meet the criteria listed  
 				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. 
 				<br/>
-				Please don't hesitate to ask for opinions in the mod discord chat!
+				Please don't hesitate to ask for opinions in the mod Telegram chat!
 			</p>
 
       <span v-if="unprocessedSuggestions.length > 0">

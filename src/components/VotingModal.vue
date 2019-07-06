@@ -3,7 +3,7 @@
 		<span class="modal-backdrop" @click="closeModal()"></span>
 		<div class="voting-modal">
 			<p class="modal-header">Rate {{$store.getters.comicForVotingModal.name}}</p>
-			<p class="margin-top-16">User rating: {{$store.getters.comicForVotingModal.userRating || 'None'}}</p>
+			<p class="margin-top-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
 
 			<rating-slider/>
 		</div>
@@ -23,7 +23,13 @@ export default {
 	methods: {
 		closeModal () {
 			this.$store.commit('setVotingModalVisibility', false)
-		}
+		},
+		
+		formatRating (number) {
+			if (!number) { return 'None' }
+			if (number > 8.5) { return Math.round(number * 100) / 100 }
+			else { return Math.round(number * 10) / 10 }
+		},
 	},
 }
 </script>

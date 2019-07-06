@@ -32,23 +32,30 @@
 					</p>
 				</div>
 
-				<p class="margin-top-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
+				<p class="margin-top-16">User rating: 
+					<span style="font-weight: 400;">{{formatRating($store.getters.comicForVotingModal.userRating)}}</span>
+				</p>
 				<rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;"/>
-				<p v-else> 
+				<p v-else class="margin-bottom-8"> 
 					<button class="underline-link text-button link-color" 
 									@click="$store.commit('setLoginModalVisibility', true)">
 						<login-icon/> Log in
 					</button> to rate comic
 				</p>
 
-				<div id="comicKeywords" v-if="comic.keywords.length > 0" class="margin-top-16">
-					<div 
-						class="keyword-static"
-						v-for="keyword in comic.keywords"
-						:key="keyword"
-					>
-						{{keyword}}
-					</div>
+				<div id="comicKeywords" class="margin-top-8 horizontal-flex flex-wrap" v-if="showKeywords">
+					<span v-if="comic.keywords.length > 0" class="horizontal-flex flex-wrap">
+						<div 
+							class="keyword-static"
+							v-for="keyword in comic.keywords"
+							:key="keyword"
+						>
+							{{keyword}}
+						</div>
+					</span>
+					<span v-if="comic.keywords.length===0" style="margin-right: 8px;">
+						<p>No tags</p>
+					</span>
 
 					<div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
 						add/remove tags
@@ -57,10 +64,13 @@
 						hide adding/removing tags
 					</div>
 				</div>
+				<div v-if="!showKeywords" @click="showKeywords=true" class="keyword-static keyword-button">
+					Show tags
+				</div>
 
 				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
 					<div id="dropdownContainer">
-						<span>
+						<span class="vertical-flex" style="align-items: center;">
 							<label for="addKeyword">Add tag</label>
 							<select v-model="addKeyword" name="addKeyword">
 								<option v-for="keyword in keywordsNotInComic" :key="keyword">
@@ -71,12 +81,13 @@
 								@click="suggestKeywordChange('add')"
 								:class="{'y-button-disabled': !addKeyword}"
 								class="y-button-small"
+								style="width: fit-content; margin-top: 2px;"
 							>
 								Add
 							</button>
 						</span>
 
-						<span style="margin-left: 20px;">
+						<span style="margin-left: 20px; align-items: center;" class="vertical-flex">
 							<label for="removeKeyword">Remove tag</label>
 							<select v-model="removeKeyword">
 								<option v-for="keyword in comic.keywords" :key="keyword">
@@ -87,6 +98,7 @@
 								@click="suggestKeywordChange('remove')"
 								class="y-button-small"
 								:class="{'y-button-disabled': !removeKeyword, 'y-button-red': removeKeyword}"
+								style="width: fit-content; margin-top: 2px;"
 							>
 								Remove
 							</button>
@@ -97,12 +109,14 @@
 					<p class="error-message margin-top-8" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
 				</div>
 
-				<div id="comicSizingButtonsRow" class="margin-top-16">
-					<button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Fit screen H</button>
-					<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Fit screen W</button>
-					<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Big</button>
-					<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Thumb</button>
+				<div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
+					<p style="margin-right: 4px;">Image fit:</p>
+					<button @click="setAllImagesFit('height')" class="y-button y-button-neutral y-button-small"><expand-height/></button>
+					<button @click="setAllImagesFit('width')"  class="y-button y-button-neutral y-button-small"><expand-width/></button>
+					<button @click="setAllImagesFit('big')"    class="y-button y-button-neutral y-button-small">Full size</button>
+					<button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral y-button-small">Tiny</button>
 				</div>
+				<p class="smaller-text">You may also click any one image to resize it</p>
 			</span>
 
 			
@@ -116,7 +130,7 @@
 
 		</div>
 	
-		<div v-if="comic" id="comicPageContainer" class="margin-top-16 margin-bottom-8">
+		<div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
 			<img 
 				v-for="pageNumber in comic.numberOfPages" 
 				:src="`/comics/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
@@ -169,6 +183,8 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 import LoginIcon from 'vue-material-design-icons/Login.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
+import ExpandWidth from 'vue-material-design-icons/ArrowExpandHorizontal.vue'
+import ExpandHeight from 'vue-material-design-icons/ArrowExpandVertical.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
@@ -188,11 +204,14 @@ export default {
 		'share-icon': ShareIcon,
 		'login-icon': LoginIcon,
 		'up-arrow': UpArrow,
+		'expand-width': ExpandWidth,
+		'expand-height': ExpandHeight,
 	},
 
 	data: function () {
 		return {
 			comic: this.$store.state.clickedComic || undefined,
+			showKeywords: false,
 			userIsDonator: true,
 			comicNotFound: false,
 			imageFitArray: [],
@@ -207,7 +226,7 @@ export default {
 	},
 
 	methods: {
-		formatPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+		formatPageNumber: pageNumber => pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber,
 
 		formatRating: function (number) {
 			if (!number) { return 'None' }

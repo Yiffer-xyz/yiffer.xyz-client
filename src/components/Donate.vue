@@ -15,7 +15,7 @@
       </p>
       <p>
         <b>What do I get?</b><br/>
-        Aside from our deepest gratitude, if you donate $3 or more, you'll be able to download individual comics with the simple click of a button!
+        Aside from our deepest gratitude, if you donate $5 or more, you'll be able to download individual comics with the simple click of a button!
       </p>
       <p>
         <b>How to donate</b><br/>
@@ -26,7 +26,7 @@
             If you'd like to donate with cryptocurrency or any other form of payment, please send an email to "malann.sjakk@gmail.com".
           </li>
           <li>
-            Donate $3 or more to gain access to downloading comics!
+            Donate $5 or more to gain access to downloading comics!
           </li>
           <li>
             If you do want the download privilege, please include your username in the message box. It won't be instant, but you should be able to download within 24 hours.

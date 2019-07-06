@@ -38,12 +38,18 @@
       <div class="added-created-container">
         <label title="Updated on"><refresh-icon title="Updated on"/>
           {{prettyDate($store.getters.expandedComic.updated)}}</label>
-        <label title="Created on"><plus-icon title="Created on"/>
+        <label title="Created on"><plus-icon title="Created on" style="margin-left: 8px;"/>
           {{prettyDate($store.getters.expandedComic.created)}}</label>
       </div>
 
       <!-- RATING SLIDER -->
-      <rating-slider/>
+      <rating-slider v-if="$store.getters.isAuthenticated"/>
+      <p v-else class="margin-bottom-10 margin-top-8"> 
+        <button class="underline-link text-button link-color" 
+                @click="$store.commit('setLoginModalVisibility', true)">
+          <login-icon/> Log in
+        </button> to rate comic
+      </p>
 
       <!-- KEYWORDS -->
       <div class="keyword-container" style="margin-top: 0;">
@@ -71,6 +77,7 @@ import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
+import LoginIcon from 'vue-material-design-icons/Login.vue'
 
 export default {
   name: 'expanded-comic-card',
@@ -83,6 +90,7 @@ export default {
 		'refresh-icon': RefreshIcon,
 		'rating-slider': RatingSlider,
 		'cross-icon': CrossIcon,
+		'login-icon': LoginIcon,
   },
   
   props: {
