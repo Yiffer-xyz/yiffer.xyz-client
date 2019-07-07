@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true
 
-let baseUrl = 'http://localhost:8012'
+let baseUrl = '/api'
 
 export default {
 	async login (username, password) {

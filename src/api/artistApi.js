@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let baseUrl = 'http://localhost:8012/api'
+let baseUrl = '/api'
 
 export default {
   async getArtistList () {

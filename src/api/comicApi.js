@@ -1,10 +1,11 @@
 import axios from 'axios'
 
-let baseUrl = 'http://localhost:8012/api'
+let baseUrl = '/api'
 
 export default {
 	async getComics () {
 		let response = await axios.get(baseUrl + '/comics')
+console.log(response)
 		// err.response
 		for (var comic of response.data) {
 			comic.created = new Date(comic.created)
