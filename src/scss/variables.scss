@@ -156,6 +156,9 @@ select {
 	@include simpleshadowSmall;
 	border: none;
 }
+.keyword-filtered {
+	border: 0.5px solid $theme4;
+}
 .keyword:hover {
 	color: $theme4 !important;
 	cursor: pointer;

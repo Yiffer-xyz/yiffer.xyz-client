@@ -41,7 +41,9 @@
 				<div class="emphasized-keyword">{{comic.cat}}</div>
 				<div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
 				<div 
-					:class="{'keyword': clickableKeyword, 'keyword-static': !clickableKeyword}"
+					:class="{'keyword': clickableKeyword, 
+									 'keyword-static': !clickableKeyword,
+									 'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
 					v-for="keyword in comic.keywords"
 					:key="keyword"
 					@click="addSelectedKeyword(keyword)"

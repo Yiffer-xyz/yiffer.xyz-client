@@ -57,6 +57,7 @@
         <div class="emphasized-keyword">{{$store.getters.expandedComic.tag}}</div>
         <div 
           class="keyword"
+          :class="{'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
           v-for="keyword in $store.getters.expandedComic.keywords"
           :key="keyword"
           @click="addSelectedKeyword(keyword)"
