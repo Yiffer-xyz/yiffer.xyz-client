@@ -5,6 +5,7 @@ import Vue from 'vue'
 export default {
 	state: {
 		comicList: [],
+		firstComicsList: [],
 		displayedComics: [],
 		filteredComics: [],
 		categoryFilter: ['All'],
@@ -22,6 +23,10 @@ export default {
 
 	actions: {
 		loadComicList: context => {
+			comicApi.getFirstComics().then(response => {
+				context.commit('setFirstComicsList', response)
+			})
+
 			return new Promise (async (resolve) => {
 				let response = await comicApi.getComics()
 				context.commit('setComicList', response)
@@ -59,6 +64,9 @@ export default {
 		setComicList: (state, comicList) => {
 			state.comicList = comicList
 			recalculateFilteredComics(state)
+		},
+		setFirstComicsList (state, comicList) {
+			state.firstComicsList = comicList
 		},
 		setDisplayedComics: (state, newDisplayedComics) => state.displayedComics = newDisplayedComics,
 		setPageNumber: (state, newPageNumber) => {
@@ -159,6 +167,7 @@ export default {
 	getters: {
 		comicList: state => state.comicList,
 		comicListF: state => () => state.comicList,
+		firstComicsList: state => state.firstComicsList,
 		displayedComics: state => state.displayedComics,
 		filteredComics: state => state.filteredComics,
 		getFilteredComics: () => state => state.filteredComics,

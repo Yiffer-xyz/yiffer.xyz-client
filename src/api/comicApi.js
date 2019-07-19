@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-let baseUrl = '/api'
+import config from '@/config.json'
+let baseUrl = config.apiBaseUrl
 
 export default {
 	async getComics () {
@@ -11,6 +11,11 @@ console.log(response)
 			comic.created = new Date(comic.created)
 			comic.updated = new Date(comic.updated)
 		}
+		return response.data
+	},
+
+	async getFirstComics () {
+		let response = await axios.get(baseUrl + '/firstComics')
 		return response.data
 	},
 

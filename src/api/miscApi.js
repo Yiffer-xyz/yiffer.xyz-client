@@ -1,9 +1,6 @@
-import config from '@/config.json'
-
 import axios from 'axios'
-
-let baseUrl = '/api'
-
+import config from '@/config.json'
+let baseUrl = config.apiBaseUrl
 
 export default {
 	async getModScores () {

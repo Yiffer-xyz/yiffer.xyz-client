@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-let baseUrl = '/api'
+import config from '@/config.json'
+let baseUrl = config.apiBaseUrl
 
 export default {
   async getArtistList () {
