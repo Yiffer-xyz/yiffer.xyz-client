@@ -82,13 +82,13 @@
 					<tags/> Show tags
 				</div>
 
-				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8">
+				<div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8 horizontal-flex">
 					<div id="dropdownContainer">
 						<span class="vertical-flex" style="align-items: center;">
 							<label for="addKeyword">Add tag</label>
 							<select v-model="addKeyword" name="addKeyword">
 								<option v-for="keyword in keywordsNotInComic" :key="keyword">
-									{{keyword}}
+									{{keyword.name}}
 								</option>
 							</select>
 							<button 
@@ -300,7 +300,7 @@ export default {
 			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeyword, typeOfChange)
 
 			if ( suggestionResponse.success ) {
-				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${typeOfChange} ${relevantKeyword+''})`
+				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${typeOfChange} ${relevantKeyword.name+''})`
 				this.keywordErrorMessage = undefined
 
 				if ( typeOfChange === 'add' ) {

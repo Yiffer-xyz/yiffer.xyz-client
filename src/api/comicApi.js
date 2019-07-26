@@ -52,6 +52,7 @@ console.log(response)
 	async addNewComic (comicData, {pageFiles, thumbnailFile}, progressFunction) {
 		let formData = new FormData()
 		for (var key in comicData) {
+			if (key === 'keywords') { formData.append('keywordIds', comicData['keywords'].map(kw => kw.id)) }
 			formData.append(key, comicData[key])
 		}
 		for (var pageFile of pageFiles) { formData.append('pageFile', pageFile) }

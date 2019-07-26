@@ -146,7 +146,7 @@
       <div class="horizontal-flex">
         <div class="vertical-flex">
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
+            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
         </div>
@@ -154,7 +154,7 @@
         <div class="vertical-flex" style="margin-left: 15px;">
           <p style="margin-bottom: 6px;">Click to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
-             :key="keyword" class="selected-add-keyword">{{keyword}}</p>
+             :key="keyword.name" class="selected-add-keyword">{{keyword.name}}</p>
         </div>
       </div>
 
@@ -256,13 +256,13 @@ export default {
 		},
 
     addSelectedKeyword () {
-      if (this.selectedKeywords.indexOf(this.selectedKeyword) < 0) {
+      if (!this.selectedKeywords.find(kw => kw.id === this.selectedKeyword.id)) {
         this.selectedKeywords.push(this.selectedKeyword)
       }
     },
 
-    removeKeywordFromSelection (keywordName) {
-      this.selectedKeywords.splice(this.selectedKeywords.indexOf(keywordName), 1)
+    removeKeywordFromSelection (keyword) {
+      this.selectedKeywords.splice(this.selectedKeywords.findIndex(kw => kw.id===keyword.id), 1)
     },
 
     async confirmAddComic () {

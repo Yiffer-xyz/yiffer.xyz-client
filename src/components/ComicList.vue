@@ -143,12 +143,12 @@
 								<div id="keywordResults" v-if="keywordSearchFocused">
 									<div
 										v-for="keywordObject in keywordsMatchingSearch" 
-										:key="keywordObject.keyword"
-										@click="addSelectedKeyword(keywordObject.keyword)"
-										@mouseover="keywordResultHovered = keywordObject.keyword"
+										:key="keywordObject.id"
+										@click="addSelectedKeyword(keywordObject)"
+										@mouseover="keywordResultHovered = keywordObject"
 										@mouseout="keywordResultHovered = undefined"
 										class="keyword-result">
-											{{keywordObject.keyword}} ({{keywordObject.count}})
+											{{keywordObject.name}} ({{keywordObject.count}})
 									</div>
 								</div>
 							</div>
@@ -156,11 +156,11 @@
 					</div>
 						<div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
 							<div 
-								v-for="keyword in $store.getters.selectedKeywords" 
-								:key="keyword"
-								@click="removeSelectedKeyword(keyword)"
+								v-for="keywordObject in $store.getters.selectedKeywords" 
+								:key="keywordObject.id"
+								@click="removeSelectedKeyword(keywordObject)"
 								class="selected-keyword">
-									{{keyword}}<cross-icon/>
+									{{keywordObject.name}}<cross-icon/>
 							</div>
 						</div>
 
@@ -330,18 +330,18 @@ export default {
 			this.setRouterQuery()
 		},
 
-		addSelectedKeyword ( keywordName ) {
+		addSelectedKeyword ( keyword ) {
 			if (!this.lastActionWasDeselectingKeyword) {
 				this.lastActionWasDeselectingKeyword = true
-				this.$store.commit('addSelectedKeyword', keywordName+'')
+				this.$store.commit('addSelectedKeyword', keyword)
 				this.keywordSearchFocused = undefined
 				this.keywordSearch = ''
 			}
-			keywordApi.logKeywordSearch(keywordName)
+			keywordApi.logKeywordSearch(keyword)
 		},
 
-		removeSelectedKeyword ( keywordName ) {
-			this.$store.commit('removeSelectedKeyword', keywordName)
+		removeSelectedKeyword ( keyword ) {
+			this.$store.commit('removeSelectedKeyword', keyword)
 		},
 
 		filterComicByTag ( comicObject ) {
@@ -357,7 +357,7 @@ export default {
 		filterComicByKeywords ( comicObject ) {
 			if ( this.$store.getters.selectedKeywords.length === 0 ) { return true }
 			for (var keyword of this.$store.getters.selectedKeywords) {
-				if (comicObject.keywords.indexOf(keyword) === -1) { return false }
+				if (comicObject.keywords.indexOf(keyword.name) === -1) { return false }
 			}
 			return true
 		},
@@ -451,7 +451,7 @@ export default {
 	},
 	computed: {
 		keywordsMatchingSearch () {
-			return this.allKeywords.filter(keyword => keyword.keyword.startsWith(this.keywordSearch))
+			return this.$store.getters.keywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
 				.slice(0, 8)
 		},
 		paginationButtons () {

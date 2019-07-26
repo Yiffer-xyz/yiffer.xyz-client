@@ -23,7 +23,7 @@
         <div class="vertical-flex">
           <p class="admin-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" :key="keyword.keyword" :value="keyword.keyword">{{keyword.keyword}}</option>
+            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
         </div>
@@ -32,7 +32,7 @@
           <p class="admin-mini-header">Tags you're adding</p>
           <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
-             :key="keyword" class="selected-add-keyword">{{keyword}}</p>
+             :key="keyword" class="selected-add-keyword">{{keyword.name}}</p>
           <button class="y-button" v-if="selectedKeywords.length > 0"
                   @click="confirmAddKeywords()" style="margin-top: 6px;">
             Add tags
@@ -44,9 +44,11 @@
           <p v-if="comic.keywords.length > 0" style="margin-bottom: 6px;">
             Click tags to <span class="red-color">remove</span>
           </p>
-          <p v-for="keyword in comic.keywords" @click="addOrRemoveKeywordToDeleteList(keyword)" 
-             :key="keyword" class="selected-add-keyword" 
-             :class="{'keyword-to-be-deleted': keywordsToDelete.indexOf(keyword) >= 0}">{{keyword}}</p>
+          <p v-for="keywordName in comic.keywords" @click="addOrRemoveKeywordToDeleteList(keywordName)" 
+             :key="keywordName" class="selected-add-keyword" 
+             :class="{'keyword-to-be-deleted': keywordsToDelete.findIndex(kw=>kw.name===keywordName)>=0}">
+              {{keywordName}}
+          </p>
           <button @click="confirmRemoveKeywords()" class="y-button y-button-red"
                   v-if="keywordsToDelete.length > 0" style="margin-top: 6px;">
             Remove tags
@@ -112,21 +114,23 @@ export default {
 
   methods: {
     addSelectedKeyword () {
-      if (this.selectedKeywords.indexOf(this.selectedKeyword) < 0) {
+      if (!this.selectedKeywords.find(kw => kw.id === this.selectedKeyword.id)) {
         this.selectedKeywords.push(this.selectedKeyword)
       }
     },
 
-    removeKeywordFromSelection (keywordName) {
-      this.selectedKeywords.splice(this.selectedKeywords.indexOf(keywordName), 1)
+    removeKeywordFromSelection (keyword) {
+      this.selectedKeywords.splice(this.selectedKeywords.findIndex(kw => kw.id===keyword.id), 1)
     },
 
-    addOrRemoveKeywordToDeleteList (keywordName) {
-      if (this.keywordsToDelete.indexOf(keywordName) < 0) {
-        this.keywordsToDelete.push(keywordName)
+    async addOrRemoveKeywordToDeleteList (keywordName) {
+      if (!this.keywordsToDelete.find(kw => kw.name===keywordName)) {
+        let keywordWithData = await this.$store.dispatch('findKeywordDataFromName', keywordName)
+        console.log(keywordWithData)
+        this.keywordsToDelete.push(keywordWithData)
       }
       else {
-        this.keywordsToDelete.splice(this.keywordsToDelete.indexOf(keywordName), 1)
+        this.keywordsToDelete.splice(this.keywordsToDelete.findIndex(kw => kw.name===keywordName), 1)
       }
     },
     

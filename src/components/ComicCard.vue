@@ -127,7 +127,7 @@ export default {
 			this.$store.dispatch('storeClickedComic', this.comic)
 		},
 		addSelectedKeyword (keywordName) {
-			if ( this.clickableKeyword ) { this.$store.commit('addSelectedKeyword', keywordName) }
+			if ( this.clickableKeyword ) { this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName) }
 		},
 		convertTagName (tagName) {
 			return tagName=='Pokemon' ? 'Pkmn' : tagName

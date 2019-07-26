@@ -58,6 +58,11 @@ export default {
 		calculateFilteredComics: context => {
 			recalculateFilteredComics(context.state)
 		},
+
+		addSelectedKeywordByNameOnly (context, keywordName) {
+			let keywordObject = context.rootState.keywordList.find(kw => kw.name===keywordName)
+			context.commit('addSelectedKeyword', keywordObject)
+		},
 	},
 
 	mutations: {
@@ -129,14 +134,14 @@ export default {
 		},
 		addSelectedKeyword: (state, keyword) => { 
 			state.pageNumber = 1
-			if (state.selectedKeywords.indexOf(keyword) < 0) {
+			if (!state.selectedKeywords.find(kw => kw.id === keyword.id)) {
 				state.selectedKeywords.push(keyword) 
 			}
 			recalculateFilteredComics(state)
 		},
 		removeSelectedKeyword: (state, keyword) => {
 			state.pageNumber = 1
-			state.selectedKeywords.splice(state.selectedKeywords.indexOf(keyword), 1)
+			state.selectedKeywords.splice(state.selectedKeywords.findIndex(kw => kw.id === keyword.id), 1)
 			recalculateFilteredComics(state)
 		},
 		setSelectedKeywords: (state, keywordList) => {
@@ -193,7 +198,7 @@ function recalculateFilteredComics (state) {
 			return comicObj.name.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0 
 				|| comicObj.artist.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0
 		})
-		.filter(comicObj => ! state.selectedKeywords.some(kw => comicObj.keywords.indexOf(kw) === -1))
+		.filter(comicObj => ! state.selectedKeywords.some(kw => comicObj.keywords.indexOf(kw.name) === -1))
 		state.filteredComics = filteredComics
 
 	state.numberOfFilteredComics = filteredComics.length
