@@ -130,6 +130,7 @@ export default {
 	data: function () {
 		return {
 			comic: undefined,
+			allKeywords: [],
 			keywordsNotInComic: [],
       selectedKeyword: undefined,
 			selectedKeywords: [],
@@ -279,7 +280,10 @@ export default {
 			let response = await comicApi.getPendingComic(this.$route.params.comicName)
 			if (response.success) {
 				this.comic = response.result
-				this.keywordsNotInComic = (await keywordApi.getKeywordList()).filter(kw => this.comic.keywords.indexOf(kw.keyword) === -1)
+				if (this.allKeywords.length === 0) {
+					this.allKeywords = await keywordApi.getKeywordList()
+				}
+				this.keywordsNotInComic = this.allKeywords.filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
 			}
 			else {
 				this.comicLoadErrorMessage = response.message

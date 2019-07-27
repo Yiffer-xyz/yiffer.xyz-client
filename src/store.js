@@ -18,7 +18,8 @@ export default new Vuex.Store({
 		loginModalContext: 'login',
 		votingModalVisibility: false,
 		comicForVotingModal: {},
-		keywordList: []
+		keywordList: [],
+		orderedKeywordList: [],
 	},
 
 	actions: {
@@ -29,6 +30,7 @@ export default new Vuex.Store({
 		async fetchKeywordList (context) {
 			let keywords = await keywordApi.getKeywordList()
 			context.commit('setKeywordList', keywords)
+			context.commit('setOrderedKeywordList', keywords)
 		},
 		findKeywordDataFromName (context, keywordName) {
 			return context.state.keywordList.find(kw => kw.name === keywordName)
@@ -43,6 +45,10 @@ export default new Vuex.Store({
 		setVotingModalVisibility (state, isVisible) { state.votingModalVisibility = isVisible; },
 		setComicForVotingModal (state, comic) { state.comicForVotingModal = comic },
 		setKeywordList (state, keywordList) { state.keywordList = keywordList },
+		setOrderedKeywordList (state, keywordList) {
+			keywordList.sort((a, b) => a.count > b.count ? -1 : 1)
+			state.orderedKeywordList = keywordList
+		},
 	},
 
 	getters: {
@@ -51,5 +57,6 @@ export default new Vuex.Store({
 		comicForVotingModal: state => state.comicForVotingModal,
 		getComicForVotingModal: state => () => state.comicForVotingModal,
 		keywordList: state => state.keywordList,
+		orderedKeywordList: state => state.orderedKeywordList,
 	}
 })

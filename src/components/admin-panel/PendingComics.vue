@@ -38,12 +38,16 @@
           </thead>
           <tbody>
             <tr v-for="pendingComic in pendingComicList" :key="pendingComic.id">
-              <td><router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank">
-                {{pendingComic.name}}
-              </router-link></td>
-              <td><router-link :to="{ name: 'artist', params: {artistName: pendingComic.artist} }" target="_blank">
-                {{pendingComic.artist}}
-              </router-link></td>
+              <td>
+                <router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank" class="underline-link">
+                  {{pendingComic.name}} <right-arrow/>
+                </router-link>
+              </td>
+              <td>
+                <router-link :to="{ name: 'artist', params: {artistName: pendingComic.artist} }" target="_blank" class="underline-link">
+                  {{pendingComic.artist}}
+                </router-link>
+              </td>
               <td>{{pendingComic.tag}}</td>
               <td>{{pendingComic.cat}}</td>
               <td>{{pendingComic.numberOfPages}}</td>
@@ -78,6 +82,7 @@
 
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
 
@@ -86,6 +91,7 @@ export default {
 
 	components: {
 		'checkbox-icon': CheckboxIcon,
+		'right-arrow': RightArrow,
 	},
 
   data: function () {

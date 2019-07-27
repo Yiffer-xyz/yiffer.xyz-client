@@ -290,7 +290,6 @@ export default {
 		// vuex state), but it seems vuex isn't quite ready for this yet.
 		return {
 			config: config,
-			allKeywords: [],
 			displayedComics: this.$store.getters.displayedComics,
 			keywordSearch: '',
 			keywordSearchFocused: false,
@@ -447,11 +446,10 @@ export default {
 		this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
-		this.allKeywords = await keywordApi.getKeywordList()
 	},
 	computed: {
 		keywordsMatchingSearch () {
-			return this.$store.getters.keywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
+			return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
 				.slice(0, 8)
 		},
 		paginationButtons () {
