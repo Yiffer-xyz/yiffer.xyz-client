@@ -12,7 +12,7 @@
 				<div class="triangle-inner">
 					<label class="triangle-label" title="Comic not finished">WIP</label>
 				</div>
-			</div>
+			</div>	
 			<img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
 		</router-link>
 

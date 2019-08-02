@@ -3,7 +3,7 @@
     <div class="expanded-comic-card" @click="onCardClick">
       <button class="y-button-close" @click="closeCard"><cross-icon :size="28"/></button>
 
-      <router-link :comic="$store.getters.expandedComic" 
+      <router-link v-if="$store.getters.expandedComic.name" :comic="$store.getters.expandedComic" 
         :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }"
         @click.native="closeCard">
         <img :src="`/comics/${$store.getters.expandedComic.name}/s.jpg`" class="expanded-card-image">
@@ -11,7 +11,7 @@
 
 
       <!-- COMIC NAME AND ARTIST -->
-      <router-link :comic="comic" 
+      <router-link v-if="$store.getters.expandedComic.name" :comic="comic" 
         :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }" 
         @click.native="closeCard"
         class="comic-card-link underline-link" style="font-size: 16px;">
@@ -19,7 +19,7 @@
       </router-link>
       <p>
         by
-        <router-link :comic="$store.getters.expandedComic" 
+        <router-link v-if="$store.getters.expandedComic.artist" :comic="$store.getters.expandedComic" 
           :to="{ name: 'artist', params: { artistName: $store.getters.expandedComic.artist } }"
           @click.native="closeCard"
           class="comic-card-link underline-link">

@@ -34,6 +34,8 @@
 			<pending-comics ref="PendingComics"
 				@refresh-comic-list="refreshComicList"></pending-comics>
 
+			<user-manager/>
+
 			<mod-scoreboard/>
 
 			<mod-log v-if="$store.getters.userData.userType==='admin'"/>
@@ -62,6 +64,7 @@ import PendingComics from '@/components/admin-panel/PendingComics.vue'
 import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
 import PageManager from '@/components/admin-panel/PageManager.vue'
+import UserManager from '@/components/admin-panel/UserManager.vue'
 import ModScoreboard from '@/components/admin-panel/ModScoreboard.vue'
 import ModLog from '@/components/admin-panel/ModLog.vue'
 
@@ -83,6 +86,7 @@ export default {
 		'keyword-suggestions': KeywordSuggestions,
 		'comic-suggestions': ComicSuggestions,
 		'page-manager': PageManager,
+		'user-manager': UserManager,
 		'mod-scoreboard': ModScoreboard,
 		'mod-log': ModLog,
 	},

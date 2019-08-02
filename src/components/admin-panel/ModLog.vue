@@ -98,6 +98,7 @@ export default {
 		filteredModLog () {
 			if (!this.modLog) { return [] }
 			let filteredList = this.modLog
+			
 			if (this.actionTypeFilter) {
 				filteredList = filteredList.filter(x => x.actionType === this.actionTypeFilter)
 			}

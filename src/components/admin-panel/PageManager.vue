@@ -12,7 +12,7 @@
         </select>
         <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic"
                      style="margin-left: 8px;" target="_blank" class="underline-link">
-          go to comic <right-arrow/>
+          Go to comic <right-arrow/>
         </router-link>
       </div>
 
