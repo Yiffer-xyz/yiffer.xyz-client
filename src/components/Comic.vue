@@ -59,11 +59,9 @@
 
 				<div id="comicKeywords" class="margin-top-8 horizontal-flex flex-wrap" v-if="showKeywords">
 					<span v-if="comic.keywords.length > 0" class="horizontal-flex flex-wrap">
-						<div 
-							class="keyword-static"
-							v-for="keyword in comic.keywords"
-							:key="keyword"
-						>
+						<div class="keyword-static"
+								 v-for="keyword in comic.keywords"
+								 :key="keyword">
 							{{keyword}}
 						</div>
 					</span>
@@ -86,13 +84,13 @@
 					<div id="dropdownContainer">
 						<span class="vertical-flex" style="align-items: center;">
 							<label for="addKeyword">Add tag</label>
-							<select v-model="addKeyword" name="addKeyword">
+							<select v-model="addKeyword">
 								<option v-for="keyword in keywordsNotInComic" :key="keyword">
-									{{keyword.name}}
+									{{keyword}}
 								</option>
 							</select>
 							<button 
-								@click="suggestKeywordChange('add')"
+								@click="suggestKeywordChange(isAdding=true)"
 								:class="{'y-button-disabled': !addKeyword}"
 								class="y-button-small"
 								style="width: fit-zipContent; margin-top: 2px;"
@@ -109,7 +107,7 @@
 								</option>
 							</select>
 							<button 
-								@click="suggestKeywordChange('remove')"
+								@click="suggestKeywordChange(isAdding=false)"
 								class="y-button-small"
 								:class="{'y-button-disabled': !removeKeyword, 'y-button-red': removeKeyword}"
 								style="width: fit-zipContent; margin-top: 2px;"
@@ -118,10 +116,9 @@
 							</button>
 						</span>
 					</div>
-
-					<p class="success-message margin-top-8" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
-					<p class="error-message margin-top-8" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
 				</div>
+				<p class="success-message margin-top-8" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
+				<p class="error-message margin-top-8" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
 
 				<div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
 					<p style="margin-right: 4px;">Image fit:</p>
@@ -284,26 +281,26 @@ export default {
 
 		toggleKeywordSuggestions () {
 			this.keywordSuggestionsActive = !this.keywordSuggestionsActive
-			if ( this.keywordsNotInComic.length === 0 ) { this.setKeywordsNotInComic() }
+			if ( this.keywordsNotInComic.length === 0 ) { this.loadKeywords() }
 		},
 
-		async setKeywordsNotInComic () {
-			let allKeywords = await keywordApi.getKeywordList()
-			this.keywordsNotInComic = allKeywords
-				.filter(kw => this.comic.keywords.indexOf(kw.keyword) == -1)
-				.map(kw => kw.keyword)
-				.sort()
+		async loadKeywords () {
+			this.allKeywords = await keywordApi.getKeywordList()
+			this.keywordsNotInComic = this.allKeywords
+				.filter(kw => !(kw.name in this.comic.keywords))
+				.map(kw => kw.name)
 		},
 
-		async suggestKeywordChange ( typeOfChange ) {
-			let relevantKeyword = typeOfChange==='add' ? this.addKeyword : this.removeKeyword
-			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeyword, typeOfChange)
+		async suggestKeywordChange (isAdding) {
+			let relevantKeywordName = isAdding===true ? this.addKeyword : this.removeKeyword
+			let relevantKeywordId = this.getKeywordIdFromName(relevantKeywordName)
+			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeywordId, isAdding)
 
 			if ( suggestionResponse.success ) {
-				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${typeOfChange} ${relevantKeyword.name+''})`
+				this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${isAdding ? 'Add' : 'Remove'} ${relevantKeywordName})`
 				this.keywordErrorMessage = undefined
 
-				if ( typeOfChange === 'add' ) {
+				if ( isAdding === 'add' ) {
 					this.addKeyword = undefined
 				}
 				else {
@@ -355,6 +352,10 @@ export default {
 
 		scrollToTop () {
 			window.scrollTo(0, 0)
+		},
+
+		getKeywordIdFromName (keywordName) {
+			return this.allKeywords.find(kw => kw.name === keywordName).id
 		}
 	},
 

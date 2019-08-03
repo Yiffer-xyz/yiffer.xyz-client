@@ -19,9 +19,9 @@
           </thead>
           <tbody>
             <tr v-for="(suggestion, index) in keywordSuggestionList" :key="index">
-              <td><router-link :to="{name: 'comic', params: {'comicName': suggestion.comicName}}" target="_blank">
+              <td><router-link :to="{name: 'comic', params: {'comicName': suggestion.comicName}}" target="_blank" class="underline-link">
                 {{suggestion.comicName}}</router-link></td>
-              <td>{{suggestion.addKeyword ? 'ADD' : 'REMOVE'}} {{suggestion.keyword}}</td>
+              <td>{{suggestion.addKeyword ? 'ADD' : 'REMOVE'}} {{suggestion.keyword.name}}</td>
               <td>{{suggestion.user}}</td>
               <td>
 								<div class="horizontal-flex">
@@ -65,12 +65,9 @@ import keywordApi from '../../api/keywordApi'
 export default {
   name: 'keywordSuggestions',
 
-  props: {
-    keywordSuggestionList: Array
-  },
-
-  data: function () {
+  data () {
     return {
+      keywordSuggestionList: [],
       isOpen: false,
       successMessage: '',
       errorMessage: '',
@@ -82,9 +79,9 @@ export default {
 			let response = await keywordApi.processKeywordSuggestion(suggestion, isApproved)
 
       if (response.success) {
-        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} ${suggestion.addKeyword ? 'adding' : 'removing'} of tag ${suggestion.keyword}`
+        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} ${suggestion.addKeyword ? 'adding' : 'removing'} of tag ${suggestion.keyword.name}`
         this.errorMessage = ''
-        this.$emit('refresh-keyword-suggestions')
+        this.loadSuggestions()
       }
       else {
         this.errorMessage = 'Error processing tag suggestion: ' + response.message
@@ -92,9 +89,21 @@ export default {
       }
     },
 
+    async loadSuggestions () {
+      this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
+      for (var suggestion of this.keywordSuggestionList) {
+        suggestion.keyword = {name: suggestion.keywordName, id: suggestion.keywordId}
+        suggestion.user = suggestion.user || suggestion.userIP
+      }
+    },
+
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
+
+  mounted () {
+    this.loadSuggestions()
+  }
 }
 </script>

@@ -58,9 +58,10 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 	
-	async addKeywordSuggestion (comicId, keywordName, addOrRemoveKeyword) {
+	async addKeywordSuggestion (comicId, keywordId, isAdding) {
 		let response = await axios.post(baseUrl + '/keywordsuggestions', 
-			{comicId: comicId, keyword: keywordName, extension: addOrRemoveKeyword=='add'})
+			{comicId: comicId, keywordId: keywordId, isAdding: isAdding})
+
 		if (!response.data.error) { return {success: true} }
 		else { return {success: false, message: response.data.error} }	
 	},

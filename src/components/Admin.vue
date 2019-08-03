@@ -6,8 +6,7 @@
 
 		<div class="admin-content-container" v-if="$store.getters.isAuthenticated">
 	
-			<keyword-suggestions :keywordSuggestionList="keywordSuggestionList"
-				@refresh-keyword-suggestions="refreshKeywordSuggestions"></keyword-suggestions>
+			<keyword-suggestions />
 
 			<comic-suggestions :comicSuggestionList="comicSuggestionList"
 				@refresh-comic-suggestions="refreshComicSuggestions"></comic-suggestions>
@@ -104,8 +103,6 @@ export default {
 		async loadData () {
 			this.artistList = await ArtistApi.getArtistList()
 			this.pendingComicList = await comicApi.getPendingComics()
-			this.keywordSuggestionList = await keywordApi.getKeywordSuggestionList()
-			this.comicSuggestionList = await comicApi.getSuggestedComicList()
 			this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
 		},
 		showLoginModal () {
@@ -114,11 +111,8 @@ export default {
 		async refreshComicList () {
 			this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
 		},
-		refreshKeywordSuggestions () {
-			this.keywordSuggestionList.splice(0, 1)
-		},
-		refreshComicSuggestions() {
-			this.comicSuggestionList.splice(0, 1)
+		async refreshComicSuggestions() {
+			this.comicSuggestionList = await comicApi.getSuggestedComicList()
 		},
 		refreshKeywordList () {
 			this.keywordList.push({name: 'KW DEMO TEST', count: 0})
