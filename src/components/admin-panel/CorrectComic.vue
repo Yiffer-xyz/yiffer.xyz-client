@@ -152,6 +152,8 @@ export default {
       cat: undefined,
       finished: undefined,
       lastComicId: undefined,
+      originalPreviousComic: undefined,
+      originalNextComic: undefined,
       previousComic: undefined,
       nextComic: undefined,
 
@@ -204,7 +206,9 @@ export default {
 			this.tag = this.comic.tag + ''
 			this.cat = this.comic.cat + ''
 			this.finished = this.comic.finished ? 'true' : 'false'
-			this.artist = this.comic.artist + ''
+      this.artist = this.comic.artist + ''
+      this.nextComic = this.originalNextComic + ''
+      this.previousComic = this.originalPreviousComic + ''
       this.toggleRename(false)
       this.findComicLinks()      
     },
@@ -212,21 +216,14 @@ export default {
     async findComicLinks () {
       let comicData = await comicApi.getComic(this.comic.name)
       this.previousComic = comicData.result.previousComic ? 
-        this.previousComic = this.comicList.find(c => c.name === comicData.result.previousComic)
+        this.comicList.find(c => c.name === comicData.result.previousComic)
         : undefined
       this.nextComic = comicData.result.nextComic ? 
-        this.nextComic = this.comicList.find(c => c.name === comicData.result.nextComic)
+        this.comicList.find(c => c.name === comicData.result.nextComic)
         : undefined
+      this.originalPreviousComic = this.previousComic + ''
+      this.originalNextComic = this.nextComic + ''
     },
-
-		emptyFields () {
-			this.tag = undefined
-			this.cat = undefined
-			this.finished = undefined
-			this.artist = undefined
-			this.comic = undefined
-			this.toggleRename(false)
-		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 

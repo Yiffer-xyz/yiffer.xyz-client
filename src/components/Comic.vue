@@ -32,14 +32,15 @@
 				<div class="margin-top-16" v-if="comic && (comic.previousComic || comic.nextComic)">
 					<p>This comic is part of a series!</p>
 					<p v-if="comic.previousComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link" style="font-weight: 400;">
-							
+						<router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
+												 class="underline-link" style="font-weight: 400;">
 							<left-arrow/>
 							{{comic.previousComic}}
 						</router-link>
 					</p>
 					<p v-if="comic.nextComic">
-						<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link" style="font-weight: 400;">
+						<router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }"
+												 class="underline-link" style="font-weight: 400;">
 							{{comic.nextComic}} 
 							<right-arrow/>
 						</router-link>
@@ -313,6 +314,20 @@ export default {
 			}
 		},
 
+		async loadComic () {
+			this.comic = undefined
+			let response = await comicApi.getComic(this.$route.params.comicName)
+			if (response.success) {
+				this.comic = response.result
+				this.$store.commit('setComicForVotingModal', this.comic)
+				this.initializeImageFitArray()
+				this.fitImagesForMobile()
+			}
+			else {
+				this.comicNotFound = true
+			}
+		},
+
 		fitImagesForMobile () {
 			if (window.innerWidth < 900) {
 				let resizeIntervalHook = setInterval(() => {
@@ -356,10 +371,11 @@ export default {
 
 		getKeywordIdFromName (keywordName) {
 			return this.allKeywords.find(kw => kw.name === keywordName).id
-		}
+		},
 	},
 
-	async created () {
+
+	async mounted () {
 		try { let x = JSZip || saveAs } 
 		catch (err) {
 			const jsZipScript = document.createElement('script')
@@ -374,23 +390,20 @@ export default {
 			// this.showShareIcon = false todo
 		}
 		this.$store.commit('setLoginModalVisibility', false)
-		if ( !this.comic ) {
-			let response = await comicApi.getComic(this.$route.params.comicName)
-			if (response.success) {
-				this.comic = response.result
-				this.$store.commit('setComicForVotingModal', this.comic)
-				this.initializeImageFitArray()
-				this.fitImagesForMobile()
-			}
-			else {
-				this.comicNotFound = true
-			}
+		if (!this.comic) {
+			this.loadComic()
 		}
 		else {
 			this.initializeImageFitArray()
 			this.fitImagesForMobile()
 		}
 	},
+
+	watch: {
+    $route (to, from){
+      this.loadComic()
+		}
+	}
 }
 
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
