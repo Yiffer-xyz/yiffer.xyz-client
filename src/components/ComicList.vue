@@ -315,7 +315,7 @@ export default {
 			keywordResultHovered: undefined,
 			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
 			smallPagination: undefined,
-			searchFiltering: '',
+			searchFiltering: this.$store.getters.searchFiltering || '',
 			suppressQueryUpdates: false,
 		}
 	},
@@ -419,7 +419,7 @@ export default {
 
 		setFiltersFromRouterQuery () {
 			this.suppressQueryUpdates = true
-
+			
 			if (!this.$route || !this.$route.query) { return }
 			if (this.$route.query.category) {
 				this.$store.commit('setCategoryFilter', this.listify(this.$route.query.category))
@@ -524,10 +524,15 @@ export default {
 		},
 	},
 
-  async created () {
+  async mounted () {
 		if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
 		if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
-		this.setFiltersFromRouterQuery()
+		if (this.$route.query && Object.keys(this.$route.query).length !== 0) {
+			this.setFiltersFromRouterQuery()
+		}
+		else {
+			this.setRouterQuery()
+		}
 		this.$store.commit('setLoginModalVisibility', false)
 		this.$store.dispatch('calculateFilteredComics')
 		this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
