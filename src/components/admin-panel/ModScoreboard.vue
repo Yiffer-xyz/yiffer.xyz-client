@@ -4,8 +4,7 @@
     <span class="admin-content-box-inner" v-if="isOpen">
 			<p>
 				This is a little thing intended to motivate the mods, or reward those who
-				participate a lot. No hard feelings / no shame if you're not high up, that's
-				not what this is for :)
+				participate a lot. No hard feelings / no shame if you're not high up!
 			</p>
 
 			<table class="y-table">
@@ -52,6 +51,7 @@ export default {
 	
 	async created () {
 		this.modScoreList = (await miscApi.getModScores())
+		this.modScoreList.sort((a, b) => a.score > b.score ? -1 : 1)
 	}
 }
 </script>

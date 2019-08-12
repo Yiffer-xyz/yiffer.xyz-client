@@ -3,8 +3,11 @@
     <h2 @click="closeComponent" class="cursor-pointer">Insert / remove / swap pages / thumbnail</h2>
 
     <span class="admin-content-box-inner" v-if="isOpen">
-      <div class="horizontal-flex" style="margin-top: 8px;">
-        <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
+      <div class="horizontal-flex margin-top-8 flex-wrap">
+        <p class="admin-mini-header"
+           style="margin-right: 8px;">
+           Comic:
+        </p>
         <select v-model="comic" @change="comicChanged">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
@@ -25,7 +28,7 @@
         </select>
       </div>
 
-      <div v-if="comic" class="horizontal-flex" style="height: 386px">
+      <div v-if="comic" class="horizontal-flex flex-wrap">
         <div v-for="i in pagesToShow" :key="i" class="vertical-flex" style="margin: 4px;">
           <p>Page {{i}}</p>
           <a :href="`/comics/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" target="_blank">
@@ -327,6 +330,10 @@ export default {
 <style lang="scss">
 .page-manager-image {
 	max-height: 350px;
-	max-width: 300px;
+  max-width: 300px;
+	@media (max-width: 900px) {
+    max-width: 100px;    
+    max-height: 120px;
+  }
 }
 </style>

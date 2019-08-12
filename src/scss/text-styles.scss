@@ -7,9 +7,10 @@ h1, h2, h3, h4, p, div {
 	margin: 0;
 }
 
-p, li, label {
+p, li, label, td, th {
 	@media (max-width: 900px) {
 		font-size: 14px;
+		word-break: break-word;
 	}
 }
 

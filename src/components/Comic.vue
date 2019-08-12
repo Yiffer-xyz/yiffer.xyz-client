@@ -294,6 +294,8 @@ export default {
 
 		async suggestKeywordChange (isAdding) {
 			let relevantKeywordName = isAdding===true ? this.addKeyword : this.removeKeyword
+			if (!relevantKeywordName) { return }
+
 			let relevantKeywordId = this.getKeywordIdFromName(relevantKeywordName)
 			let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeywordId, isAdding)
 

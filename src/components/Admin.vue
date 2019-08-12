@@ -154,9 +154,13 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
-	max-width: 750px;
+	max-width: 90%;
 	margin: auto;
 	justify-content: center;
+
+	@media (max-width: 900px) {
+		max-width: 100%;		
+	}
 }
 
 .admin-content-box {
@@ -172,17 +176,29 @@ export default {
 	&:hover {
 		cursor: pointer;
 	}
+
+	@media (max-width: 900px) {
+		height: auto;
+		padding: 4px;
+		margin: 8px 2px;
+		h2 {
+			font-size: 20px;
+		}
+	}
 }
 
 .admin-content-box-open {
 	@include simpleshadow-active;
-	width: 100%;
+	width: 95%;
 	height: auto;
 	&:hover {
 		cursor: initial;
 	}
 	h2 {
 		margin-bottom: 16px;
+		@media (max-width: 900px) {
+			margin-bottom: 4px;
+		}
 	}
 
 	&.admin-content-box-grow {
@@ -195,10 +211,6 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-
-	> p, select, button, form {
-		margin-bottom: 12px;
-	}
 }
 
 .horizontal-flex {

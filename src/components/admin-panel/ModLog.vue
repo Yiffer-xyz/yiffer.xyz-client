@@ -3,7 +3,11 @@
     <h2 @click="closeComponent" class="cursor-pointer">Mod log</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
-			<div class="vertical-flex">
+			<button class="y-button" @click="getModLogData()">
+				Refresh data
+			</button>
+
+			<div class="vertical-flex margin-top-8">
 				<div class="horizontal-flex margin-bottom-8" style="justify-content: start;">
 					<p style="margin-right: 4px;">Action type: </p>
 					<select v-model="actionTypeFilter" class="no-margin-bot" style="flex-grow: 1;">
@@ -27,29 +31,31 @@
 			</div>
 
 
-			<table class="y-table margin-top-8" style="text-align: left; width: 90%; table-layout: fixed">
-				<thead>
-					<tr>
-						<th>Mod name</th>
-						<th>Type</th>
-						<th>Action</th>
-						<th>Details</th>
-						<th>Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="row in slicedModLog" :key="row.modName+row.date">
-						<td>{{row.modName}}</td>
-						<td>{{row.actionType}}</td>
-						<td>{{row.action}}</td>
-						<td>
-							<p v-if="row.detailsExpanded" @click="row.detailsExpanded=false" class="cursor-pointer">{{row.actionDetails}}</p>
-							<p v-else-if="row.actionDetails" @click="row.detailsExpanded=true" class="link-color cursor-pointer">Show</p>
-						</td>
-						<td>{{prettyDate(row.date)}}</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="scrolling-table-container">
+				<table class="y-table margin-top-8" style="text-align: left; table-layout: fixed">
+					<thead>
+						<tr>
+							<th>Mod name</th>
+							<th>Type</th>
+							<th>Action</th>
+							<th>Details</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="row in slicedModLog" :key="row.modName+row.date">
+							<td>{{row.modName}}</td>
+							<td>{{row.actionType}}</td>
+							<td>{{row.action}}</td>
+							<td>
+								<p v-if="row.detailsExpanded" @click="row.detailsExpanded=false" class="cursor-pointer">{{row.actionDetails}}</p>
+								<p v-else-if="row.actionDetails" @click="row.detailsExpanded=true" class="link-color cursor-pointer">Show</p>
+							</td>
+							<td>{{prettyDate(row.date)}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 			<button v-if="filteredModLog.length > maxRows"
 				@click="maxRows += maxRowsInitial"
 				class="y-button y-button-neutral margin-top-16">
@@ -85,6 +91,13 @@ export default {
   methods: {
 		prettyDate: inputDate => inputDate.toString().substring(0, 15),
 
+		async getModLogData () {
+			let modLogResponse = await miscApi.getModLog()
+			this.modLog = modLogResponse
+				.map(l => new Object({modName: l.username, actionType: l.actionType, action: l.actionDescription, 
+															actionDetails: l.actionDetails, detailsExpanded: false, date: new Date(l.timestamp)}))
+		},
+
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
@@ -113,14 +126,11 @@ export default {
 
 		slicedModLog () {
 			return this.filteredModLog.slice(0, this.maxRows)
-		}
+		},
 	},
 	
 	async created () {
-		let modLogResponse = await miscApi.getModLog()
-		this.modLog = modLogResponse
-			.map(l => new Object({modName: l.username, actionType: l.actionType, action: l.actionDescription, 
-														actionDetails: l.actionDetails, detailsExpanded: false, date: new Date(l.timestamp)}))
+		this.getModLogData()
 	}
 }
 </script>

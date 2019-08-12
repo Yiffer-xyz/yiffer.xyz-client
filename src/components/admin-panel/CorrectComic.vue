@@ -2,7 +2,7 @@
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Correct comic data</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-      <div class="horizontal-flex" style="margin-top: 8px;">
+      <div class="horizontal-flex flex-wrap" style="margin-top: 8px;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -15,8 +15,7 @@
         </router-link>
       </div>
 
-      <span v-if="comic" style="width: 100%;">
-
+      <span v-if="comic" class="margin-top-8" style="width: 100%;">
 				<button @click="toggleRename(true)" v-if="!renameActive" class="y-button y-button-neutral margin-bottom-16">Rename comic</button>
 				<span v-if="renameActive" class="horizontal-flex margin-bottom-16" style="align-items: center;">
 					<input type="text" v-model="newComicName" style="width: 240px; height: 18px;"/>
@@ -82,8 +81,7 @@
           </button>
         </div>
         <!-- NEXT COMIC -->
-          <p>Next comic
-          </p>
+        <p class="margin-top-4">Next comic</p>
         <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
             <select v-model="nextComic">
               <option v-for="comic in comicList" :key="comic.id" :value="comic">

@@ -59,6 +59,15 @@ select {
 	}
 }
 
+.scrolling-table-container {
+	overflow-x: auto;
+	max-width: 100%;
+	td, th {
+		word-break: normal;
+		word-wrap: none;
+	}
+}
+
 .no-margin-bot {
 	p, select, button {
 		margin-bottom: 0 !important;
@@ -69,6 +78,9 @@ select {
 .no-margin-top {
 	margin-top: 0 !important;
 }
+.margin-top-2 {
+	margin-top: 2px;
+}
 .margin-top-4 {
 	margin-top: 4px;
 }
@@ -78,11 +90,17 @@ select {
 .margin-top-10 {
 	margin-top: 10px;
 }
+.margin-top-12 {
+	margin-top: 12px;
+}
 .margin-top-16 {
 	margin-top: 16px;
 }
 .margin-top-32 {
 	margin-top: 32px;
+}
+.margin-bottom-1 {
+	margin-bottom: 1px;
 }
 .margin-bottom-4 {
 	margin-bottom: 4px;

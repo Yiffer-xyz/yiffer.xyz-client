@@ -12,7 +12,7 @@
         <span class="courier">[1.jpg, 2.jpg, ...]</span> will not work for more than 9 pages!
       </p>
 
-      <p>
+      <p class="margin-top-8">
         Adding a thumbnail is optional. If you don't someone else will later. <br/>
         Thumbnails are precisely <u>200x283</u> pixels.<br/>
         If the comic has a cover page, this should be used in the thumbnail. Otherwise, choose an image representing the comic well,
@@ -20,12 +20,14 @@
         GIMP is a great tool for making thumbnails. Don't use MSPaint, it destroys the image when scaling.
       </p>
 
-      <p>
+      <p class="margin-top-8">
         Adding tags is also optional. Again, someone else will have to do it if you don't. 
         You can also add tags after finishing this, from the "Pending comics" list.
       </p>
 
-      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Comic details <checkbox-icon v-if="detailsFilledIn"/></p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">
+        Comic details <checkbox-icon v-if="detailsFilledIn"/>
+      </p>
       <table id="newComicTable">
         <tr>
           <td>
@@ -91,9 +93,9 @@
 
       <!-- PREVIOUS AND NEXT COMIC LINKS -->
       <p class="admin-mini-header" style="margin-top: 16px; margin-bottom: 4px;">Comic links</p>
-      <div class="horizontal-flex">
+      <div class="horizontal-flex flex-wrap">
         <p>Previous comic </p>
-        <select v-model="previousComic" style="margin-left: 6px;">
+        <select v-model="previousComic" class="margin-bottom-1" style="margin-left: 6px;">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
@@ -103,9 +105,9 @@
           <cross-icon/> remove link
         </button>
       </div>
-      <div class="horizontal-flex">
+      <div class="horizontal-flex flex-wrap margin-top-4">
         <p>Next comic </p>
-        <select v-model="nextComic" style="margin-left: 6px;">
+        <select v-model="nextComic" class="margin-bottom-1" style="margin-left: 6px;">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
@@ -143,7 +145,7 @@
 
       <p class="admin-mini-header no-margin-bot margin-top-16">Add tags <checkbox-icon v-if="selectedKeywords.length"/></p>
       <p>Adding tags is optional, but appreciated!</p>
-      <div class="horizontal-flex">
+      <div class="horizontal-flex margin-top-4">
         <div class="vertical-flex">
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>

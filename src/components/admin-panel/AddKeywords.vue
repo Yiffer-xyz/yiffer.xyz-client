@@ -5,7 +5,7 @@
 
       <p>Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
 
-      <div class="horizontal-flex no-margin-bot" style="margin: 12px 0;">
+      <div class="horizontal-flex no-margin-bot margin-top-8" style="flex-wrap: wrap;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -13,17 +13,26 @@
           </option>
         </select>
         <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
-                     v-if="comic" style="margin-left: 8px;" target="_blank" class="underline-link">
+                     v-if="comic" 
+                     style="margin-left: 8px;" 
+                     target="_blank"
+                     class="underline-link">
           Go to comic <right-arrow/>
         </router-link>
       </div>
 
   
-      <div class="horizontal-flex" style="width: 100%; justify-content: space-evenly; margin-top: 8px;" v-if="comic">
-        <div class="vertical-flex">
+      <div class="horizontal-flex"
+           style="width: 100%; justify-content: space-evenly; margin-top: 8px;"
+           v-if="comic">
+        <div class="vertical-flex" style="flex-wrap: wrap;">
           <p class="admin-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
+            <option v-for="keyword in keywordList" 
+                    :key="keyword.name" 
+                    :value="keyword">
+              {{keyword.name}}
+            </option>
           </select>
           <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
         </div>
@@ -31,8 +40,11 @@
         <div class="vertical-flex">
           <p class="admin-mini-header">Tags you're adding</p>
           <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
-          <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
-             :key="keyword" class="selected-add-keyword">{{keyword.name}}</p>
+          <p v-for="keyword in selectedKeywords" 
+             @click="removeKeywordFromSelection(keyword)" 
+             :key="keyword.id" class="selected-add-keyword">
+            {{keyword.name}}
+           </p>
           <button class="y-button" v-if="selectedKeywords.length > 0"
                   @click="confirmAddKeywords()" style="margin-top: 6px;">
             Add tags
@@ -62,9 +74,10 @@
 
       <h2 style="margin-top: 32px;">Create new tag</h2>
       <p>If a tag is not in the list above, create it here. Double check first though, please.</p>
-      <div class="horizontal-flex" style="align-items: center;">
+      <div class="horizontal-flex flex-wrap margin-top-8"
+           style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">New tag name:</p>
-        <input type="text" v-model="newKeyword"/>
+        <input type="text" v-model="newKeyword" style="width: 128px;"/>
         <button @click="createKeyword()" class="y-button" style="margin: 0 0 0 8px;">Create tag</button>
       </div>
 

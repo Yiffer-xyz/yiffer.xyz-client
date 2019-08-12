@@ -12,7 +12,7 @@
         <span class="courier">[1.jpg, 2.jpg, ...]</span> will not work for more than 9 pages!
       </p>
 
-      <div class="horizontal-flex" style="align-items: center; margin-bottom: 12px;">
+    <div class="horizontal-flex margin-top-8 margin-bottom-8 flex-wrap" style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -35,9 +35,13 @@
       <p v-if="filesAreInput" style="margin-bottom: 0px;"><b>{{selectedFiles.length}}</b> Selected files:</p>
       <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
-      <button @click="uploadFiles()" v-if="filesAreInput && comic" class="y-button">Upload files{{ comic.finished ? ' (NOTE: this comic is marked as finished!)' : ''}}</button>
+      <button @click="uploadFiles()"
+              v-if="filesAreInput && comic"
+              class="y-button margin-top-8">
+        Upload files{{ comic.finished ? ' (NOTE: this comic is marked as finished!)' : ''}}
+      </button>
 
-      <p class="success-message" v-if="uploadPercent">Uploading ({{uploadPercent}}%)</p>
+      <p class="success-message margin-top-8" v-if="uploadPercent">Uploading ({{uploadPercent}}%)</p>
       <p class="error-message" v-if="uploadErrorMessage">{{uploadErrorMessage}}</p>
       <p class="success-message" v-if="uploadSuccessMessage">{{uploadSuccessMessage}}</p>
 
@@ -47,7 +51,7 @@
          v-if="showAllUnfinishedComics"> Hide this list <up-arrow/></button>
 
       <div v-if="showAllUnfinishedComics" class="vertical-flex;">
-        <table class="y-table">
+        <table class="y-table margin-top-4">
           <thead>
             <tr>
               <th>Comic name</th>

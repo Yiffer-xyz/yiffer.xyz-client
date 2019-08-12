@@ -7,7 +7,10 @@
 			<div class="horizontal-flex">
 				<form @submit="searchForUsers()" action="javascript:void(0)" class="no-margin-bot">
 					<input type="text" v-model="userSearchText" />
-					<button  @click="searchForUsers()" type="submit" class="y-button y-button-neutral button-with-icon no-margin-bot" style="margin-left: 2px">
+					<button  @click="searchForUsers()" 
+									 type="submit"
+									 class="y-button y-button-neutral button-with-icon no-margin-bot margin-top-2"
+									 style="margin-left: 2px">
 						<search-icon/> Find users
 					</button>
 				</form>
@@ -17,7 +20,7 @@
 			</div>
 
 			<!-- USER SEARCH RESULT TABLE -->
-			<div v-if="foundUsers.length > 0">
+			<div v-if="foundUsers.length > 0" class="scrolling-table-container">
 				<table class="y-table margin-top-8">
 					<thead>
 						<tr>
@@ -67,7 +70,7 @@
 						</select>
 
 						<button @click="submitNewUserData()" 
-										:class="{'y-button': true, 'y-button-disabled': !isSelectedUserModified}" 
+										:class="{'y-button': true, 'y-button-disabled': !isSelectedUserModified, 'margin-top-2': true}" 
 										style="margin-left: 16px; margin-bottom: 0px;">
 							Submit changes
 						</button>
@@ -88,26 +91,28 @@
 							<up-arrow/> Hide comic votes
 						</button>
 
-						<table v-if="showComicRatings" class="y-table y-table-compact" style="margin: auto;">
-							<thead>
-								<tr>
-									<th>Comic name</th>
-									<th>Rating</th>
-									<th>Date assigned</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="comicRating in selectedUserComicVotes" :key="comicRating.comicName">
-									<td>
-										<router-link :to="{name: 'comic', params: {'comicName': comicRating.comicName}}" class="underline-link">
-											{{comicRating.comicName}}
-										</router-link>
-									</td>
-									<td>{{comicRating.vote}}</td>
-									<td>{{prettyDate(comicRating.timestamp)}}</td>
-								</tr>
-							</tbody>
-						</table>
+						<div v-if="showComicRatings" class="scrolling-table-container margin-top-4">
+							<table class="y-table y-table-compact" style="margin: auto;">
+								<thead>
+									<tr>
+										<th>Comic name</th>
+										<th>Rating</th>
+										<th>Date assigned</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="comicRating in selectedUserComicVotes" :key="comicRating.comicName">
+										<td>
+											<router-link :to="{name: 'comic', params: {'comicName': comicRating.comicName}}" class="underline-link">
+												{{comicRating.comicName}}
+											</router-link>
+										</td>
+										<td>{{comicRating.vote}}</td>
+										<td>{{prettyDate(comicRating.timestamp)}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -22,9 +22,9 @@
               <td><router-link :to="{name: 'comic', params: {'comicName': suggestion.comicName}}" target="_blank" class="underline-link">
                 {{suggestion.comicName}}</router-link></td>
               <td>{{suggestion.addKeyword ? 'ADD' : 'REMOVE'}} {{suggestion.keyword.name}}</td>
-              <td>{{suggestion.user}}</td>
+              <td style="word-break: break-all;">{{suggestion.user}}</td>
               <td>
-								<div class="horizontal-flex">
+								<div class="horizontal-flex flex-wrap">
 									<button
 										@click="processKeyword(suggestion, true)"
 										class="y-button no-margin-bot"

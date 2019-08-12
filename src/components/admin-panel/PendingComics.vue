@@ -16,56 +16,58 @@
     </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
-      <span v-if="pendingComicList.length > 0">
+      <div v-if="pendingComicList.length > 0" style="width: 100%;">
         <p>You can add keywords, a thumbnail, or more pages by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
         The <span class="red-color">numbers</span> in the header mean (1) amount of pending comics, (2) how many are missing tags, and (3) how many are missing a thumbnail.</p>
 
-        <table class="y-table" style="margin: 8px auto 0 auto">
-          <thead>
-            <tr>
-              <th>Comic name</th>
-              <th>Artist</th>
-              <th>Category</th>
-              <th>Class.</th>
-              <th>Pages</th>
-              <th>Finished</th>
-              <th>Tags</th>
-              <th>Thumbnail</th>
-              <th>Mod name</th>
-              <th v-if="$store.getters.userData.userType === 'admin'">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="pendingComic in pendingComicList" :key="pendingComic.id">
-              <td>
-                <router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank" class="underline-link">
-                  {{pendingComic.name}} <right-arrow/>
-                </router-link>
-              </td>
-              <td>
-                <router-link :to="{ name: 'artist', params: {artistName: pendingComic.artist} }" target="_blank" class="underline-link">
-                  {{pendingComic.artist}}
-                </router-link>
-              </td>
-              <td>{{pendingComic.tag}}</td>
-              <td>{{pendingComic.cat}}</td>
-              <td>{{pendingComic.numberOfPages}}</td>
-              <td>{{pendingComic.finished ? 'Yes' : 'No'}}</td>
-              <td v-if="pendingComic.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
-              <td v-if="pendingComic.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
-              <td>{{pendingComic.modName}}</td>
-              <td v-if="$store.getters.userData.userType === 'admin'">
-                <button @click="processComic(pendingComic.id, true, pendingComic.name)" class="y-button">Approve</button>
-                <button @click="processComic(pendingComic.id, false, pendingComic.name)" class="y-button y-button-red">Reject</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="scrolling-table-container" style="margin: 8px auto 0 auto">
+          <table class="y-table">
+            <thead>
+              <tr>
+                <th>Comic name</th>
+                <th>Artist</th>
+                <th>Category</th>
+                <th>Class.</th>
+                <th>Pages</th>
+                <th>Finished</th>
+                <th>Tags</th>
+                <th>Thumbnail</th>
+                <th>Mod name</th>
+                <th v-if="$store.getters.userData.userType === 'admin'">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="pendingComic in pendingComicList" :key="pendingComic.id">
+                <td>
+                  <router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank" class="underline-link">
+                    {{pendingComic.name}} <right-arrow/>
+                  </router-link>
+                </td>
+                <td>
+                  <router-link :to="{ name: 'artist', params: {artistName: pendingComic.artist} }" target="_blank" class="underline-link">
+                    {{pendingComic.artist}}
+                  </router-link>
+                </td>
+                <td>{{pendingComic.tag}}</td>
+                <td>{{pendingComic.cat}}</td>
+                <td>{{pendingComic.numberOfPages}}</td>
+                <td>{{pendingComic.finished ? 'Yes' : 'No'}}</td>
+                <td v-if="pendingComic.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
+                <td v-if="pendingComic.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
+                <td>{{pendingComic.modName}}</td>
+                <td v-if="$store.getters.userData.userType === 'admin'">
+                  <button @click="processComic(pendingComic.id, true, pendingComic.name)" class="y-button">Approve</button>
+                  <button @click="processComic(pendingComic.id, false, pendingComic.name)" class="y-button y-button-red">Reject</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
 				<p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
 				<p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
-      </span>
+      </div>
 
       <span v-else>
         <p>There are no pending comics.</p>

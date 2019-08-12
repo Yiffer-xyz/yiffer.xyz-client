@@ -17,8 +17,7 @@
         Artist's own website,
         <br/>e621.net with order:score, so for example <span class="courier">https://e621.net/post/index/1/Braeburned%20order:score</span></p>
 
-      <div class="horizontal-flex" style="align-items: center; margin-bottom: 8px;">
-
+      <div class="horizontal-flex margin-top-8" style="align-items: center; margin-bottom: 8px;">
         <p style="margin-right: 8px;">Artist:</p>
         <select v-model="artist" class="no-margin-bot">
           <option v-for="artist in artistList" :key="artist.id" :value="artist">
@@ -127,7 +126,10 @@ export default {
 
 <style lang="scss">
 	.artist-link-input {
-		margin-top: 2px;
-		width: 350px;
+    margin-top: 2px;
+    width: 350px;
+    @media (max-width: 900px) {
+      width: 90%;
+    }
 	}
 </style>
