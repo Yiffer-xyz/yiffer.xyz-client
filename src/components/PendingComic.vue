@@ -290,7 +290,9 @@ export default {
 			}
 		},
 
-		formattedPageNumber: pageNumber => pageNumber<10 ? '0'+pageNumber : pageNumber,
+		formattedPageNumber (pageNumber) {
+      return pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber
+		},
 		
 		scrollToTop () {
 			window.scrollTo(0, 0)

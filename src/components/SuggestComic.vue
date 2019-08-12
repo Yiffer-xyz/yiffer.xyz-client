@@ -27,32 +27,16 @@
 				</ul>
 			</span>
 
-			<table id="suggestTable">
-				<tr>
-					<td class="label-cell">
-						<label>Comic name:</label>
-					</td>
-					<td class="input-cell">
-						<input type="text" v-model="comicName"/>
-					</td>
-				</tr>
-				<tr>
-					<td class="label-cell">
-						<label>Artist (if known):</label>
-					</td>
-					<td class="input-cell">
-						<input type="text" v-model="artist"/>
-					</td>
-				</tr>
-				<tr>
-					<td class="label-cell">
-						<label>Links, comments:</label>
-					</td>
-					<td class="input-cell">
-						<textarea v-model="linksComments" rows="4"></textarea>
-					</td>
-				</tr>
-			</table>
+			<div class="vertical-flex" style="align-items: center; max-width: 100%;">
+				<label>Comic name</label>
+				<input type="text" v-model="comicName" style="width: 200px;"/>
+
+				<label class="margin-top-16">Artist (if known)</label>
+				<input type="text" v-model="artist" style="width: 200px;"/>
+
+				<label class="margin-top-16">Links, comments</label>
+				<textarea type="text" v-model="linksComments" style="width: 400px; max-width: 100%;" rows="4"/>
+			</div>
 
 			<p class="no-margin-top">Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), 
 				 and any other helpful comments you may have.</p>
@@ -111,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss">
-#suggestTable {
+#inputContainer {
 	input, textarea {
 		width: 100%;
 	}

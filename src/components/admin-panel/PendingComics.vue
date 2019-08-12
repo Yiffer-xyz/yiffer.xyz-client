@@ -2,7 +2,7 @@
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Pending comics
       <span style="margin-right: 5px;">
-        <span v-if="pendingComicList.length>0" class="red-color">({{pendingComicList.length}})</span>
+        <span v-if="pendingComics.length>0" class="red-color">({{pendingComics.length}})</span>
         <span v-else style="color: #999; margin-right: 5px;">(0)</span>
       </span>
       <span style="margin-right: 5px;">
@@ -16,7 +16,7 @@
     </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
-      <div v-if="pendingComicList.length > 0" style="width: 100%;">
+      <div v-if="pendingComics.length > 0" class="vertical-flex" style="max-width: 100%;">
         <p>You can add keywords, a thumbnail, or more pages by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
         The <span class="red-color">numbers</span> in the header mean (1) amount of pending comics, (2) how many are missing tags, and (3) how many are missing a thumbnail.</p>
@@ -38,7 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="pendingComic in pendingComicList" :key="pendingComic.id">
+              <tr v-for="pendingComic in pendingComics" :key="pendingComic.id">
                 <td>
                   <router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank" class="underline-link">
                     {{pendingComic.name}} <right-arrow/>
@@ -57,8 +57,15 @@
                 <td v-if="pendingComic.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
                 <td>{{pendingComic.modName}}</td>
                 <td v-if="$store.getters.userData.userType === 'admin'">
-                  <button @click="processComic(pendingComic.id, true, pendingComic.name)" class="y-button">Approve</button>
-                  <button @click="processComic(pendingComic.id, false, pendingComic.name)" class="y-button y-button-red">Reject</button>
+                  <button @click="processComic(pendingComic.id, true, pendingComic.name)" 
+                          v-if="pendingComic.keywords.length > 0 && pendingComic.hasThumbnail"
+                          class="y-button">
+                    Approve
+                  </button>
+                  <button @click="processComic(pendingComic.id, false, pendingComic.name)"
+                          class="y-button y-button-red">
+                    Reject
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -94,14 +101,15 @@ export default {
 	components: {
 		'checkbox-icon': CheckboxIcon,
 		'right-arrow': RightArrow,
-	},
+  },
+  
+  props: {
+    pendingComics: Array,
+  },
 
   data: function () {
     return {
       isOpen: false,
-      pendingComicList: [],
-      comicsMissingKeywords: 0,
-			comicsMissingThumbnails: 0,
 			errorMessage: '',
 			successMessage: '',
     }
@@ -115,21 +123,13 @@ export default {
       
       if (response.success) {
 				this.successMessage = `Success ${isApproved ? 'approving' : 'rejecting'} ${comicName}`
-				this.getPendingComicList()
         if (isApproved) {
-					this.$store.dispatch('loadComicList')
+          this.$emit('refresh-pending-comics')
+          this.$emit('refresh-comic-list')
 				}
 			}
 			else {
 				this.errorMessage = response.message
-			}
-		},
-		
-		async getPendingComicList () {
-			this.pendingComicList = await comicApi.getPendingComics()
-			for (var comic of this.pendingComicList) {
-				if (comic.keywords.length == 0) { this.comicsMissingKeywords++ }
-				if (!comic.hasThumbnail) { this.comicsMissingThumbnails++ }
 			}
 		},
 
@@ -138,8 +138,9 @@ export default {
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
   },
 
-  async created () {
-		this.getPendingComicList()
+  computed: {
+    comicsMissingKeywords () { return this.pendingComics.filter(c => c.keywords.length === 0).length },
+    comicsMissingThumbnails () { return this.pendingComics.filter(c => !c.hasThumbnail).length },
   }
 }
 </script>

@@ -26,7 +26,10 @@ console.log(response)
 	},
 
 	async getPendingComics () {
+		console.log('getting it??')
 		let response = await axios.get(baseUrl + '/pendingcomics')
+		console.log('got it??')
+		console.log(response)
 		if (!response.data.error) { return response.data }
 		else { return [] }
 	},

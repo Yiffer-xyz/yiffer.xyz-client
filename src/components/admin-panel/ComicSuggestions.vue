@@ -6,7 +6,7 @@
     </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
       <p>Comics suggested by users will appear here.</p>
-      <p>
+      <p class="margin-bottom-8">
 				Click 'Added' when the comic has been added to suggestions (here, in the admin panel, via <i>Add new comic</i>).
 				<br/>
 				Click 'Reject' if the comic fails to meet the criteria listed  
@@ -15,7 +15,7 @@
 				Please don't hesitate to ask for opinions in the mod Telegram chat!
 			</p>
 
-      <span v-if="unprocessedSuggestions.length > 0">
+      <div v-if="unprocessedSuggestions.length > 0" class="scrolling-table-container">
         <table class="y-table">
           <thead>
             <tr>
@@ -50,7 +50,7 @@
             </tr>
           </tbody>
         </table>
-      </span>
+      </div>
 
       <span v-else>
         <p>There are currently no new suggestions.</p>
@@ -111,10 +111,6 @@ import comicApi from '../../api/comicApi'
 export default {
   name: 'comicSuggestions',
 
-  props: {
-    comicSuggestionList: Array
-  },
-
 	components: {
 		'down-arrow': DownArrow,
 		'up-arrow': UpArrow,
@@ -127,6 +123,7 @@ export default {
       successMessage: '',
       errorMessage: '',
       showProcessedSuggestions: false,
+      comicSuggestionList: [],
     }
   },
 
@@ -137,11 +134,19 @@ export default {
       if (response.success) {
         this.successMessage = `Successfully processed suggestion of ${suggestionData.name} (${isApproved ? 'added' : 'rejected'})`
         this.errorMessage = ''
-        this.$emit('refresh-comic-suggestions')
+        this.getComicSuggestions()
       }
       else {
         this.errorMessage = 'Error processing comic suggestion: ' + response.message
         this.successMessage = ''
+      }
+    },
+
+    async getComicSuggestions () {
+      this.comicSuggestionList = await comicApi.getSuggestedComicList()
+      
+      for (var suggestion of this.comicSuggestionList) {
+        suggestion.user = suggestion.user || suggestion.userIP
       }
     },
 
@@ -153,6 +158,10 @@ export default {
   computed: {
     unprocessedSuggestions () { return this.comicSuggestionList.filter(s => !s.processed) },
     processedSuggestions () { return this.comicSuggestionList.filter(s => !!s.processed) }
+  },
+
+  created () {
+    this.getComicSuggestions()
   }
 }
 </script>

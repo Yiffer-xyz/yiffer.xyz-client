@@ -106,7 +106,8 @@ export default {
 	},
 
 	props: {
-		comicList: Array
+    comicList: Array,
+    keywordList: Array,
 	},
 
   data: function () {
@@ -195,7 +196,7 @@ export default {
 		},
 		
 		async refreshKeywordList () {
-			this.keywordList = await keywordApi.getKeywordList()
+			this.$emit('refresh-keyword-list')
 		},
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },

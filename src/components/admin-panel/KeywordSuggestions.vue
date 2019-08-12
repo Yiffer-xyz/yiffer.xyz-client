@@ -5,7 +5,7 @@
       <span v-else style="color: #999;">(0)</span>
     </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-      <p>Tags suggested by users pending approval will appear here.</p>
+      <p class="margin-bottom-8">Tags suggested by users pending approval will appear here.</p>
 
       <span v-if="keywordSuggestionList.length > 0">
         <table class="y-table">

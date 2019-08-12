@@ -57,12 +57,12 @@
         <div class="emphasized-keyword">{{$store.getters.expandedComic.tag}}</div>
         <div 
           class="keyword"
-          :class="{'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
-          v-for="keyword in $store.getters.expandedComic.keywords"
-          :key="keyword"
-          @click="addSelectedKeyword(keyword)"
+          :class="{'keyword-filtered': $store.getters.selectedKeywords.includes(keywordName)}"
+          v-for="keywordName in $store.getters.expandedComic.keywords"
+          :key="keywordName"
+          @click="addSelectedKeyword(keywordName)"
         >
-          {{keyword}}
+          {{keywordName}}
         </div>
       </div>
     </div>
@@ -108,8 +108,8 @@ export default {
       if (number > 8.5) { return Math.round(number * 100) / 100 }
 			else { return Math.round(number * 10) / 10 }
     },
-		addSelectedKeyword (keyword) {
-      this.$store.commit('addSelectedKeyword', keyword)
+		addSelectedKeyword (keywordName) {
+      this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName)
     },
     closeCard () {
       this.$store.commit('setExpandedComic', undefined)

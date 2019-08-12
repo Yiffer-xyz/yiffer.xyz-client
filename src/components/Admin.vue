@@ -8,30 +8,34 @@
 	
 			<keyword-suggestions />
 
-			<comic-suggestions :comicSuggestionList="comicSuggestionList"
-				@refresh-comic-suggestions="refreshComicSuggestions"></comic-suggestions>
+			<comic-suggestions />
 
 			<add-page :comicList="alphabeticComicList"
-				@refresh-comic-list="refreshComicList"></add-page>
+								@refresh-comic-list="refreshComicList()" />
 
 			<add-keywords :comicList="alphabeticComicList"
-				@refresh-comic-list="refreshComicList"
-				@refresh-keyword-list="refreshKeywordList"></add-keywords>
+										:keywordList="keywordList"
+										@refresh-comic-list="refreshComicList()"
+										@refresh-keyword-list="refreshKeywordList()" />
 
-			<correct-comic :comicList="alphabeticComicList" :artistList="artistList"
-				@refresh-comic-list="refreshComicList"></correct-comic>
+			<correct-comic :comicList="alphabeticComicList" 
+										 :artistList="artistList"
+										 @refresh-comic-list="refreshComicList()" />
 
 			<page-manager :comicList="alphabeticComicList"
-				@refresh-comic-list="refreshComicList"/>
+										@refresh-comic-list="refreshComicList()" />
 
-			<add-comic :artistList="artistList" :comicList="alphabeticComicList"
-				@refresh-pending-comics="refreshPendingComics"></add-comic>
+			<add-comic :artistList="artistList" 
+								 :comicList="alphabeticComicList"
+								 :keywordList="keywordList"
+								 @refresh-pending-comics="refreshPendingComics()" />
 
 			<add-artist :artistList="artistList"
-				@refresh-artist-list="refreshArtistList"></add-artist>
+									@refresh-artist-list="refreshArtistList()" />
 
-			<pending-comics ref="PendingComics"
-				@refresh-comic-list="refreshComicList"></pending-comics>
+			<pending-comics :pendingComics="pendingComics"
+											@refresh-pending-comics="refreshPendingComics()"
+											@refresh-comic-list="refreshComicList()" />
 
 			<user-manager/>
 
@@ -94,16 +98,15 @@ export default {
 			alphabeticComicList: [],
 			keywordList: [],
 			artistList: [],
-			pendingComicList: [],
 			keywordSuggestionList: [],
-			comicSuggestionList: [],
+			pendingComics: [],
 		}
 	},
 	methods: {
 		async loadData () {
 			this.artistList = await ArtistApi.getArtistList()
-			this.pendingComicList = await comicApi.getPendingComics()
 			this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
+			this.refreshPendingComics()
 		},
 		showLoginModal () {
 			this.$store.commit('setLoginModalVisibility', true)			
@@ -111,17 +114,14 @@ export default {
 		async refreshComicList () {
 			this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
 		},
-		async refreshComicSuggestions() {
-			this.comicSuggestionList = await comicApi.getSuggestedComicList()
-		},
-		refreshKeywordList () {
-			this.keywordList.push({name: 'KW DEMO TEST', count: 0})
-		},
-		async refreshPendingComics () {
-			this.$refs.PendingComics.getPendingComicList()
+		async refreshKeywordList () {
+			this.keywordList = await keywordApi.getKeywordList()
 		},
 		async refreshArtistList () {
 			this.artistList = await ArtistApi.getArtistList()
+		},
+		async refreshPendingComics () {
+			this.pendingComics = await comicApi.getPendingComics()
 		},
   },
   async mounted () {

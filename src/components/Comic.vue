@@ -203,8 +203,6 @@ import Tags from 'vue-material-design-icons/TagMultiple.vue'
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
 
-const jsZipper = require('jszip')
-
 export default {
 	name: 'comic',
 
@@ -353,18 +351,38 @@ export default {
 		},
 
 		async downloadZippedComic () {
+			let needScriptTimeout = loadZippingScripts()
 			this.isZipping = true
-			var jsZipper = new JSZip()
-			let imageFiles = document.getElementsByClassName('comic-page')
-			for (var i=1; i<imageFiles.length+1; i++) {
-				let imageResponse = await fetch(`/comics/${this.comic.name}/${this.formatPageNumber(i)}.jpg`)
-				jsZipper.file(this.formatPageNumber(i)+'.jpg', imageResponse.blob())
-			}
 
-			let zipContent = await jsZipper.generateAsync({type:"blob"})
-			saveAs(zipContent, `${this.comic.name}.zip`)
-			this.isZipping = false
-			this.downloadStarted = true
+			setTimeout(async _ => {
+				var jsZipper = new JSZip()
+				let imageFiles = document.getElementsByClassName('comic-page')
+				for (var i=1; i<imageFiles.length+1; i++) {
+					let imageResponse = await fetch(`/comics/${this.comic.name}/${this.formatPageNumber(i)}.jpg`)
+					jsZipper.file(this.formatPageNumber(i)+'.jpg', imageResponse.blob())
+				}
+	
+				let zipContent = await jsZipper.generateAsync({type:"blob"})
+				saveAs(zipContent, `${this.comic.name}.zip`)
+				this.isZipping = false
+				this.downloadStarted = true
+			}, needScriptTimeout ? 2000 : 1)
+			
+			function loadZippingScripts () {
+				try { 
+					let x = JSZip || saveAs
+					return false
+				} 
+				catch (err) {
+					const jsZipScript = document.createElement('script')
+					jsZipScript.setAttribute('src', 'scripts/jszip.min.js')
+					document.head.appendChild(jsZipScript)
+					const fileSaverScript = document.createElement('script')
+					fileSaverScript.setAttribute('src', 'scripts/Filesaver.min.js')
+					document.head.appendChild(fileSaverScript)
+					return true
+				}
+			}
 		},
 
 		scrollToTop () {
@@ -378,16 +396,6 @@ export default {
 
 
 	async mounted () {
-		try { let x = JSZip || saveAs } 
-		catch (err) {
-			const jsZipScript = document.createElement('script')
-			jsZipScript.setAttribute('src', 'scripts/jszip.min.js')
-			document.head.appendChild(jsZipScript)
-			const fileSaverScript = document.createElement('script')
-			fileSaverScript.setAttribute('src', 'scripts/Filesaver.min.js')
-			document.head.appendChild(fileSaverScript)
-		}
-
 		if (navigator.share === undefined) {
 			// this.showShareIcon = false todo
 		}

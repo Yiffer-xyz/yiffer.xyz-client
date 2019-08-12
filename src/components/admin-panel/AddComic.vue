@@ -196,6 +196,7 @@ export default {
   props: {
     artistList: Array,
     comicList: Array,
+    keywordList: Array,
   },
 
 	components: {
@@ -217,7 +218,6 @@ export default {
       selectedFiles: [],
       selectedKeywords: [],
       thumbnailFile: undefined,
-			keywordList: [],
 			selectedKeyword: undefined,
 			uploadPercent: undefined,
       errorMessage: '',
@@ -297,7 +297,6 @@ export default {
 				this.thumbnailFile = undefined
         document.getElementById('newPageFilesAddComic').value = ''
 				this.$emit('refresh-pending-comics')
-        this.$emit('refresh-comic-list')
       }
       else {
         this.errorMessage = 'Error adding comic: ' + response.message
@@ -319,10 +318,6 @@ export default {
     detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.finished },
     readyForUpload () { return this.detailsFilledIn && this.selectedFiles.length>0 && !this.errorMessageThumbnail }
 	},
-	
-	async mounted () {
-		this.keywordList = await keywordApi.getKeywordList()
-	}
 }
 </script>
 

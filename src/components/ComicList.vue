@@ -28,7 +28,7 @@
 			</div>
 
 			<div class="buttons-container">
-				<span id="upperBodyWidth" class="buttons-container-inner">
+				<span class="upperBodyWidth buttons-container-inner">
 					<div class="upper-body-horiz-row">
 						<table class="horiz-row-inner" id="catTable">
 							<tr>
@@ -248,6 +248,21 @@
 			</comic-card>
 		</div>
 
+
+		<button class="y-button y-button-neutral margin-top-16" @click="scrollToTop()"><up-arrow/> to top</button>
+
+		<div style="display: flex; flex-direction: row; align-items: center; margin: 8px auto 32px auto;" class="upperBodyWidth">
+			<div @click="paginate('down')" class="pagination-button"><left-arrow/></div>
+			<div v-for="(pageNo, index) in paginationButtons"
+					:key="index"
+					:class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
+					class="pagination-button"
+					@click="paginate(pageNo)">
+				{{pageNo}}
+			</div>
+			<div @click="paginate('up')" class="pagination-button"><right-arrow/></div>
+		</div>
+
 		<expanded-comic-card v-show="$store.getters.comicCardExpanded"/>
 	</div>
 </template>
@@ -263,6 +278,7 @@ import DonateIcon from 'vue-material-design-icons/CurrencyUsd.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
+import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import LoginIcon from 'vue-material-design-icons/Login.vue'
 import SignupIcon from 'vue-material-design-icons/AccountPlusOutline.vue'
@@ -271,6 +287,7 @@ import keywordApi from '../api/keywordApi'
 
 export default {
 	name: 'comic-list',
+
 	components: {
 		'comic-card': ComicCard,
 		'comic-card-small': ComicCardSmall,
@@ -281,10 +298,12 @@ export default {
 		'plus-icon': PlusIcon,
 		'cross-icon': CrossIcon,
 		'left-arrow': LeftArrow,
+		'up-arrow': UpArrow,
 		'right-arrow': RightArrow,
 		'login-icon': LoginIcon,
 		'signup-icon': SignupIcon,
 	},
+
 	data: function () {
 		// Initially attempted to not use references like this (and instead only use
 		// vuex state), but it seems vuex isn't quite ready for this yet.
@@ -297,18 +316,26 @@ export default {
 			lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
 			smallPagination: undefined,
 			searchFiltering: '',
+			suppressQueryUpdates: false,
 		}
 	},
+
 	methods: {
 		onCategoryFilterClick (filter) {
 			this.$store.commit('addCategoryFilter', filter)
+			this.setRouterQuery()
 		},
+
 		onTagFilterClick (filter) {
 			this.$store.commit('addTagFilter', filter)
+			this.setRouterQuery()
 		},
+
 		onSortingButtonClick ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
+			this.setRouterQuery()
 		},
+
 		paginate ( pageNumber ) {
 			if ( pageNumber === '...' ) { return }
 			if (pageNumber === 'down') {
@@ -327,6 +354,7 @@ export default {
 			}
 
 			this.setRouterQuery()
+			this.scrollToTop()
 		},
 
 		addSelectedKeyword ( keyword ) {
@@ -337,22 +365,27 @@ export default {
 				this.keywordSearch = ''
 			}
 			keywordApi.logKeywordSearch(keyword)
+			this.setRouterQuery()
 		},
 
 		removeSelectedKeyword ( keyword ) {
 			this.$store.commit('removeSelectedKeyword', keyword)
+			this.setRouterQuery()
 		},
 
 		filterComicByTag ( comicObject ) {
 			return this.$store.getters.categoryFilter.indexOf('All') === 0 || this.$store.getters.categoryFilter.indexOf(comicObject.tag) >= 0
 		},
+
 		filterComicByCategory ( comicObject ) {
 			return this.$store.getters.tagFilter.indexOf('All') === 0 || this.$store.getters.tagFilter.indexOf(comicObject.cat) >= 0
 		},
+
 		filterComicByNameOrArtist ( comicObject ) {
 			return comicObject.name.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0 
 				|| comicObject.artist.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0
 		},
+
 		filterComicByKeywords ( comicObject ) {
 			if ( this.$store.getters.selectedKeywords.length === 0 ) { return true }
 			for (var keyword of this.$store.getters.selectedKeywords) {
@@ -360,23 +393,33 @@ export default {
 			}
 			return true
 		},
+
 		setRouterQuery () {
+			if (this.suppressQueryUpdates) { return }
+
 			let queryObj = {}
-			if (this.$store.getters.categoryFilter.indexOf('All') < 0) {
+			if (!this.$store.getters.categoryFilter.includes('All')) {
 				queryObj.category = this.$store.getters.categoryFilter
 			}
-			if (this.$store.getters.tagFilter.indexOf('All') < 0) {
+			if (!this.$store.getters.tagFilter.includes('All')) {
 				queryObj.classification = this.$store.getters.tagFilter
+			}
+			if (this.$store.getters.sorting !== 'updated') {
+				queryObj.orderBy = this.$store.getters.sorting
 			}
 			if (this.$store.getters.searchFiltering) {
 				queryObj.search = this.$store.getters.searchFiltering
 			}
 			if (this.$store.getters.selectedKeywords.length > 0) { 
-				queryObj.tags = this.$store.getters.selectedKeywords
+				queryObj.tags = this.$store.getters.selectedKeywords.map(kw => kw.name)
 			}
-			this.$router.replace({query: queryObj})
+
+			this.$router.push({path: '/', query: queryObj})
 		},
+
 		setFiltersFromRouterQuery () {
+			this.suppressQueryUpdates = true
+
 			if (!this.$route || !this.$route.query) { return }
 			if (this.$route.query.category) {
 				this.$store.commit('setCategoryFilter', this.listify(this.$route.query.category))
@@ -384,23 +427,53 @@ export default {
 			if (this.$route.query.classification) {
 				this.$store.commit('setTagFilter', this.listify(this.$route.query.classification))
 			}
+			if (this.$route.query.orderBy) {
+				this.$store.commit('setSorting', this.$route.query.orderBy)
+			}
 			if (this.$route.query.search) {
 				this.$store.commit('setSearchFiltering', this.$route.query.search)
 				this.searchFiltering = this.$route.query.search
 			}
 			if (this.$route.query.tags) {
-				this.$store.commit('setSelectedKeywords', this.listify(this.$route.query.tags))
+				if (this.$store.getters.orderedKeywordList 
+						&& this.$store.getters.orderedKeywordList.length > 0) {
+					this.setKeywordsFromQuery()
+				}
+				else {
+					this.$store.watch(this.$store.getters.orderedKeywordListF, _ => {
+						this.setKeywordsFromQuery()
+					})
+				}
+			}
+			else {
+				this.suppressQueryUpdates = false
 			}
 		},
+
+		setKeywordsFromQuery () {
+			let selectedKeywords = []
+			for (let keywordName of this.listify(this.$route.query.tags)) {
+				let keyword = this.$store.getters.orderedKeywordList.find(kw => kw.name === keywordName)
+				if (keyword) {
+					selectedKeywords.push(keyword)
+				}
+			}
+			
+			this.suppressQueryUpdates = false
+			this.$store.commit('setSelectedKeywords', selectedKeywords)
+		},
+
 		showLoginModal ( clickEvent ) {
 			clickEvent.preventDefault()
 			this.$store.commit('setLoginModalVisibility', true)
 		},
+
 		showSignupModal (clickEvent) {
 			clickEvent.preventDefault()
 			this.$store.commit('setLoginModalContext', 'register')
 			this.$store.commit('setLoginModalVisibility', true)
 		},
+
 		setKeywordSearchFocused ( isFocused ) {
 			// Needed because if there is no search term, then technically the results div is 
 			// hidden (by the onblur event invoking this method) before the onclick fires,
@@ -409,35 +482,49 @@ export default {
 			if (this.keywordResultHovered) { this.addSelectedKeyword(this.keywordResultHovered) } 
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
+
 		setDetailLevel ( detailLevel ) {
 			this.$store.commit('setDetailLevel', detailLevel)
 			this.$cookies.set('detail', detailLevel)
 		},
+
 		setViewMode (viewMode) {
 			this.$store.commit('setViewMode', viewMode)
 			this.$cookies.set('viewmode', viewMode)
 		},
+
 		clearSearchField () {
 			this.searchFiltering = ''
+			this.setRouterQuery()
 		},
+
 		clearKeywordSearchField () {
 			this.keywordSearch = ''
 			this.setKeywordSearchFocused(false)
 		},
+
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
 		},
+
 		listify ( input ) {
 			if (typeof(input) === 'string') { return [input] }
 			else { return input }
-		}
+		},
+
+		scrollToTop () {
+			window.scrollTo(0, 0)
+		},
 	},
+
 	watch: {
 		searchFiltering: function () {
 			this.$store.commit('setSearchFiltering', this.searchFiltering)
+			this.setRouterQuery()
 		},
 	},
-  created: async function() {
+
+  async created () {
 		if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
 		if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
 		this.setFiltersFromRouterQuery()
@@ -447,6 +534,7 @@ export default {
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
 	},
+
 	computed: {
 		keywordsMatchingSearch () {
 			return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
@@ -470,7 +558,7 @@ export default {
 				return [1, '...', currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2, '...', pages]
 			}
 		}
-	}
+	},
 }
 </script>
 
@@ -779,7 +867,7 @@ export default {
 	}
 }
 	
-#upperBodyWidth {
+.upperBodyWidth {
 	width: 50%;
 	@media (max-width: 900px) {
 		width: 100%;
