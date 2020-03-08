@@ -53,8 +53,10 @@
 <script>
 import LoginModal from '@/components/LoginModal.vue'
 import VotingModal from '@/components/VotingModal.vue'
+
 export default {
 	components: { 'login-modal': LoginModal, 'voting-modal': VotingModal },
+
 	methods: {
 		setTheme( themeColor ) {
 			document.body.classList.remove('dark')
@@ -80,13 +82,16 @@ export default {
 				this.$cookies.set('theme', 'light')
 			}
 		},
+
 		showLoginModal () {
 			this.$store.commit('setLoginModalVisibility', true)
 		},
+
 		showSignupModal () {
 			this.$store.commit('setLoginModalContext', 'register')
 			this.showLoginModal()
 		},
+
 		logout () {
 			this.$store.dispatch('logout')
 			if (this.$router.history.current.fullPath == '/profile' || this.$router.history.current.fullPath == '/admin') {
@@ -94,9 +99,13 @@ export default {
 			}
 		}
 	},
+
 	data: function () {
-		return { darkTheme: false }
+		return {
+			darkTheme: false
+		}
 	},
+
 	created: function () {
 		this.$store.dispatch('loadComicList')
 		this.$cookies.config('60d')
@@ -107,6 +116,12 @@ export default {
 		}
 		else {
 			this.setTheme('light')
+		}
+	},
+
+	watch: {
+		'$route' (to, from) {
+			console.log('Route changed from ' + from.path + ' to ' + to.path)
 		}
 	}
 }

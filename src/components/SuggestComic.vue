@@ -6,8 +6,9 @@
 			<h1>Suggest new comic</h1>
 			<back-to-index></back-to-index>
 
-			<p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
-			<span style="text-align: left;">
+			<div class="full-width-text">
+				<p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
+
 				<ul>
 					<li>
 						The comic should be at least 4 pages long. If the pages have lots of panels or if the comic is of very high quality, 3-page comics might be accepted.
@@ -25,26 +26,29 @@
 						The comic will not be accepted if it has censoring bars, dots, etc.
 					</li>
 				</ul>
-			</span>
 
-			<div class="vertical-flex" style="align-items: center; max-width: 100%;">
-				<label>Comic name</label>
-				<input type="text" v-model="comicName" style="width: 200px;"/>
+				<div class="vertical-flex margin-top-32">
+					<label>Comic name</label>
+					<input type="text" v-model="comicName" style="width: 200px;"/>
 
-				<label class="margin-top-16">Artist (if known)</label>
-				<input type="text" v-model="artist" style="width: 200px;"/>
+					<label class="margin-top-16">Artist (if known)</label>
+					<input type="text" v-model="artist" style="width: 200px;"/>
 
-				<label class="margin-top-16">Links, comments</label>
-				<textarea type="text" v-model="linksComments" style="width: 400px; max-width: 100%;" rows="4"/>
+					<div style="width: 460px;" class="margin-top-16">
+						<label>Links, comments</label>
+						<textarea type="text" v-model="linksComments" style="width: 100%;" rows="4"/>
+
+						<p class="no-margin-top">
+							Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
+						</p>
+					</div>
+
+					<p class="success-message" v-if="successMessage">{{successMessage}}</p>
+					<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>
+				</div>
+
+				<button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
 			</div>
-
-			<p class="no-margin-top">Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), 
-				 and any other helpful comments you may have.</p>
-
-			<p class="success-message" v-if="successMessage">{{successMessage}}</p>
-			<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>
-
-			<button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
 		</div>
 	</div>
 </template>
