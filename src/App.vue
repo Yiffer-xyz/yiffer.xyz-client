@@ -126,3 +126,9 @@ export default {
 	}
 }
 </script>
+
+<style lang="scss">
+@import "@/scss/button-styles.scss";
+@import "@/scss/text-styles.scss";
+@import "@/scss/general.scss";
+</style>

@@ -31,9 +31,17 @@
 
 			<!-- PAGES AND RATINGS -->
 			<div class="horiz-card-row icons-and-numbers-row">
-				<p title="Number of pages"><pages-icon title="Number of pages"/>{{comic.numberOfPages}}</p>
-				<p title="User rating"><users-icon title="User rating"/>{{formatRating(comic.userRating)}}</p>
-				<p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/>{{comic.yourRating || '-'}}</p>
+				<p title="Number of pages">
+					<pages-icon title="Number of pages"/>{{comic.numberOfPages}}
+				</p>
+
+				<p title="User rating">
+					<users-icon title="User rating"/>{{formatRating(comic.userRating)}}
+				</p>
+
+				<p title="Your rating" v-if="$store.getters.isAuthenticated">
+					<user-icon title="Your rating"/>{{comic.yourRating || '-'}}
+				</p>
 			</div>
 
 			<!-- ALL KEYWORDS -->
@@ -65,10 +73,9 @@
 			</div>
 
 
-			<voting-button
-				style="margin-top: 7px;"
-				:comic="comic"
-				v-if="$store.getters.isAuthenticated"></voting-button>
+			<voting-button style="margin-top: 7px;"
+										 :comic="comic"
+										 v-if="$store.getters.isAuthenticated"/>
 
 			<p v-if="$store.getters.detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
 				<label title="Updated on"><refresh-icon title="Updated on"/> {{prettyDate(comic.updated)}}</label> <br/>

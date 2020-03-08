@@ -1,8 +1,12 @@
 <template>
-	<button class="y-button" @click="showVotingOrLoginModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
+	<button class="y-button voting-button-todo" 
+					@click="showVotingOrLoginModal()" 
+					:class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
+
 		<span v-if="$store.getters.isAuthenticated">
 			<star-icon/> Rate
 		</span>
+
 		<span v-else>
 			<login-icon/> Log in to rate
 		</span>
@@ -37,39 +41,9 @@ export default {
 </script>
 
 <style lang="scss">
-.voting-button {
-	box-shadow: 0px 1px 1px 0px rgba(130,130,130,1);
-	text-decoration: none;
-	border-style: solid;
-	padding: 2px;
-	border: none;
-	border-radius: 7px;
-
-	span {
-		align-items: center;
-		background: white;
-		background: transparent !important;
-		display: flex;
-		justify-content: center;
-		height: 100%;
-		width: 100%;
-		border-radius: 5px;
-		p {
-			margin: 4px 8px;
-			font-family: 'Open Sans', sans-serif;
-			color: white;
-			font-weight: 400;
-		}
-	}
-
-	&:hover {
-		cursor: pointer;
-		span {
-			background: transparent !important;
-			p {
-				color: white;
-			}
-		}
+.voting-button-todo {
+	@media (max-width: 900px) {
+		padding: 2px 9px 2px 6px !important;
 	}
 }
 </style>

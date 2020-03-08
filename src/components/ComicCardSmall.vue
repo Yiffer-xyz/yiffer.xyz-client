@@ -35,12 +35,20 @@
 
       <!-- PAGES, VOTES -->
       <div style="display: flex; flex-direction: row; font-weight: 300; font-size: 13px;">
-        <p title="Number of pages"><pages-icon title="Number of pages"/>
-          {{comic.numberOfPages}}</p>
-        <p title="User rating"><users-icon title="User rating" style="margin-left: 16px;"/>
-          {{formatRating(comic.userRating)}}</p>
+        <p title="Number of pages">
+          <pages-icon title="Number of pages"/>
+          {{comic.numberOfPages}}
+        </p>
+
+        <p title="User rating">
+          <users-icon title="User rating" style="margin-left: 16px;"/>
+          {{formatRating(comic.userRating)}}
+        </p>
+
         <p title="Your rating" v-if="$store.getters.isAuthenticated" style="margin-left: 16px;">
-          <user-icon title="Your rating"/> {{comic.yourRating || '-'}}</p>
+          <user-icon title="Your rating"/>
+          {{comic.yourRating || '-'}}
+        </p>
       </div>
 
       <!-- TAGS -->

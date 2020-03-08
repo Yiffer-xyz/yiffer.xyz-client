@@ -1,6 +1,4 @@
 @import "colors.scss";
-@import "button-styles.scss";
-@import "text-styles.scss";
 @import "shadows.scss";
 
 #app {
@@ -158,14 +156,6 @@ select {
 .keyword-to-be-deleted {
   color: $themeRed !important;
   text-decoration: line-through;
-}
-
-.comic-card-container {
-	display: flex;
-	flex-direction: row;
-	width: 100%;
-	flex-wrap: wrap;
-	justify-content: center;
 }
 
 .keyword, .keyword-static {
