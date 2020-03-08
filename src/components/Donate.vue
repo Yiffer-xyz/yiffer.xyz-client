@@ -4,7 +4,7 @@
     <h1>Donating</h1>
     <back-to-index></back-to-index>
 
-    <div class="whole-body-text">
+    <div class="full-width-text">
       <p>
         <b>Why?</b><br/>
         As you may have noticed, this website does not have any ads. This is because we want to provide you with the best possible browsing experience. This also means that we do not make any money in any way. Hosting this website definitely isn't free, and it has been funded by one owner's pocket money from day one. If you are a frequent user of this site and feel like we're worth it, please consider helping out with a few bucks!
@@ -21,7 +21,7 @@
         <b>How to donate</b><br/>
         Paypal! We previously used ko-fi until the account was suspended for being related to adult content. It seems Paypal is the only reliable option left. We know many people don't like Paypal, sorry!
         <br/>
-        <ul style="padding-left: 20px;">
+        <ul style="padding-left: 20px; margin-bottom: 16px;">
           <li>
             If you'd like to donate with cryptocurrency or any other form of payment, please send an email to "malann.sjakk@gmail.com".
           </li>
@@ -35,7 +35,8 @@
             Please <u>do not check the box "Paying for goods or services" when paying via Paypal</u>, as this is considered a donation, not a purchase.
           </li>
         </ul>
-        <a href="https://www.paypal.me/yifferxyz" target="_blank" style="margin-top: 8px;">
+
+        <a href="https://www.paypal.me/yifferxyz" target="_blank">
           <button class="y-button" style="width: 100%; padding: 12px; font-size: 16px;">
             <paypal-icon/> Help us out!
           </button>

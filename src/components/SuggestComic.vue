@@ -1,54 +1,51 @@
 <template>
 	<div style="width: 100%">
-		<div class="whole-body-text whole-body-text-centered">
+		<vue-headful :title="'Profile - Yiffer.xyz'"/>
+		<h1>Suggest new comic</h1>
+		<back-to-index></back-to-index>
 
-			<vue-headful :title="'Profile - Yiffer.xyz'"/>
-			<h1>Suggest new comic</h1>
-			<back-to-index></back-to-index>
+		<div class="full-width-text margin-top-12">
+			<p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
 
-			<div class="full-width-text">
-				<p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
+			<ul>
+				<li>
+					The comic should be at least 4 pages long. If the pages have lots of panels or if the comic is of very high quality, 3-page comics might be accepted.
+				</li>
+				<li>
+					The comic will not be accepted if it is of low quality ("poorly drawn").
+				</li>
+				<li>
+					The comic <i>might</i> not be accepted if it is uncolored.
+				</li>
+				<li>
+					The comic will not be accepted if it is not in English.
+				</li>
+				<li>
+					The comic will not be accepted if it has censoring bars, dots, etc.
+				</li>
+			</ul>
 
-				<ul>
-					<li>
-						The comic should be at least 4 pages long. If the pages have lots of panels or if the comic is of very high quality, 3-page comics might be accepted.
-					</li>
-					<li>
-						The comic will not be accepted if it is of low quality ("poorly drawn").
-					</li>
-					<li>
-						The comic <i>might</i> not be accepted if it is uncolored.
-					</li>
-					<li>
-						The comic will not be accepted if it is not in English.
-					</li>
-					<li>
-						The comic will not be accepted if it has censoring bars, dots, etc.
-					</li>
-				</ul>
+			<div class="vertical-flex margin-top-32">
+				<label>Comic name</label>
+				<input type="text" v-model="comicName" style="width: 200px;"/>
 
-				<div class="vertical-flex margin-top-32">
-					<label>Comic name</label>
-					<input type="text" v-model="comicName" style="width: 200px;"/>
+				<label class="margin-top-16">Artist (if known)</label>
+				<input type="text" v-model="artist" style="width: 200px;"/>
 
-					<label class="margin-top-16">Artist (if known)</label>
-					<input type="text" v-model="artist" style="width: 200px;"/>
+				<div style="width: 460px;" class="margin-top-16">
+					<label>Links, comments</label>
+					<textarea type="text" v-model="linksComments" style="width: 100%;" rows="4"/>
 
-					<div style="width: 460px;" class="margin-top-16">
-						<label>Links, comments</label>
-						<textarea type="text" v-model="linksComments" style="width: 100%;" rows="4"/>
-
-						<p class="no-margin-top">
-							Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
-						</p>
-					</div>
-
-					<p class="success-message" v-if="successMessage">{{successMessage}}</p>
-					<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>
+					<p class="no-margin-top">
+						Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
+					</p>
 				</div>
 
-				<button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
+				<p class="success-message" v-if="successMessage">{{successMessage}}</p>
+				<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>
 			</div>
+
+			<button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
 		</div>
 	</div>
 </template>

@@ -12,6 +12,7 @@
 	background-color: $theme5;
 	color: white;
 	border: none;
+	width: fit-content;
 
 	&:hover {
 		background-color: $theme4;
@@ -186,75 +187,75 @@
 }
 
 .dark {
-			.y-button {
+	.y-button {
+		background-color: $theme4p5;
+		&:hover {
+			background-color: $theme3;
+		}
+	}
+
+	.y-button-red {
+		background-color: $themeRed1;
+		&:hover {
+			background-color: $themeRed0p5;
+		}
+	}
+
+	.y-button-disabled {
+		background-color: $themeGray7 !important;
+		color: #333;
+		&:hover {
+			background-color: $themeGray7 !important;
+		}
+	}
+
+	.y-button-neutral {
+		background-color: $themeDark1 !important;
+		&:hover {
+			background-color: $themeDark2 !important;
+		}
+	}
+
+	.y-button-transparent {
+		background-color: transparent !important;
+		color: $themeGray3;
+		border: 1px solid $themeGray3;
+		&:hover {
+			background-color: $themeGray3 !important;
+			border-color: $themeGray3;
+			color: black;
+		}
+	}
+
+	.pretty-input-upload {
+		background: $themeDark1;
+
+		&:hover {
+			background-color: $themeDark2;
+		}
+	}
+
+	.comic-card {
+		background-color: $themeDark3;
+		p, div, .fas {
+			color: #ddd; //todo
+		}
+		box-shadow: none;
+		&:hover {
+			box-shadow: 0 0 10px 1px $theme3;
+		}
+
+		.y-button {
+			background-color: $theme4p5;
+			span {
 				background-color: $theme4p5;
-				&:hover {
+			}
+			&:hover {
+				background-color: $theme3;
+				span {
 					background-color: $theme3;
 				}
 			}
-
-			.y-button-red {
-				background-color: $themeRed1;
-				&:hover {
-					background-color: $themeRed0p5;
-				}
-			}
-
-			.y-button-disabled {
-				background-color: $themeGray7 !important;
-				color: #333;
-				&:hover {
-					background-color: $themeGray7 !important;
-				}
-			}
-
-			.y-button-neutral {
-				background-color: $themeDark1 !important;
-				&:hover {
-					background-color: $themeDark2 !important;
-				}
-			}
-
-			.y-button-transparent {
-				background-color: transparent !important;
-				color: $themeGray3;
-				border: 1px solid $themeGray3;
-				&:hover {
-					background-color: $themeGray3 !important;
-					border-color: $themeGray3;
-					color: black;
-				}
-			}
-
-			.pretty-input-upload {
-				background: $themeDark1;
-
-				&:hover {
-					background-color: $themeDark2;
-				}
-			}
-
-			.comic-card {
-				background-color: $themeDark3;
-				p, div, .fas {
-					color: #ddd; //todo
-				}
-				box-shadow: none;
-				&:hover {
-					box-shadow: 0 0 10px 1px $theme3;
-				}
-		
-				.y-button {
-					background-color: $theme4p5;
-					span {
-						background-color: $theme4p5;
-					}
-					&:hover {
-						background-color: $theme3;
-						span {
-							background-color: $theme3;
-						}
-					}
-				}
-			}
+		}
+	}
 }

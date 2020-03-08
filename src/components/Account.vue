@@ -1,33 +1,60 @@
 <template>
 	<div style="width: 100%">
-		<div class="whole-body-text whole-body-text-centered">
 
-			<vue-headful :title="'Account - Yiffer.xyz'"/>
-			<h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
-			<back-to-index></back-to-index>
+		<vue-headful :title="'Account - Yiffer.xyz'"/>
+		<h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
+		<back-to-index style="margin: auto;"/>
 
-			<span class="margin-top-8"><b>Donator</b>: {{$store.getters.userData.donator ? 'yes' : 'no'}}</span>
+		<div class="smaller-width-text vertical-flex center-on-mobile">
+			<button v-if="!isChangingPassword"
+							@click="isChangingPassword=true"
+							class="y-button y-button-neutral margin-top-16"
+							style="width: fit-content;">
+				Change password
+			</button>
 
-			<b class="margin-top-8">Change password</b>
-			<table id="changePasswordTable">
-				<tr>
-					<td><label>Current password: </label> </td>
-					<td><input v-model="currentPassword" type="password" class="margin-top-4"/></td>
-				</tr>
-				<tr>
-					<td><label>New password: </label></td>
-					<td><input v-model="newPassword1" type="password" class="margin-top-4"/></td>
-				</tr>
-				<tr>
-					<td><label>Repeat new password: </label></td>
-					<td><input v-model="newPassword2" type="password" class="margin-top-4"/></td>
-				</tr>
-			</table>
+			<div v-if="isChangingPassword" class="margin-top-16">
+				<b>Change password</b>
+				<table id="changePasswordTable">
+					<tr>
+						<td><label>Current password: </label> </td>
+						<td><input v-model="currentPassword" type="password" class="margin-top-4"/></td>
+					</tr>
+					<tr>
+						<td><label>New password: </label></td>
+						<td><input v-model="newPassword1" type="password" class="margin-top-4"/></td>
+					</tr>
+					<tr>
+						<td><label>Repeat new password: </label></td>
+						<td><input v-model="newPassword2" type="password" class="margin-top-4"/></td>
+					</tr>
+				</table>
+
+				<div style="margin: 4px auto 0 auto; width: fit-content;">
+					<button @click="cancelChangePassword"
+									class="y-button y-button-neutral">
+						Cancel
+					</button>
+
+					<button @click="submitChangePassword"
+									class="y-button" 
+									style="width: fit-content; margin-left: 8px;">
+						Change password
+					</button>
+				</div>
+			</div>
 
 			<p class="error-message" v-if="errorMessagePassword">{{errorMessagePassword}}</p>
 			<p class="success-message" v-if="successMessagePassword">{{successMessagePassword}}</p>
-			
-			<button @click="submitChangePassword()" class="y-button margin-top-16">Submit password change</button>
+
+			<div class="margin-top-16" v-show="!isChangingPassword">
+				<b>Donator</b>: {{$store.getters.userData.donator ? 'Yes' : 'No'}}
+			</div>
+
+			<div class="margin-top-16" v-show="!isChangingPassword">
+				<b>Tag blacklist</b>
+				<p style="font-style: italic; margin-top: 0;">Coming soon!</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -44,11 +71,12 @@ export default {
 
 	data: function () {
 		return {
-			'currentPassword': '',
-			'newPassword1': '',
-			'newPassword2': '',
-			'errorMessagePassword': '',
-			'successMessagePassword': '',
+			isChangingPassword: false,
+			currentPassword: '',
+			newPassword: '',
+			newPassword2: '',
+			errorMessagePassword: '',
+			successMessagePassword: '',
 		}
 	},
 
@@ -66,16 +94,21 @@ export default {
 			}
 			if (response.success) {
 				this.successMessagePassword = 'Password changed successfully!'
-				this.errorMessagePassword = ''
-				this.currentPassword = ''
-				this.newPassword1 = ''
-				this.newPassword2 = ''
+				this.cancelChangePassword()
 			}
 			else {
 				this.errorMessagePassword = `Error changing password: ${response.message}`
 				this.successMessagePassword = ''
 			}
 		},
+
+		cancelChangePassword () {
+			this.errorMessagePassword = ''
+			this.currentPassword = ''
+			this.newPassword1 = ''
+			this.newPassword2 = ''
+			this.isChangingPassword = false
+		}
 	},
 	
   created: async function () {
