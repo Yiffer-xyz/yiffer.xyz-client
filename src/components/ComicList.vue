@@ -79,12 +79,12 @@
 									@click="onTagFilterClick('F')">
 									F
 								</td>
-								<td
+								<td style="padding-left: 4px; padding-right: 4px;"
 									:class="{'button-selected': $store.getters.tagFilter.indexOf('MF') >= 0}"
 									@click="onTagFilterClick('MF')">
 									MF
 								</td>
-								<td
+								<td style="padding-left: 4px; padding-right: 4px;"
 									:class="{'button-selected': $store.getters.tagFilter.indexOf('MM') >= 0}"
 									@click="onTagFilterClick('MM')">
 									MM
@@ -94,7 +94,7 @@
 									@click="onTagFilterClick('FF')">
 									FF
 								</td>
-								<td
+								<td style="padding-left: 4px; padding-right: 4px;"
 									:class="{'button-selected': $store.getters.tagFilter.indexOf('MF+') >= 0}"
 									@click="onTagFilterClick('MF+')">
 									MF+
@@ -122,7 +122,7 @@
 								</div>
 							</div>
 
-							<div class="search-wrapper">
+							<div class="search-wrapper" id="searchWrapper">
 								<span class="input-icon-wrapper input-icon-wrapper-left"><tags-icon title=""/></span>
 								<input 
 									type="text"
@@ -189,9 +189,9 @@
 					</div>
 					
 
-					<div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly; width: fit-content; margin-left: auto; margin-right: auto;">
+					<div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly; width: fit-content; margin-left: auto; margin-right: auto; border: none;">
 						<!-- MOBILE VIEW: LIST OR CARD -->
-						<table class="horiz-row-inner" style="width: auto;" v-if="$breakpoint.xsOnly">
+						<table class="horiz-row-inner horiz-row-inner-border" style="width: auto; margin-right: 30px;" v-if="$breakpoint.xsOnly">
 							<tr>
 								<td
 									@click="setViewMode('list')"
@@ -209,7 +209,7 @@
 						</table>
 						
 						<!-- BIG VIEW: DETAIL LEVEL -->
-						<table class="horiz-row-inner" style="width: auto;">
+						<table class="horiz-row-inner horiz-row-inner-border" style="width: auto;">
 							<tr>
 								<td
 									@click="setDetailLevel('low')"
@@ -847,6 +847,9 @@ export default {
 		}
 	}
 	.upper-body-horiz-row {
+		border: 1px solid $themeDark2;
+	}
+	.horiz-row-inner-border {
 		border: 1px solid $themeDark2;
 	}
 	.horiz-row-inner td, .pagination-button {

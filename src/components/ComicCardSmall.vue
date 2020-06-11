@@ -184,4 +184,9 @@ $comicCardSmallPadding: 6px;
     border-top-left-radius: 0px;
   }
 }
+.dark {
+  .comic-card-small {
+    background-color: $themeDark3;
+  }
+}
 </style>

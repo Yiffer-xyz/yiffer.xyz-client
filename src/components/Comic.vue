@@ -512,7 +512,7 @@ a {
 
 #comicSizingButtonsRow {
 	.y-button {
-		margin: 0px 2px;
+		margin: 0px 4px;
 	}
 }
 </style>

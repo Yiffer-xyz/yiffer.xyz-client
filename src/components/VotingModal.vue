@@ -40,19 +40,6 @@ export default {
 
 
 <style lang="scss">
-.modal-backdrop {
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background: rgba(255, 255, 255, 0.6);
-	z-index: 5;
-	&:hover {
-		cursor: pointer;
-	}
-}
-
 .voting-modal {
 	position: fixed;
 	top: 50%;
@@ -106,10 +93,6 @@ export default {
 		label {
 			color: #ccc;
 		}
-	}
-
-	.modal-backdrop {
-		background-color: rgba(255, 255, 255, 0.4);
 	}
 }
 </style>

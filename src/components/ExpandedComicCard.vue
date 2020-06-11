@@ -174,15 +174,21 @@ $comicCardPadding: 10px;
         }
       }
 
-    .added-created-container {
-      display: flex;
-      flex-direction: row;
-      margin-top: 8px;
-      label {
-        margin: 0 5px;
-      }
+      .added-created-container {
+        display: flex;
+        flex-direction: row;
+        margin-top: 8px;
+        label {
+          margin: 0 5px;
+        }
+      } 
     }
-    }
+  }
+}
+
+.dark {
+  .expanded-comic-card {
+    background-color: $themeDark3;
   }
 }
 </style>
