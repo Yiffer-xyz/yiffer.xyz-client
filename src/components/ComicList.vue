@@ -129,6 +129,7 @@
 									name="someName" 
 									placeholder="tags"
 									id="keywordSearch"
+									autocomplete="off"
 									class="upper-body-searchbox"
 									v-model="keywordSearch"
 									@click="lastActionWasDeselectingKeyword = false"
@@ -154,7 +155,8 @@
 							</div>
 						</div>
 					</div>
-						<div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" class="upper-body-horiz-row" style="margin-top: 0px;">
+						<div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" 
+								 class="upper-body-horiz-row" style="margin-top: 0px; border: none;">
 							<div 
 								v-for="keywordObject in $store.getters.selectedKeywords" 
 								:key="keywordObject.id"
@@ -225,7 +227,7 @@
 						</table>
 					</div>
 
-					<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row">
+					<div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row" id="upperPaginationButtons">
 						<div @click="paginate('down')" class="pagination-button"><left-arrow/></div>
 						<div v-for="(pageNo, index) in paginationButtons"
 								:key="index"
@@ -243,7 +245,7 @@
 		<div class="comic-card-small-container" v-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
 			<comic-card-small v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic"/>
 		</div>
-		<div class="comic-card-container" v-else>
+		<div v-else class="comic-card-container" id="comicCardContainerList">
 			<comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic">
 			</comic-card>
 		</div>
@@ -252,15 +254,15 @@
 		<button class="y-button y-button-neutral margin-top-16" @click="scrollToTop()"><up-arrow/> to top</button>
 
 		<div style="display: flex; flex-direction: row; align-items: center; margin: 8px auto 32px auto;" class="upperBodyWidth">
-			<div @click="paginate('down')" class="pagination-button"><left-arrow/></div>
+			<div @click="paginate('down', shouldScrollToTopOfList=true)" class="pagination-button"><left-arrow/></div>
 			<div v-for="(pageNo, index) in paginationButtons"
 					:key="index"
 					:class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
 					class="pagination-button"
-					@click="paginate(pageNo)">
+					@click="paginate(pageNo, shouldScrollToTopOfList=true)">
 				{{pageNo}}
 			</div>
-			<div @click="paginate('up')" class="pagination-button"><right-arrow/></div>
+			<div @click="paginate('up', shouldScrollToTopOfList=true)" class="pagination-button"><right-arrow/></div>
 		</div>
 
 		<expanded-comic-card v-show="$store.getters.comicCardExpanded"/>
@@ -336,7 +338,7 @@ export default {
 			this.setRouterQuery()
 		},
 
-		paginate ( pageNumber ) {
+		paginate ( pageNumber, shouldScrollToTopOfList=false ) {
 			if ( pageNumber === '...' ) { return }
 			if (pageNumber === 'down') {
 				if (this.$store.getters.pageNumber > 1) {
@@ -354,7 +356,11 @@ export default {
 			}
 
 			this.setRouterQuery()
-			this.scrollToTop()
+	
+			if (shouldScrollToTopOfList) {
+				let upperPaginationButtons = document.getElementById('upperPaginationButtons')
+				upperPaginationButtons.scrollIntoView()
+			}
 		},
 
 		addSelectedKeyword ( keyword ) {

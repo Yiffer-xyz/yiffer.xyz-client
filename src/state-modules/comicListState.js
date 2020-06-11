@@ -80,6 +80,7 @@ export default {
 		},
 		setSorting: (state, newSorting) => {
 			if (!newSorting) { newSorting = state.sorting }
+
 			state.sorting = newSorting
 			state.pageNumber = 1
 			state.comicList.sort( (c1, c2) => {
@@ -87,6 +88,7 @@ export default {
 				else if ( c1[state.sorting] > c2[state.sorting] ) { return -1 }
 				else { return 0 }
 			})
+
 			recalculateFilteredComics(state)
 		},
 		setSearchFiltering: (state, newSearchFiltering) => {
@@ -191,6 +193,7 @@ export default {
 
 function recalculateFilteredComics (state) {
 	if (typeof state.comicList !== "object") { return }
+	
 	let filteredComics = state.comicList
 		.filter(comicObj => state.categoryFilter.indexOf('All')===0 || state.categoryFilter.indexOf(comicObj.tag)>=0)
 		.filter(comicObj => state.tagFilter.indexOf('All')===0 || state.tagFilter.indexOf(comicObj.cat)>=0)

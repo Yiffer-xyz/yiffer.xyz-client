@@ -5,8 +5,6 @@ let baseUrl = config.apiBaseUrl
 export default {
 	async getComics () {
 		let response = await axios.get(baseUrl + '/comics')
-console.log(response)
-		// err.response
 		for (var comic of response.data) {
 			comic.created = new Date(comic.created)
 			comic.updated = new Date(comic.updated)

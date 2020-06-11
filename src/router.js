@@ -62,6 +62,7 @@ export default new Router({
 		},
 	],
 	scrollBehavior ( to, from, savedPosition ) {
+		if (to.path === '/' && from.path === '/') { return }
 		if ( savedPosition ) { return savedPosition }
 		else { return {x: 0, y: 0} }
 	}
