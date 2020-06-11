@@ -34,7 +34,9 @@
               {{keyword.name}}
             </option>
           </select>
-          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
+          <button @click="addSelectedKeyword()" class="y-button y-button-small y-button-neutral" style="width: 100%; margin-top: 1px;">
+            <right-arrow/>
+          </button>
         </div>
       
         <div class="vertical-flex">
@@ -46,7 +48,7 @@
             {{keyword.name}}
            </p>
           <button class="y-button" v-if="selectedKeywords.length > 0"
-                  @click="confirmAddKeywords()" style="margin-top: 6px;">
+                  @click="confirmAddKeywords()" style="margin: 6px auto 0 auto;">
             Add tags
           </button>
         </div>

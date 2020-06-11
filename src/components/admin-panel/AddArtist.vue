@@ -12,10 +12,8 @@
       <p class="error-message" v-if="newArtistErrorMessage" style="margin-top: 8px;">{{newArtistErrorMessage}}</p>
       <p class="success-message" v-if="newArtistSuccessMessage" style="margin-top: 8px;">{{newArtistSuccessMessage}}</p>
 
-      <h2 style="margin-top: 32px;">Add artist links</h2>
-      <p>Any art website such as FurAffinity, Twitter, Pixiv, Weasyl, Furry Network,<br/>
-        Artist's own website,
-        <br/>e621.net with order:score, so for example <span class="courier">https://e621.net/post/index/1/Braeburned%20order:score</span></p>
+      <h2 style="margin-top: 32px;">Manage artist links</h2>
+      <p>Add links for any art website such as FurAffinity, Twitter, Pixiv, Weasyl, Furry Network, Artist's own website.
 
       <div class="horizontal-flex margin-top-8" style="align-items: center; margin-bottom: 8px;">
         <p style="margin-right: 8px;">Artist:</p>
@@ -26,14 +24,18 @@
         </select>
       </div>
 
-      <span v-if="artist">
+      <span v-if="artist" class="vertical-flex" style="align-items: center;">
+        <p class="admin-mini-header no-margin-bot">Current links</p>
+        <p>Kommer her</p>
+
+        <p class="admin-mini-header no-margin-bot margin-top-8">Add links</p>
+
         <input type="text" v-model="link1" class="artist-link-input"/>
         <input type="text" v-model="link2" class="artist-link-input"/>
         <input type="text" v-model="link3" class="artist-link-input"/>
         <input type="text" v-model="link4" class="artist-link-input"/>
         <input type="text" v-model="link5" class="artist-link-input"/>
         <input type="text" v-model="link6" class="artist-link-input"/>
-        <br/>
         
         <button @click="addArtistLinks()" class="y-button" style="margin-top: 8px;">Add links</button>
       </span>

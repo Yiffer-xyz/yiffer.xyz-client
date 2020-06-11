@@ -1,10 +1,10 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Add pages to comic</h2>
-    <span class="admin-content-box-inner" v-if="isOpen">
+    <span class="admin-content-box-inner description-text" v-if="isOpen">
       <p>
-        Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
-        If adding multiple pages, it is <i>very important</i> that they are named in some 
+        - Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
+        - If adding multiple pages, it is <i>very important</i> that they are named in some 
         ascending order.<br/>
         Example:
         <span class="courier">[01.jpg, 02.jpg, ...]</span>, or 

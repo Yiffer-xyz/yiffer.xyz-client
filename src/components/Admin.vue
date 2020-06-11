@@ -177,12 +177,22 @@ export default {
 		cursor: pointer;
 	}
 
+	.description-text {
+		text-align: left;
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+
 	@media (max-width: 900px) {
 		height: auto;
 		padding: 4px;
 		margin: 8px 2px;
 		h2 {
 			font-size: 20px;
+		}
+		.description-text {
+			margin-left: 10px;
+			margin-right: 10px;
 		}
 	}
 }

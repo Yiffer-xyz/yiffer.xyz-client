@@ -1,11 +1,12 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Add new comic</h2>
-    <span class="admin-content-box-inner" v-if="isOpen">
+    <span class="admin-content-box-inner description-text" v-if="isOpen">
 
+      <span style="max-width: 700px;">
       <p>
-        Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
-        It is <i>very important</i> that pages are named in some ascending order.<br/>
+        - Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
+        - It is <i>very important</i> that pages are named in some ascending order.<br/>
         Example:
         <span class="courier">[01.jpg, 02.jpg, ...]</span>, or 
         <span class="courier">[a.jpg, b.jpg, ...]</span>. Note that
@@ -13,17 +14,18 @@
       </p>
 
       <p class="margin-top-8">
-        Adding a thumbnail is optional. If you don't someone else will later. <br/>
-        Thumbnails are precisely <u>200x283</u> pixels.<br/>
-        If the comic has a cover page, this should be used in the thumbnail. Otherwise, choose an image representing the comic well,
+        - Adding a thumbnail is optional. If you don't someone else will later. <br/>
+        - Thumbnails are precisely <u>200x283</u> pixels.<br/>
+        - If the comic has a cover page, this should be used in the thumbnail. Otherwise, choose an image representing the comic well,
         but not too lewd if possible.<br/>
-        GIMP is a great tool for making thumbnails. Don't use MSPaint, it destroys the image when scaling.
+        - GIMP is a great tool for making thumbnails. Don't use MSPaint, it destroys the image when scaling.
       </p>
 
       <p class="margin-top-8">
-        Adding tags is also optional. Again, someone else will have to do it if you don't. 
+        - Adding tags is also optional. Again, someone else will have to do it if you don't. 
         You can also add tags after finishing this, from the "Pending comics" list.
       </p>
+      </span>
 
       <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">
         Comic details <checkbox-icon v-if="detailsFilledIn"/>
@@ -101,8 +103,8 @@
           </option>
         </select>
         <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
-                style="margin-left: 4px;" @click="removePreviousLink()">
-          <cross-icon/> remove link
+                style="margin-left: 4px; margin-top: 2px;" @click="removePreviousLink()">
+          <cross-icon/> Remove link
         </button>
       </div>
       <div class="horizontal-flex flex-wrap margin-top-4">
@@ -113,8 +115,8 @@
           </option>
         </select>
         <button v-if="nextComic" class="y-button y-button-neutral button-with-icon" 
-                style="margin-left: 4px;" @click="removeNextLink()">
-          <cross-icon/> remove link
+                style="margin-left: 4px; margin-top: 2px;" @click="removeNextLink()">
+          <cross-icon/> Remove link
         </button>
       </div>
 
@@ -150,7 +152,9 @@
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
-          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()"><right-arrow/></button>
+          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()" style="width: 100%; margin-top: 1px;">
+            <right-arrow/>
+          </button>
         </div>
       
         <div class="vertical-flex" style="margin-left: 15px;">

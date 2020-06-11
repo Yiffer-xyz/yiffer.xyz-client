@@ -4,13 +4,16 @@
       <span v-if="unprocessedSuggestions.length>0" class="red-color"> ({{unprocessedSuggestions.length}})</span>
       <span v-else style="color: #999;">(0)</span>
     </h2>
-    <span class="admin-content-box-inner" v-if="isOpen">
+    <span class="admin-content-box-inner description-text" v-if="isOpen">
       <p>Comics suggested by users will appear here.</p>
       <p class="margin-bottom-8">
-				Click 'Added' when the comic has been added to suggestions (here, in the admin panel, via <i>Add new comic</i>).
+				- Click '<u>Added</u>' when the comic has been uploaded (here, in the admin panel, via <i>Add new comic</i>). Please don't choose this before you have uploaded the comic.
 				<br/>
-				Click 'Reject' if the comic fails to meet the criteria listed  
-				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. 
+				- Click '<u>Reject, add to rejected-list</u>' if the comic fails to meet the criteria listed  
+				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. This will show up in the list of previously rejected comics, along with the reason.
+				<br/>
+        - Click '<u>Reject as spam/dupl.</u>' if the comic has been suggested before, or if it's not a serious suggestion.
+				<br/>
 				<br/>
 				Please don't hesitate to ask for opinions in the mod Telegram chat!
 			</p>
@@ -40,10 +43,16 @@
 										style="margin-right: 2px;">
 										Added
 									</button>
+									<button 
+										@click="processSuggestion(suggestion, true)"
+										class="y-button y-button-red no-margin-bot"
+										style="margin-right: 2px;">
+										Reject, add to rejected-list
+									</button>
 									<button
 										@click="processSuggestion(suggestion, false)"
 										class="y-button y-button-red no-margin-bot">
-										Reject
+										Reject as spam/dupl.
 									</button>
 								</div>
               </td>

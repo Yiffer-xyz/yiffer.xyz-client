@@ -64,6 +64,9 @@ select {
 		word-break: normal;
 		word-wrap: none;
 	}
+	table {
+		white-space: nowrap;
+	}
 }
 
 .no-margin-bot {

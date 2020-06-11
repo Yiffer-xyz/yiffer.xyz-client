@@ -76,8 +76,8 @@
               </option>
             </select>
           <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
-                  style="margin-left: 4px;" @click="removePreviousLink()">
-            <cross-icon/> remove link
+                  style="margin-left: 4px; margin-top: 2px;" @click="removePreviousLink()">
+            <cross-icon/> Remove link
           </button>
         </div>
         <!-- NEXT COMIC -->
@@ -89,8 +89,8 @@
               </option>
             </select>
           <button v-if="nextComic" class="y-button y-button-neutral button-with-icon"
-                  style="margin-left: 4px;" @click="removeNextLink()">
-            <cross-icon/> remove link
+                  style="margin-left: 4px; margin-top: 2px;" @click="removeNextLink()">
+            <cross-icon/> Remove link
           </button>
         </div>
 

@@ -189,7 +189,7 @@
 					</div>
 					
 
-					<div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly;">
+					<div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly; width: fit-content; margin-left: auto; margin-right: auto;">
 						<!-- MOBILE VIEW: LIST OR CARD -->
 						<table class="horiz-row-inner" style="width: auto;" v-if="$breakpoint.xsOnly">
 							<tr>
