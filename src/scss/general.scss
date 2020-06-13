@@ -115,6 +115,15 @@ select {
 .margin-bottom-16 {
 	margin-bottom: 16px;
 }
+.margin-left-4 {
+	margin-left: 4px;
+}
+.margin-left-8 {
+	margin-left: 8px;
+}
+.margin-left-16 {
+	margin-left: 16px;
+}
 
 .y-table {
   border-collapse: collapse;
@@ -191,6 +200,10 @@ select {
 }
 .simple-shadow-small {
 	@include simpleshadowSmall;
+}
+input, textarea, select {
+	border: 1px solid #888;
+	padding: 2px;
 }
 
 .dark {

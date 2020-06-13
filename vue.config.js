@@ -1,6 +1,8 @@
 module.exports = {
   devServer: {
-    proxy: 'http://localhost:8012'
+    proxy: 'http://localhost:8012',
+    https: false,
+    disableHostCheck: true
   },
   outputDir: '../test',
   css: {

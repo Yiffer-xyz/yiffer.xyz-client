@@ -21,8 +21,8 @@ export default {
 		else { return {success: false, message: response.data.error} }
   },
 
-  async addArtistLinks (artistId, linkList) {
-    let response = await axios.post(baseUrl + '/artistlinks', {artistId: artistId, links: linkList})
+  async saveArtistChanges (artistId, artistData) {
+    let response = await axios.post(`${baseUrl}/artists/${artistId}`, artistData)
 		if (!response.data.error) { return {success: true} }
 		else { return {success: false, message: response.data.error} }
   }

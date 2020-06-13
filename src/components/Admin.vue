@@ -30,8 +30,8 @@
 								 :keywordList="keywordList"
 								 @refresh-pending-comics="refreshPendingComics()" />
 
-			<add-artist :artistList="artistList"
-									@refresh-artist-list="refreshArtistList()" />
+			<artist-manager :artistList="artistList"
+											@refresh-artist-list="refreshArtistList()" />
 
 			<pending-comics :pendingComics="pendingComics"
 											@refresh-pending-comics="refreshPendingComics()"
@@ -62,7 +62,7 @@ import AddPage from '@/components/admin-panel/AddPage.vue'
 import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
 import CorrectComic from '@/components/admin-panel/CorrectComic.vue'
 import AddComic from '@/components/admin-panel/AddComic.vue'
-import AddArtist from '@/components/admin-panel/AddArtist.vue'
+import ArtistManager from '@/components/admin-panel/ArtistManager.vue'
 import PendingComics from '@/components/admin-panel/PendingComics.vue'
 import KeywordSuggestions from '@/components/admin-panel/KeywordSuggestions.vue'
 import ComicSuggestions from '@/components/admin-panel/ComicSuggestions.vue'
@@ -84,7 +84,7 @@ export default {
 		'add-keywords': AddKeywords,
 		'correct-comic': CorrectComic,
 		'add-comic': AddComic,
-		'add-artist': AddArtist,
+		'artist-manager': ArtistManager,
 		'pending-comics': PendingComics,
 		'keyword-suggestions': KeywordSuggestions,
 		'comic-suggestions': ComicSuggestions,
