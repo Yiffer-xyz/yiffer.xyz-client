@@ -55,6 +55,7 @@ export default {
   }
   
   .close-container {
+    display: flex;
     margin-left: 6px;
     margin-right: -3px;
     margin-bottom: -1px;

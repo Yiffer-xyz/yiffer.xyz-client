@@ -5,6 +5,9 @@
 
       <p>Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
 
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                  class="margin-top-8"/>
+
       <div class="horizontal-flex no-margin-bot margin-top-8" style="flex-wrap: wrap;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
         <select v-model="comic">
@@ -17,10 +20,9 @@
                      style="margin-left: 8px;" 
                      target="_blank"
                      class="underline-link">
-          Go to comic <right-arrow/>
+          Go to comic <RightArrow/>
         </router-link>
       </div>
-
   
       <div class="horizontal-flex"
            style="width: 100%; justify-content: space-evenly; margin-top: 8px;"
@@ -35,7 +37,7 @@
             </option>
           </select>
           <button @click="addSelectedKeyword()" class="y-button y-button-small y-button-neutral" style="width: 100%; margin-top: 1px;">
-            <right-arrow/>
+            <RightArrow/>
           </button>
         </div>
       
@@ -70,10 +72,6 @@
         </div>
       </div>
 
-      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
-
-
       <h2 style="margin-top: 32px;">Create new tag</h2>
       <p>If a tag is not in the list above, create it here. Double check first though, please.</p>
       <div class="horizontal-flex flex-wrap margin-top-8"
@@ -82,9 +80,6 @@
         <input type="text" v-model="newKeyword" style="width: 128px;"/>
         <button @click="createKeyword()" class="y-button" style="margin: 0 0 0 8px;">Create tag</button>
       </div>
-
-      <p class="error-message" v-if="newKwErrorMessage" style="margin-top: 8px;">{{newKwErrorMessage}}</p>
-      <p class="success-message" v-if="newKwSuccessMessage" style="margin-top: 8px;">{{newKwSuccessMessage}}</p>
 
       <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
@@ -99,12 +94,14 @@
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import keywordApi from '../../api/keywordApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
-	name: 'addKeywords',
-
+  name: 'addKeywords',
+  
 	components: {
-		'right-arrow': RightArrow,
+    ResponseMessage,
+    RightArrow,
 	},
 
 	props: {
@@ -116,10 +113,8 @@ export default {
     return {
       isOpen: false,
       comic: undefined,
-      errorMessage: '',
-      successMessage: '',
-      newKwErrorMessage: '',
-      newKwSuccessMessage: '',
+      responseMessage: '',
+      responseMessageType: 'info',
       selectedKeywords: [],
       selectedKeyword: undefined,
       keywordsToDelete: [],
@@ -142,7 +137,6 @@ export default {
     async addOrRemoveKeywordToDeleteList (keywordName) {
       if (!this.keywordsToDelete.find(kw => kw.name===keywordName)) {
         let keywordWithData = await this.$store.dispatch('findKeywordDataFromName', keywordName)
-        console.log(keywordWithData)
         this.keywordsToDelete.push(keywordWithData)
       }
       else {
@@ -154,15 +148,15 @@ export default {
       let response = await keywordApi.addKeywordsToComic(this.comic, this.selectedKeywords)
 
       if (response.success) {
-        this.successMessage = 'Successfully added tags to ' + this.comic.name
-        this.errorMessage = ''
+        this.responseMessage = 'Successfully added tags to ' + this.comic.name
+        this.responseMessageType = 'success'
 				this.selectedKeywords = []
 				this.lastComicId = this.comic.id
         this.$emit('refresh-comic-list')
       }
       else {
-        this.errorMessage = 'Error adding tags: ' + response.message
-        this.successMessage = ''
+        this.responseMessage = 'Error adding tags: ' + response.message
+        this.responseMessageType = 'error'
       }
     },
 
@@ -170,15 +164,15 @@ export default {
       let response = await keywordApi.removeKeywordsFromComic(this.comic, this.keywordsToDelete)
 
       if (response.success) {
-        this.successMessage = 'Successfully removed tags from ' + this.comic.name
-        this.errorMessage = ''
+        this.responseMessage = 'Successfully removed tags from ' + this.comic.name
+        this.responseMessageType = 'success'
         this.keywordsToDelete = []
 				this.lastComicId = this.comic.id
         this.$emit('refresh-comic-list')
       }
       else {
-        this.errorMessage = 'Error removing tags: ' + response.message
-        this.successMessage = ''
+        this.responseMessage = 'Error removing tags: ' + response.message
+        this.responseMessageType = 'error'
       }
     },
 
@@ -186,20 +180,22 @@ export default {
       let response = await keywordApi.createKeyword(this.newKeyword)
 
       if (response.success) {
-        this.newKwSuccessMessage = 'Successfully created tag ' + this.newKeyword
-        this.newKwErrorMessage = ''
+        this.responseMessage = 'Successfully created tag ' + this.newKeyword
+        this.responseMessageType = 'success'
 				this.newKeyword = ''
 				this.refreshKeywordList()
       }
       else {
-        this.newKwErrorMessage = 'Error creating tag: ' + response.message
-        this.newKwSuccessMessage = ''
+        this.responseMessage = 'Error creating tag: ' + response.message
+        this.responseMessageType = 'error'
       }
 		},
 		
 		async refreshKeywordList () {
 			this.$emit('refresh-keyword-list')
-		},
+    },
+    
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 

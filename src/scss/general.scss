@@ -124,6 +124,15 @@ select {
 .margin-left-16 {
 	margin-left: 16px;
 }
+.margin-right-4 {
+	margin-right: 4px;
+}
+.margin-right-8 {
+	margin-right: 8px;
+}
+.margin-right-16 {
+	margin-right: 16px;
+}
 
 .y-table {
   border-collapse: collapse;
@@ -204,6 +213,16 @@ select {
 input, textarea, select {
 	border: 1px solid #888;
 	padding: 2px;
+}
+
+.horizontal-wrapper-4 {
+	display: grid;
+	gap: 4px;
+	justify-items: center;
+	grid-auto-flow: row;
+	@media (min-width: 900px) {
+		grid-auto-flow: column;
+	}
 }
 
 .dark {
