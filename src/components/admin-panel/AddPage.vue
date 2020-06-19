@@ -12,7 +12,10 @@
         <span class="courier">[1.jpg, 2.jpg, ...]</span> will not work for more than 9 pages!
       </p>
 
-    <div class="horizontal-flex margin-top-8 margin-bottom-8 flex-wrap" style="align-items: center;">
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                  class="margin-top-10"/>
+
+      <div class="horizontal-flex margin-top-8 margin-bottom-8 flex-wrap" style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -20,8 +23,8 @@
           </option>
         </select>
         <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
-                     v-if="comic" style="margin-left: 8px;" target="_blank" class="underline-link">
-          Go to comic <right-arrow/>
+                    v-if="comic" style="margin-left: 8px;" target="_blank" class="underline-link">
+          Go to comic <RightArrow/>
         </router-link>
       </div>
       
@@ -33,7 +36,9 @@
       </form>
 
       <p v-if="filesAreInput" style="margin-bottom: 0px;"><b>{{selectedFiles.length}}</b> Selected files:</p>
-      <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
+      <p v-if="filesAreInput" class="courier vertical-flex">
+        <span v-for="file in selectedFileNames" :key="file">{{file}}</span>
+      </p>
 
       <button @click="uploadFiles()"
               v-if="filesAreInput && comic"
@@ -41,16 +46,12 @@
         Upload files{{ comic.finished ? ' (NOTE: this comic is marked as finished!)' : ''}}
       </button>
 
-      <p class="success-message margin-top-8" v-if="uploadPercent">Uploading ({{uploadPercent}}%)</p>
-      <p class="error-message" v-if="uploadErrorMessage">{{uploadErrorMessage}}</p>
-      <p class="success-message" v-if="uploadSuccessMessage">{{uploadSuccessMessage}}</p>
-
       <button class="y-button y-button-neutral" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-         v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!) <down-arrow/></button>
+        v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!) <DownArrow/></button>
       <button class="y-button y-button-neutral" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-         v-if="showAllUnfinishedComics"> Hide this list <up-arrow/></button>
+        v-if="showAllUnfinishedComics"> Hide this list <UpArrow/></button>
 
-      <div v-if="showAllUnfinishedComics" class="vertical-flex;">
+      <div v-if="showAllUnfinishedComics" class="scrolling-table-container">
         <table class="y-table margin-top-4">
           <thead>
             <tr>
@@ -64,7 +65,7 @@
             <tr v-for="comic in unfinishedComicList" :key="comic.id">
               <td>
                 <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }"
-                             target="_blank" class="underline-link">
+                            target="_blank" class="underline-link">
                   {{comic.name}}
                 </router-link>
               </td>
@@ -98,14 +99,14 @@ import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
   name: 'addPage',
 
 	components: {
-		'down-arrow': DownArrow,
-		'up-arrow': UpArrow,
-		'right-arrow': RightArrow,
+    ResponseMessage,
+    DownArrow, UpArrow, RightArrow,
 	},
 
 	props: {
@@ -116,11 +117,10 @@ export default {
     return {
       isOpen: false,
 			comic: undefined,
-			uploadPercent: undefined,
-      uploadErrorMessage: '',
-      uploadSuccessMessage: '',
       selectedFiles: [],
       showAllUnfinishedComics: false,
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
@@ -133,20 +133,21 @@ export default {
       let response = await comicApi.addPagesToComic(this.comic, this.selectedFiles, this.updateUploadProgress)
 
       if (response.success) {
-        this.uploadSuccessMessage = 'Success updating ' + this.comic.name
-        this.uploadErrorMessage = ''
+        this.responseMessage = 'Success updating ' + this.comic.name
+        this.responseMessageType = 'success'
         this.selectedFiles = []
         document.getElementById('newPageFiles').value = ''
         this.$emit('refresh-comic-list')
       }
       else {
-        this.uploadErrorMessage = 'Error updating: ' + response.message
-        this.uploadSuccessMessage = ''
+        this.responseMessage = 'Error updating: ' + response.message
+        this.responseMessageType = 'error'
       }
 		},
 		
 		updateUploadProgress (progressEvent) {
-			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+      if (this.responseMessageType !== 'info') { this.responseMessageType = 'info' }
+			this.responseMessage = `Uploading: ${Math.round((progressEvent.loaded/progressEvent.total)*100)} %`
 		},
 
     toggleAllUnfinishedComics () {
@@ -165,7 +166,9 @@ export default {
 
     formattedPageNumber (pageNumber) {
       return pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber
-    },  
+    },
+
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
