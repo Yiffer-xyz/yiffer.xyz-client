@@ -205,7 +205,7 @@ export default {
 		cursor: initial;
 	}
 	h2 {
-		margin-bottom: 16px;
+		margin-bottom: 8px;
 		@media (max-width: 900px) {
 			margin-bottom: 4px;
 		}

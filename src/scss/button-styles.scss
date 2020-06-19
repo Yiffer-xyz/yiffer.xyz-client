@@ -46,6 +46,24 @@
 	}
 }
 
+.y-button-red-outline {
+	background: transparent;
+	background-color: transparent;
+	border: 1px solid $themeRed2;
+	color: $themeRed2;
+	svg {
+		color: $themeRed2;
+	}
+	box-sizing: border-box;
+	&:hover {
+		background-color: $themeRed2;
+		color: white;
+		svg {
+			color: white;
+		}
+	}
+}
+
 .y-button-disabled {
 	background-color: transparent;
 	background-color: $themeGray1;
@@ -114,6 +132,9 @@
 
 .button-with-icon {
 	padding-right: 15px;
+	span {
+		margin-bottom: -0.5px;
+	}
 }
 
 .theme-button-container {
@@ -207,6 +228,11 @@
 		&:hover {
 			background-color: $themeGray7 !important;
 		}
+	}
+
+	.y-button-red-outline {
+		background: transparent;
+		background-color: transparent;
 	}
 
 	.y-button-neutral {

@@ -2,22 +2,11 @@
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Artist Manager</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-      <p class="admin-mini-header no-margin-bot">Add new artist</p>
-      <div class="horizontal-flex" style="align-items: center;">
-        <p style="margin-right: 8px;">Artist name:</p>
-        <input type="text" v-model="artistName"/>
-        <button @click="addNewArtist()" class="y-button button-with-icon" style="margin: 0 0 0 8px;">
-          <check-icon/> Add artist
-        </button>
-      </div>
 
-      <p class="error-message" v-if="newArtistErrorMessage" style="margin-top: 8px;">{{newArtistErrorMessage}}</p>
-      <p class="success-message" v-if="newArtistSuccessMessage" style="margin-top: 8px;">{{newArtistSuccessMessage}}</p>
+      <ResponseMessage :message="responseMessageEdit" :messageType="responseMessageTypeEdit" @closeMessage="closeResponseMessageEdit"
+                       class="margin-bottom-10"/>
 
-      <h2 style="margin-top: 32px;">Manage Artist</h2>
-      <p>Add links for any art website such as FurAffinity, Twitter, Pixiv, Weasyl, Furry Network, Artist's own website.
-
-      <div class="horizontal-flex margin-top-8" style="align-items: center; margin-bottom: 8px;">
+      <div class="horizontal-flex" style="align-items: center; margin-bottom: 8px;">
         <p style="margin-right: 8px;">Artist:</p>
         <select v-model="artist" class="no-margin-bot" @change="artistChanged">
           <option v-for="artist in artistList" :key="artist.id" :value="artist">
@@ -27,20 +16,20 @@
 
         <router-link :to="{name: 'artist', params: {'artistName': artist.name}}" 
                      v-if="artist" style="margin-left: 8px;" target="_blank" class="underline-link">
-          Go to artist <right-arrow/>
+          Go to artist <RightArrow/>
         </router-link>
       </div>
 
       <span v-if="artist" id="artistContent" class="vertical-flex">
         <button v-if="!isEditingName" @click="isEditingName=true" class="y-button y-button-neutral button-with-icon margin-top-10 margin-bottom-10">
-          <edit-icon/> Edit artist name
+          <EditIcon/> Edit artist name
         </button>
 
         <div v-if="isEditingName" style="margin-top: 12px; margin-bottom: 13px;">
           <label class="admin-mini-header no-margin-bot">New artist name: </label>
           <input type="text" v-model="newName" style="width: 120px;"/>
           <button title="Undo edit" @click="undoNameEdit" class="y-button y-button-neutral y-button-small margin-left-4">
-            <undo-icon title="Undo edit"/>
+            <UndoIcon title="Undo edit"/>
           </button>
         </div>
 
@@ -50,7 +39,7 @@
           <label style="justify-self: end;">E621 name</label>
           <input v-if="isEditingE621Name" type="text" v-model="artist.e621Name" style="margin-left: 4px; width: 120px;"/>
           <button v-if="isEditingE621Name" title="Undo edit" @click="resetE621Name" class="y-button y-button-neutral y-button-small">
-            <undo-icon title="Undo edit"/>
+            <UndoIcon title="Undo edit"/>
           </button>
 
           <a v-if="!isEditingE621Name && artist.e621Name" :href="`https://e621.net/post/index/1/${artist.e621Name}`" target="_blank">
@@ -60,10 +49,10 @@
 
           <span v-if="!isEditingE621Name">
             <button @click="isEditingE621Name=true" class="y-button y-button-neutral y-button-small">
-              <edit-icon title=""/>
+              <EditIcon title=""/>
             </button>
             <button @click="clearE621Name" v-if="artist.e621Name" class="y-button y-button-neutral y-button-small margin-left-4">
-              <delete-icon title=""/>
+              <DeleteIcon title=""/>
             </button>
           </span>
 
@@ -71,7 +60,7 @@
           <label style="justify-self: end;">Patreon name</label>
           <input v-if="isEditingPatreonName" type="text" v-model="artist.patreonName" style="margin-left: 4px; width: 120px;"/>
           <button v-if="isEditingPatreonName" title="Undo edit" @click="resetPatreonName" class="y-button y-button-neutral y-button-small">
-            <undo-icon title="Undo edit"/>
+            <UndoIcon title="Undo edit"/>
           </button>
 
           <a v-if="!isEditingPatreonName && artist.patreonName" :href="`https://www.patreon.com/${artist.patreonName}`" target="_blank">
@@ -81,37 +70,38 @@
 
           <span v-if="!isEditingPatreonName">
             <button @click="isEditingPatreonName=true" class="y-button y-button-neutral y-button-small">
-              <edit-icon title=""/>
+              <EditIcon title=""/>
             </button>
             <button @click="clearPatreonName" v-if="artist.patreonName" class="y-button y-button-neutral y-button-small margin-left-4">
-              <delete-icon title=""/>
+              <DeleteIcon title=""/>
             </button>
           </span>
         </div>
 
         <p class="admin-mini-header no-margin-bot margin-top-8">Artist links</p>
+        <p>FurAffinity, Twitter, Pixiv, Weasyl, Artist's own website, etc.
 
         <div class="vertical-flex scrolling-table-container" style="justify-content: flex-start; align-items: flex-start;">
           <div v-for="(link, index) in existingArtistLinks" :key="index" class="horizontal-flex margin-top-4">
             <button v-if="!link.isBeingDeleted && !link.isBeingEdited" @click="link.isBeingEdited=true" class="y-button y-button-neutral y-button-small">
-              <edit-icon/>
+              <EditIcon/>
             </button>
             <button v-if="!link.isBeingDeleted && !link.isBeingEdited" @click="deleteLink(index)" class="y-button y-button-neutral y-button-small" style="margin-left: 4px;">
-              <delete-icon/>
+              <DeleteIcon/>
             </button>
 
             <button v-if="link.isBeingDeleted" @click="undoLinkEdit(index)" title="Undo" class="y-button y-button-neutral y-button-small">
-              <undo-icon title="Undo delete"/>
+              <UndoIcon title="Undo delete"/>
             </button>
             <a v-if="!link.isBeingEdited" style="margin-left: 4px;" :class="{'red-linethrough-text': link.isBeingDeleted}" :href="link.url" target="_blank">
               {{link.url}}
             </a>
 
             <button v-if="link.isBeingEdited" @click="undoLinkEdit(index)" title="Undo" class="y-button y-button-neutral y-button-small">
-              <undo-icon title="Undo"/>
+              <UndoIcon title="Undo"/>
             </button>
             <button v-if="link.isBeingEdited" @click="deleteLink(index)" title="Delete link" class="y-button y-button-neutral y-button-small" style="margin-left: 4px;">
-              <delete-icon title="Delete link"/>
+              <DeleteIcon title="Delete link"/>
             </button>
 
             <input v-if="link.isBeingEdited" type="text" v-model="link.url" style="width: 360px; margin-left: 4px;"/>
@@ -119,7 +109,7 @@
         </div>
 
         <button @click="addLink()" class="y-button y-button-neutral button-with-icon margin-top-8">
-          <plus-icon title/> Add link
+          <PlusIcon title/> Add link
         </button>
 
         <div v-if="newLinks.length > 0">
@@ -127,23 +117,35 @@
           <div v-for="(link, index) in newLinks" :key="index" class="horizontal-flex margin-bottom-4">
             <input type="text" v-model="newLinks[index]" style="width: 360px;"/>
             <button @click="deleteNewLink(index)" title="Delete link" class="y-button y-button-neutral y-button-small" style="margin-left: 4px;">
-              <delete-icon title="Delete link"/>
+              <DeleteIcon title="Delete link"/>
             </button>
           </div>
         </div>
 
         <div class="horizontal-flex margin-top-32">
-          <button @click="saveArtistChanges()" class="y-button button-with-icon">
-            <check-icon title=""/> Save changes
+          <button @click="cancelChanges()" class="y-button y-button-red-outline button-with-icon">
+            <CancelIcon title=""/> Cancel
           </button>
-          <button @click="cancelChanges()" class="y-button y-button-red button-with-icon margin-left-16">
-            <cancel-icon title=""/> Cancel
+          <button @click="saveArtistChanges()" class="y-button button-with-icon margin-left-16">
+            <CheckIcon title=""/> Save changes
           </button>
         </div>
       </span>
 
-      <p class="error-message" v-if="linksErrorMessage" style="margin-top: 8px;">{{linksErrorMessage}}</p>
-      <p class="success-message" v-if="linksSuccessMessage" style="margin-top: 8px;">{{linksSuccessMessage}}</p>
+      
+
+      <h2 class="margin-top-32">Add new artist</h2>
+      
+      <ResponseMessage :message="responseMessageNewArtist" :messageType="responseMessageTypeNewArtist" @closeMessage="closeResponseMessageNewArtist"
+                       class="margin-bottom-10"/>
+
+      <div class="horizontal-flex" style="align-items: center;">
+        <p style="margin-right: 8px;">Artist name:</p>
+        <input type="text" v-model="artistName"/>
+        <button @click="addNewArtist()" class="y-button button-with-icon" style="margin: 0 0 0 8px;">
+          <CheckIcon/> Add artist
+        </button>
+      </div>
 
       <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
@@ -156,6 +158,8 @@
 
 <script>
 import artistApi from '../../api/artistApi'
+import ResponseMessage from '../ResponseMessage.vue'
+
 import DeleteIcon from 'vue-material-design-icons/TrashCanOutline.vue'
 import EditIcon from 'vue-material-design-icons/Pencil.vue'
 import CancelIcon from 'vue-material-design-icons/Close.vue'
@@ -172,13 +176,8 @@ export default {
   },
 
   components: {
-    'delete-icon': DeleteIcon,
-    'edit-icon': EditIcon,
-    'cancel-icon': CancelIcon,
-    'undo-icon': UndoIcon,
-    'plus-icon': PlusIcon,
-    'check-icon': CheckIcon,
-		'right-arrow': RightArrow,
+    ResponseMessage, 
+    DeleteIcon, EditIcon, CancelIcon, UndoIcon, PlusIcon, CheckIcon, RightArrow,
   },
 
   data: function () {
@@ -186,10 +185,6 @@ export default {
       isOpen: false,
       artist: undefined,
 			artistName: '',
-      newArtistErrorMessage: '',
-      newArtistSuccessMessage: '',
-      linksErrorMessage: '',
-      linksSuccessMessage: '',
 
       isEditingName: false,
       newName: '',
@@ -205,6 +200,11 @@ export default {
       newLinks: [],
 
       newArtistName: '',
+
+      responseMessageNewArtist: null,
+      responseMessageTypeNewArtist: 'info',
+      responseMessageEdit: null,
+      responseMessageTypeEdit: 'info',
     }
   },
 
@@ -272,11 +272,12 @@ export default {
     },
 
     async addNewArtist () {
+      let response
       this.isArtistListRefreshed = false
       this.newArtistName = this.artistName
-      let response
       if (!this.artistName || this.artistName.length < 2) {
-        response = {success: false, message: 'Name must be at least two characters long'}
+        this.responseMessageNewArtist = 'Name must be at least two characters long'
+        this.responseMessageTypeNewArtist = 'error'
       }
       else {
         let name = this.artistName[0].toUpperCase() + this.artistName.substring(1)
@@ -284,15 +285,17 @@ export default {
       }
 
       if (response.success) {
-        this.newArtistSuccessMessage = `Success adding artist ${this.artistName}. Please add links and names below!`
-        this.newArtistErrorMessage = ''
+        this.responseMessageNewArtist = `Success adding artist ${this.artistName}. Please add links and names above!`
+        this.responseMessageTypeNewArtist = 'success'
         this.artistName = ''
+        this.artist = null
+        this.artistChanged()
         this.$emit('refresh-artist-list')
         setTimeout(this.selectNewlyCreatedArtist, 300)
       }
       else {
-        this.newArtistErrorMessage = 'Error adding artist: ' + response.message
-        this.newArtistSuccessMessage = ''
+        this.responseMessageNewArtist = 'Error adding artist: ' + response.message
+        this.responseMessageTypeNewArtist = 'error'
       }
     },
 
@@ -307,7 +310,10 @@ export default {
     },
 
     async saveArtistChanges () {
-      let links = this.existingArtistLinks.map(link => link.url)
+      let links = this.existingArtistLinks
+        .filter(link => !link.isBeingDeleted)
+        .map(link => link.url)
+
       if (this.newLinks.length > 0) {
         links = links.concat(this.newLinks.filter(link => link))
       }
@@ -322,23 +328,33 @@ export default {
       let response = await artistApi.saveArtistChanges(this.artist.id, requestBody)
 
       if (response.success) {
-        this.linksSuccessMessage = `Success updating artist ${this.artist.name}`
-        this.linksErrorMessage = ''
+        this.responseMessageEdit = `Success updating artist ${this.artist.name}`
+        this.responseMessageTypeEdit = 'success'
         this.newLinks = []
         this.isEditingE621Name = false
         this.isEditingPatreonName = false
         if (this.isEditingName) {
+          this.newArtistName = this.newName
           this.cancelChanges()
           this.$emit('refresh-artist-list')
+          setTimeout(this.selectNewlyCreatedArtist, 300)
         }
         else {
           this.artistChanged()
         }
       }
       else {
-        this.linksErrorMessage = 'Error adding links: ' + response.message
-        this.linksSuccessMessage = ''
+        this.responseMessageEdit = 'Error adding links: ' + response.message
+        this.responseMessageTypeEdit = 'error'
       }
+    },
+
+    closeResponseMessageNewArtist () {
+      console.log('closin')
+      this.responseMessageNewArtist = ''
+    },
+    closeResponseMessageEdit () {
+      this.responseMessageEdit = ''
     },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
