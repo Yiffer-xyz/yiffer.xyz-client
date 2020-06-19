@@ -7,6 +7,9 @@
     <span class="admin-content-box-inner" v-if="isOpen">
       <p class="margin-bottom-8">Tags suggested by users pending approval will appear here.</p>
 
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                       class="margin-bottom-10"/>
+
       <span v-if="keywordSuggestionList.length > 0">
         <table class="y-table">
           <thead>
@@ -21,19 +24,18 @@
             <tr v-for="(suggestion, index) in keywordSuggestionList" :key="index">
               <td><router-link :to="{name: 'comic', params: {'comicName': suggestion.comicName}}" target="_blank" class="underline-link">
                 {{suggestion.comicName}}</router-link></td>
-              <td>{{suggestion.addKeyword ? 'ADD' : 'REMOVE'}} {{suggestion.keyword.name}}</td>
+              <td>{{keywordSuggestionText(suggestion)}}</td>
               <td style="word-break: break-all;">{{suggestion.user}}</td>
               <td>
-								<div class="horizontal-flex flex-wrap">
+								<div class="horizontal-wrapper-4">
 									<button
 										@click="processKeyword(suggestion, true)"
-										class="y-button no-margin-bot"
-										style="margin-right: 2px;">
+										class="y-button">
 										Approve
 									</button>
 									<button
 										@click="processKeyword(suggestion, false)"
-										class="y-button y-button-red no-margin-bot">
+										class="y-button y-button-red">
 										Reject
 									</button>
 								</div>
@@ -47,9 +49,6 @@
         <p>There are currently no new suggestions.</p>
       </span>
 
-      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
-
 			<menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
@@ -61,31 +60,40 @@
 
 <script>
 import keywordApi from '../../api/keywordApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
   name: 'keywordSuggestions',
+
+  components: {
+    ResponseMessage,
+  },
 
   data () {
     return {
       keywordSuggestionList: [],
       isOpen: false,
-      successMessage: '',
-      errorMessage: '',
+      responseMessage: '',
+      responseMessageType: '',
     }
   },
 
   methods: {
+    keywordSuggestionText (suggestion) {
+      return (suggestion.addKeyword ? 'ADD ' : 'REMOVE ') + suggestion.keywordName
+    },
+
     async processKeyword (suggestion, isApproved) {
 			let response = await keywordApi.processKeywordSuggestion(suggestion, isApproved)
 
       if (response.success) {
-        this.successMessage = `Successfully ${isApproved ? 'approved' : 'rejected'} ${suggestion.addKeyword ? 'adding' : 'removing'} of tag ${suggestion.keyword.name}`
-        this.errorMessage = ''
+        this.responseMessage  = `Successfully ${isApproved ? 'approved' : 'rejected'} "${this.keywordSuggestionText(suggestion)}"`
+        this.responseMessageType = 'success'
         this.loadSuggestions()
       }
       else {
-        this.errorMessage = 'Error processing tag suggestion: ' + response.message
-        this.successMessage = ''
+        this.responseMessage = 'Error processing tag suggestion: ' + response.message
+        this.responseMessageType = 'error'
       }
     },
 
@@ -96,6 +104,8 @@ export default {
         suggestion.user = suggestion.user || suggestion.userIP
       }
     },
+
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
