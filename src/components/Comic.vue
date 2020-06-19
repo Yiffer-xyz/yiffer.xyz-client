@@ -286,7 +286,7 @@ export default {
 		async loadKeywords () {
 			this.allKeywords = await keywordApi.getKeywordList()
 			this.keywordsNotInComic = this.allKeywords
-				.filter(kw => !(kw.name in this.comic.keywords))
+				.filter(kw => !this.comic.keywords.includes(kw.name))
 				.map(kw => kw.name)
 		},
 
