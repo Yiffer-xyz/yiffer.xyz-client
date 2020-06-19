@@ -2,28 +2,37 @@
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
     <h2 @click="closeComponent" class="cursor-pointer">Correct comic data</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
-      <div class="horizontal-flex flex-wrap" style="margin-top: 8px;">
-        <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
-        <select v-model="comic">
+
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                  class="margin-top-8"/>
+
+      <div class="horizontal-flex flex-wrap" style="margin-top: 8px; align-items: center;">
+        <p class="admin-mini-header margin-bottom-4 margin-right-8">Comic:</p>
+        <select v-model="comic" class="margin-bottom-4">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
         </select>
         <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic"
-                     style="margin-left: 8px;" target="_blank" class="underline-link">
-          Go to comic <right-arrow/>
+                     style="margin-left: 8px;" target="_blank" class="underline-link margin-bottom-4">
+          Go to comic <RightArrow/>
         </router-link>
       </div>
 
       <span v-if="comic" class="margin-top-8" style="width: 100%;">
 				<button @click="toggleRename(true)" v-if="!renameActive" class="y-button y-button-neutral margin-bottom-16">Rename comic</button>
 				<span v-if="renameActive" class="horizontal-flex margin-bottom-16" style="align-items: center;">
-					<input type="text" v-model="newComicName" style="width: 240px; height: 18px;"/>
-					<button @click="toggleRename(false)" class="y-button y-button-neutral no-margin-bot" style="margin-left: 8px;"><cross-icon/> Cancel rename</button>
+          <div class="vertical-flex">
+            <p style="text-align: left;">New name</p>
+            <input type="text" v-model="newComicName" style="width: 200px; height: 18px;"/>
+          </div>
+					<button @click="toggleRename(false)" class="y-button y-button-neutral no-margin-bot margin-left-8" style="align-self: flex-end;">
+            <CrossIcon/> Cancel rename
+          </button>
 				</span>
 				
 
-        <div class="horizontal-flex horiz-space-items-8px" style="flex-wrap: wrap;">
+        <div id="fourSelectsContainer" class="vertical-flex">
           <div class="vertical-flex">
             <p style="text-align: left;">Artist</p>
             <select v-model="artist">
@@ -66,32 +75,35 @@
         </div>
 
         <!-- PREVIOUS COMIC -->
-        <p class="admin-mini-header" style="margin-top: 32px;">Add previous or next comic</p>
-          <p>Previous comic 
-          </p>
-        <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+        <div class="prev-next-comic-container margin-top-16">
+          <p style="text-align: left;">Previous comic</p>
+          <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
             <select v-model="previousComic">
               <option v-for="comic in comicList" :key="comic.id" :value="comic">
                 {{comic.name}}
               </option>
             </select>
-          <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
-                  style="margin-left: 4px; margin-top: 2px;" @click="removePreviousLink()">
-            <cross-icon/> Remove link
-          </button>
+            <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
+                    style="margin-left: 4px; margin-top: 2px;" @click="removePreviousLink()">
+              <CrossIcon/> Remove link
+            </button>
+          </div>
         </div>
+
         <!-- NEXT COMIC -->
-        <p class="margin-top-4">Next comic</p>
-        <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
-            <select v-model="nextComic">
-              <option v-for="comic in comicList" :key="comic.id" :value="comic">
-                {{comic.name}}
-              </option>
-            </select>
-          <button v-if="nextComic" class="y-button y-button-neutral button-with-icon"
-                  style="margin-left: 4px; margin-top: 2px;" @click="removeNextLink()">
-            <cross-icon/> Remove link
-          </button>
+        <div class="prev-next-comic-container margin-top-8">
+          <p style="text-align: left;">Next comic</p>
+          <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+              <select v-model="nextComic">
+                <option v-for="comic in comicList" :key="comic.id" :value="comic">
+                  {{comic.name}}
+                </option>
+              </select>
+            <button v-if="nextComic" class="y-button y-button-neutral button-with-icon"
+                    style="margin-left: 4px; margin-top: 2px;" @click="removeNextLink()">
+              <CrossIcon/> Remove link
+            </button>
+          </div>
         </div>
 
 				<span class="horizontal-flex no-margin-bot" style="margin-top: 16px;">
@@ -100,14 +112,10 @@
           </button>
         	<button @click="resetFields()"
                   class="y-button y-button-neutral button-with-icon" style="margin-left: 4px;">
-            <refresh-icon/> Reset
+            <RefreshIcon/> Reset
           </button>
 				</span>
       </span>
-
-
-      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
       <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
@@ -124,16 +132,16 @@ import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
 	name: 'correctComic',
-	
-	components: {
-		'cross-icon': CrossIcon,
-		'refresh-icon': RefreshIcon,
-		'right-arrow': RightArrow,
+  
+  components: {
+    ResponseMessage,
+    RightArrow, CrossIcon, RefreshIcon
 	},
-
+  
   props: {
     comicList: Array,
     artistList: Array,
@@ -155,8 +163,8 @@ export default {
       previousComic: undefined,
       nextComic: undefined,
 
-      errorMessage: '',
-      successMessage: '',
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
@@ -175,21 +183,21 @@ export default {
 			})
 
       if (response.success) {
-        this.successMessage = 'Successfully updated info of ' + this.comic.name
-				this.errorMessage = ''
+        this.responseMessage = 'Successfully updated info of ' + this.comic.name
+				this.responseMessageType = 'success'
 				this.toggleRename(false)
 				this.lastComicId = this.comic.id
 				this.$emit('refresh-comic-list')
       }
       else {
-        this.errorMessage = 'Error updating comic: ' + response.message
-        this.successMessage = ''
+        this.responseMessage = 'Error updating comic: ' + response.message
+				this.responseMessageType = 'error'
       }
 		},
 		
 		toggleRename (isActive) {
 			this.renameActive = isActive
-			if (!isActive) { this.newComicName = '' }
+			if (!isActive) { this.newComicName = this.comic.name }
     },
     
     removePreviousLink () {
@@ -223,6 +231,8 @@ export default {
       this.originalNextComic = this.nextComic + ''
     },
 
+    closeResponseMessage () { this.responseMessage = '' },
+
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
@@ -241,9 +251,28 @@ export default {
 </script>
 
 <style lang="scss">
-.horiz-space-items-8px {
-  &>div {
-    margin: 0px 8px;
+#fourSelectsContainer {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  width: fit-content;
+
+  div {
+    margin: 4px;
   }
+
+	@media (min-width: 900px) {
+    flex-direction: row;
+    div {
+      margin: 8px;
+    }
+	}
+}
+
+.prev-next-comic-container {
+  margin-left: auto; margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
 }
 </style>
