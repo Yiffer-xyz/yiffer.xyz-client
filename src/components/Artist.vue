@@ -5,10 +5,18 @@
     <back-to-index></back-to-index>
   
     <span v-if="artistData">
-      <h2 id="artistLinksTitle" style="margin-top: 16px;">Links</h2>
-      <div class="artist-link-container">
+      <div class="margin-top-16 margin-bottom-16">
+        <a :href="'https://patreon.com/'+artistData.patreonName" v-if="artistData.patreonName" class="artist-big-link underline-link">
+          <img src="/icons/patreon.png" style="height: 24px"/> {{$route.params.artistName}} on Patreon
+        </a>
+        <a :href="'https://e621.net/posts?tags='+artistData.e621Name" v-if="artistData.e621Name" class="artist-big-link underline-link margin-top-8">
+          <img src="/icons/e621.png" style="height: 24px"/> {{$route.params.artistName}} on e621
+        </a>
+      </div>
+
+      <div class="artist-link-container" v-if="artistData.links.length > 0">
         <div v-for="link in artistData.links" :key="link.linkUrl" class="artist-link">
-          <img :src="`/icons/${link.linkType}.png`" style="height: 18px;"/>
+          <img :src="`/icons/${link.linkType}.png`" style="height: 22px;"/>
           <a :href="link.linkUrl" target="_blank" class="underline-link" style="word-break: break-all;">{{prettifyUrl(link.linkUrl)}}</a>
         </div>
       </div>
@@ -82,7 +90,7 @@ export default {
 }
 .artist-link {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   img {
     margin-right: 5px;
@@ -105,6 +113,23 @@ export default {
     .keyword-container {
       display: none;
     }
+  }
+}
+
+.artist-big-link {
+  font-size: 17px;
+  display: flex;
+  align-items: flex-center;
+  width: fit-content;
+  margin-right: auto; margin-left: auto;
+  img {
+    margin-right: 6px;
+  }
+}
+
+@media (min-width: 900px) {
+  .artist-big-link {
+    font-size: 20px;
   }
 }
 </style>
