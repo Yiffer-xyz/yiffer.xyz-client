@@ -5,18 +5,21 @@
       <span v-else style="color: #999;">(0)</span>
     </h2>
     <span class="admin-content-box-inner description-text" v-if="isOpen">
-      <p>Comics suggested by users will appear here.</p>
-      <p class="margin-bottom-8">
+      <p>Comics suggested by users will appear here. For any comics in the list that should be added, do add them via 'Add Comic' below. Then, <i>after</i> that is done, come back here.</p>
+      <p class="margin-bottom-8 margin-top-8">
 				- Click '<u>Added</u>' when the comic has been uploaded (here, in the admin panel, via <i>Add new comic</i>). Please don't choose this before you have uploaded the comic.
 				<br/>
 				- Click '<u>Reject, add to rejected-list</u>' if the comic fails to meet the criteria listed  
-				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. This will show up in the list of previously rejected comics, along with the reason.
+				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. This will show up in the list of previously rejected comics, along with the reason. Users can see this and it will prevent them from suggesting the same comic again.
 				<br/>
         - Click '<u>Reject as spam/dupl.</u>' if the comic has been suggested before, or if it's not a serious suggestion.
 				<br/>
 				<br/>
 				Please don't hesitate to ask for opinions in the mod Telegram chat!
 			</p>
+
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                       class="margin-bottom-10"/>
 
       <div v-if="unprocessedSuggestions.length > 0" class="scrolling-table-container">
         <table class="y-table">
@@ -36,22 +39,20 @@
               <td style="word-break: break-word;">{{suggestion.description}}</td>
               <td>{{suggestion.user}}</td>
               <td>
-								<div class="horizontal-flex">
+								<div class="horizontal-wrapper-4">
 									<button 
 										@click="processSuggestion(suggestion, true)"
-										class="y-button no-margin-bot"
-										style="margin-right: 2px;">
+										class="y-button">
 										Added
 									</button>
 									<button 
 										@click="processSuggestion(suggestion, true)"
-										class="y-button y-button-red no-margin-bot"
-										style="margin-right: 2px;">
+										class="y-button y-button-red">
 										Reject, add to rejected-list
 									</button>
 									<button
 										@click="processSuggestion(suggestion, false)"
-										class="y-button y-button-red no-margin-bot">
+										class="y-button y-button-red">
 										Reject as spam/dupl.
 									</button>
 								</div>
@@ -67,11 +68,11 @@
 
 
       <span v-if="processedSuggestions.length>0 && !showProcessedSuggestions">
-        <button @click="showProcessedSuggestions = true" class="y-button y-button-neutral margin-top-32">Show processed suggestions <down-arrow/></button>
+        <button @click="showProcessedSuggestions = true" class="y-button y-button-neutral margin-top-32">Show processed suggestions <DownArrow/></button>
       </span>
 
       <span v-if="showProcessedSuggestions">
-        <button @click="showProcessedSuggestions = false" class="y-button y-button-neutral margin-top-32">Hide this list <up-arrow/></button>
+        <button @click="showProcessedSuggestions = false" class="y-button y-button-neutral margin-top-32">Hide this list <UpArrow/></button>
       </span>
 
       <table v-if="showProcessedSuggestions" class="y-table">
@@ -92,14 +93,11 @@
             <td style="word-break: break-word;">{{suggestion.description}}</td>
             <td>{{suggestion.user}}</td>
             <td>{{suggestion.mod}}</td>
-            <td v-if="suggestion.verdict === 'added'"><checkbox-icon/> Added</td>
+            <td v-if="suggestion.verdict === 'added'"><CheckboxIcon/> Added</td>
             <td v-else>Rejected</td>
           </tr>
         </tbody>
       </table>
-
-      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
 
 			<menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
@@ -116,23 +114,23 @@ import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 
 import comicApi from '../../api/comicApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
   name: 'comicSuggestions',
 
 	components: {
-		'down-arrow': DownArrow,
-		'up-arrow': UpArrow,
-		'checkbox-icon': CheckboxIcon,
+    ResponseMessage,
+    DownArrow, UpArrow, CheckboxIcon,
 	},
 
   data: function () {
     return {
       isOpen: false,
-      successMessage: '',
-      errorMessage: '',
       showProcessedSuggestions: false,
       comicSuggestionList: [],
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
@@ -141,13 +139,13 @@ export default {
       let response = await comicApi.processComicSuggestion({suggestionId: suggestionData.id, isApproved: isApproved})
 
       if (response.success) {
-        this.successMessage = `Successfully processed suggestion of ${suggestionData.name} (${isApproved ? 'added' : 'rejected'})`
-        this.errorMessage = ''
+        this.responseMessage = `Successfully processed suggestion of ${suggestionData.name} (${isApproved ? 'added' : 'rejected'})`
+        this.responseMessageType = 'success'
         this.getComicSuggestions()
       }
       else {
-        this.errorMessage = 'Error processing comic suggestion: ' + response.message
-        this.successMessage = ''
+        this.responseMessage = 'Error processing comic suggestion: ' + response.message
+        this.responseMessageType = 'error'
       }
     },
 
@@ -158,6 +156,8 @@ export default {
         suggestion.user = suggestion.user || suggestion.userIP
       }
     },
+
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
