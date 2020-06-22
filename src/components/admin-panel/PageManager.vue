@@ -3,6 +3,9 @@
     <h2 @click="closeComponent" class="cursor-pointer">Insert / remove / swap pages / thumbnail</h2>
 
     <span class="admin-content-box-inner" v-if="isOpen">
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                       class="margin-top-8"/>
+
       <div class="horizontal-flex margin-top-8 flex-wrap">
         <p class="admin-mini-header"
            style="margin-right: 8px;">
@@ -15,7 +18,7 @@
         </select>
         <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" v-if="comic"
                      style="margin-left: 8px;" target="_blank" class="underline-link">
-          Go to comic <right-arrow/>
+          Go to comic <RightArrow/>
         </router-link>
       </div>
 
@@ -39,6 +42,7 @@
       </div>
 
       <span v-if="comic" class="admin-content-box-inner">
+        <!-- SWAP PAGES -->
         <h2 style="margin-top: 32px;">Swap pages</h2>
         <p>Swap the positions of two existing pages</p>
         <div class="horizontal-flex">
@@ -59,10 +63,8 @@
           Swap
         </button>
 
-        <p class="error-message" v-if="errorMessageSwap" style="margin-top: 8px;">{{errorMessageSwap}}</p>
-        <p class="success-message" v-if="successMessageSwap" style="margin-top: 8px;">{{successMessageSwap}}</p>
 
-
+        <!-- INSERT PAGE -->
         <h2 style="margin-top: 32px;">Insert page</h2>
         <p>Insert a page in between two other pages. <u>Don't</u> use this for adding a page to the end of a comic. 
           For that, go to <i>Add pages to comic</i></p>
@@ -86,15 +88,10 @@
           <p v-if="imageToInsert">Selected file: <span class="courier">{{imageToInsert.name}}</span></p>
 
           <button @click="insertPage" v-if="imageToInsert" class="y-button margin-top-8">Insert {{imageToInsert.name}}</button>
-
-          <p class="success-message" v-if="uploadPercent">Uploading ({{uploadPercent}}%)</p>
         </span>
 
-        <p class="error-message" v-if="errorMessageInsert" style="margin-top: 8px;">{{errorMessageInsert}}</p>
-        <p class="success-message" v-if="successMessageInsert" style="margin-top: 8px;">{{successMessageInsert}}</p>
 
-
-
+        <!-- DELETE PAGE -->
         <h2 style="margin-top: 32px;">Delete page</h2>
         <p>Delete an existing page, in case of duplicate pages (or for some other reason)</p>
         <div class="horizontal-flex">
@@ -109,10 +106,8 @@
           Delete page {{deletePageNumber}}
         </button>
 
-        <p class="error-message" v-if="errorMessageDelete" style="margin-top: 8px;">{{errorMessageDelete}}</p>
-        <p class="success-message" v-if="successMessageDelete" style="margin-top: 8px;">{{successMessageDelete}}</p>
 
-
+        <!-- REPLACE THUMBNAIL -->
         <h2 style="margin-top: 32px;">Replace thumbnail</h2>
         <form enctype="multipart/form-data" novalidate class="no-margin-bot" style="width: fit-content">
           <div class="pretty-input-upload">
@@ -124,8 +119,9 @@
 
         <button @click="replaceThumbnail" v-if="thumbnailImageFile && !thumbnailImageWrongFormat" 
                 class="y-button">Insert {{thumbnailImageFile.name}}</button>
-        <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
-        <p class="success-message margin-top-16" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
+        <p v-if="thumbnailImageWrongFormat" style="color: red; font-weight: bold;">
+          {{thumbnailImageWrongFormatMessage}}
+        </p>
       </span>
 
 
@@ -143,13 +139,14 @@ import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
   name: 'pageManager',
 
 	components: {
-		'checkbox-icon': CheckboxIcon,
-		'right-arrow': RightArrow,
+    ResponseMessage,
+		CheckboxIcon, RightArrow,
 	},
 
 	props: {
@@ -165,85 +162,74 @@ export default {
       swapPage2: undefined,
       insertPageAfterNumber: undefined,
       imageToInsert: undefined,
-      uploadPercent: undefined,
       deletePageNumber: undefined,
       comicChangeDate: undefined,
       thumbnailImageFile: undefined,
       thumbnailImageWrongFormat: false,
+      thumbnailImageWrongFormatMessage: '',
 
-      errorMessageSwap: '',
-      successMessageSwap: '',
-      errorMessageInsert: '',
-      successMessageInsert: '',
-      errorMessageDelete: '',
-      successMessageDelete: '',
-      errorMessageThumbnail: '',
-      successMessageThumbnail: '',
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
   methods: {
     async swapPages () {
-      this.errorMessageSwap = ''
-      this.successMessageSwap = ''
+      this.setResponseMessage('info', 'Swapping...')
       let response = await comicApi.swapComicPages(this.comic.name, this.comic.id, this.swapPage1, this.swapPage2)
 
       if (response.success) {
-        this.successMessageSwap = `Successfully swapped pages ${this.swapPage1} and ${this.swapPage2}`
+        this.setResponseMessage('success', `Successfully swapped pages ${this.swapPage1} and ${this.swapPage2}`)
         this.$store.dispatch('updateOneComicInList', this.comic)
       }
       else {
-        this.errorMessageSwap = 'Error swapping pages: ' + response.message
+        this.setResponseMessage('error', 'Error inserting page: ' + response.message)
       }
     },
 
     async insertPage () {
-      this.errorMessageInsert = ''
-      this.successMessageInsert = ''
+      this.setResponseMessage('info', 'Inserting...')
       let response = await comicApi.insertComicPage(this.comic.name, this.comic.id, this.imageToInsert,
-        this.insertPageAfterNumber, this.updateUploadProgress)
+                                                    this.insertPageAfterNumber, this.updateUploadProgress)
 
-      this.uploadPercent = undefined
       if (response.success) {
-        this.successMessageInsert = 'Successfully inserted new page ' + (Number(this.insertPageAfterNumber)+1)
+        this.setResponseMessage('success', 'Successfully inserted new page ' + (Number(this.insertPageAfterNumber)+1))
         this.$store.dispatch('updateOneComicInList', this.comic)
         this.imageToInsert = undefined
       }
       else {
-        this.errorMessageInsert = 'Error inserting page: ' + response.message
+        this.setResponseMessage('error', 'Error inserting page: ' + response.message)
       }
     },
 
     async deletePage () {
-      this.errorMessageDelete = ''
-      this.successMessageDelete = ''
+      this.setResponseMessage('info', 'Deleting...')
       let response = await comicApi.deleteComicPage(this.comic.name, this.comic.id, this.deletePageNumber)
 
       if (response.success) {
-        this.successMessageDelete = `Successfully deleted page ${this.deletePageNumber}`
+        this.setResponseMessage('success', `Successfully deleted page ${this.deletePageNumber}`)
         this.$store.dispatch('updateOneComicInList', this.comic)
       }
       else {
-        this.errorMessageDelete = 'Error deleting page: ' + response.message
+        this.setResponseMessage('error', 'Error deleting page: ' + response.message)
       }
     },
 
     async replaceThumbnail () {
-      this.errorMessageThumbnail = ''
-      this.successMessageThumbnail = ''
+      this.setResponseMessage('info', 'Replacing...')
       let response = await comicApi.replaceThumbnailImage(this.comic.name, this.comic.id, this.thumbnailImageFile)
       
       if (response.success) {
-        this.successMessageThumbnail = 'Successfully replaced thumbnail!'
+        this.setResponseMessage('success', 'Successfully replaced thumbnail')
         this.thumbnailImageFile = undefined
       }
       else {
-        this.errorMessageThumbnail = 'Error replacing thumbnail: ' + response.message
+        this.setResponseMessage('error', 'Error replacing thumbnail: ' + response.message)
       }
     },
 
 		updateUploadProgress (progressEvent) {
-			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+      this.responseMessage = `Uploading... ${Math.round((progressEvent.loaded/progressEvent.total)*100)}%`
 		},
 
     async comicChanged () {
@@ -260,7 +246,6 @@ export default {
     },
 
 		async processNewThumbnail () {
-			this.errorMessageThumbnail = ''
 			let fileReader = new FileReader()
 			fileReader.onload = () => {
 				let tempImage = new Image()
@@ -268,7 +253,7 @@ export default {
 				tempImage.onload = () => {
 					if (tempImage.width !== 200 || tempImage.height !== 283) {
             this.thumbnailImageWrongFormat = true
-						this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
+            this.thumbnailImageWrongFormatMessage = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
           }
           else {
             this.thumbnailImageWrongFormat = false
@@ -288,14 +273,7 @@ export default {
       this.comicChangeDate = undefined
       this.thumbnailImageFile = undefined
 
-      this.errorMessageSwap = ''
-      this.successMessageSwap = ''
-      this.errorMessageInsert = ''
-      this.successMessageInsert = ''
-      this.errorMessageDelete = ''
-      this.successMessageDelete = ''
-      this.errorMessageThumbnail = ''
-      this.successMessageThumbnail = ''
+      this.closeResponseMessage()
     },
 
     generateRandomQueryString () {
@@ -307,6 +285,13 @@ export default {
       }
       return queryString
     },
+
+    setResponseMessage (type, message) {
+      this.responseMessage = message
+      this.responseMessageType = type
+    },
+
+    closeResponseMessage () { this.responseMessage = '' },
 
     formattedPageNumber (pageNumber) {
       return pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber

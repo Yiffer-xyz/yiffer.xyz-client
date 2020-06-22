@@ -188,7 +188,7 @@ export default {
 		padding: 4px;
 		margin: 8px 2px;
 		h2 {
-			font-size: 20px;
+			font-size: 24px;
 		}
 		.description-text {
 			margin-left: 10px;

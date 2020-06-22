@@ -30,10 +30,21 @@ export default {
 
   methods: {
     closeMessage () {
-      console.log('closin 1')
       this.$emit('closeMessage')
+    },
+
+    scrollIntoView () {
+      this.$nextTick(() => document.getElementById('responseMessageContainer').scrollIntoView({behavior: 'smooth'}))
     }
   },
+
+  watch: {
+    message: function (newVal, oldVal) {
+      if (newVal) {
+        this.scrollIntoView()
+      }
+    }
+  }
 }
 </script>
 
@@ -60,8 +71,13 @@ export default {
     margin-right: -3px;
     margin-bottom: -1px;
     color: white;
+
     &:hover {
       cursor: pointer;
+    }
+
+    svg {
+      bottom: 0;
     }
   }
 }

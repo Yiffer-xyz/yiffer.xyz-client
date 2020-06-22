@@ -76,15 +76,17 @@
 
         <!-- PREVIOUS COMIC -->
         <div class="prev-next-comic-container margin-top-16">
-          <p style="text-align: left;">Previous comic</p>
           <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
-            <select v-model="previousComic">
-              <option v-for="comic in comicList" :key="comic.id" :value="comic">
-                {{comic.name}}
-              </option>
-            </select>
+            <div>
+              <p style="text-align: left;">Previous comic</p>
+              <select v-model="previousComic">
+                <option v-for="comic in comicList" :key="comic.id" :value="comic">
+                  {{comic.name}}
+                </option>
+              </select>
+            </div>
             <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
-                    style="margin-left: 4px; margin-top: 2px;" @click="removePreviousLink()">
+                    style="margin-left: 4px; margin-top: 2px; align-self: flex-end;" @click="removePreviousLink()">
               <CrossIcon/> Remove link
             </button>
           </div>
@@ -92,27 +94,29 @@
 
         <!-- NEXT COMIC -->
         <div class="prev-next-comic-container margin-top-8">
-          <p style="text-align: left;">Next comic</p>
           <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+            <div>
+              <p style="text-align: left;">Next comic</p>
               <select v-model="nextComic">
                 <option v-for="comic in comicList" :key="comic.id" :value="comic">
                   {{comic.name}}
                 </option>
               </select>
+            </div>
             <button v-if="nextComic" class="y-button y-button-neutral button-with-icon"
-                    style="margin-left: 4px; margin-top: 2px;" @click="removeNextLink()">
+                    style="margin-left: 4px; margin-top: 2px; align-self: flex-end;" @click="removeNextLink()">
               <CrossIcon/> Remove link
             </button>
           </div>
         </div>
 
 				<span class="horizontal-flex no-margin-bot" style="margin-top: 16px;">
-        	<button @click="submitChanges()" class="y-button" style="margin-right: 4px;">
-            Submit changes
-          </button>
         	<button @click="resetFields()"
-                  class="y-button y-button-neutral button-with-icon" style="margin-left: 4px;">
+                  class="y-button y-button-neutral button-with-icon" style="margin-right: 4px;">
             <RefreshIcon/> Reset
+          </button>
+        	<button @click="submitChanges()" class="y-button" style="margin-left: 4px;">
+            Submit changes
           </button>
 				</span>
       </span>
