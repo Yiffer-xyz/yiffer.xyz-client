@@ -51,6 +51,24 @@ select {
 	flex-direction: column;
 }
 
+.horizontal-flex {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.alignCenter {
+	align-items: center;
+}
+
+.justifyCenter {
+	justify-content: center;
+}
+
+.width100 {
+	width: 100%;
+}
+
 .cursor-pointer {
 	&:hover {
 		cursor: pointer;
@@ -121,8 +139,14 @@ select {
 .margin-left-8 {
 	margin-left: 8px;
 }
+.margin-left-10 {
+	margin-left: 10px;
+}
 .margin-left-16 {
 	margin-left: 16px;
+}
+.margin-left-32 {
+	margin-left: 32px;
 }
 .margin-right-4 {
 	margin-right: 4px;
@@ -132,6 +156,9 @@ select {
 }
 .margin-right-16 {
 	margin-right: 16px;
+}
+.margin-right-32 {
+	margin-right: 32px;
 }
 
 .y-table {
@@ -223,6 +250,11 @@ input, textarea, select {
 	@media (min-width: 900px) {
 		grid-auto-flow: column;
 	}
+}
+
+.fitContent {
+	height: fit-content;
+	width: fit-content;
 }
 
 .dark {

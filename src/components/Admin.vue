@@ -223,12 +223,6 @@ export default {
 	align-items: center;
 }
 
-.horizontal-flex {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-}
-
 .flex-wrap {
 	flex-wrap: wrap;
 }

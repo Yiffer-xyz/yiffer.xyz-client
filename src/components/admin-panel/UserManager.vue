@@ -3,20 +3,26 @@
     <h2 @click="closeComponent" class="cursor-pointer">User manager</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                       class="margin-bottom-10"/>
+
 			<!-- USER SEARCH -->
-			<div class="horizontal-flex">
+			<div class="horizontal-flex alignCenter">
 				<form @submit="searchForUsers()" action="javascript:void(0)" class="no-margin-bot">
-					<input type="text" v-model="userSearchText" />
-					<button  @click="searchForUsers()" 
-									 type="submit"
-									 class="y-button y-button-neutral button-with-icon no-margin-bot margin-top-2"
-									 style="margin-left: 2px">
-						<search-icon/> Find users
-					</button>
+					<div class="horizontal-flex">
+						<input type="text" v-model="userSearchText" style="width: 110px;"/>
+
+						<button  @click="searchForUsers()" 
+										type="submit"
+										class="y-button y-button-neutral button-with-icon margin-left-4">
+							<SearchIcon/> Search
+						</button>
+
+						<button  @click="fetchModUsers()" class="y-button y-button-neutral button-with-icon margin-left-16 fitContent">
+							<ModIcon/> List mods
+						</button>
+					</div>
 				</form>
-				<button  @click="fetchModUsers()" class="y-button y-button-neutral button-with-icon no-margin-bot" style="margin-left: 32px">
-					<mod-icon/> List mods
-				</button>
 			</div>
 
 			<!-- USER SEARCH RESULT TABLE -->
@@ -31,7 +37,7 @@
 					</thead>
 					<tr v-for="user in foundUsers" :key="user.id">
 						<td>{{user.username}}</td>
-						<td>{{prettyDate(user.createdTime)}}</td>
+						<td>{{prettyDateFromTimestamp(user.createdTime)}}</td>
 						<td>
 							<button class="y-button y-button-neutral no-margin-bot" @click="selectUser(user)">
 								Select user
@@ -41,18 +47,18 @@
 				</table>
 			</div>
 			<div v-if="noFoundUsers">
-				No found users
+				<p class="margin-top-8">No found users</p>
 			</div>
 
 			<!-- SELECTED USER -->
-			<div v-if="selectedUser">
+			<div v-if="selectedUser" class="width100">
 				<div v-if="!selectedUserFound">
 					Loading user data...
 				</div>
-				<div v-else>
+				<div v-else class="width100">
 					<p class="admin-mini-header no-margin-bot margin-top-16">User: {{selectedUser.username}}</p>
 
-					<p>Account created {{prettyDate(selectedUser.createdTime)}}</p>
+					<p>Account created {{prettyDateFromTimestamp(selectedUser.createdTime)}}</p>
 
 					<!-- ROLES & DONATOR -->
 					<div class="horisontal-flex margin-top-8">
@@ -68,27 +74,23 @@
 							<option value=0>No</option>
 							<option value=1>Yes</option>
 						</select>
-
-						<button @click="submitNewUserData()" 
-										:class="{'y-button': true, 'y-button-disabled': !isSelectedUserModified, 'margin-top-2': true}" 
-										style="margin-left: 16px; margin-bottom: 0px;">
-							Submit changes
-						</button>
 					</div>
 					
-					<p class="error-message margin-top-8 margin-bottom-8" v-if="errorMessage">{{errorMessage}}</p>
-        	<p class="success-message margin-top-8 margin-bottom-8" v-if="successMessage">{{successMessage}}</p>
+					<button @click="submitNewUserData()" 
+									:class="{'y-button': true, 'y-button-disabled': !isSelectedUserModified, 'margin-top-8': true}">
+						Submit changes
+					</button>
 
 					<!-- COMIC VOTES -->
 					<p v-if="selectedUserComicVotes.length == 0" class="margin-top-16">
 						User has not rated any comics.
 					</p>
-					<div v-else class="margin-top-16">
+					<div v-else class="margin-top-16 width100">
 						<button class="y-button y-button-neutral button-with-icon" @click="showComicRatings = true" v-if="!showComicRatings">
-							<down-arrow/> Show {{selectedUserComicVotes.length}} comic votes
+							<DownArrow/> Show {{selectedUserComicVotes.length}} comic votes
 						</button>
 						<button class="y-button y-button-neutral button-with-icon" @click="showComicRatings = false" v-if="showComicRatings">
-							<up-arrow/> Hide comic votes
+							<UpArrow/> Hide comic votes
 						</button>
 
 						<div v-if="showComicRatings" class="scrolling-table-container margin-top-4">
@@ -96,8 +98,8 @@
 								<thead>
 									<tr>
 										<th>Comic name</th>
-										<th>Rating</th>
-										<th>Date assigned</th>
+										<th @click="setComicVotesSort('rating')">Rating</th>
+										<th @click="setComicVotesSort('date')">Date assigned</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -133,16 +135,14 @@ import DownArrow from 'vue-material-design-icons/ArrowDown.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 
 import userApi from '../../api/userApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
 	name: 'userManager',
 	
 	components: {
-		'search-icon': SearchIcon,
-		'mod-icon': ModIcon,
-		'down-arrow': DownArrow,
-		'up-arrow': UpArrow,
-
+		ResponseMessage,
+		SearchIcon, ModIcon, DownArrow, UpArrow,
 	},
 
   data: function () {
@@ -154,11 +154,13 @@ export default {
 			selectedUser: undefined,
 			originalUser: undefined,
 			selectedUserComicVotes: undefined,
+			comicVotesSort: 'date',
 			selectedUserFound: false,
 			showComicRatings: false,
 			moderatorUsers: [],
-			successMessage: '',
-			errorMessage: ''
+			toggleSortSwitch: -1,
+			responseMessage: '',
+			responseMessageType: 'info',
     }
   },
 
@@ -192,30 +194,51 @@ export default {
 			this.resetSelectedUser()
 
 			this.selectedUser = user
-			this.selectedUserComicVotes = await userApi.getUserData(user.id)
 			this.selectedUserFound = true
 			this.originalUser = {
 				userType: this.selectedUser.userType,
 				donator: this.selectedUser.donator
 			}
+
+			let comicVotes = await userApi.getUserData(user.id)
+			comicVotes.forEach(cv => cv.timestamp = new Date(cv.timestamp))
+			this.selectedUserComicVotes = comicVotes
 		},
 
 		async submitNewUserData () {
-			if (this.isSelectedUserModified) {
-				this.successMessage = ''
-				this.errorMessage = ''
-				let response = await userApi.updateUserData(this.selectedUser)
-				if (response.success) {
-					this.successMessage = `Successfully altered user ${this.selectedUser.username}`
-					this.originalUser = {
-						userType: this.selectedUser.userType,
-						donator: this.selectedUser.donator
-					}				
-				}
-				else {
-					this.errorMessage = 'Error altering user'
-				}
+			if (!this.isSelectedUserModified) { return }
+
+			let response = await userApi.updateUserData(this.selectedUser)
+			if (response.success) {
+				this.responseMessage = `Successfully altered user ${this.selectedUser.username}`
+				this.responseMessageType = 'success'
+				this.originalUser = {
+					userType: this.selectedUser.userType,
+					donator: this.selectedUser.donator
+				}				
 			}
+			else {
+				this.responseMessage = 'Error altering user'
+				this.responseMessageType = 'error'
+			}
+		},
+
+		setComicVotesSort (sortBy) {
+			if (sortBy === this.comicVotesSort) {
+				this.toggleSortSwitch = -this.toggleSortSwitch
+			}
+			else {
+				this.toggleSortSwitch = 1
+			}
+
+			if (sortBy === 'date') {
+				this.selectedUserComicVotes.sort((a, b) => a.timestamp>b.timestamp ? -this.toggleSortSwitch : this.toggleSortSwitch)
+			}
+			else if (sortBy === 'rating') {
+				this.selectedUserComicVotes.sort((a, b) => a.vote>b.vote ? -this.toggleSortSwitch : this.toggleSortSwitch)
+			}
+
+			this.comicVotesSort = sortBy
 		},
 
 		resetSearchResults () {
@@ -225,15 +248,21 @@ export default {
 
 		resetSelectedUser () {
 			this.selectedUser = undefined
-			this.selectedUserComicVotes = undefined
+			this.selectedUserComicVotes = []
 			this.selectedUserFound = false
 			this.originalUser = undefined
 			this.showComicRatings = false
 		},
 
-		prettyDate (mysqlDateString) {
+		prettyDateFromTimestamp (mysqlDateString) {
 			return (new Date(mysqlDateString)).toString().substring(0, 15)
 		},
+
+		prettyDate (date) {
+			return date.toString().substring(0, 15)
+		},
+
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
@@ -245,8 +274,6 @@ export default {
 			let result = this.selectedUser
 				&& (this.selectedUser.userType !== this.originalUser.userType
 				|| Number(this.selectedUser.donator) !== Number(this.originalUser.donator))
-			if (this.successMessage && result === true) { this.successMessage = '' } 
-			if (this.errorMessage && result === true) { this.errorMessage = '' } 
 			return result
 		}
 	}
