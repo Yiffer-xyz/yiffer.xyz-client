@@ -166,7 +166,6 @@ export default {
 .admin-content-box {
 	@include simpleshadow;
 	width: 300px;
-	border: 1px solid #aaa; //todo
 	margin: 16px;
 	height: 156px;
 	display: flex;
@@ -223,8 +222,10 @@ export default {
 	align-items: center;
 }
 
-.flex-wrap {
-	flex-wrap: wrap;
+.dark {
+	.admin-content-box {
+		border: 1px solid #444;
+	}
 }
 </style>
 

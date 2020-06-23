@@ -7,7 +7,7 @@
 				participate a lot. No hard feelings / no shame if you're not high up!
 			</p>
 
-			<table class="y-table">
+			<table class="y-table margin-top-10">
 				<thead>
 					<tr>
 						<th>Mod name</th>

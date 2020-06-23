@@ -3,7 +3,7 @@
     <h2 @click="closeComponent" class="cursor-pointer">Mod log</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
-			<button class="y-button" @click="getModLogData()">
+			<button class="y-button y-button-neutral" @click="getModLogData()">
 				Refresh data
 			</button>
 
