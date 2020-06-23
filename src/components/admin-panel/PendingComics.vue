@@ -16,6 +16,9 @@
     </h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                      class="margin-bottom-10 margin-top-10"/>
+
       <div v-if="pendingComics.length > 0" class="vertical-flex" style="max-width: 100%;">
         <p>You can add keywords, a thumbnail, or more pages by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
@@ -41,7 +44,7 @@
               <tr v-for="pendingComic in pendingComics" :key="pendingComic.id">
                 <td>
                   <router-link :to="{ name: 'pendingComic', params: {comicName: pendingComic.name} }" target="_blank" class="underline-link">
-                    {{pendingComic.name}} <right-arrow/>
+                    {{pendingComic.name}} <RightArrow/>
                   </router-link>
                 </td>
                 <td>
@@ -53,27 +56,26 @@
                 <td>{{pendingComic.cat}}</td>
                 <td>{{pendingComic.numberOfPages}}</td>
                 <td>{{pendingComic.finished ? 'Yes' : 'No'}}</td>
-                <td v-if="pendingComic.keywords.length>0"><checkbox-icon/></td> <td v-else>-</td>
-                <td v-if="pendingComic.hasThumbnail"><checkbox-icon/></td> <td v-else>-</td>
+                <td v-if="pendingComic.keywords.length>0"><CheckboxIcon/></td> <td v-else>-</td>
+                <td v-if="pendingComic.hasThumbnail"><CheckboxIcon/></td> <td v-else>-</td>
                 <td>{{pendingComic.modName}}</td>
                 <td v-if="$store.getters.userData.userType === 'admin'">
-                  <button @click="processComic(pendingComic.id, true, pendingComic.name)" 
-                          v-if="pendingComic.keywords.length > 0 && pendingComic.hasThumbnail"
-                          class="y-button">
-                    Approve
-                  </button>
-                  <button @click="processComic(pendingComic.id, false, pendingComic.name)"
-                          class="y-button y-button-red">
-                    Reject
-                  </button>
+                  <div class="horizontal-wrapper-4">
+                    <button @click="processComic(pendingComic.id, true, pendingComic.name)" 
+                            v-if="pendingComic.keywords.length > 0 && pendingComic.hasThumbnail"
+                            class="y-button">
+                      Approve
+                    </button>
+                    <button @click="processComic(pendingComic.id, false, pendingComic.name)"
+                            class="y-button y-button-red">
+                      Reject
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-
-				<p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-				<p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
       </div>
 
       <span v-else>
@@ -94,13 +96,14 @@ import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
   name: 'pendingComics',
 
 	components: {
-		'checkbox-icon': CheckboxIcon,
-		'right-arrow': RightArrow,
+    ResponseMessage,
+		CheckboxIcon, RightArrow,
   },
   
   props: {
@@ -110,28 +113,30 @@ export default {
   data: function () {
     return {
       isOpen: false,
-			errorMessage: '',
-			successMessage: '',
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
   methods: {
     async processComic (comicId, isApproved, comicName) {
-			this.errorMessage = ''
-			this.successMessage = ''
 			let response = await comicApi.processPendingComic(comicId, isApproved)
       
       if (response.success) {
-				this.successMessage = `Success ${isApproved ? 'approving' : 'rejecting'} ${comicName}`
+        this.responseMessage = `Success ${isApproved ? 'approving' : 'rejecting'} ${comicName}`
+        this.responseMessageType = 'success'
+        this.$emit('refresh-pending-comics')
         if (isApproved) {
-          this.$emit('refresh-pending-comics')
           this.$emit('refresh-comic-list')
 				}
 			}
 			else {
-				this.errorMessage = response.message
+        this.responseMessage = response.message
+        this.responseMessageType = 'error'
 			}
-		},
+    },
+
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 

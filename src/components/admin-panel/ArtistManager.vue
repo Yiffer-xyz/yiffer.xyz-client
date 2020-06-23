@@ -79,7 +79,7 @@
         </div>
 
         <p class="admin-mini-header no-margin-bot margin-top-8">Artist links</p>
-        <p>FurAffinity, Twitter, Pixiv, Weasyl, Artist's own website, etc.
+        <p>FurAffinity, Twitter, Pixiv, Weasyl, Artist's own website, etc.</p>
 
         <div class="vertical-flex scrolling-table-container" style="justify-content: flex-start; align-items: flex-start;">
           <div v-for="(link, index) in existingArtistLinks" :key="index" class="horizontal-flex margin-top-4">

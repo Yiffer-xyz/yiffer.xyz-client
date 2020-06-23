@@ -119,7 +119,7 @@
 
         <button @click="replaceThumbnail" v-if="thumbnailImageFile && !thumbnailImageWrongFormat" 
                 class="y-button">Insert {{thumbnailImageFile.name}}</button>
-        <p v-if="thumbnailImageWrongFormat" style="color: red; font-weight: bold;">
+        <p v-if="thumbnailImageWrongFormat" class="red-color bold">
           {{thumbnailImageWrongFormatMessage}}
         </p>
       </span>

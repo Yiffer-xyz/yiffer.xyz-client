@@ -6,7 +6,7 @@
       <p>Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
 
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
-                  class="margin-top-8"/>
+                       class="margin-top-8"/>
 
       <div class="horizontal-flex no-margin-bot margin-top-8" style="flex-wrap: wrap;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>

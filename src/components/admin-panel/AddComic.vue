@@ -27,8 +27,11 @@
       </p>
       </span>
 
+      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                       class="margin-top-8"/>
+
       <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">
-        Comic details <checkbox-icon v-if="detailsFilledIn"/>
+        Comic details <CheckboxIcon v-if="detailsFilledIn"/>
       </p>
       <table id="newComicTable">
         <tr>
@@ -104,7 +107,7 @@
         </select>
         <button v-if="previousComic" class="y-button y-button-neutral button-with-icon" 
                 style="margin-left: 4px; margin-top: 2px;" @click="removePreviousLink()">
-          <cross-icon/> Remove link
+          <CrossIcon/> Remove link
         </button>
       </div>
       <div class="horizontal-flex flex-wrap margin-top-4">
@@ -116,12 +119,12 @@
         </select>
         <button v-if="nextComic" class="y-button y-button-neutral button-with-icon" 
                 style="margin-left: 4px; margin-top: 2px;" @click="removeNextLink()">
-          <cross-icon/> Remove link
+          <CrossIcon/> Remove link
         </button>
       </div>
 
 
-      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add pages <checkbox-icon v-if="filesAreInput"/></p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add pages <CheckboxIcon v-if="filesAreInput"/></p>
       <form enctype="multipart/form-data" novalidate style="margin-top: 4px;">
         <div class="pretty-input-upload">
           <input type="file" multiple="true" @change="processFileUploadChange" id="newPageFilesAddComic" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -132,7 +135,7 @@
       <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
 
-      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add thumbnail <checkbox-icon v-if="thumbnailFile"/></p>
+      <p class="admin-mini-header no-margin-bot" style="margin-top: 16px;">Add thumbnail <CheckboxIcon v-if="thumbnailFile"/></p>
       <form enctype="multipart/form-data" novalidate style="margin: 4px 0;">
         <div class="pretty-input-upload">
           <input type="file" @change="processThumbNailUploadChange" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -142,10 +145,9 @@
       <p v-if="thumbnailFile">Selected file: 
         <span class="courier">{{thumbnailFile.name}}</span>
       </p>
-      <p class="error-message" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
+      <p class="red-color bold" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
 
-
-      <p class="admin-mini-header no-margin-bot margin-top-16">Add tags <checkbox-icon v-if="selectedKeywords.length"/></p>
+      <p class="admin-mini-header no-margin-bot margin-top-16">Add tags <CheckboxIcon v-if="selectedKeywords.length"/></p>
       <p>Adding tags is optional, but appreciated!</p>
       <div class="horizontal-flex margin-top-4">
         <div class="vertical-flex">
@@ -153,7 +155,7 @@
             <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()" style="width: 100%; margin-top: 1px;">
-            <right-arrow/>
+            <RightArrow/>
           </button>
         </div>
       
@@ -172,11 +174,6 @@
         Add comic!
       </button>
 
-      <p class="success-message" v-if="uploadPercent" style="margin-top: 8px;">Uploading ({{uploadPercent}}%)</p>
-			<p class="success-message" v-if="uploadPercent==100 && !errorMessage && !successMessage">Processing...</p>
-      <p class="error-message" v-if="errorMessage" style="margin-top: 8px;">{{errorMessage}}</p>
-      <p class="success-message" v-if="successMessage" style="margin-top: 8px;">{{successMessage}}</p>
-
       <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
@@ -193,6 +190,7 @@ import CrossIcon from 'vue-material-design-icons/Close.vue'
 
 import comicApi from '../../api/comicApi'
 import keywordApi from '../../api/keywordApi'
+import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
   name: 'correctComic',
@@ -204,10 +202,9 @@ export default {
   },
 
 	components: {
-		'checkbox-icon': CheckboxIcon,
-		'right-arrow': RightArrow,
-		'cross-icon': CrossIcon,
-	},
+    ResponseMessage,
+    CheckboxIcon, RightArrow, CrossIcon, 
+  },
 
   data: function () {
     return {
@@ -223,10 +220,10 @@ export default {
       selectedKeywords: [],
       thumbnailFile: undefined,
 			selectedKeyword: undefined,
-			uploadPercent: undefined,
-      errorMessage: '',
-      successMessage: '',
+      uploadPercent: undefined,
       errorMessageThumbnail: '',
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
@@ -272,8 +269,6 @@ export default {
     },
 
     async confirmAddComic () {
-			this.errorMessage = ''
-			this.successMessage = ''
       let uploadData = {
         comicName: this.comicName,
         artistId: this.artist.id,
@@ -284,12 +279,15 @@ export default {
         previousComic: this.previousComic ? this.previousComic.id : null,
         nextComic: this.nextComic ? this.nextComic.id : null
 			}
-			
+      
+      this.responseMessageType = 'info'
 			let response = await comicApi.addNewComic(uploadData, {pageFiles: this.selectedFiles, thumbnailFile: this.thumbnailFile}, this.updateUploadProgress)
 	
 			if (response.success) {
-        this.successMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
-					and then (hopefully) add it! Your suggested comic will now appear under "Pending comics".`
+        this.responseMessage = `Success adding ${this.comicName}, thank you! An administrator will review the new comic,
+          and then (hopefully) add it! Your suggested comic will now appear under "Pending comics".`
+        this.responseMessageType = 'success'
+
 				this.uploadPercent = undefined,
         this.comicName = ''
         this.artist = undefined
@@ -303,13 +301,16 @@ export default {
 				this.$emit('refresh-pending-comics')
       }
       else {
-        this.errorMessage = 'Error adding comic: ' + response.message
+        this.responseMessage = 'Error adding comic: ' + response.message
+        this.responseMessageType = 'error'
       }
 		},
 		
 		updateUploadProgress (progressEvent) {
-			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+			this.responseMessage = `Uploading... ${this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)}%`
 		},
+    
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
