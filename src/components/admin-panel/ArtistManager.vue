@@ -350,7 +350,6 @@ export default {
     },
 
     closeResponseMessageNewArtist () {
-      console.log('closin')
       this.responseMessageNewArtist = ''
     },
     closeResponseMessageEdit () {

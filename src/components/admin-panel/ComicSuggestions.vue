@@ -10,7 +10,7 @@
 				- Click '<u>Added</u>' when the comic has been uploaded (here, in the admin panel, via <i>Add new comic</i>). Please don't choose this before you have uploaded the comic.
 				<br/>
 				- Click '<u>Reject, add to rejected-list</u>' if the comic fails to meet the criteria listed  
-				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. This will show up in the list of previously rejected comics, along with the reason. Users can see this and it will prevent them from suggesting the same comic again.
+				<router-link :to="{name: 'suggestComic'}" target="_blank" class="underline-link">here</router-link>. This will show up in the list of previously rejected comics, along with a reason you may specify. Users can see this and it will prevent them from suggesting the same comic again.
 				<br/>
         - Click '<u>Reject as spam/dupl.</u>' if the comic has been suggested before, or if it's not a serious suggestion.
 				<br/>
@@ -36,26 +36,44 @@
             <tr v-for="(suggestion, index) in unprocessedSuggestions" :key="index">
               <td>{{suggestion.name}}</td>
               <td>{{suggestion.artist || ''}}</td>
-              <td style="word-break: break-word;">{{suggestion.description}}</td>
+              <td style="white-space: pre-wrap;">{{suggestion.description}}</td>
               <td>{{suggestion.user}}</td>
               <td>
-								<div class="horizontal-wrapper-4">
+								<div v-if="!suggestion.isRejectingAndAddingToList" class="vertical-flex alignCenter">
 									<button 
 										@click="processSuggestion(suggestion, true)"
-										class="y-button">
-										Added
+										class="y-button button-with-icon">
+										<CheckIcon Title=""/> I've added the comic
 									</button>
 									<button 
-										@click="processSuggestion(suggestion, true)"
-										class="y-button y-button-red">
-										Reject, add to rejected-list
+										@click="initRejectAndAddToList(suggestion)"
+										class="y-button y-button-red button-with-icon margin-top-8">
+										<RemoveToListIcon/> Reject, add to rejected-list
 									</button>
 									<button
-										@click="processSuggestion(suggestion, false)"
-										class="y-button y-button-red">
-										Reject as spam/dupl.
+										@click="processSuggestion(suggestion, false, false)"
+										class="y-button y-button-red button-with-icon margin-top-8">
+										<DeleteIcon/> Reject as spam/dupl.
 									</button>
 								</div>
+
+                <!-- REJECT AND ADD TO LIST -->
+                <div v-if="suggestion.isRejectingAndAddingToList" class="vertical-flex">
+                  <p>You <i>may</i> provide a reason (shown to users):</p>
+                  <input type="text" v-model="rejectReason"/>
+                  <div class="horizontal-flex margin-top-8 margin-bottom-4">
+                    <button 
+                      @click="cancelAddingToList(suggestion)"
+                      class="y-button y-button-neutral margin-left-4 margin-right-4">
+                      Cancel
+                    </button>
+                    <button 
+                      @click="processSuggestion(suggestion, false, true)"
+                      class="y-button y-button-red margin-left-4 margin-right-4">
+                      Reject, add to rejected-list
+                    </button>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -112,6 +130,9 @@
 import DownArrow from 'vue-material-design-icons/ArrowDown.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import RemoveToListIcon from 'vue-material-design-icons/DeleteSweep.vue'
 
 import comicApi from '../../api/comicApi'
 import ResponseMessage from '../ResponseMessage.vue'
@@ -121,7 +142,7 @@ export default {
 
 	components: {
     ResponseMessage,
-    DownArrow, UpArrow, CheckboxIcon,
+    DownArrow, UpArrow, CheckboxIcon, CheckIcon, DeleteIcon, RemoveToListIcon
 	},
 
   data: function () {
@@ -129,14 +150,41 @@ export default {
       isOpen: false,
       showProcessedSuggestions: false,
       comicSuggestionList: [],
+      rejectReason: '',
       responseMessage: '',
       responseMessageType: 'info',
     }
   },
 
   methods: {
-    async processSuggestion (suggestionData, isApproved) {
-      let response = await comicApi.processComicSuggestion({suggestionId: suggestionData.id, isApproved: isApproved})
+    initRejectAndAddToList (suggestion) {
+      for (let i=0; i<this.comicSuggestionList.length; i++) {
+        if (this.comicSuggestionList[i].id === suggestion.id) {
+          this.comicSuggestionList[i].isRejectingAndAddingToList = true
+          this.$set(this.comicSuggestionList, i, this.comicSuggestionList[i])
+        }
+        else {
+          if (this.comicSuggestionList[i].isRejectingAndAddingToList) {
+            this.comicSuggestionList[i].isRejectingAndAddingToList = false
+            this.$set(this.comicSuggestionList, i, this.comicSuggestionList[i])
+          }
+        }
+      }
+      this.rejectReason = ''
+    },
+
+    cancelAddingToList (suggestion) {
+      this.rejectReason = ''
+      suggestion.isRejectingAndAddingToList = false
+      this.$set(this.comicSuggestionList, this.comicSuggestionList.findIndex(s => s.id===suggestion.id), suggestion)
+    },
+
+    async processSuggestion (suggestionData, isApproved, shouldShowInList) {
+      let response = await comicApi.processComicSuggestion(suggestionData.id, {
+        isApproved: isApproved,
+        shouldShowInList: shouldShowInList,
+        reason: this.rejectReason
+      })
 
       if (response.success) {
         this.responseMessage = `Successfully processed suggestion of ${suggestionData.name} (${isApproved ? 'added' : 'rejected'})`
@@ -154,6 +202,7 @@ export default {
       
       for (var suggestion of this.comicSuggestionList) {
         suggestion.user = suggestion.user || suggestion.userIP
+        suggestion.isRejectingAndAddingToList = false
       }
     },
 

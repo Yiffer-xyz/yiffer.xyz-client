@@ -41,6 +41,12 @@ export default {
 		else { return [] }
 	},
 
+	async getRejectedComics () {
+		let response = await axios.get(baseUrl + '/comicsuggestions/rejected')
+		if (!response.data.error) { return response.data }
+		else { return [] }
+	},
+
 	async updateComic (updatedComicData) {
 		let response = await axios.post(`${baseUrl}/comics/${updatedComicData.id}/updatedetails`, updatedComicData)
 		if (!response.data.error) { return {success: true} }
@@ -112,8 +118,8 @@ export default {
 		else { return {success: false, message: response.data.error} }
 	},
 
-	async processComicSuggestion (suggestion) {
-		let response = await axios.post(baseUrl + '/comicsuggestions/process', suggestion)
+	async processComicSuggestion (suggestionId, suggestionData) {
+		let response = await axios.post(`${baseUrl}/comicsuggestions/${suggestionId}/process`, suggestionData)
 		if (!response.data.error) { return {success: true} }
 		else { return {success: false, message: response.data.error} }
 	},

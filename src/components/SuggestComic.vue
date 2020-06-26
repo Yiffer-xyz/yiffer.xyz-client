@@ -2,7 +2,7 @@
 	<div style="width: 100%">
 		<vue-headful :title="'Profile - Yiffer.xyz'"/>
 		<h1>Suggest new comic</h1>
-		<back-to-index></back-to-index>
+		<BackToIndex></BackToIndex>
 
 		<div class="full-width-text margin-top-12">
 			<p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
@@ -26,47 +26,69 @@
 			</ul>
 
 			<div class="vertical-flex margin-top-32">
+				<ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+												 class="margin-bottom-10"/>
+
 				<label>Comic name</label>
 				<input type="text" v-model="comicName" style="width: 200px;"/>
 
 				<label class="margin-top-16">Artist (if known)</label>
 				<input type="text" v-model="artist" style="width: 200px;"/>
 
-				<div style="width: 460px;" class="margin-top-16">
+				<div class="margin-top-16">
 					<label>Links, comments</label>
-					<textarea type="text" v-model="linksComments" style="width: 100%;" rows="4"/>
+					<textarea type="text" v-model="linksComments" style="width: 100%; white-space: pre-wrap;" rows="4"/>
 
 					<p class="no-margin-top">
 						Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
 					</p>
 				</div>
-
-				<p class="success-message" v-if="successMessage">{{successMessage}}</p>
-				<p class="error-message" v-if="errorMessage">{{errorMessage}}</p>
 			</div>
 
 			<button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
+
+			<div id="rejectedComics" class="margin-top-32">
+				<h2>Previously rejected comics</h2>
+				<table class="y-table" v-if="rejectedComics.length > 0">
+					<thead>
+						<tr>
+							<th>Comic name</th>
+							<th>Artist</th>
+							<th>Reason</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="rejectedSuggestion in rejectedComics" :key="rejectedSuggestion.name">
+							<td>{{rejectedSuggestion.name}}</td>
+							<td>{{rejectedSuggestion.artist}}</td>
+							<td>{{rejectedSuggestion.reason}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p v-else>None yet!</p>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import BackToIndex from '@/components/BackToIndex.vue'
-
 import comicApi from '../api/comicApi'
+import BackToIndex from '@/components/BackToIndex.vue'
+import ResponseMessage from './ResponseMessage.vue'
 
 export default {
 	name: 'suggestComic',
 
-	components: { 'back-to-index': BackToIndex },
+	components: { BackToIndex, ResponseMessage },
 
 	data: function () {
 		return {
 			comicName: '',
 			artist: '',
 			linksComments: '',
-			successMessage: '',
-			errorMessage: '',
+			rejectedComics: [],
+			responseMessage: '',
+			responseMessageType: 'info',
 		}
 	},
 
@@ -74,24 +96,31 @@ export default {
 		async submitButtonClicked () {
 			let response
 			if (!this.comicName || !this.linksComments) {
-				response = {success: false, message: 'Please provide a comic name and some link to some page or an album somehwere.'}
+				this.responseMessage = 'Please provide a comic name and some link to some page or an album somehwere'
+				this.responseMessageType = 'error'
 			}
 			else {
 				response = await comicApi.addComicSuggestion(this.comicName, this.artist, this.linksComments)
 			}
 			if (response.success) {
-				this.successMessage = `Thank you for your suggestion of ${this.comicName+''}!`
+				this.responseMessage = `Thank you for your suggestion of ${this.comicName+''}!`
+				this.responseMessageType = 'success'
 				this.comicName = ''
 				this.artist = ''
 				this.linksComments = ''
-				this.errorMessage = ''
 			}
 			else {
-				this.errorMessage = response.message
-				this.successMessage = ''
+				this.responseMessage = response.message
+				this.responseMessageType = 'error'
 			}
-		}
-  },
+		},
+
+		closeResponseMessage () { this.responseMessage = '' },
+	},
+	
+	async mounted () {
+		this.rejectedComics = await comicApi.getRejectedComics()
+	},
 }
 </script>
 

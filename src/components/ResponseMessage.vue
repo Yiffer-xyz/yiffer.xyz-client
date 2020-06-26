@@ -2,7 +2,7 @@
   <div :class="{'error-message': messageType==='error', 'success-message': messageType==='success', 'info-message': messageType==='info'}" 
        v-show="message && message.length > 0"
        id="responseMessageContainer">
-    <p>{{message}}</p>
+    <p class="no-margin-top">{{message}}</p>
     <div @click="closeMessage()" v-if="!preventClose" class="close-container">
       <CloseIcon title="Close"/>
     </div>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import scrollIntoView from 'scroll-into-view-if-needed'
 import CloseIcon from 'vue-material-design-icons/CloseCircle.vue'
 
 export default {
@@ -33,15 +34,15 @@ export default {
       this.$emit('closeMessage')
     },
 
-    scrollIntoView () {
-      this.$nextTick(() => document.getElementById('responseMessageContainer').scrollIntoView({behavior: 'smooth'}))
+    scrollMessageIntoView () {
+      this.$nextTick(() => scrollIntoView(document.getElementById('responseMessageContainer'), {behavior: 'smooth', scrollMode: 'if-needed', block: 'nearest'}))
     }
   },
 
   watch: {
     message: function (newVal, oldVal) {
       if (newVal) {
-        this.scrollIntoView()
+        this.scrollMessageIntoView()
       }
     }
   }
