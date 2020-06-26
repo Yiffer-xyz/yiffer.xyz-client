@@ -3,7 +3,10 @@
 
 		<vue-headful :title="'Account - Yiffer.xyz'"/>
 		<h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
-		<back-to-index style="margin: auto;"/>
+		<BackToIndex style="margin: auto;"/>
+
+		<ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
+                     class="margin-bottom-10 margin-top-10"/>
 
 		<div class="smaller-width-text vertical-flex center-on-mobile">
 			<button v-if="!isChangingPassword"
@@ -60,14 +63,14 @@
 </template>
 
 <script>
-import BackToIndex from '@/components/BackToIndex.vue'
-
 import authApi from '../api/authApi'
+import ResponseMessage from './ResponseMessage.vue'
+import BackToIndex from '@/components/BackToIndex.vue'
 
 export default {
 	name: 'account',
 
-	components: { 'back-to-index': BackToIndex },
+	components: { BackToIndex, ResponseMessage },
 
 	data: function () {
 		return {
@@ -75,40 +78,46 @@ export default {
 			currentPassword: '',
 			newPassword: '',
 			newPassword2: '',
-			errorMessagePassword: '',
-			successMessagePassword: '',
+			responseMessage: '',
+			responseMessageType: 'info',
 		}
 	},
 
 	methods: {
 		async submitChangePassword () {
-			let response = undefined
 			if (!this.currentPassword || !this.newPassword1 || !this.newPassword2) {
-				response = {success: false, message: 'Please fill in all fields'}
+				this.responseMessage = 'Please fill in all fields'
+				this.responseMessageType = 'error'
+				return
 			}
 			else if (this.newPassword1 != this.newPassword2) {
-				response = {success: false, message: 'New passwords do not match'}
+				this.responseMessage = 'New passwords do not match'
+				this.responseMessageType = 'error'
+				this.newPassword1 = ''
+				this.newPassword2 = ''
+				return
 			}
-			else {
-				response = await authApi.changePassword(this.currentPassword, this.newPassword1, this.newPassword2)
-			}
+
+			let response = await authApi.changePassword(this.currentPassword, this.newPassword1, this.newPassword2)
 			if (response.success) {
-				this.successMessagePassword = 'Password changed successfully!'
+				this.responseMessage = 'Password changed successfully!'
+				this.responseMessageType = 'success'
 				this.cancelChangePassword()
 			}
 			else {
-				this.errorMessagePassword = `Error changing password: ${response.message}`
-				this.successMessagePassword = ''
+				this.responseMessage = `Error changing password: ${response.message}`
+				this.responseMessageType = 'error'
 			}
 		},
 
 		cancelChangePassword () {
-			this.errorMessagePassword = ''
 			this.currentPassword = ''
 			this.newPassword1 = ''
 			this.newPassword2 = ''
 			this.isChangingPassword = false
-		}
+		},
+
+		closeResponseMessage () { this.responseMessage = '' },
 	},
 	
   created: async function () {
