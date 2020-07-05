@@ -141,7 +141,7 @@
 											@click="clearKeywordSearchField()">
 									<cross-icon title="Clear"/>
 								</span>
-								<div id="keywordResults" v-if="keywordSearchFocused">
+								<div id="keywordResults" v-if="keywordSearchFocused" style="max-height: 11rem;">
 									<div
 										v-for="keywordObject in keywordsMatchingSearch" 
 										:key="keywordObject.id"
@@ -253,7 +253,7 @@
 
 		<button class="y-button y-button-neutral margin-top-16" @click="scrollToTop()"><up-arrow/> to top</button>
 
-		<div style="display: flex; flex-direction: row; align-items: center; margin: 8px auto 32px auto;" class="upperBodyWidth">
+		<div style="display: flex; flex-direction: row; align-items: center; margin-top: 8px;" class="upperBodyWidth">
 			<div @click="paginate('down', shouldScrollToTopOfList=true)" class="pagination-button"><left-arrow/></div>
 			<div v-for="(pageNo, index) in paginationButtons"
 					:key="index"
@@ -286,6 +286,7 @@ import LoginIcon from 'vue-material-design-icons/Login.vue'
 import SignupIcon from 'vue-material-design-icons/AccountPlusOutline.vue'
 
 import keywordApi from '../api/keywordApi'
+import miscApi from '../api/miscApi'
 
 export default {
 	name: 'comic-list',
@@ -319,6 +320,7 @@ export default {
 			smallPagination: undefined,
 			searchFiltering: this.$store.getters.searchFiltering || '',
 			suppressQueryUpdates: false,
+			avoidLog: true,
 		}
 	},
 
@@ -326,16 +328,19 @@ export default {
 		onCategoryFilterClick (filter) {
 			this.$store.commit('addCategoryFilter', filter)
 			this.setRouterQuery()
+			miscApi.logEvent('categoryfilter', filter)
 		},
 
 		onTagFilterClick (filter) {
 			this.$store.commit('addTagFilter', filter)
 			this.setRouterQuery()
+			miscApi.logEvent('tagfilter', filter)
 		},
 
 		onSortingButtonClick ( sortButtonName ) {
 			this.$store.commit('setSorting', sortButtonName)
 			this.setRouterQuery()
+			miscApi.logEvent('sort', sortButtonName)
 		},
 
 		paginate ( pageNumber, shouldScrollToTopOfList=false ) {
@@ -370,7 +375,7 @@ export default {
 				this.keywordSearchFocused = undefined
 				this.keywordSearch = ''
 			}
-			keywordApi.logKeywordSearch(keyword)
+			keywordApi.logKeywordSearch(keyword.id, false)
 			this.setRouterQuery()
 		},
 
@@ -489,14 +494,16 @@ export default {
 			this.keywordSearchFocused = isFocused || this.keywordSearch != ''
 		},
 
-		setDetailLevel ( detailLevel ) {
+		setDetailLevel (detailLevel) {
 			this.$store.commit('setDetailLevel', detailLevel)
 			this.$cookies.set('detail', detailLevel)
+			if (!this.avoidLog) { miscApi.logEvent('detail', detailLevel) }
 		},
 
 		setViewMode (viewMode) {
 			this.$store.commit('setViewMode', viewMode)
 			this.$cookies.set('viewmode', viewMode)
+			if (!this.avoidLog) { miscApi.logEvent('viewmode', viewMode) }
 		},
 
 		clearSearchField () {
@@ -544,12 +551,14 @@ export default {
 		this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
 		this.handleResize()
 		window.addEventListener('resize', this.handleResize)
+		miscApi.logRoute('index')
+		this.avoidLog = false
 	},
 
 	computed: {
 		keywordsMatchingSearch () {
 			return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
-				.slice(0, 8)
+				// .slice(0, 8)
 		},
 		paginationButtons () {
 			let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage) //todo gettable?
@@ -716,13 +725,13 @@ export default {
 	}
 
 	@media (max-width: 900px) {
-		padding: 4px 10px;
+		padding: 0.5rem 0.5rem;
 	}
 }
 
 #catTable td {
 	@media (max-width: 900px) {
-		padding: 4px 1px;
+		padding: 0.5rem 1px;
 	}
 }
 

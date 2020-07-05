@@ -66,7 +66,7 @@ export default {
 		else { return {success: false, message: response.data.error} }	
 	},
 
-	logKeywordSearch (keyword) {
-		axios.post(baseUrl + '/keywords/log', {keyword: keyword})
+	logKeywordSearch (keywordId, isFromCard) {
+		axios.post(baseUrl + '/keywords/log', {keywordId, isFromCard})
 	}
 }

@@ -1,4 +1,5 @@
-import comicApi from '../api/comicApi.js'
+import comicApi from '../api/comicApi'
+import keywordApi from '../api/keywordApi'
 import config from '@/config.json'
 import Vue from 'vue'
 
@@ -62,6 +63,8 @@ export default {
 		addSelectedKeywordByNameOnly (context, keywordName) {
 			let keywordObject = context.rootState.keywordList.find(kw => kw.name===keywordName)
 			context.commit('addSelectedKeyword', keywordObject)
+
+			keywordApi.logKeywordSearch(keywordObject.id, true)
 		},
 	},
 
@@ -70,14 +73,18 @@ export default {
 			state.comicList = comicList
 			recalculateFilteredComics(state)
 		},
+
 		setFirstComicsList (state, comicList) {
 			state.firstComicsList = comicList
 		},
+
 		setDisplayedComics: (state, newDisplayedComics) => state.displayedComics = newDisplayedComics,
+
 		setPageNumber: (state, newPageNumber) => {
 			state.pageNumber = newPageNumber
 			recalculateDisplayedComics(state)
 		},
+
 		setSorting: (state, newSorting) => {
 			if (!newSorting) { newSorting = state.sorting }
 
@@ -91,19 +98,23 @@ export default {
 
 			recalculateFilteredComics(state)
 		},
+
 		setSearchFiltering: (state, newSearchFiltering) => {
 			state.searchFiltering = newSearchFiltering
 			state.pageNumber = 1
 			recalculateFilteredComics(state)
 		},
+
 		setCategoryFilter: (state, filterList) => {
 			state.categoryFilter = filterList
 			recalculateFilteredComics(state)
 		},
+
 		setTagFilter: (state, filterList) => {
 			state.tagFilter = filterList
 			recalculateFilteredComics(state)
 		},
+
 		addCategoryFilter: (state, filter) => {
 			state.pageNumber = 1
 			if (filter === 'All') {
@@ -119,6 +130,7 @@ export default {
 			}
 			recalculateFilteredComics(state)
 		},
+
 		addTagFilter: (state, filter) => {
 			state.pageNumber = 1
 			if (filter === 'All') {
@@ -134,31 +146,39 @@ export default {
 			}
 			recalculateFilteredComics(state)
 		},
+
 		addSelectedKeyword: (state, keyword) => { 
 			state.pageNumber = 1
 			if (!state.selectedKeywords.find(kw => kw.id === keyword.id)) {
 				state.selectedKeywords.push(keyword) 
 			}
 			recalculateFilteredComics(state)
+			keywordApi.logKeywordSearch(keyword.id, false)
 		},
+
 		removeSelectedKeyword: (state, keyword) => {
 			state.pageNumber = 1
 			state.selectedKeywords.splice(state.selectedKeywords.findIndex(kw => kw.id === keyword.id), 1)
 			recalculateFilteredComics(state)
 		},
+
 		setSelectedKeywords: (state, keywordList) => {
 			state.selectedKeywords = keywordList
 			recalculateFilteredComics(state)
 		},
+
 		setFilteredComics: (state, comicList) => {
 			state.filteredComics =  comicList
 		},
+
 		setDetailLevel ( state, detailLevel ) {
 			state.detailLevel = detailLevel
 		},
+
 		setViewMode (state, viewMode) {
 			state.viewMode = viewMode
 		},
+
 		setExpandedComic (state, comic) {
 			if (!comic) {
 				state.comicCardExpanded = false

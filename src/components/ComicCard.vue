@@ -86,6 +86,8 @@
 </template>
 
 <script>
+import keywordApi from '../api/keywordApi'
+
 import VotingButton from '@/components/VotingButton.vue'
 import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'

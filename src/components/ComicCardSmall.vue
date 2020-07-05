@@ -22,10 +22,9 @@
         {{comic.cat}}</div>
     </div>
 
-    <div style="display: flex; flex-direction: column; margin-left: 4px;
-    width: 100%;">
+    <div style="display: flex; flex-direction: column; margin-left: 4px; width: 100%;">
       <!-- TITLE AND ARTIST -->
-      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 0.5rem;">
         <p style="font-size: 16px; font-weight: 400; text-align: left;">
           {{comic.name}}</p>
         <p style="font-size: 13px; font-weight: 300; margin-left: auto;
@@ -36,17 +35,17 @@
       <!-- PAGES, VOTES -->
       <div style="display: flex; flex-direction: row; font-weight: 300; font-size: 13px;">
         <p title="Number of pages">
-          <pages-icon title="Number of pages"/>
+          <PagesIcon title="Number of pages"/>
           {{comic.numberOfPages}}
         </p>
 
         <p title="User rating">
-          <users-icon title="User rating" style="margin-left: 16px;"/>
+          <UsersIcon title="User rating" style="margin-left: 16px;"/>
           {{formatRating(comic.userRating)}}
         </p>
 
         <p title="Your rating" v-if="$store.getters.isAuthenticated" style="margin-left: 16px;">
-          <user-icon title="Your rating"/>
+          <UserIcon title="Your rating"/>
           {{comic.yourRating || '-'}}
         </p>
       </div>
@@ -78,58 +77,64 @@ import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 
 export default {
-	name: 'comic-card',
+  name: 'comic-card',
+  
 	components: {
-		'voting-button': VotingButton,
-		'voting-button-single-color': VotingButtonSingleColor,
-		'pages-icon': PagesIcon,
-		'user-icon': UserIcon,
-		'users-icon': UsersIcon,
-		'plus-icon': PlusIcon,
-		'refresh-icon': RefreshIcon,
-	},
+		VotingButton, VotingButtonSingleColor, 
+    PagesIcon, UserIcon, UsersIcon, PlusIcon, RefreshIcon, 
+  },
+  
 	props: {
 		comic: Object,
 		clickableKeyword: {
 			type: Boolean,
 			default: true
 		}
-	},
+  },
+  
 	data: function () {
 		return {
 			isNewComic: new Date() - new Date(this.comic.created) < 10*604800000,  // todo 1 week = 604800000
 			recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 604800000),
 			showLocalKeywords: false
 		}
-	},
+  },
+  
 	methods: {
     onCardClicked () {
       this.$store.commit('setExpandedComic', this.comic)
 			this.$store.commit('setComicForVotingModal', this.comic)
     },
+
 		formatRating: function (number) {
 			if (number > 8.5) { return Math.round(number * 100) / 100 }
 			else { return Math.round(number * 10) / 10 }
-		},
+    },
+    
 		prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
 		storeClickedComicData: function () {
 			this.$store.dispatch('storeClickedComic', this.comic)
-		},
+    },
+    
 		addSelectedKeyword (keywordName, clickEvent) {
       clickEvent.stopPropagation()
-			if ( this.clickableKeyword ) { this.$store.commit('addSelectedKeyword', keywordName) }
-		},
+			if ( this.clickableKeyword ) { this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName) }
+    },
+    
 		convertTagName (tagName) {
 			return tagName=='Pokemon' ? 'Pkmn' : tagName
 		}
-	},
+  },
+  
 	computed: {
 		showKeywords () {
 			return this.$store.getters.detailLevel==='High detail' || this.showLocalKeywords
-		},
+    },
+    
 		showHideKeywordsButton () {
 			return this.showLocalKeywords && this.$store.getters.detailLevel!=='High detail'
     },
+
     keywordsMarginRight () {
       if (this.isNewComic && !this.comic.finished) { return '56px' }
       else if (!this.isNewComic && this.comic.finished) { return '0' }
