@@ -100,6 +100,7 @@ import HideTags from 'vue-material-design-icons/TagRemove.vue'
 
 export default {
 	name: 'comic-card',
+	
 	components: {
 		'voting-button': VotingButton,
 		'voting-button-single-color': VotingButtonSingleColor,
@@ -111,6 +112,7 @@ export default {
 		'tags': Tags,
 		'hide-tags': HideTags,
 	},
+
 	props: {
 		comic: Object,
 		clickableKeyword: {
@@ -118,6 +120,7 @@ export default {
 			default: true
 		}
 	},
+
 	data: function () {
 		return {
 			isNewComic: new Date() - new Date(this.comic.created) < 2*604800000,  // todo 1 week = 604800000
@@ -125,27 +128,33 @@ export default {
 			showLocalKeywords: false
 		}
 	},
+
 	methods: {
 		formatRating: function (number) {
 			if (number == 0 || !number) { return '-' }
 			if (number > 8.5) { return Math.round(number * 100) / 100 }
 			else { return Math.round(number * 10) / 10 }
 		},
+
 		prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
 		storeClickedComicData: function () {
 			this.$store.dispatch('storeClickedComic', this.comic)
 		},
+
 		addSelectedKeyword (keywordName) {
 			if ( this.clickableKeyword ) { this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName) }
 		},
+
 		convertTagName (tagName) {
 			return tagName=='Pokemon' ? 'Pkmn' : tagName
 		}
 	},
+
 	computed: {
 		showKeywords () {
 			return this.$store.getters.detailLevel==='high' || this.showLocalKeywords
 		},
+
 		showHideKeywordsButton () {
 			return this.showLocalKeywords && this.$store.getters.detailLevel!=='high'
 		}

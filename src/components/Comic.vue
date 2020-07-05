@@ -202,6 +202,7 @@ import Tags from 'vue-material-design-icons/TagMultiple.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
+import miscApi from '../api/miscApi'
 
 export default {
 	name: 'comic',
@@ -252,11 +253,15 @@ export default {
 			else { return Math.round(number * 10) / 10 }
 		},
 
-		setAllImagesFit ( imageFit ) {
+		setAllImagesFit ( imageFit, avoidLog=false ) {
 			document.querySelectorAll('.comic-page').forEach(page => {
 				page.classList.remove('img-fit-big', 'img-fit-thumb', 'img-fit-width', 'img-fit-height')
 				page.classList.add('img-fit-' + imageFit)
 			})
+
+			if (!avoidLog) {
+				miscApi.logEvent('all images fit', imageFit)
+			}
 		},
 
 		cycleOneImageFit ( pageNumber ) {
@@ -270,6 +275,8 @@ export default {
 			let newFit = imageFitCycleOrder[ (imageFitCycleOrder.indexOf(oldFit)+1) % 4 ]
 			imageElement.classList.remove('img-fit-'+oldFit)
 			imageElement.classList.add('img-fit-'+newFit)
+
+			miscApi.logEvent('single image fit')
 		},
 
 		initializeImageFitArray () {
@@ -332,7 +339,7 @@ export default {
 			if (window.innerWidth < 900) {
 				let resizeIntervalHook = setInterval(() => {
 					if (this.comic && document.getElementById('comicPageContainer').childElementCount === this.comic.numberOfPages) {
-						this.setAllImagesFit('width')
+						this.setAllImagesFit('width', true)
 						clearInterval(resizeIntervalHook)
 					}
 				}, 30)
@@ -394,7 +401,6 @@ export default {
 		},
 	},
 
-
 	async mounted () {
 		if (navigator.share === undefined) {
 			// this.showShareIcon = false todo
@@ -407,6 +413,8 @@ export default {
 			this.initializeImageFitArray()
 			this.fitImagesForMobile()
 		}
+
+		miscApi.logRoute('comic', this.$route.params.comicName)
 	},
 
 	watch: {

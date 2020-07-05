@@ -56,11 +56,18 @@
 import BackToIndex from '@/components/BackToIndex.vue'
 import PaypalIcon from 'vue-material-design-icons/Paypal.vue'
 
+import miscApi from '../api/miscApi'
+
 export default {
-	name: 'admin',
+  name: 'admin',
+  
 	components: {
     'back-to-index': BackToIndex,
     'paypal-icon': PaypalIcon,
-	},
+  },
+
+  mounted () {
+    miscApi.logRoute('donate')
+  }
 }
 </script>

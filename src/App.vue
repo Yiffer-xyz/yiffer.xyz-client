@@ -54,6 +54,8 @@
 import LoginModal from '@/components/LoginModal.vue'
 import VotingModal from '@/components/VotingModal.vue'
 
+import miscApi from './api/miscApi'
+
 export default {
 	components: { 'login-modal': LoginModal, 'voting-modal': VotingModal },
 
@@ -81,6 +83,8 @@ export default {
 				this.$store.commit('setDarkTheme', false)
 				this.$cookies.set('theme', 'light')
 			}
+
+			miscApi.logEvent('theme', themeColor)
 		},
 
 		showLoginModal () {

@@ -64,6 +64,8 @@
 
 <script>
 import authApi from '../api/authApi'
+import miscApi from '../api/miscApi'
+
 import ResponseMessage from './ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 
@@ -123,6 +125,7 @@ export default {
   created: async function () {
 		let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
 		if (!loggedin) { this.$router.replace('/') }
+		miscApi.logRoute('account')
 	},
 }
 </script>

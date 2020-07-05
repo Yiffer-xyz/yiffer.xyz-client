@@ -47,7 +47,7 @@
 
 			<button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
 
-			<div id="rejectedComics" class="margin-top-32">
+			<div id="rejectedComics" class="margin-top-32 scrolling-table-container">
 				<h2>Previously rejected comics</h2>
 				<table class="y-table" v-if="rejectedComics.length > 0">
 					<thead>
@@ -73,6 +73,8 @@
 
 <script>
 import comicApi from '../api/comicApi'
+import miscApi from '../api/miscApi'
+
 import BackToIndex from '@/components/BackToIndex.vue'
 import ResponseMessage from './ResponseMessage.vue'
 
@@ -120,6 +122,7 @@ export default {
 	
 	async mounted () {
 		this.rejectedComics = await comicApi.getRejectedComics()
+		miscApi.logRoute('suggestcomic')
 	},
 }
 </script>
