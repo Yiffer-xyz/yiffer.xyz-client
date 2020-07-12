@@ -38,7 +38,7 @@
 
         <a href="https://www.paypal.me/yifferxyz" target="_blank">
           <button class="y-button" style="width: 100%; padding: 12px; font-size: 16px;">
-            <paypal-icon/> Help us out!
+            Help us out!
           </button>
         </a>
       </p>
@@ -54,7 +54,6 @@
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import PaypalIcon from 'vue-material-design-icons/Paypal.vue'
 
 import miscApi from '../api/miscApi'
 
@@ -63,7 +62,6 @@ export default {
   
 	components: {
     'back-to-index': BackToIndex,
-    'paypal-icon': PaypalIcon,
   },
 
   mounted () {

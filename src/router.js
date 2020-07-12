@@ -52,8 +52,23 @@ export default new Router({
 			component: Donate
 		},
 		{
+			path: '/blog/:id',
+			name: 'blogWithId',
+			component: Blog
+		},
+		{
 			path: '/blog',
 			name: 'blog',
+			component: Blog
+		},
+		{
+			path: '/advertising',
+			name: 'advertising',
+			component: Blog
+		},
+		{
+			path: '/join-us',
+			name: 'moderating',
 			component: Blog
 		},
 		{
@@ -69,6 +84,7 @@ export default new Router({
 	],
 	scrollBehavior ( to, from, savedPosition ) {
 		if (to.path === '/' && from.path === '/') { return }
+		if (to.path.includes('blog') && from.path.includes('blog')) { return }
 		if ( savedPosition ) { return savedPosition }
 		else { return {x: 0, y: 0} }
 	}

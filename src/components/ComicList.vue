@@ -17,14 +17,57 @@
 			</p>
 			<p v-else class="margin-top-10">Welcome, {{$store.getters.userData.username}}</p>
 
-			<div class="donate-link">
-				<router-link :to="{name: 'donate'}" class="underline-link" style="margin-right: 16px;">
-					<donate-icon title=""/> Donate?
+			<p v-if="blogLink" class="mt-10">
+				Blog: 
+				<router-link :to="{name: 'blogWithId', params: {id: blogLink.id}}"
+													 class="underline-link">
+					{{blogLink.title}}
+				</router-link>
+			</p>
+
+			<div class="top-links">
+				<router-link :to="{name: 'advertising'}" class="underline-link" style="width: 8rem; margin-right: 0.5rem">
+					<ExclamationIcon title=""/> Your ad here?
 				</router-link>
 
-				<router-link :to="{name: 'suggestComic'}" class="underline-link" style="margin-left: 16px;">
-					<plus-icon title=""/> Suggest comic?
-				</router-link>
+				<DropdownMenu v-model="showDropdown" 
+											v-if="$breakpoint.smAndDown"
+											:hover="true" 
+											:right="true" 
+											class="dropdownElement ml-4" 
+											style="width: 8rem;">
+					<p dropdown-toggle class="link-color" style="font-weight: 400;">
+						More <MenuDownIcon/>
+					</p>
+
+					<div slot="dropdown" class="linkDropdown simpleShadowNoHover">
+						<router-link :to="{name: 'donate'}" class="underline-link">
+							<donate-icon title=""/> Donate
+						</router-link>
+
+						<router-link :to="{name: 'suggestComic'}" class="underline-link">
+							<plus-icon title=""/> Suggest comic
+						</router-link>
+
+						<router-link :to="{name: 'moderating'}" class="underline-link">
+							<ModIcon title=""/> Become a mod
+						</router-link>
+					</div>
+				</DropdownMenu>
+
+				<span v-else class="allTopLinksContainer">
+					<router-link :to="{name: 'donate'}" class="underline-link">
+						<donate-icon title=""/> Donate
+					</router-link>
+
+					<router-link :to="{name: 'suggestComic'}" class="underline-link">
+						<plus-icon title=""/> Suggest comic
+					</router-link>
+
+					<router-link :to="{name: 'moderating'}" class="underline-link">
+						<ModIcon title=""/> Become a mod
+					</router-link>
+				</span>
 			</div>
 
 			<div class="buttons-container">
@@ -284,9 +327,15 @@ import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import LoginIcon from 'vue-material-design-icons/Login.vue'
 import SignupIcon from 'vue-material-design-icons/AccountPlusOutline.vue'
+import ExclamationIcon from 'vue-material-design-icons/Bullhorn.vue'
+import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
+import ModIcon from 'vue-material-design-icons/AccountStar.vue'
+
+import DropdownMenu from '@innologica/vue-dropdown-menu'
 
 import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
+import blogApi from '../api/blogApi'
 
 export default {
 	name: 'comic-list',
@@ -305,6 +354,10 @@ export default {
 		'right-arrow': RightArrow,
 		'login-icon': LoginIcon,
 		'signup-icon': SignupIcon,
+		ExclamationIcon,
+		DropdownMenu,
+		MenuDownIcon,
+		ModIcon,
 	},
 
 	data: function () {
@@ -321,6 +374,8 @@ export default {
 			searchFiltering: this.$store.getters.searchFiltering || '',
 			suppressQueryUpdates: false,
 			avoidLog: true,
+			blogLink: undefined,
+			showDropdown: false,
 		}
 	},
 
@@ -516,6 +571,13 @@ export default {
 			this.setKeywordSearchFocused(false)
 		},
 
+		async getDisplayedBlog () {
+			let blog = await blogApi.getDisplayedBlog()
+			if (blog && blog.shouldDisplay) {
+				this.blogLink = blog
+			}
+		},
+
 		handleResize () {
 			this.smallPagination = document.body.clientWidth < 1200
 		},
@@ -553,12 +615,12 @@ export default {
 		window.addEventListener('resize', this.handleResize)
 		miscApi.logRoute('index')
 		this.avoidLog = false
+		this.getDisplayedBlog()
 	},
 
 	computed: {
 		keywordsMatchingSearch () {
 			return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
-				// .slice(0, 8)
 		},
 		paginationButtons () {
 			let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage) //todo gettable?
@@ -584,8 +646,11 @@ export default {
 
 
 <style lang="scss">
-.donate-link {
-	margin-top: 10px;
+.top-links {
+	display: flex;
+	flex-direction: row;
+	width: fit-content;
+	margin: 10px auto 0 auto;
 	@media (max-width: 900px) {
 		margin-top: 8px;
 	}
@@ -900,6 +965,38 @@ export default {
 .dot-dot-dot-button {
 	&:hover {
 		cursor: default;
+	}
+}
+
+.dropdownElement {
+	&:hover {
+		cursor: pointer;
+	}
+}
+.linkDropdown {
+	display: flex;
+	flex-direction: column;
+	&>* {
+		width: fit-content;
+		text-align: left;
+	}
+	padding: 0.5rem 1rem;
+	a {
+		margin: 0.5rem 0;
+	}
+	position: absolute;
+	z-index: 4;
+	background-color: white;
+}
+.allTopLinksContainer {
+	&>* {
+		margin: 0 0.5rem;
+	}
+}
+.dark {
+	.linkDropdown {
+		background-color: $themeDark4;
+		border: 1px solid #444;
 	}
 }
 </style>
