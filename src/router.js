@@ -10,6 +10,7 @@ import Donate from '@/pages/Donate.vue'
 import Account from '@/pages/Account.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
+import Advertising from '@/pages/Advertising.vue'
 
 Vue.use(Router)
 
@@ -64,7 +65,7 @@ export default new Router({
     {
       path: '/advertising',
       name: 'advertising',
-      component: Blog
+      component: Advertising
     },
     {
       path: '/join-us',
