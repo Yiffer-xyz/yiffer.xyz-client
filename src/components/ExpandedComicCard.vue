@@ -94,9 +94,6 @@ export default {
 		'login-icon': LoginIcon,
   },
   
-  props: {
-  },
-
   data: function () {
     return {
       comic: this.$store.getters.expandedComic

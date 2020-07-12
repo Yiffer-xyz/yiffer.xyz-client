@@ -47,7 +47,7 @@
 							<td>{{row.modName}}</td>
 							<td>{{row.actionType}}</td>
 							<td>{{row.action}}</td>
-							<td>
+							<td style="white-space: pre-wrap;">
 								<p v-if="row.detailsExpanded" @click="row.detailsExpanded=false" class="cursor-pointer">{{row.actionDetails}}</p>
 								<p v-else-if="row.actionDetails" @click="row.detailsExpanded=true" class="link-color cursor-pointer">Show</p>
 							</td>

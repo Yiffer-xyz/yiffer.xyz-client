@@ -22,4 +22,22 @@ export default {
 	async logEvent (event, description) {
 		axios.post(baseUrl + '/log-event', {event, description: description || null})
 	},
+
+	async getVisitorStats (interval) {
+		let response = await axios.get(baseUrl + `/stats/visitors?interval=${interval}`)
+		if (!response.data.error) { return response.data }
+		else { return [] }
+	},
+
+	async getComicViewStats (interval) {
+		let response = await axios.get(baseUrl + `/stats/comic-views?interval=${interval}`)
+		if (!response.data.error) { return response.data }
+		else { return [] }
+	},
+
+	async getRouteStats (interval) {
+		let response = await axios.get(baseUrl + `/stats/routes?interval=${interval}`)
+		if (!response.data.error) { return response.data }
+		else { return [] }
+	}
 }
