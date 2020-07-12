@@ -66,7 +66,7 @@
 import authApi from '../api/authApi'
 import miscApi from '../api/miscApi'
 
-import ResponseMessage from './ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 
 export default {

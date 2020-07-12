@@ -190,7 +190,7 @@ import CrossIcon from 'vue-material-design-icons/Close.vue'
 
 import comicApi from '../../api/comicApi'
 import keywordApi from '../../api/keywordApi'
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
   name: 'correctComic',

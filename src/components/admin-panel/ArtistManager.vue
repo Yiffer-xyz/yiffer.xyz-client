@@ -158,7 +158,7 @@
 
 <script>
 import artistApi from '../../api/artistApi'
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 import DeleteIcon from 'vue-material-design-icons/TrashCanOutline.vue'
 import EditIcon from 'vue-material-design-icons/Pencil.vue'

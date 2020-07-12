@@ -59,7 +59,7 @@
 <script>
 import blogApi from '../../api/blogApi'
 
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
   name: 'addBlog',

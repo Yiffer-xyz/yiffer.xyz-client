@@ -135,7 +135,7 @@ import DownArrow from 'vue-material-design-icons/ArrowDown.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 
 import userApi from '../../api/userApi'
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
 	name: 'userManager',

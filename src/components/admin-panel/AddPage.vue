@@ -99,7 +99,7 @@ import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
   name: 'addPage',

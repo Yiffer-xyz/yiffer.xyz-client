@@ -76,8 +76,7 @@ import comicApi from '../api/comicApi'
 import miscApi from '../api/miscApi'
 
 import BackToIndex from '@/components/BackToIndex.vue'
-import ResponseMessage from './ResponseMessage.vue'
-
+import ResponseMessage from '@/components/ResponseMessage.vue'
 export default {
   name: 'suggestComic',
 

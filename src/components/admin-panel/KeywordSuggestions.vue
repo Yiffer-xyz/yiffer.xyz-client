@@ -60,7 +60,7 @@
 
 <script>
 import keywordApi from '../../api/keywordApi'
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
   name: 'keywordSuggestions',

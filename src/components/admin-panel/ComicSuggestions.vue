@@ -135,7 +135,7 @@ import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import RemoveToListIcon from 'vue-material-design-icons/DeleteSweep.vue'
 
 import comicApi from '../../api/comicApi'
-import ResponseMessage from '../ResponseMessage.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
   name: 'comicSuggestions',
