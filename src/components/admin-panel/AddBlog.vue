@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Blogs</h2>
+    <h2 @click="closeComponent" class="cursor-pointer">Add blog</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
@@ -62,7 +62,7 @@ import blogApi from '../../api/blogApi'
 import ResponseMessage from '../ResponseMessage.vue'
 
 export default {
-  name: 'blogs',
+  name: 'addBlog',
 
   components: { ResponseMessage },
   

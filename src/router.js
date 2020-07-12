@@ -9,6 +9,7 @@ import PendingComic from './components/PendingComic.vue'
 import Donate from './components/Donate.vue'
 import Account from './components/Account.vue'
 import SuggestComic from './components/SuggestComic.vue'
+import Blog from './components/Blogs.vue'
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ export default new Router({
 			path: '/donate',
 			name: 'donate',
 			component: Donate
+		},
+		{
+			path: '/blog',
+			name: 'blog',
+			component: Blog
 		},
 		{
 			path: '/pendingComics/:comicName',
