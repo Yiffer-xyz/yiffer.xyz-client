@@ -43,8 +43,9 @@
 
 			<VisitorStats v-if="$store.getters.userData.userType==='admin'"/>
 
-			<mod-log v-if="$store.getters.userData.userType==='admin'"/>
+			<blogs v-if="$store.getters.userData.userType==='admin'"/>
 
+			<mod-log v-if="$store.getters.userData.userType==='admin'"/>
 		</div>
 
 		<div v-else class="margin-top-32">
@@ -73,6 +74,7 @@ import UserManager from '@/components/admin-panel/UserManager.vue'
 import ModScoreboard from '@/components/admin-panel/ModScoreboard.vue'
 import ModLog from '@/components/admin-panel/ModLog.vue'
 import VisitorStats from '@/components/admin-panel/VisitorStats.vue'
+import Blogs from '@/components/admin-panel/Blogs.vue'
 
 import ArtistApi from '../api/artistApi'
 import keywordApi from '../api/keywordApi'
@@ -96,6 +98,7 @@ export default {
 		'mod-scoreboard': ModScoreboard,
 		'mod-log': ModLog,
 		VisitorStats,
+		Blogs,
 	},
 	data: function () {
 		return {
