@@ -19,7 +19,7 @@ export default {
     return {
       ratingSliderValue: 0,
       isRecentlyOpened: false,
-			lastRatingSetTime: new Date(),
+      lastRatingSetTime: new Date(),
       ratingSpamBlocked: undefined,
       vuexWatcher: undefined,
     }
@@ -34,27 +34,27 @@ export default {
       this.ratingSliderValue = this.$store.getters.comicForVotingModal.yourRating || 0
     },
 
-		async onNewRatingSet (newRating) {
+    async onNewRatingSet (newRating) {
        newRating = Number(newRating.target.value)
-			if (new Date() - this.lastRatingSetTime > 500) {
-				this.ratingSpamBlocked = undefined
+      if (new Date() - this.lastRatingSetTime > 500) {
+        this.ratingSpamBlocked = undefined
         this.lastRatingSetTime = new Date()
         this.setNewRating(newRating)
-			}
-			else {
-				this.ratingSpamBlocked = newRating
-				setTimeout(
-					() => this.assignNewRatingFromTimeout(newRating), 
-					500
-				)
-			}
-		},
+      }
+      else {
+        this.ratingSpamBlocked = newRating
+        setTimeout(
+          () => this.assignNewRatingFromTimeout(newRating), 
+          500
+        )
+      }
+    },
 
-		assignNewRatingFromTimeout (newRating) {
-			if (newRating != this.ratingSpamBlocked) {
-				return
-			}
-			this.lastRatingSetTime = new Date()
+    assignNewRatingFromTimeout (newRating) {
+      if (newRating != this.ratingSpamBlocked) {
+        return
+      }
+      this.lastRatingSetTime = new Date()
       this.ratingSpamBlocked = undefined
       this.setNewRating(newRating)
     },
@@ -63,7 +63,7 @@ export default {
       await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, newRating)
       let updatedComic = await this.$store.dispatch('refreshOneComicInList', this.$store.getters.comicForVotingModal.name)
       this.$store.dispatch('refreshExpandedComicIfExpanded', updatedComic)
-			this.$store.commit('setComicForVotingModal', updatedComic)
+      this.$store.commit('setComicForVotingModal', updatedComic)
     }
   },
   
@@ -73,9 +73,9 @@ export default {
     this.setRatingSliderValue()
   },
 
-	beforeDestroy () {
+  beforeDestroy () {
     this.vuexWatcher()
-	}
+  }
 }
 </script>
 

@@ -116,7 +116,7 @@ export default {
       this.dataType = newDataType[0]
     },
 
-		prettyDateOrString (inputValue) {
+    prettyDateOrString (inputValue) {
       if (inputValue instanceof Date) {
         return inputValue.toString().substring(0, 15)
       }

@@ -1,6 +1,6 @@
 <template>
-	<div style="width: 100%;">
-		<vue-headful :title="'Blog - Yiffer.xyz'"/>
+  <div style="width: 100%;">
+    <vue-headful :title="'Blog - Yiffer.xyz'"/>
     <h1>Blog</h1>
     <back-to-index></back-to-index>
 
@@ -13,7 +13,7 @@
         <p v-html="blog.content" class="blogContent" style="text-align: left;"/>
       </div>
     </div>
-	</div>
+  </div>
 </template>
 
 <script>
@@ -27,7 +27,7 @@ import blogApi from '../api/blogApi'
 export default {
   name: 'blogs',
   
-	components: {
+  components: {
     BackToIndex,
   },
 
@@ -93,11 +93,11 @@ export default {
 }
 .dark {
   .blog {
-		border: 1px solid #444;
+    border: 1px solid #444;
   }
   .highlightedBlog {
     background-color: $theme1;
-		border-color: $theme1;
+    border-color: $theme1;
   }
 }
 </style>

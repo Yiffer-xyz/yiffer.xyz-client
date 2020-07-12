@@ -9,7 +9,7 @@ module.exports = {
     loaderOptions: {
       sass: {
         data: `@import "@/scss/colors.scss";`
-			}
+      }
     }
   }
 }

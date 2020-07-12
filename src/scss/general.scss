@@ -5,250 +5,250 @@
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	@media (max-width: 900px) {
-		margin-top: 20px;
+  text-align: center;
+  @media (max-width: 900px) {
+    margin-top: 20px;
   }
 }
 
 body {
-	margin: 0px;
-	padding-bottom: 10px;
+  margin: 0px;
+  padding-bottom: 10px;
 }
 
 textarea {
-	font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 ::selection {
-	background: rgba(120, 253, 214, 0.5);
+  background: rgba(120, 253, 214, 0.5);
 }
 
 body {
-	background-color: #fafafa;
+  background-color: #fafafa;
 }
 
 .dark {
-	background-color: #090f14;
-	p, h1, h2, div, td, h3 {
-		color: #eee;
-	}
+  background-color: #090f14;
+  p, h1, h2, div, td, h3 {
+    color: #eee;
+  }
 
-	::selection {
-		background: rgba(120, 253, 214, 0.7);
-	}
+  ::selection {
+    background: rgba(120, 253, 214, 0.7);
+  }
 }
 
 option, select, input {
-	font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 select {
-	padding: 1px;
+  padding: 1px;
 }
 
 .vertical-flex {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .horizontal-flex {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .alignCenter {
-	align-items: center;
+  align-items: center;
 }
 
 .justifyCenter {
-	justify-content: center;
+  justify-content: center;
 }
 .justifyStart {
-	justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 .width100 {
-	width: 100%;
+  width: 100%;
 }
 
 .cursor-pointer {
-	&:hover {
-		cursor: pointer;
-	}
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .scrolling-table-container {
-	overflow-x: auto;
-	max-width: 100%;
-	td, th {
-		word-break: normal;
-		word-wrap: none;
-	}
-	table {
-		white-space: nowrap;
-	}
+  overflow-x: auto;
+  max-width: 100%;
+  td, th {
+    word-break: normal;
+    word-wrap: none;
+  }
+  table {
+    white-space: nowrap;
+  }
 }
 
 .no-margin-bot {
-	p, select, button {
-		margin-bottom: 0 !important;
-	}
-	margin-bottom: 0 !important;
+  p, select, button {
+    margin-bottom: 0 !important;
+  }
+  margin-bottom: 0 !important;
 }
 
 .no-margin-top {
-	margin-top: 0 !important;
+  margin-top: 0 !important;
 }
 .margin-2 {
-	margin: 2px;
+  margin: 2px;
 }
 .margin-4 {
-	margin: 4px;
+  margin: 4px;
 }
 .margin-8 {
-	margin: 8px;
+  margin: 8px;
 }
 .margin-top-2 {
-	margin-top: 2px;
+  margin-top: 2px;
 }
 .margin-top-4 {
-	margin-top: 4px;
+  margin-top: 4px;
 }
 .margin-top-8 {
-	margin-top: 8px;
+  margin-top: 8px;
 }
 .margin-top-10 {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 .margin-top-12 {
-	margin-top: 12px;
+  margin-top: 12px;
 }
 .margin-top-16 {
-	margin-top: 16px;
+  margin-top: 16px;
 }
 .margin-top-32 {
-	margin-top: 32px;
+  margin-top: 32px;
 }
 .margin-bottom-1 {
-	margin-bottom: 1px;
+  margin-bottom: 1px;
 }
 .margin-bottom-4 {
-	margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 .margin-bottom-8 {
-	margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 .margin-bottom-10 {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .margin-bottom-16 {
-	margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 .margin-left-4 {
-	margin-left: 4px;
+  margin-left: 4px;
 }
 .margin-left-8 {
-	margin-left: 8px;
+  margin-left: 8px;
 }
 .margin-left-10 {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 .margin-left-16 {
-	margin-left: 16px;
+  margin-left: 16px;
 }
 .margin-left-32 {
-	margin-left: 32px;
+  margin-left: 32px;
 }
 .margin-right-4 {
-	margin-right: 4px;
+  margin-right: 4px;
 }
 .margin-right-8 {
-	margin-right: 8px;
+  margin-right: 8px;
 }
 .margin-right-16 {
-	margin-right: 16px;
+  margin-right: 16px;
 }
 .margin-right-32 {
-	margin-right: 32px;
+  margin-right: 32px;
 }
 .m-2 {
-	margin: 2px;
+  margin: 2px;
 }
 .m-4 {
-	margin: 4px;
+  margin: 4px;
 }
 .m-8 {
-	margin: 8px;
+  margin: 8px;
 }
 .mt-2 {
-	margin-top: 2px;
+  margin-top: 2px;
 }
 .mt-4 {
-	margin-top: 4px;
+  margin-top: 4px;
 }
 .mt-8 {
-	margin-top: 8px;
+  margin-top: 8px;
 }
 .mt-10 {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 .mt-12 {
-	margin-top: 12px;
+  margin-top: 12px;
 }
 .mt-16 {
-	margin-top: 16px;
+  margin-top: 16px;
 }
 .mt-32 {
-	margin-top: 32px;
+  margin-top: 32px;
 }
 .mb-1 {
-	margin-bottom: 1px;
+  margin-bottom: 1px;
 }
 .mb-4 {
-	margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 .mb-8 {
-	margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 .mb-10 {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .mb-16 {
-	margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 .ml-4 {
-	margin-left: 4px;
+  margin-left: 4px;
 }
 .ml-8 {
-	margin-left: 8px;
+  margin-left: 8px;
 }
 .ml-10 {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 .ml-16 {
-	margin-left: 16px;
+  margin-left: 16px;
 }
 .ml-32 {
-	margin-left: 32px;
+  margin-left: 32px;
 }
 .mr-4 {
-	margin-right: 4px;
+  margin-right: 4px;
 }
 .mr-8 {
-	margin-right: 8px;
+  margin-right: 8px;
 }
 .mr-16 {
-	margin-right: 16px;
+  margin-right: 16px;
 }
 .mr-32 {
-	margin-right: 32px;
+  margin-right: 32px;
 }
 .items-margin-right-s {
-	&>* {
-		margin-right: 0.25rem;
-	}
+  &>* {
+    margin-right: 0.25rem;
+  }
 }
 
 .y-table {
@@ -259,23 +259,23 @@ select {
   th {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-		padding: 8px 5px;
-		background-color: #e2e2e2;
+    padding: 8px 5px;
+    background-color: #e2e2e2;
   }
   td {
     padding: 5px;
   }
-	tr {
-		&:hover {
-			background: rgba(0, 0, 0, 0.05);
-		}
-	}
+  tr {
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
 }
 
 .y-table-compact {
-	td {
-		padding: 2px 5px;
-	} 
+  td {
+    padding: 2px 5px;
+  } 
 }
 
 .admin-mini-header {
@@ -298,94 +298,94 @@ select {
 }
 
 .keyword, .keyword-static {
-	font-size: 12px;
-	border: 0.5px solid #ccc; //todo
-	margin: 1.5px 3px;
-	padding: 0.5px 6px 1px 6px;
-	border-radius: 10px;
-	font-weight: 300;
+  font-size: 12px;
+  border: 0.5px solid #ccc; //todo
+  margin: 1.5px 3px;
+  padding: 0.5px 6px 1px 6px;
+  border-radius: 10px;
+  font-weight: 300;
 }
 .keyword {
-	@include simpleshadowSmall;
-	border: none;
+  @include simpleshadowSmall;
+  border: none;
 }
 .keyword-filtered {
-	border: 0.5px solid $theme4;
+  border: 0.5px solid $theme4;
 }
 .keyword:hover {
-	color: $theme4 !important;
-	cursor: pointer;
-	border-color: $theme4;
+  color: $theme4 !important;
+  cursor: pointer;
+  border-color: $theme4;
 }
 .keyword-static:hover {
-	cursor: default;
+  cursor: default;
 }
 
 .simple-shadow {
-	@include simpleshadow;
+  @include simpleshadow;
 }
 .simpleShadowNoHover {
-	@include simpleshadowNoHover;
+  @include simpleshadowNoHover;
 }
 .simple-shadow-small {
-	@include simpleshadowSmall;
+  @include simpleshadowSmall;
 }
 input, textarea, select {
-	border: 1px solid #888;
-	padding: 2px;
+  border: 1px solid #888;
+  padding: 2px;
 }
 
 .horizontal-wrapper-4 {
-	display: grid;
-	gap: 4px;
-	justify-items: center;
-	grid-auto-flow: row;
-	@media (min-width: 900px) {
-		grid-auto-flow: column;
-	}
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  grid-auto-flow: row;
+  @media (min-width: 900px) {
+    grid-auto-flow: column;
+  }
 }
 
 .fitContent {
-	height: fit-content;
-	width: fit-content;
+  height: fit-content;
+  width: fit-content;
 }
 
 .dark {
-	.y-table {
-		tr {
-			&:hover {
-				background: rgba(240, 255, 255, 0.1);
-			}
-		}
-		th {
-			background-color: #444;
-		}
-	}
+  .y-table {
+    tr {
+      &:hover {
+        background: rgba(240, 255, 255, 0.1);
+      }
+    }
+    th {
+      background-color: #444;
+    }
+  }
 
-	input, textarea {
-		background: rgb(22, 26, 29);
-		border: 1px solid #666;
-		color: white;
-	}
+  input, textarea {
+    background: rgb(22, 26, 29);
+    border: 1px solid #666;
+    color: white;
+  }
 
-	option, select {
-		background: rgb(22, 26, 29);
-		color: white;
-		border: 1px solid #666;
-	}
+  option, select {
+    background: rgb(22, 26, 29);
+    color: white;
+    border: 1px solid #666;
+  }
 
-	.admin-content-box {
-		&:hover {
-			background-color: $themeDark4	
-		}
-	}
-	.admin-content-box-open {
-		background-color: $themeDark4;
-	}
+  .admin-content-box {
+    &:hover {
+      background-color: $themeDark4  
+    }
+  }
+  .admin-content-box-open {
+    background-color: $themeDark4;
+  }
 
-	.keyword, .keyword-static {
-		border-color: #555;
-		color: #ddd;
-		box-shadow: 0 1px 2px rgba(0,0,0, 0.7);
-	}
+  .keyword, .keyword-static {
+    border-color: #555;
+    color: #ddd;
+    box-shadow: 0 1px 2px rgba(0,0,0, 0.7);
+  }
 }

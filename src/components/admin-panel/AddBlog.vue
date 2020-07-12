@@ -73,8 +73,8 @@ export default {
       importance: 0,
       displayDays: 0,
       content: '',
-			responseMessage: '',
-			responseMessageType: 'info',
+      responseMessage: '',
+      responseMessageType: 'info',
     }
   },
 
@@ -100,12 +100,12 @@ export default {
       this.content = ''
     },
 
-		closeResponseMessage () { this.responseMessage = '' },
+    closeResponseMessage () { this.responseMessage = '' },
 
     openComponent () { if (!this.isOpen) { setTimeout( () => this.isOpen = true, 15 ) } },
 
     closeComponent () { setTimeout( () => this.isOpen = false, 15 ) }
-	},
+  },
 }
 </script>
 

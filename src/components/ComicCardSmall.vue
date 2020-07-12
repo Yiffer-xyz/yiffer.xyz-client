@@ -1,5 +1,5 @@
 <template>
-	<div
+  <div
     @click="onCardClicked" 
     :class="{'new-comic-border': isNewComic, 'wip-comic-border': !comic.finished && !isNewComic, 'comic-card-small': true, 'simple-shadow': true}"
     >
@@ -64,7 +64,7 @@
       </div>
     </div>
 
-	</div>
+  </div>
 </template>
 
 <script>
@@ -79,60 +79,60 @@ import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 export default {
   name: 'comic-card',
   
-	components: {
-		VotingButton, VotingButtonSingleColor, 
+  components: {
+    VotingButton, VotingButtonSingleColor, 
     PagesIcon, UserIcon, UsersIcon, PlusIcon, RefreshIcon, 
   },
   
-	props: {
-		comic: Object,
-		clickableKeyword: {
-			type: Boolean,
-			default: true
-		}
+  props: {
+    comic: Object,
+    clickableKeyword: {
+      type: Boolean,
+      default: true
+    }
   },
   
-	data: function () {
-		return {
-			isNewComic: new Date() - new Date(this.comic.created) < 10*604800000,  // todo 1 week = 604800000
-			recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 604800000),
-			showLocalKeywords: false
-		}
+  data: function () {
+    return {
+      isNewComic: new Date() - new Date(this.comic.created) < 10*604800000,  // todo 1 week = 604800000
+      recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 604800000),
+      showLocalKeywords: false
+    }
   },
   
-	methods: {
+  methods: {
     onCardClicked () {
       this.$store.commit('setExpandedComic', this.comic)
-			this.$store.commit('setComicForVotingModal', this.comic)
+      this.$store.commit('setComicForVotingModal', this.comic)
     },
 
-		formatRating: function (number) {
-			if (number > 8.5) { return Math.round(number * 100) / 100 }
-			else { return Math.round(number * 10) / 10 }
+    formatRating: function (number) {
+      if (number > 8.5) { return Math.round(number * 100) / 100 }
+      else { return Math.round(number * 10) / 10 }
     },
     
-		prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
-		storeClickedComicData: function () {
-			this.$store.dispatch('storeClickedComic', this.comic)
+    prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
+    storeClickedComicData: function () {
+      this.$store.dispatch('storeClickedComic', this.comic)
     },
     
-		addSelectedKeyword (keywordName, clickEvent) {
+    addSelectedKeyword (keywordName, clickEvent) {
       clickEvent.stopPropagation()
-			if ( this.clickableKeyword ) { this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName) }
+      if ( this.clickableKeyword ) { this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName) }
     },
     
-		convertTagName (tagName) {
-			return tagName=='Pokemon' ? 'Pkmn' : tagName
-		}
+    convertTagName (tagName) {
+      return tagName=='Pokemon' ? 'Pkmn' : tagName
+    }
   },
   
-	computed: {
-		showKeywords () {
-			return this.$store.getters.detailLevel==='High detail' || this.showLocalKeywords
+  computed: {
+    showKeywords () {
+      return this.$store.getters.detailLevel==='High detail' || this.showLocalKeywords
     },
     
-		showHideKeywordsButton () {
-			return this.showLocalKeywords && this.$store.getters.detailLevel!=='High detail'
+    showHideKeywordsButton () {
+      return this.showLocalKeywords && this.$store.getters.detailLevel!=='High detail'
     },
 
     keywordsMarginRight () {
@@ -140,7 +140,7 @@ export default {
       else if (!this.isNewComic && this.comic.finished) { return '0' }
       else { return '30px' }
     }
-	}
+  }
 }
 </script>
 

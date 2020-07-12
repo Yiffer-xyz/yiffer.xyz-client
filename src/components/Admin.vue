@@ -1,61 +1,61 @@
 <template>
-	<div style="width: 100%">
-		<vue-headful :title="'Admin - Yiffer.xyz'"/>
+  <div style="width: 100%">
+    <vue-headful :title="'Admin - Yiffer.xyz'"/>
     <h1>Admin</h1>
     <back-to-index></back-to-index>
 
-		<div class="admin-content-container" v-if="$store.getters.isAuthenticated">
-	
-			<keyword-suggestions />
+    <div class="admin-content-container" v-if="$store.getters.isAuthenticated">
+  
+      <keyword-suggestions />
 
-			<comic-suggestions />
+      <comic-suggestions />
 
-			<add-page :comicList="alphabeticComicList"
-								@refresh-comic-list="refreshComicList()" />
+      <add-page :comicList="alphabeticComicList"
+                @refresh-comic-list="refreshComicList()" />
 
-			<add-keywords :comicList="alphabeticComicList"
-										:keywordList="keywordList"
-										@refresh-comic-list="refreshComicList()"
-										@refresh-keyword-list="refreshKeywordList()" />
+      <add-keywords :comicList="alphabeticComicList"
+                    :keywordList="keywordList"
+                    @refresh-comic-list="refreshComicList()"
+                    @refresh-keyword-list="refreshKeywordList()" />
 
-			<correct-comic :comicList="alphabeticComicList" 
-										 :artistList="artistList"
-										 @refresh-comic-list="refreshComicList()" />
+      <correct-comic :comicList="alphabeticComicList" 
+                     :artistList="artistList"
+                     @refresh-comic-list="refreshComicList()" />
 
-			<page-manager :comicList="alphabeticComicList"
-										@refresh-comic-list="refreshComicList()" />
+      <page-manager :comicList="alphabeticComicList"
+                    @refresh-comic-list="refreshComicList()" />
 
-			<add-comic :artistList="artistList" 
-								 :comicList="alphabeticComicList"
-								 :keywordList="keywordList"
-								 @refresh-pending-comics="refreshPendingComics()" />
+      <add-comic :artistList="artistList" 
+                 :comicList="alphabeticComicList"
+                 :keywordList="keywordList"
+                 @refresh-pending-comics="refreshPendingComics()" />
 
-			<artist-manager :artistList="artistList"
-											@refresh-artist-list="refreshArtistList()" />
+      <artist-manager :artistList="artistList"
+                      @refresh-artist-list="refreshArtistList()" />
 
-			<pending-comics :pendingComics="pendingComics"
-											@refresh-pending-comics="refreshPendingComics()"
-											@refresh-comic-list="refreshComicList()" />
+      <pending-comics :pendingComics="pendingComics"
+                      @refresh-pending-comics="refreshPendingComics()"
+                      @refresh-comic-list="refreshComicList()" />
 
-			<user-manager/>
+      <user-manager/>
 
-			<mod-scoreboard/>
+      <mod-scoreboard/>
 
-			<VisitorStats v-if="$store.getters.userData.userType==='admin'"/>
+      <VisitorStats v-if="$store.getters.userData.userType==='admin'"/>
 
-			<AddBlog v-if="$store.getters.userData.userType==='admin'"/>
+      <AddBlog v-if="$store.getters.userData.userType==='admin'"/>
 
-			<mod-log v-if="$store.getters.userData.userType==='admin'"/>
-		</div>
+      <mod-log v-if="$store.getters.userData.userType==='admin'"/>
+    </div>
 
-		<div v-else class="margin-top-32">
-			<p>Not logged in</p>
-			<button @click="showLoginModal()" class="y-button margin-top-8">
-				<i data-feather="log-in"></i>Log in
-			</button>
-		</div>
-		<login-modal v-if="$store.state.loginModalVisibility"></login-modal>
-	</div>
+    <div v-else class="margin-top-32">
+      <p>Not logged in</p>
+      <button @click="showLoginModal()" class="y-button margin-top-8">
+        <i data-feather="log-in"></i>Log in
+      </button>
+    </div>
+    <login-modal v-if="$store.state.loginModalVisibility"></login-modal>
+  </div>
 </template>
 
 <script>
@@ -81,64 +81,64 @@ import keywordApi from '../api/keywordApi'
 import comicApi from '../api/comicApi'
 
 export default {
-	name: 'admin',
-	components: {
-		'login-modal': LoginModal,
-		'back-to-index': BackToIndex,
-		'add-page': AddPage,
-		'add-keywords': AddKeywords,
-		'correct-comic': CorrectComic,
-		'add-comic': AddComic,
-		'artist-manager': ArtistManager,
-		'pending-comics': PendingComics,
-		'keyword-suggestions': KeywordSuggestions,
-		'comic-suggestions': ComicSuggestions,
-		'page-manager': PageManager,
-		'user-manager': UserManager,
-		'mod-scoreboard': ModScoreboard,
-		'mod-log': ModLog,
-		VisitorStats,
-		AddBlog,
-	},
-	data: function () {
-		return {
-			alphabeticComicList: [],
-			keywordList: [],
-			artistList: [],
-			keywordSuggestionList: [],
-			pendingComics: [],
-		}
-	},
-	methods: {
-		async loadData () {
-			this.artistList = await ArtistApi.getArtistList()
-			this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
-			this.refreshPendingComics()
-		},
-		showLoginModal () {
-			this.$store.commit('setLoginModalVisibility', true)			
-		},
-		async refreshComicList () {
-			this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
-		},
-		async refreshKeywordList () {
-			this.keywordList = await keywordApi.getKeywordList()
-		},
-		async refreshArtistList () {
-			this.artistList = await ArtistApi.getArtistList()
-		},
-		async refreshPendingComics () {
-			this.pendingComics = await comicApi.getPendingComics()
-		},
+  name: 'admin',
+  components: {
+    'login-modal': LoginModal,
+    'back-to-index': BackToIndex,
+    'add-page': AddPage,
+    'add-keywords': AddKeywords,
+    'correct-comic': CorrectComic,
+    'add-comic': AddComic,
+    'artist-manager': ArtistManager,
+    'pending-comics': PendingComics,
+    'keyword-suggestions': KeywordSuggestions,
+    'comic-suggestions': ComicSuggestions,
+    'page-manager': PageManager,
+    'user-manager': UserManager,
+    'mod-scoreboard': ModScoreboard,
+    'mod-log': ModLog,
+    VisitorStats,
+    AddBlog,
+  },
+  data: function () {
+    return {
+      alphabeticComicList: [],
+      keywordList: [],
+      artistList: [],
+      keywordSuggestionList: [],
+      pendingComics: [],
+    }
+  },
+  methods: {
+    async loadData () {
+      this.artistList = await ArtistApi.getArtistList()
+      this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
+      this.refreshPendingComics()
+    },
+    showLoginModal () {
+      this.$store.commit('setLoginModalVisibility', true)      
+    },
+    async refreshComicList () {
+      this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
+    },
+    async refreshKeywordList () {
+      this.keywordList = await keywordApi.getKeywordList()
+    },
+    async refreshArtistList () {
+      this.artistList = await ArtistApi.getArtistList()
+    },
+    async refreshPendingComics () {
+      this.pendingComics = await comicApi.getPendingComics()
+    },
   },
   async mounted () {
-		this.loadData()
-		let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
-		if (!loggedin) { this.$router.replace('/') }
+    this.loadData()
+    let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
+    if (!loggedin) { this.$router.replace('/') }
 
-		this.$store.watch(this.$store.getters.comicListF, () => {
-			this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
-		})
+    this.$store.watch(this.$store.getters.comicListF, () => {
+      this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
+    })
   }
 }
 
@@ -148,91 +148,91 @@ export default {
 @import "../scss/shadows.scss";
 
 .mdi-arrow {
-	font-size: 28px;
+  font-size: 28px;
 }
 .close-component-arrow {
-	margin-top: 16px;
+  margin-top: 16px;
   &:hover {
     cursor: pointer;
   }
 }
 
 .admin-content-container {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	max-width: 90%;
-	margin: auto;
-	justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  max-width: 90%;
+  margin: auto;
+  justify-content: center;
 
-	@media (max-width: 900px) {
-		max-width: 100%;		
-	}
+  @media (max-width: 900px) {
+    max-width: 100%;    
+  }
 }
 
 .admin-content-box {
-	@include simpleshadow;
-	width: 300px;
-	margin: 16px;
-	height: 156px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding: 8px 8px 12px 8px;
-	&:hover {
-		cursor: pointer;
-	}
+  @include simpleshadow;
+  width: 300px;
+  margin: 16px;
+  height: 156px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 8px 12px 8px;
+  &:hover {
+    cursor: pointer;
+  }
 
-	.description-text {
-		text-align: left;
-		margin-left: 20px;
-		margin-right: 20px;
-	}
+  .description-text {
+    text-align: left;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 
-	@media (max-width: 900px) {
-		height: auto;
-		padding: 4px;
-		margin: 8px 2px;
-		h2 {
-			font-size: 24px;
-		}
-		.description-text {
-			margin-left: 10px;
-			margin-right: 10px;
-		}
-	}
+  @media (max-width: 900px) {
+    height: auto;
+    padding: 4px;
+    margin: 8px 2px;
+    h2 {
+      font-size: 24px;
+    }
+    .description-text {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
 }
 
 .admin-content-box-open {
-	@include simpleshadow-active;
-	width: 95%;
-	height: auto;
-	&:hover {
-		cursor: initial;
-	}
-	h2 {
-		margin-bottom: 8px;
-		@media (max-width: 900px) {
-			margin-bottom: 4px;
-		}
-	}
+  @include simpleshadow-active;
+  width: 95%;
+  height: auto;
+  &:hover {
+    cursor: initial;
+  }
+  h2 {
+    margin-bottom: 8px;
+    @media (max-width: 900px) {
+      margin-bottom: 4px;
+    }
+  }
 
-	&.admin-content-box-grow {
-		width: 200%;
-	}
+  &.admin-content-box-grow {
+    width: 200%;
+  }
 }
 
 .admin-content-box-inner {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .dark {
-	.admin-content-box {
-		border: 1px solid #444;
-	}
+  .admin-content-box {
+    border: 1px solid #444;
+  }
 }
 </style>
 

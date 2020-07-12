@@ -1,38 +1,38 @@
 <template>
-	<span>
-		<vue-headful :title="'Pending: ' + $route.params.comicName + ' - Yiffer.xyz'"/>
-		<h1>Pending: {{$route.params.comicName}}</h1>
-		<span v-if="comic">
+  <span>
+    <vue-headful :title="'Pending: ' + $route.params.comicName + ' - Yiffer.xyz'"/>
+    <h1>Pending: {{$route.params.comicName}}</h1>
+    <span v-if="comic">
 
-			<router-link :to="'/admin'" class="underline-link">
-				<back-arrow/> back to admin
-			</router-link>
+      <router-link :to="'/admin'" class="underline-link">
+        <back-arrow/> back to admin
+      </router-link>
 
-			<h2>Thumbnail</h2>
-			<span v-if="comic.hasThumbnail">
-				<img :src="`/comics/${comic.name}/s.jpg`"/>
-			</span>
-			<span style="display: flex; align-items: center; flex-direction: column;">
-				<p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one? Find the guidelines in the mod panel's Adding new comic section.</p>
-				<form enctype="multipart/form-data" novalidate style="width: fit-content" class="margin-top-8">
-					<div class="pretty-input-upload">
-						<input type="file" multiple="false" @change="processFileUploadChange" id="newPageFiles" accept="image/x-png,image/jpeg" class="input-file"/>
-						<p v-if="!comic.hasThumbnail">Select file</p>
-						<p v-else>Add new thumbnail</p>
-					</div>
-				</form>
-				<button v-if="thumbnailFile" @click="processNewThumbnail()" class="y-button margin-top-8">
-					Add {{thumbnailFile.name}} as thumbnail
-				</button>
+      <h2>Thumbnail</h2>
+      <span v-if="comic.hasThumbnail">
+        <img :src="`/comics/${comic.name}/s.jpg`"/>
+      </span>
+      <span style="display: flex; align-items: center; flex-direction: column;">
+        <p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one? Find the guidelines in the mod panel's Adding new comic section.</p>
+        <form enctype="multipart/form-data" novalidate style="width: fit-content" class="margin-top-8">
+          <div class="pretty-input-upload">
+            <input type="file" multiple="false" @change="processFileUploadChange" id="newPageFiles" accept="image/x-png,image/jpeg" class="input-file"/>
+            <p v-if="!comic.hasThumbnail">Select file</p>
+            <p v-else>Add new thumbnail</p>
+          </div>
+        </form>
+        <button v-if="thumbnailFile" @click="processNewThumbnail()" class="y-button margin-top-8">
+          Add {{thumbnailFile.name}} as thumbnail
+        </button>
 
-				<p class="error-message margin-top-8" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
-				<p class="success-message margin-top-8" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
-				<p class="success-message margin-top-8" v-if="thumbnailUploading">Please wait, uploading...</p>
-			</span>
+        <p class="error-message margin-top-8" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
+        <p class="success-message margin-top-8" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
+        <p class="success-message margin-top-8" v-if="thumbnailUploading">Please wait, uploading...</p>
+      </span>
 
 
-			<h2 class="margin-top-32">Tags</h2>
-			<p v-if="comic.keywords.length === 0">No tags have been added.</p>
+      <h2 class="margin-top-32">Tags</h2>
+      <p v-if="comic.keywords.length === 0">No tags have been added.</p>
       <div class="horizontal-flex" style="width: 100%; margin-top: 8px;">
         <div class="vertical-flex" style="margin: 0 12px 0 0;">
           <p class="admin-mini-header">Tag list</p>
@@ -70,46 +70,46 @@
       <p class="error-message" v-if="errorMessageKeywords" style="margin-top: 8px;">{{errorMessageKeywords}}</p>
       <p class="success-message" v-if="successMessageKeywords" style="margin-top: 8px;">{{successMessageKeywords}}</p>
 
-			
+      
 
-			<h2 class="margin-top-32">Comic pages</h2>
-			<button v-if="!appendPages" @click="appendPages = true" class="y-button y-button-neutral">Append pages</button>
-			<span v-if="appendPages" style="display: flex; align-items: center; flex-direction: column;">
-				<form enctype="multipart/form-data" novalidate>
-					<div class="pretty-input-upload">
-						<input type="file" multiple="true" @change="processApendFilesUploadChange" id="appendPagesFiles" accept="image/x-png,image/jpeg" class="input-file"/>
-						<p>Select files</p>
-					</div>
-				</form>
+      <h2 class="margin-top-32">Comic pages</h2>
+      <button v-if="!appendPages" @click="appendPages = true" class="y-button y-button-neutral">Append pages</button>
+      <span v-if="appendPages" style="display: flex; align-items: center; flex-direction: column;">
+        <form enctype="multipart/form-data" novalidate>
+          <div class="pretty-input-upload">
+            <input type="file" multiple="true" @change="processApendFilesUploadChange" id="appendPagesFiles" accept="image/x-png,image/jpeg" class="input-file"/>
+            <p>Select files</p>
+          </div>
+        </form>
 
-				<p v-if="filesAreInput" class="margin-top-4 no-margin-bot"><b>{{selectedFiles.length}}</b> Selected files:</p>
-				<p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
+        <p v-if="filesAreInput" class="margin-top-4 no-margin-bot"><b>{{selectedFiles.length}}</b> Selected files:</p>
+        <p v-if="filesAreInput" class="courier">{{selectedFileNames.join(', ')}}</p>
 
-				<button v-if="selectedFiles.length" @click="uploadAppendPages" class="y-button margin-top-8">Submit {{selectedFiles.length}} pages</button>
-			</span>
+        <button v-if="selectedFiles.length" @click="uploadAppendPages" class="y-button margin-top-8">Submit {{selectedFiles.length}} pages</button>
+      </span>
 
       <p class="success-message" v-if="uploadPercent" style="margin-top: 8px;">Uploading ({{uploadPercent}}%)</p>
       <p class="error-message" v-if="errorMessageAppendFiles" style="margin-top: 8px;">{{errorMessageAppendFiles}}</p>
       <p class="success-message" v-if="successMessageAppendFiles" style="margin-top: 8px;">{{successMessageAppendFiles}}</p>
 
-			<div class="horizontal-flex margin-top-16">
-				<button @click="fitImages('full')" class="y-button y-button-neutral" style="margin: 4px;">Full size</button>
-				<button @click="fitImages('fit')" class="y-button y-button-neutral" style="margin: 4px;">Fit images to page</button>
-				<button @click="fitImages('small')" class="y-button y-button-neutral" style="margin: 4px;">Small</button>
-			</div>
-			<img  
-				v-for="pageNumber in comic.numberOfPages" 
-				:src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
-				:key="pageNumber"
-				:class="['comic-page', 'image-fit-full', 'comic-page-pending']"/>
+      <div class="horizontal-flex margin-top-16">
+        <button @click="fitImages('full')" class="y-button y-button-neutral" style="margin: 4px;">Full size</button>
+        <button @click="fitImages('fit')" class="y-button y-button-neutral" style="margin: 4px;">Fit images to page</button>
+        <button @click="fitImages('small')" class="y-button y-button-neutral" style="margin: 4px;">Small</button>
+      </div>
+      <img  
+        v-for="pageNumber in comic.numberOfPages" 
+        :src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+        :key="pageNumber"
+        :class="['comic-page', 'image-fit-full', 'comic-page-pending']"/>
 
-			<br/>
-			<button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
-		</span>
-		<span v-if="comicLoadErrorMessage">
-			<p class="error-message margin-top-32">{{comicLoadErrorMessage}}</p>
-		</span>
-	</span>
+      <br/>
+      <button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
+    </span>
+    <span v-if="comicLoadErrorMessage">
+      <p class="error-message margin-top-32">{{comicLoadErrorMessage}}</p>
+    </span>
+  </span>
 </template>
 
 <script>
@@ -120,107 +120,107 @@ import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
 
 export default {
-	name: 'pendingComic',
+  name: 'pendingComic',
 
-	components: {
-		'up-arrow': UpArrow,
-		'back-arrow': BackArrow,
-	},
+  components: {
+    'up-arrow': UpArrow,
+    'back-arrow': BackArrow,
+  },
 
-	data: function () {
-		return {
-			comic: undefined,
-			allKeywords: [],
-			keywordsNotInComic: [],
+  data: function () {
+    return {
+      comic: undefined,
+      allKeywords: [],
+      keywordsNotInComic: [],
       selectedKeyword: undefined,
-			selectedKeywords: [],
-			keywordsToDelete: [],
-			thumbnailFile: undefined,
-			appendPages: false,
-			selectedFiles: [],
-			uploadPercent: undefined,
-			errorMessageThumbnail: '',
-			successMessageThumbnail: '',
-			thumbnailUploading: false,
-			errorMessageKeywords: '',
-			successMessageKeywords: '',
-			errorMessageAppendFiles: '',
-			successMessageAppendFiles: '',
-			comicLoadErrorMessage: '',
-		}
-	},
+      selectedKeywords: [],
+      keywordsToDelete: [],
+      thumbnailFile: undefined,
+      appendPages: false,
+      selectedFiles: [],
+      uploadPercent: undefined,
+      errorMessageThumbnail: '',
+      successMessageThumbnail: '',
+      thumbnailUploading: false,
+      errorMessageKeywords: '',
+      successMessageKeywords: '',
+      errorMessageAppendFiles: '',
+      successMessageAppendFiles: '',
+      comicLoadErrorMessage: '',
+    }
+  },
 
-	methods: {
+  methods: {
     processFileUploadChange (changeEvent) {
       this.thumbnailFile = changeEvent.target.files[0]
-		},
-		
-		async processNewThumbnail () {
-			this.successMessageThumbnail = ''
-			this.errorMessageThumbnail = ''
-			let fileReader = new FileReader()
-			fileReader.onload = () => {
-				let tempImage = new Image()
-				tempImage.src = fileReader.result
-				tempImage.onload = () => {
-					if (tempImage.width !== 200 || tempImage.height !== 283) {
-						this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
-					}
-					else {
-						this.uploadThumbnailImage()
-					}
-				}
-			}
-			fileReader.readAsDataURL(this.thumbnailFile)
-		},
+    },
+    
+    async processNewThumbnail () {
+      this.successMessageThumbnail = ''
+      this.errorMessageThumbnail = ''
+      let fileReader = new FileReader()
+      fileReader.onload = () => {
+        let tempImage = new Image()
+        tempImage.src = fileReader.result
+        tempImage.onload = () => {
+          if (tempImage.width !== 200 || tempImage.height !== 283) {
+            this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
+          }
+          else {
+            this.uploadThumbnailImage()
+          }
+        }
+      }
+      fileReader.readAsDataURL(this.thumbnailFile)
+    },
 
-		async uploadThumbnailImage () {
-			this.thumbnailUploading = true
-			let response = await comicApi.addThumbnailToPendingComic(this.comic, this.thumbnailFile)
-			this.thumbnailUploading = false
-			if (response.success) {
-				this.successMessageThumbnail = 'Success adding thumbnail!'
-				window.location.reload()
-				this.thumbnailFile = undefined
-			}
-			else {
-				this.errorMessageThumbnail = 'Error adding thumbnail: ' + response.message
-			}
-		},
+    async uploadThumbnailImage () {
+      this.thumbnailUploading = true
+      let response = await comicApi.addThumbnailToPendingComic(this.comic, this.thumbnailFile)
+      this.thumbnailUploading = false
+      if (response.success) {
+        this.successMessageThumbnail = 'Success adding thumbnail!'
+        window.location.reload()
+        this.thumbnailFile = undefined
+      }
+      else {
+        this.errorMessageThumbnail = 'Error adding thumbnail: ' + response.message
+      }
+    },
 
     addSelectedKeyword () {
-			if (!this.selectedKeywords.find(kw => kw.id === this.selectedKeyword.id)) {
+      if (!this.selectedKeywords.find(kw => kw.id === this.selectedKeyword.id)) {
         this.selectedKeywords.push(this.selectedKeyword)
-			}
-		},
+      }
+    },
 
     removeKeywordFromSelection (keyword) {
       this.selectedKeywords.splice(this.selectedKeywords.findIndex(kw => kw.id === keyword.id), 1)
-		},
+    },
 
     addOrRemoveKeywordToDeleteList (keyword) {
-			if (!this.keywordsToDelete.find(kw => kw.id === keyword.id)) {
+      if (!this.keywordsToDelete.find(kw => kw.id === keyword.id)) {
         this.keywordsToDelete.push(keyword)
       }
       else {
         this.keywordsToDelete.splice(this.keywordsToDelete.findIndex(kw => kw.id === keyword.id), 1)
       }
     },
-		
+    
     async confirmAddKeywords () {
       let response = await keywordApi.addKeywordsToPendingComic(this.comic, this.selectedKeywords)
 
       if (response.success) {
         this.successMessageKeywords = 'Successfully added tags!'
-				this.errorMessageKeywords = ''
+        this.errorMessageKeywords = ''
         this.selectedKeywords = []
-				this.reloadComic()
+        this.reloadComic()
       }
       else {
         this.errorMessageKeywords = 'Error adding tags: ' + response.message
         this.successMessageKeywords = ''
       }
-		},
+    },
 
     async confirmRemoveKeywords () {
       let response = await keywordApi.removeKeywordsFromPendingComic(this.comic, this.keywordsToDelete)
@@ -235,73 +235,73 @@ export default {
         this.errorMessageKeywords = 'Error removing tags: ' + response.message
         this.successMessageKeywords = ''
       }
-		},
-		
+    },
+    
     processApendFilesUploadChange (changeEvent) {
       this.selectedFiles = [...changeEvent.target.files]
-		},
-		
-		async uploadAppendPages () {
-			let response = await comicApi.addPagesToPendingComic(this.comic, this.selectedFiles, this.updateUploadProgress)
-			this.errorMessageAppendFiles = ''
-			this.successMessageAppendFiles = ''
-			this.uploadPercent = undefined
+    },
+    
+    async uploadAppendPages () {
+      let response = await comicApi.addPagesToPendingComic(this.comic, this.selectedFiles, this.updateUploadProgress)
+      this.errorMessageAppendFiles = ''
+      this.successMessageAppendFiles = ''
+      this.uploadPercent = undefined
 
-			if (response.success) {
-				this.successMessageAppendFiles = `Success adding ${this.selectedFiles.length} pages to comic!`
-				this.selectedFiles = []
-				this.appendPages = false
-				this.comic.numberOfPages = 0
-				this.reloadComic()
-			}
-			else {
-				this.errorMessageAppendFiles = response.message
-			}
-		},
-		
-		updateUploadProgress (progressEvent) {
-			this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
-		},
+      if (response.success) {
+        this.successMessageAppendFiles = `Success adding ${this.selectedFiles.length} pages to comic!`
+        this.selectedFiles = []
+        this.appendPages = false
+        this.comic.numberOfPages = 0
+        this.reloadComic()
+      }
+      else {
+        this.errorMessageAppendFiles = response.message
+      }
+    },
+    
+    updateUploadProgress (progressEvent) {
+      this.uploadPercent = Math.round((progressEvent.loaded/progressEvent.total)*100)
+    },
 
-		fitImages (fit) {
-			document.querySelectorAll('.comic-page').forEach(page => {
-				page.classList.remove('image-fit-full')
-				page.classList.remove('image-fit-small')
-				if (fit === 'fit') {
-					page.classList.add('image-fit-full')
-				}
-				else if (fit === 'small') {
-					page.classList.add('image-fit-small')
-				}
-			})
-		},
+    fitImages (fit) {
+      document.querySelectorAll('.comic-page').forEach(page => {
+        page.classList.remove('image-fit-full')
+        page.classList.remove('image-fit-small')
+        if (fit === 'fit') {
+          page.classList.add('image-fit-full')
+        }
+        else if (fit === 'small') {
+          page.classList.add('image-fit-small')
+        }
+      })
+    },
 
-		async reloadComic () {
-			let response = await comicApi.getPendingComic(this.$route.params.comicName)
-			if (response.success) {
-				this.comic = response.result
-				if (this.allKeywords.length === 0) {
-					this.allKeywords = await keywordApi.getKeywordList()
-				}
-				this.keywordsNotInComic = this.allKeywords.filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
-			}
-			else {
-				this.comicLoadErrorMessage = response.message
-			}
-		},
+    async reloadComic () {
+      let response = await comicApi.getPendingComic(this.$route.params.comicName)
+      if (response.success) {
+        this.comic = response.result
+        if (this.allKeywords.length === 0) {
+          this.allKeywords = await keywordApi.getKeywordList()
+        }
+        this.keywordsNotInComic = this.allKeywords.filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
+      }
+      else {
+        this.comicLoadErrorMessage = response.message
+      }
+    },
 
-		formattedPageNumber (pageNumber) {
+    formattedPageNumber (pageNumber) {
       return pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber
-		},
-		
-		scrollToTop () {
-			window.scrollTo(0, 0)
-		}
-	},
+    },
+    
+    scrollToTop () {
+      window.scrollTo(0, 0)
+    }
+  },
 
-	async created () {
-		this.reloadComic()
-	},
+  async created () {
+    this.reloadComic()
+  },
 
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
@@ -313,14 +313,14 @@ export default {
 
 <style lang="scss">
 .image-fit-full {
-	max-width: 100vw;
-	max-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
 }
 .image-fit-small {
-	max-width: 240px;
-	max-width: 240px;
+  max-width: 240px;
+  max-width: 240px;
 }
 .comic-page-pending {
-	margin: 6px;
+  margin: 6px;
 }
 </style>

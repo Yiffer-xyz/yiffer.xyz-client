@@ -1,6 +1,6 @@
 <template>
-	<div style="width: 100%">
-		<vue-headful :title="$route.params.artistName + ' - Artist - Yiffer.xyz'"/>
+  <div style="width: 100%">
+    <vue-headful :title="$route.params.artistName + ' - Artist - Yiffer.xyz'"/>
     <h1 id="artistTitle">{{$route.params.artistName}}</h1>
     <back-to-index></back-to-index>
   
@@ -29,7 +29,7 @@
       <login-modal v-if="$store.state.loginModalVisibility"></login-modal>
     </span>
     <p v-if="artistNotFound" class="margin-top-16"><sad-face/> Artist not found</p>
-	</div>
+  </div>
 </template>
 
 <script>
@@ -42,26 +42,26 @@ import artistApi from '../api/artistApi'
 import miscApi from '../api/miscApi'
 
 export default {
-	name: 'artist',
-	components: {
+  name: 'artist',
+  components: {
     'comic-card': ComicCard,
     'login-modal': LoginModal,
     'back-to-index': BackToIndex,
     'sad-face': SadFace,
   },
 
-	data: function () {
-		return {
+  data: function () {
+    return {
       artistData: undefined,
       modalIsVisible: false,
       artistNotFound: false,
-		}
+    }
   },
 
-	methods: {
+  methods: {
     showLoginModal ( clickEvent ) {
       clickEvent.preventDefault()
-			this.$store.commit('setLoginModalVisibility', true)
+      this.$store.commit('setLoginModalVisibility', true)
     },
     prettifyUrl ( linkUrl ) {
       if ( linkUrl.endsWith('/') ) { linkUrl = linkUrl.substring(0, linkUrl.length-1) }

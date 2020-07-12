@@ -1,4 +1,4 @@
 {
-	"comicsPerPage": 50,
-	"apiBaseUrl": "/api"
+  "comicsPerPage": 50,
+  "apiBaseUrl": "/api"
 }

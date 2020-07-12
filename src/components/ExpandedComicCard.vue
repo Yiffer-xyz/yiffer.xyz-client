@@ -84,14 +84,14 @@ export default {
   name: 'expanded-comic-card',
 
   components: {
-		'pages-icon': PagesIcon,
-		'user-icon': UserIcon,
-		'users-icon': UsersIcon,
-		'plus-icon': PlusIcon,
-		'refresh-icon': RefreshIcon,
-		'rating-slider': RatingSlider,
-		'cross-icon': CrossIcon,
-		'login-icon': LoginIcon,
+    'pages-icon': PagesIcon,
+    'user-icon': UserIcon,
+    'users-icon': UsersIcon,
+    'plus-icon': PlusIcon,
+    'refresh-icon': RefreshIcon,
+    'rating-slider': RatingSlider,
+    'cross-icon': CrossIcon,
+    'login-icon': LoginIcon,
   },
   
   data: function () {
@@ -103,9 +103,9 @@ export default {
   methods: {
     formatRating: function (number) {
       if (number > 8.5) { return Math.round(number * 100) / 100 }
-			else { return Math.round(number * 10) / 10 }
+      else { return Math.round(number * 10) / 10 }
     },
-		addSelectedKeyword (keywordName) {
+    addSelectedKeyword (keywordName) {
       this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName)
     },
     closeCard () {
@@ -114,7 +114,7 @@ export default {
     onCardClick (event) {
       event.stopPropagation()
     },
-		prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
+    prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
   }
 }
 </script>
