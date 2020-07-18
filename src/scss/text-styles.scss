@@ -46,6 +46,16 @@ ul {
   }
 }
 
+.textAlignCenter {
+  text-align: center;
+}
+
+.spaced-list {
+  li {
+    margin-top: 1rem;
+  }
+}
+
 .textLeft {
   text-align: left;
 }
@@ -61,13 +71,16 @@ ul {
     max-width: 95%;
   }
 
-  p {
+  &>p {
     margin-top: 16px;
   }
 }
 
 .full-width-text-wider {
   max-width: 1000px;
+  @media (max-width: 1200px) {
+    max-width: 800px;
+  }
   @media (max-width: 900px) {
     max-width: 95%;
   }
@@ -157,8 +170,35 @@ label {
 }
 
 .courier {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Andale Mono', monospace;
   font-size: 13px;
+}
+.mono {
+  font-family: 'Andale Mono', monospace;
+  padding: 1px 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+}
+.monoSuccess {
+  @extend .mono;
+  background-color: $theme8;
+  border-color: $theme4;
+}
+.monoInfo {
+  @extend .mono;
+  background-color: $themeInfo;
+  border-color: $themeInfoBorder;
+}
+.monoWarning {
+  @extend .mono;
+  background-color: $themeWarning;
+  border-color: $themeWarningBorder;
+}
+.monoError {
+  @extend .mono;
+  background-color: $theme8;
+  border-color: $theme4;
 }
 
 .modal-header {
@@ -201,5 +241,28 @@ label {
 .dark {
   .link-color, a, .theme-button, .navigation-button {
     color: $theme5 !important;
+  }
+  .mono {
+    color: black;
+  }
+  .monoSuccess {
+    @extend .mono;
+    background-color: $theme7;
+    border-color: $theme3;
+  }
+  .monoInfo {
+    @extend .mono;
+    background-color: $themeInfo;
+    border-color: $themeInfoBorder;
+  }
+  .monoWarning {
+    @extend .mono;
+    background-color: $themeWarningDark;
+    border-color: $themeWarningDarkBorder;
+  }
+  .monoError {
+    @extend .mono;
+    background-color: $theme8;
+    border-color: $theme4;
   }
 }

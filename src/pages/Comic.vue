@@ -123,10 +123,10 @@
 
         <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
           <p style="margin-right: 4px;">Image fit:</p>
-          <button @click="setAllImagesFit('height')" class="y-button y-button-neutral y-button-small"><expand-height/></button>
-          <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral y-button-small"><expand-width/></button>
-          <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral y-button-small">Full size</button>
-          <button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral y-button-small">Tiny</button>
+          <button @click="setAllImagesFit('height')" class="y-button y-button-neutral"><expand-height/></button>
+          <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral"><expand-width/></button>
+          <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Full size</button>
+          <button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Tiny</button>
         </div>
         <p class="smaller-text">You may also click any one image to resize it</p>
       </span>

@@ -47,9 +47,6 @@
         </div>
       </div>
 
-      <p class="error-message" v-if="errorMessagePassword">{{errorMessagePassword}}</p>
-      <p class="success-message" v-if="successMessagePassword">{{successMessagePassword}}</p>
-
       <div class="margin-top-16" v-show="!isChangingPassword">
         <b>Donator</b>: {{$store.getters.userData.donator ? 'Yes' : 'No'}}
       </div>

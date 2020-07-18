@@ -23,6 +23,7 @@
     "vue": "^2.5.17",
     "vue-cookies": "^1.5.7",
     "vue-headful": "^2.0.1",
+    "vue-loading-spinner": "^1.0.11",
     "vue-material-design-icons": "^4.7.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

@@ -23,12 +23,12 @@
 
       <h3 class="mt-16">How it works</h3>
       <p class="no-margin-top">
-        If you are a creator of arts or crafts (digital art, traditional art, fursuits, plushies, writing, photography, etc.), and your content is furry or at least somewhat related, you may apply using the form below! You will submit images or gifs detailed below, which will show up, either in the index page of Yiffer.xyz or in the page for all comics (for instance <router-link :to="'/Masodonia'">yiffer.xyz/Masodonia</router-link>), depending on ad type.
+        If you are a creator of arts or crafts (digital art, traditional art, fursuits, plushies, writing, photography, etc.), and your content is furry or at least somewhat related, you may apply using the form below! You will submit images or gifs detailed below, which will show up, either in the index page of Yiffer.xyz or in the page for all comics (for instance <router-link :to="'/Masodonia'">yiffer.xyz/Masodonia</router-link>), depending on ad type. Naturally, when a user clicks your ad, they will be directed to a website of your choosing, for instance your FA page, Twitter, etc.
       </p>
 
       <h3 class="mt-16">Is it worth it?</h3>
       <p class="no-margin-top">
-        Probably! As of the summer of 2020, Yiffer.xyz has about 20,000 unique visitors per day, constantly growing. We record how many clicks your ads get and visualize this on your profile page, so after you have been accepted as an advertiser, you can get a better idea of whether or not to keep going. Keep in mind that compared to other sites, Yiffer.xyz will probably - at least in the beginning - have much fewer advertisers, so <u>your own ads will appear more often</u> than they would on other sites. Additionally, these ads <u>cannot be blocked by adblockers</u>.
+        Probably! As of the summer of 2020, Yiffer.xyz has about 20,000 unique visitors per day, constantly growing. We record how many clicks your ads get and visualize this on your account page, so after you have been accepted as an advertiser, you can get a better idea of whether or not to keep going. Keep in mind that compared to other sites, Yiffer.xyz will probably - at least in the beginning - have much fewer advertisers, so <u>your own ads will appear more often</u> than they would on other sites. Additionally, these ads <u>cannot be blocked by adblockers</u>.
       </p>
 
       <p><span class="bold">*For the earliest advertisers, we are cutting the cost in half during the first few months!</span> So be sure to apply as soon as you're certain, or tell your creative friends!</p>

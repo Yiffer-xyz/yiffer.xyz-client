@@ -58,8 +58,21 @@ select {
   justify-content: center;
 }
 
+.horizontalFlexLeft {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexWrap {
+  flex-wrap: wrap;
+}
+
 .alignCenter {
   align-items: center;
+}
+
+.alignSelfCenter {
+  align-self: center;
 }
 
 .justifyCenter {
@@ -348,6 +361,16 @@ input, textarea, select {
 .fitContent {
   height: fit-content;
   width: fit-content;
+}
+
+.material-design-icon.icon-2x {
+  height: 3rem;
+  width: 3rem;
+}
+ 
+.material-design-icon.icon-2x > .material-design-icon__svg {
+  height: 3rem;
+  width: 3rem;
 }
 
 .dark {
