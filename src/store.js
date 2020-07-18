@@ -5,6 +5,7 @@ import auth from './state-modules/authState'
 import keywordApi from './api/keywordApi.js'
 
 Vue.use(Vuex)
+
 export default new Vuex.Store({
   modules: {
     comicList,

@@ -7,6 +7,11 @@ h1, h2, h3, h4, p, div {
   margin: 0;
 }
 
+h3 {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
 p, li, label, td, th, a {
   @media (max-width: 900px) {
     font-size: 14px;
@@ -58,6 +63,13 @@ ul {
 
   p {
     margin-top: 16px;
+  }
+}
+
+.full-width-text-wider {
+  max-width: 1000px;
+  @media (max-width: 900px) {
+    max-width: 95%;
   }
 }
 
@@ -137,8 +149,11 @@ label {
   color: $themeRed2 !important;
 }
 
+.semiBold {
+  font-weight: 400;
+}
 .bold {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .courier {

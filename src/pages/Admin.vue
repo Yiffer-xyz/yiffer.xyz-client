@@ -133,8 +133,6 @@ export default {
   },
   async mounted () {
     this.loadData()
-    let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
-    if (!loggedin) { this.$router.replace('/') }
 
     this.$store.watch(this.$store.getters.comicListF, () => {
       this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)

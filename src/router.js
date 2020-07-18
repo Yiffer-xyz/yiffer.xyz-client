@@ -1,5 +1,7 @@
 import Vue from 'vue'
+import store from '@/store.js'
 import Router from 'vue-router'
+
 import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/Comic.vue'
 import About from '@/pages/About.vue'
@@ -11,8 +13,24 @@ import Account from '@/pages/Account.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
+import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 
 Vue.use(Router)
+
+async function rerouteIfNotLoggedIn(to, from, next) {
+  try {
+    let isLoggedIn = await store.dispatch('checkAndSetLoginStatus')
+    if (isLoggedIn) {
+      next()
+    }
+    else {
+      next({ name: 'comicList' })
+    }
+  }
+  catch (err) {
+    next({ name: 'comicList' })
+  }
+}
 
 export default new Router({
   mode: 'history',
@@ -20,67 +38,76 @@ export default new Router({
     {
       path: '/',
       name: 'comicList',
-      component: ComicList
+      component: ComicList,
     },
     {
       path: '/about',
       name: 'about',
-      component: About
+      component: About,
     },
     {
       path: '/artist/:artistName',
       name: 'artist',
-      component: Artist
+      component: Artist,
     },
     {
       path: '/admin',
       name: 'admin',
-      component: Admin
+      component: Admin,
+      beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/account',
       name: 'account',
-      component: Account
+      component: Account,
+      beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/suggestcomic',
       name: 'suggestComic',
-      component: SuggestComic
+      component: SuggestComic,
     },
     {
       path: '/donate',
       name: 'donate',
-      component: Donate
+      component: Donate,
     },
     {
       path: '/blog/:id',
       name: 'blogWithId',
-      component: Blog
+      component: Blog,
     },
     {
       path: '/blog',
       name: 'blog',
-      component: Blog
+      component: Blog,
     },
     {
       path: '/advertising',
       name: 'advertising',
-      component: Advertising
+      component: Advertising,
+    },
+    {
+      path: '/advertising-apply',
+      name: 'apply-advertising',
+      component: AdvertisingApply,
+      beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/join-us',
       name: 'moderating',
-      component: Blog
+      component: Blog,
     },
     {
       path: '/pendingComics/:comicName',
       name: 'pendingComic',
-      component: PendingComic
+      component: PendingComic,
+      beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/:comicName',
       name: 'comic',
-      component: Comic
+      component: Comic,
     },
   ],
   scrollBehavior ( to, from, savedPosition ) {

@@ -123,8 +123,6 @@ export default {
   },
   
   created: async function () {
-    let loggedin = await this.$store.dispatch('checkAndSetLoginStatus')
-    if (!loggedin) { this.$router.replace('/') }
     miscApi.logRoute('account')
   },
 }

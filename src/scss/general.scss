@@ -389,3 +389,9 @@ input, textarea, select {
     box-shadow: 0 1px 2px rgba(0,0,0, 0.7);
   }
 }
+
+.no-table-hover {
+  tr:hover {
+    background: none !important;
+  }
+}

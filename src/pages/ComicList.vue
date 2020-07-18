@@ -6,11 +6,11 @@
       <p style="font-size: 20px">A collection of high-quality comics</p>
 
       <p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
-        <button class="underline-link text-button link-color" @click="showLoginModal" style="margin: 0 3px 0 0; font-size: 16px;">
+        <button class="underline-link text-button link-color" @click.prevent="showLoginModal" style="margin: 0 3px 0 0; font-size: 16px;">
           <login-icon/> Log in
         </button> 
         or
-        <button class="underline-link text-button link-color" @click="showSignupModal" style="margin: 0 3px; font-size: 16px;">
+        <button class="underline-link text-button link-color" @click.prevent="showSignupModal" style="margin: 0 3px; font-size: 16px;">
           <signup-icon/> Sign up
         </button> 
         to rate comics
@@ -529,13 +529,11 @@ export default {
       this.$store.commit('setSelectedKeywords', selectedKeywords)
     },
 
-    showLoginModal ( clickEvent ) {
-      clickEvent.preventDefault()
+    showLoginModal () {
       this.$store.commit('setLoginModalVisibility', true)
     },
 
-    showSignupModal (clickEvent) {
-      clickEvent.preventDefault()
+    showSignupModal () {
       this.$store.commit('setLoginModalContext', 'register')
       this.$store.commit('setLoginModalVisibility', true)
     },
