@@ -43,7 +43,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in slicedModLog" :key="row.modName+row.date">
+						<tr v-for="row in slicedModLog" :key="row.id">
 							<td>{{row.modName}}</td>
 							<td>{{row.actionType}}</td>
 							<td>{{row.action}}</td>

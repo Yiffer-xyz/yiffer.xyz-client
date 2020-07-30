@@ -8,7 +8,7 @@ h1, h2, h3, h4, p, div {
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 400;
 }
 
@@ -95,8 +95,8 @@ ul {
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 900px) {
-    max-width: 95%;
+  @media (max-width: 650px) {
+    max-width: 90%;
   }
 }
 
@@ -179,6 +179,7 @@ label {
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
+  width: fit-content;
 }
 .monoSuccess {
   @extend .mono;
@@ -197,8 +198,8 @@ label {
 }
 .monoError {
   @extend .mono;
-  background-color: $theme8;
-  border-color: $theme4;
+  background-color: $themeRed4;
+  border-color: $themeRed;
 }
 
 .modal-header {
@@ -259,10 +260,5 @@ label {
     @extend .mono;
     background-color: $themeWarningDark;
     border-color: $themeWarningDarkBorder;
-  }
-  .monoError {
-    @extend .mono;
-    background-color: $theme8;
-    border-color: $theme4;
   }
 }

@@ -95,7 +95,7 @@
 
           <Loading v-if="isAwaitingResponse" text="Submitting..."/>
 
-          <ResponseMessage :message="responseMessage" messageType="error" closeMessage="closeResponseMessage" class="mb-16"/>
+          <ResponseMessage :message="responseMessage" messageType="error" @closeMessage="closeResponseMessage" class="mb-16"/>
 
           <button @click.prevent="submitApplication" 
                   class="y-button"

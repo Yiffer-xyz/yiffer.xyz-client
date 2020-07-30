@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
 
 export default {
   name: 'bigSuccessMessage',

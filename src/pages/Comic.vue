@@ -21,10 +21,8 @@
                 class="y-button">
           <download/>  Download comic
         </button>
-        <p v-if="$store.getters.isAuthenticated && $store.getters.userData.donator && isZipping"
-           class="margin-top-16">
-          Zipping, please wait..
-        </p>
+
+        <Loading text="Zipping, please wait..." v-if="$store.getters.isAuthenticated && $store.getters.userData.donator && isZipping" class="mt-16"/>
         <p v-if="downloadStarted" class="margin-top-16">
           Download started!
         </p>
@@ -58,7 +56,7 @@
           </button> to rate comic
         </p>
 
-        <div id="comicKeywords" class="margin-top-8 horizontal-flex flex-wrap" v-if="showKeywords">
+        <div id="comicKeywords" class="margin-top-8 horizontal-flex flex-wrap">
           <span v-if="comic.keywords.length > 0" class="horizontal-flex flex-wrap">
             <div class="keyword-static"
                  v-for="keyword in comic.keywords"
@@ -77,9 +75,6 @@
             hide adding/removing tags
           </div>
         </div>
-        <div v-if="!showKeywords" @click="showKeywords=true" class="keyword-static keyword-button">
-          <tags/> Show tags
-        </div>
 
         <div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8 horizontal-flex">
           <div id="dropdownContainer">
@@ -93,7 +88,7 @@
               <button 
                 @click="suggestKeywordChange(isAdding=true)"
                 :class="{'y-button-disabled': !addKeyword}"
-                class="y-button-small"
+                class="y-button"
                 style="width: fit-zipContent; margin-top: 2px;"
               >
                 Add
@@ -109,7 +104,7 @@
               </select>
               <button 
                 @click="suggestKeywordChange(isAdding=false)"
-                class="y-button-small"
+                class="y-button"
                 :class="{'y-button-disabled': !removeKeyword, 'y-button-red': removeKeyword}"
                 style="width: fit-zipContent; margin-top: 2px;"
               >
@@ -118,8 +113,9 @@
             </span>
           </div>
         </div>
-        <p class="success-message margin-top-8" v-if="keywordSuccessMessage">{{keywordSuccessMessage}}</p>
-        <p class="error-message margin-top-8" v-if="keywordErrorMessage">{{keywordErrorMessage}}</p>
+
+        <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
+                         @closeMessage="closeResponseMessage" class="mt-16"/>
 
         <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
           <p style="margin-right: 4px;">Image fit:</p>
@@ -190,6 +186,8 @@
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
 import RatingSlider from '@/components/RatingSlider.vue'
+import Loading from '@/components/LoadingIndicator.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
@@ -214,6 +212,7 @@ export default {
   components: {
     'back-to-index': BackToIndex,
     'rating-slider': RatingSlider,
+    Loading, ResponseMessage,
     'left-arrow': LeftArrow,
     'right-arrow': RightArrow,
     'share-icon': ShareIcon,
@@ -228,16 +227,15 @@ export default {
   data: function () {
     return {
       comic: this.$store.state.clickedComic || undefined,
-      showKeywords: false,
       userIsDonator: true,
       comicNotFound: false,
       imageFitArray: [],
       keywordSuggestionsActive: false,
       keywordsNotInComic: [],
       addKeyword: undefined,
+      responseMessage: '',
+      responseMessageType: 'info',
       removeKeyword: undefined,
-      keywordSuccessMessage: '',
-      keywordErrorMessage: '',
       showShareIcon: true,
       isZipping: false,
       downloadStarted: false,
@@ -298,26 +296,23 @@ export default {
     },
 
     async suggestKeywordChange (isAdding) {
+      this.closeResponseMessage()
       let relevantKeywordName = isAdding===true ? this.addKeyword : this.removeKeyword
       if (!relevantKeywordName) { return }
 
       let relevantKeywordId = this.getKeywordIdFromName(relevantKeywordName)
       let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeywordId, isAdding)
 
-      if ( suggestionResponse.success ) {
-        this.keywordSuccessMessage = `Thank you! Your suggestion will be reviewed soon (${isAdding ? 'Add' : 'Remove'} ${relevantKeywordName})`
-        this.keywordErrorMessage = undefined
+      if (suggestionResponse.success) {
+        this.responseMessage = `Thank you! Your suggestion will be reviewed soon (${isAdding ? 'Add' : 'Remove'} ${relevantKeywordName})`
+        this.responseMessageType = 'success'
 
-        if ( isAdding === 'add' ) {
-          this.addKeyword = undefined
-        }
-        else {
-          this.removeKeyword = undefined
-        }
+        this.addKeyword = undefined
+        this.removeKeyword = undefined
       }
       else {
-        this.keywordErrorMessage = suggestionResponse.message
-        this.keywordSuccessMessage = undefined
+        this.responseMessage = suggestionResponse.message
+        this.responseMessageType = 'error'
       }
     },
 
@@ -399,6 +394,8 @@ export default {
     getKeywordIdFromName (keywordName) {
       return this.allKeywords.find(kw => kw.name === keywordName).id
     },
+    
+    closeResponseMessage () { this.responseMessage = '' },
   },
 
   async mounted () {

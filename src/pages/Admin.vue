@@ -41,6 +41,8 @@
 
       <mod-scoreboard/>
 
+      <AdAdmin/>
+
       <VisitorStats v-if="$store.getters.userData.userType==='admin'"/>
 
       <AddBlog v-if="$store.getters.userData.userType==='admin'"/>
@@ -73,6 +75,7 @@ import PageManager from '@/components/admin-panel/PageManager.vue'
 import UserManager from '@/components/admin-panel/UserManager.vue'
 import ModScoreboard from '@/components/admin-panel/ModScoreboard.vue'
 import ModLog from '@/components/admin-panel/ModLog.vue'
+import AdAdmin from '@/components/admin-panel/AdAdmin.vue'
 import VisitorStats from '@/components/admin-panel/VisitorStats.vue'
 import AddBlog from '@/components/admin-panel/AddBlog.vue'
 
@@ -97,6 +100,7 @@ export default {
     'user-manager': UserManager,
     'mod-scoreboard': ModScoreboard,
     'mod-log': ModLog,
+    AdAdmin,
     VisitorStats,
     AddBlog,
   },

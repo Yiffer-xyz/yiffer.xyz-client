@@ -231,6 +231,9 @@ select {
 .mb-16 {
   margin-bottom: 16px;
 }
+.ml-0 {
+  margin-left: 0;
+}
 .ml-4 {
   margin-left: 4px;
 }
@@ -282,6 +285,12 @@ select {
     &:hover {
       background: rgba(0, 0, 0, 0.05);
     }
+  }
+}
+
+.yTableLeft {
+  td {
+    text-align: left;
   }
 }
 

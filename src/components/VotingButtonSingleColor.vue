@@ -2,12 +2,6 @@
   <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
     {{$store.getters.isAuthenticated ? 'Vote' : 'Log in to vote'}}
   </button>
-	<!-- <button class="voting-button-single-color" @click="showSomeModal()" :class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
-		<span :style="{'background-color': this.backgroundColor}">
-			<p v-if="$store.getters.isAuthenticated">Vote</p>
-			<p v-else>Log in to vote</p>
-		</span>
-	</button> -->
 </template>
 
 <script>
