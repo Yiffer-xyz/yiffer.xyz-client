@@ -58,7 +58,7 @@ import BackToIndex from '@/components/BackToIndex.vue'
 import miscApi from '../api/miscApi'
 
 export default {
-  name: 'admin',
+  name: 'donate',
   
   components: {
     'back-to-index': BackToIndex,

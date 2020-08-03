@@ -14,6 +14,7 @@ import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
 import AdvertisingApply from '@/pages/AdvertisingApply.vue'
+import JoinUs from '@/pages/JoinUs.vue'
 
 Vue.use(Router)
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/donate',
       name: 'donate',
       component: Donate,
+    },
+    {
+      path: '/join-us',
+      name: 'joinUs',
+      component: JoinUs,
     },
     {
       path: '/blog/:id',

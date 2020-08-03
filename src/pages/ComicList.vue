@@ -49,7 +49,7 @@
               <plus-icon title=""/> Suggest comic
             </router-link>
 
-            <router-link :to="{name: 'moderating'}" class="underline-link">
+            <router-link :to="{name: 'joinUs'}" class="underline-link">
               <ModIcon title=""/> Become a mod
             </router-link>
           </div>
@@ -64,7 +64,7 @@
             <plus-icon title=""/> Suggest comic
           </router-link>
 
-          <router-link :to="{name: 'moderating'}" class="underline-link">
+          <router-link :to="{name: 'joinUs'}" class="underline-link">
             <ModIcon title=""/> Become a mod
           </router-link>
         </span>
