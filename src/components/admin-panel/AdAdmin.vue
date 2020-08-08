@@ -168,7 +168,6 @@ import Loading from '@/components/LoadingIndicator.vue'
 import CancelIcon from 'vue-material-design-icons/Close.vue'
 import EditIcon from 'vue-material-design-icons/Pencil.vue'
 import SaveIcon from 'vue-material-design-icons/ContentSave.vue'
-import Datepicker from 'vuejs-datepicker'
 import { format } from 'date-fns'
 
 export default {
@@ -176,7 +175,7 @@ export default {
 
   components: {
     MultiToggleButton, ResponseMessage, Loading,
-    EditIcon, CancelIcon, SaveIcon, Datepicker,
+    EditIcon, CancelIcon, SaveIcon,
   },
 
   data: function () {

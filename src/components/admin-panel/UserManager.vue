@@ -8,17 +8,17 @@
 
 			<!-- USER SEARCH -->
 			<div class="horizontal-flex alignCenter">
-				<form @submit="searchForUsers()" action="javascript:void(0)" class="no-margin-bot">
+				<form @submit.prevent="searchForUsers()" class="no-margin-bot">
 					<div class="horizontal-flex">
 						<input type="text" v-model="userSearchText" style="width: 110px;"/>
 
-						<button  @click="searchForUsers()" 
+						<button @click="searchForUsers()" 
 										type="submit"
 										class="y-button y-button-neutral button-with-icon margin-left-4">
 							<SearchIcon/> Search
 						</button>
 
-						<button  @click="fetchModUsers()" class="y-button y-button-neutral button-with-icon margin-left-16 fitContent">
+						<button @click="fetchModUsers()" class="y-button y-button-neutral button-with-icon margin-left-16 fitContent">
 							<ModIcon/> List mods
 						</button>
 					</div>
@@ -170,7 +170,7 @@ export default {
 
 			this.resetSelectedUser()
 			this.resetSearchResults()
-		
+
 			let result = await userApi.searchForUsers(this.userSearchText)
 			if (result.length > 0) {
 				this.foundUsers = result
@@ -181,10 +181,12 @@ export default {
 		},
 
 		async fetchModUsers () {
+			this.userSearchText = ''
 			this.resetSelectedUser()
 			this.resetSearchResults()
 
 			let result = (await userApi.getModerators()).result
+
 			this.noFoundUsers = false
 			this.foundUsers = result
 		},

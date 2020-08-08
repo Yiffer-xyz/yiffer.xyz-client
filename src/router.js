@@ -15,6 +15,7 @@ import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
 import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 import JoinUs from '@/pages/JoinUs.vue'
+import JoinUsApply from '@/pages/JoinUsApply.vue'
 
 Vue.use(Router)
 
@@ -77,6 +78,12 @@ export default new Router({
       path: '/join-us',
       name: 'joinUs',
       component: JoinUs,
+    },
+    {
+      path: '/join-us-apply',
+      name: 'joinUsApply',
+      component: JoinUsApply,
+      beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/blog/:id',

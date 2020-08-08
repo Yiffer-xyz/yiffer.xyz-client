@@ -48,6 +48,8 @@
       <AddBlog v-if="$store.getters.userData.userType==='admin'"/>
 
       <mod-log v-if="$store.getters.userData.userType==='admin'"/>
+
+      <ModApplications v-if="$store.getters.userData.userType==='admin'"/>
     </div>
 
     <div v-else class="margin-top-32">
@@ -78,6 +80,8 @@ import ModLog from '@/components/admin-panel/ModLog.vue'
 import AdAdmin from '@/components/admin-panel/AdAdmin.vue'
 import VisitorStats from '@/components/admin-panel/VisitorStats.vue'
 import AddBlog from '@/components/admin-panel/AddBlog.vue'
+import ModApplications from '@/components/admin-panel/ModApplications.vue'
+
 
 import ArtistApi from '../api/artistApi'
 import keywordApi from '../api/keywordApi'
@@ -103,6 +107,7 @@ export default {
     AdAdmin,
     VisitorStats,
     AddBlog,
+    ModApplications,
   },
   data: function () {
     return {

@@ -8,11 +8,17 @@
   }
   label {
     font-weight: 400;
+    max-width: 24rem;
   }
 
   >span {
     display: flex;
     flex-direction: column;
+  }
+
+  textarea {
+    width: 100%;
+    background: transparent;
   }
 
   .field:not(:first-of-type) {

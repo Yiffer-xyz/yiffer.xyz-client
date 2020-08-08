@@ -11,5 +11,10 @@ module.exports = {
         data: `@import "@/scss/colors.scss";`
       }
     }
+  },
+  pluginOptions: {
+    webpackBundleAnalyzer: {
+      openAnalyzer: false
+    }
   }
 }
