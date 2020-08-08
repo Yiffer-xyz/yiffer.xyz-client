@@ -14,7 +14,7 @@
       </p>
 
       <div class="mt-16">
-        <router-link :to="{name: 'apply-advertising'}" v-if="$store.getters.isAuthenticated" class="underline-link">
+        <router-link :to="{name: 'joinUsApply'}" v-if="$store.getters.isAuthenticated" class="underline-link">
           Apply as a mod here <RightArrow/>
         </router-link>
         <div v-else>
@@ -69,7 +69,7 @@
       </p>
 
       <div class="mt-16">
-        <router-link :to="{name: 'apply-advertising'}" v-if="$store.getters.isAuthenticated" class="underline-link">
+        <router-link :to="{name: 'joinUsApply'}" v-if="$store.getters.isAuthenticated" class="underline-link">
           Apply as a mod here <RightArrow/>
         </router-link>
         <div v-else>
