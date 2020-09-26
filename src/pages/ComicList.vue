@@ -296,7 +296,7 @@
 
     <button class="y-button y-button-neutral margin-top-16" @click="scrollToTop()"><up-arrow/> to top</button>
 
-    <div style="display: flex; flex-direction: row; align-items: center; margin-top: 8px;" class="upperBodyWidth">
+    <div style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;" class="upperBodyWidth upper-body-horiz-row">
       <div @click="paginate('down', shouldScrollToTopOfList=true)" class="pagination-button"><left-arrow/></div>
       <div v-for="(pageNo, index) in paginationButtons"
           :key="index"

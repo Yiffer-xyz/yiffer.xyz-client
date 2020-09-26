@@ -56,6 +56,20 @@
         <p style="font-style: italic; margin-top: 0;">Coming soon!</p>
       </div>
 
+      <div class="margin-top-16"
+           v-show="showModApplicationStatus">
+        <p class="bold">Mod application status</p>
+        <p class="mt-0" v-if="modApplicationStatus === modApplicationStatuses.pending">
+          Pending review
+        </p>
+        <p class="mt-0" v-else-if="modApplicationStatus === modApplicationStatuses.waiting">
+          Your application looks promising, but we're full at the moment, or will take some time deciding. You can consider this a "waiting list" of sorts. We won't guarantee that you'll get a mod spot, but your application is not rejected. We will contact you on Telegram should we decide to include you as a mod.
+        </p>
+        <p class="mt-0" v-else-if="modApplicationStatus === modApplicationStatuses.removed">
+          Sorry, your application has been rejected. This is most likely because there were simply more mods with better capabilities applying. Thank you for wanting to contribute though!
+        </p>
+      </div>
+
       <div v-if="(ads.length > 0 || adLoadingState==='error') && !isChangingPassword">
         <h3 class="mt-16">Advertising</h3>
 
@@ -186,6 +200,16 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
 import { format } from 'date-fns'
 
+import { mapGetters } from 'vuex'
+
+const MOD_APPLICATION_STATUSES = {
+  loading: 'loading',
+  none: 'none',
+  pending: 'pending',
+  waiting: 'waiting',
+  removed: 'removed'
+}
+
 export default {
   name: 'account',
 
@@ -211,6 +235,8 @@ export default {
       responseMessageTypeAds: 'info',
       responseMessage: '',
       responseMessageType: 'info',
+      modApplicationStatus: MOD_APPLICATION_STATUSES.loading,
+      modApplicationStatuses: MOD_APPLICATION_STATUSES,
     }
   },
 
@@ -362,6 +388,16 @@ export default {
         this.adLoadingState = 'error'
       }
     },
+
+    async getModApplicationStatus () {
+      let { success, applicationStatus }  = await miscApi.getMyModApplicationStatus()
+      if (success) { 
+        this.modApplicationStatus = applicationStatus
+      }
+      else {
+        this.modApplicationStatus = MOD_APPLICATION_STATUSES.none
+      }
+    },
     
     isThisAdLoading (adId) {
       return this.adLoadingId === adId
@@ -415,11 +451,21 @@ export default {
     remainingCharsSecondaryText () {
       return 40 - this.adBeingEdited.secondaryText.length
     },
+
+    showModApplicationStatus () {
+      return !this.isChangingPassword
+             && this.userData
+             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.loading
+             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.none
+    },
+
+    ...mapGetters(['userData']),
   },
 
   async mounted () {
     miscApi.logRoute('account')
     this.getAds()
+    this.getModApplicationStatus()
   },
 }
 </script>

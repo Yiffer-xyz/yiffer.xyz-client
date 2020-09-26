@@ -61,5 +61,15 @@ export default {
     })
     if (!response.data.error) { return {success: true} }
     else { return {success: false, message: response.data.error} }
+  },
+
+  async getMyModApplicationStatus () {
+    let response = await axios.get(`${baseUrl}/mod-applications/me`)
+    if (!response.data.error) {
+      return { success: true, ...response.data }
+    }
+    else {
+      return { success: false }
+    }
   }
 }

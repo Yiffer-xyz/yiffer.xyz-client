@@ -66,7 +66,7 @@
               {{keywordName}}
           </p>
           <button @click="confirmRemoveKeywords()" class="y-button y-button-red"
-                  v-if="keywordsToDelete.length > 0" style="margin-top: 6px;">
+                  v-if="keywordsToDelete.length > 0" style="margin: 6px auto 0 auto;">
             Remove tags
           </button>
         </div>
