@@ -204,6 +204,7 @@ export default {
     pageNumber: state => state.pageNumber,
     searchFiltering: state => state.searchFiltering,
     selectedKeywords: state => state.selectedKeywords,
+    getFilteredComics: () => state => state.selectedKeywords,
     detailLevel: state => state.detailLevel,
     viewMode: state => state.viewMode,
     comicCardExpanded: state => state.comicCardExpanded,

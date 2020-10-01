@@ -10,7 +10,7 @@ export default {
   },
 
   async getArtistByName (artistName) {
-    let response = await axios.get(baseUrl + '/artists/' + artistName)
+    let response = await axios.get(`${baseUrl}/artists/${artistName}`)
     if (!response.data.error) { return {success: true, result: response.data} }
     else { return {success: false, message: response.data.error} }
   },

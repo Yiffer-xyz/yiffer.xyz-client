@@ -179,6 +179,8 @@ export default {
 
 .admin-content-box {
   @include simpleshadow;
+
+  background-color: white;
   width: 300px;
   margin: 16px;
   height: 156px;
@@ -212,6 +214,12 @@ export default {
 
 .admin-content-box-open {
   @include simpleshadow-active;
+
+  border-style: solid;
+  border-width: 0;
+  border-top-width: 10px;
+  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
+
   width: 95%;
   height: auto;
   &:hover {
@@ -238,7 +246,7 @@ export default {
 
 .dark {
   .admin-content-box {
-    border: 1px solid #444;
+    background-color: $themeDark4;
   }
 }
 </style>

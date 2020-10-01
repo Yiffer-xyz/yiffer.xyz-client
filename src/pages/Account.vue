@@ -8,7 +8,7 @@
     <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                      class="margin-bottom-10 margin-top-10"/>
 
-    <div class="smaller-width-text">
+    <div :class="ads.length>0 ? 'full-width-text' : 'smaller-width-text'">
       <button v-if="!isChangingPassword"
               @click="isChangingPassword=true"
               class="y-button y-button-neutral margin-top-16"
@@ -81,7 +81,7 @@
         </p>
 
         <div v-if="adLoadingState==='success'">
-          <p>To pay or renew, send the specified amount of USD to <span class="bold">TODO@paypal.com</span>, and <span class="bold">make sure to include the ad's ID in the message field!</span></p>
+          <p>To pay or renew, send the specified amount of USD to <span class="bold">TODO@paypal.com</span>, and <span class="bold">make sure to include the ad's ID in the message field!</span> You should not pay unless the status of an ad is <span class="monoWarning">AWAITING PAYMENT</span> or <span class="monoWarning">ACTIVE, AWAITING RENEWAL PAYMENT</span>. After paying, please wait a few days for the admins to process your payment and update the status of your ads. If you suspect that something has gone wrong, do not hesitate to contact us at MAIL@MAIL.COM</p>
 
           <div v-for="ad in ads" :key="ad.id" class="singleReklame simpleShadowNoHover">
             <div style="display: flex; justify-content: space-between;">
@@ -155,9 +155,9 @@
               </div>
 
               <div v-if="!isThisAdBeingEdited(ad.id)" class="mt-8">
-                <a :href="`/paid-images/${ad.id}.${ad.filetype}`" target="_blank">
+                <router-link :to="`/paid-images/${ad.id}.${ad.filetype}`" target="_blank" class="underline-link">
                   See media<RightArrow/>
-                </a>
+                </router-link>
               </div>
               <form v-else class="mt-8">
                 <p>Change media? If not, ignore this and the current one will be kept.</p>

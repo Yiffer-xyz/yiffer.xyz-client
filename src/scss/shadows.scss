@@ -8,6 +8,7 @@
 
 @mixin simpleshadowNoHover {
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  transition: box-shadow 200ms;
 }
 
 @mixin simpleshadowSmall {
