@@ -33,7 +33,7 @@
                 <th>Category</th>
                 <th>Class.</th>
                 <th>Pages</th>
-                <th>Finished</th>
+                <th>State</th>
                 <th>Tags</th>
                 <th>Thumbnail</th>
                 <th>Mod name</th>
@@ -55,7 +55,7 @@
                 <td>{{pendingComic.tag}}</td>
                 <td>{{pendingComic.cat}}</td>
                 <td>{{pendingComic.numberOfPages}}</td>
-                <td>{{pendingComic.finished ? 'Yes' : 'No'}}</td>
+                <td>{{pendingComic.state}}</td>
                 <td v-if="pendingComic.keywords.length>0"><CheckboxIcon/></td> <td v-else>-</td>
                 <td v-if="pendingComic.hasThumbnail"><CheckboxIcon/></td> <td v-else>-</td>
                 <td>{{pendingComic.modName}}</td>

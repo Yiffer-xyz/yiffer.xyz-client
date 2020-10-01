@@ -19,7 +19,9 @@
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
-            {{comic.name}} {{comic.finished ? '(Finished!)' : ''}}
+            {{comic.name}} 
+            {{comic.state==='finished' ? '(Finished!)' : ''}} 
+            {{comic.state === 'cancelled' ? '(Cancelled!)' : ''}}
           </option>
         </select>
         <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
@@ -43,15 +45,17 @@
       <button @click="uploadFiles()"
               v-if="filesAreInput && comic"
               class="y-button margin-top-8">
-        Upload files{{ comic.finished ? ' (NOTE: this comic is marked as finished!)' : ''}}
+        Upload files
+        {{ comic.state === 'finished' ? ' (NOTE: this comic is marked as finished!)' : ''}}
+        {{ comic.state === 'cancelled' ? ' (NOTE: this comic is marked as cancelled!)' : ''}}
       </button>
 
-      <button class="y-button y-button-neutral" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-        v-if="!showAllUnfinishedComics"> Show all unfinished comics, with most recent page (super useful!) <DownArrow/></button>
-      <button class="y-button y-button-neutral" @click="toggleAllUnfinishedComics()" style="margin-top:16px;"
-        v-if="showAllUnfinishedComics"> Hide this list <UpArrow/></button>
+      <button class="y-button y-button-neutral" @click="toggleShowAllComics()" style="margin-top:16px;"
+        v-if="!showAllComics"> Show all WIP comics, with most recent page <DownArrow/></button>
+      <button class="y-button y-button-neutral" @click="toggleShowAllComics()" style="margin-top:16px;"
+        v-if="showAllComics"> Hide this list <UpArrow/></button>
 
-      <div v-if="showAllUnfinishedComics" class="scrolling-table-container">
+      <div v-if="showAllComics" class="scrolling-table-container">
         <table class="y-table margin-top-4">
           <thead>
             <tr>
@@ -62,7 +66,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="comic in unfinishedComicList" :key="comic.id">
+            <tr v-for="comic in wipComicList" :key="comic.id">
               <td>
                 <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }"
                             target="_blank" class="underline-link">
@@ -118,7 +122,7 @@ export default {
       isOpen: false,
 			comic: undefined,
       selectedFiles: [],
-      showAllUnfinishedComics: false,
+      showAllComics: false,
       responseMessage: '',
       responseMessageType: 'info',
     }
@@ -150,8 +154,8 @@ export default {
 			this.responseMessage = `Uploading: ${Math.round((progressEvent.loaded/progressEvent.total)*100)} %`
 		},
 
-    toggleAllUnfinishedComics () {
-      this.showAllUnfinishedComics = !this.showAllUnfinishedComics
+    toggleShowAllComics () {
+      this.showAllComics = !this.showAllComics
     },
 
     showLastPage (comic) {
@@ -180,9 +184,9 @@ export default {
 
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
 
-    unfinishedComicList () {
+    wipComicList () {
       return this.comicList
-        .filter(comic => !comic.finished)
+        .filter(comic => comic.state === 'wip')
         .sort((c1, c2) => c1.updated < c2.updated ? 1 : -1)
         .map(comic => {
           comic.daysSinceUpdate = Math.floor((nowTimestamp - (new Date(comic.updated)).getTime()) / 86400000)

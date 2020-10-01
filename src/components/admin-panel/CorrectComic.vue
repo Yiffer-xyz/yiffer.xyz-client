@@ -66,10 +66,11 @@
           </div>
           
           <div class="vertical-flex">
-            <p style="text-align: left;">Finished</p>
-            <select v-model="finished">
-              <option value="true">Finished</option>
-              <option value="false">Unfinished</option>
+            <p style="text-align: left;">State</p>
+            <select v-model="state">
+              <option value="wip">WIP</option>
+              <option value="finished">Finished</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </div>
         </div>
@@ -160,7 +161,7 @@ export default {
       artist: undefined,
       tag: undefined,
       cat: undefined,
-      finished: undefined,
+      state: undefined,
       lastComicId: undefined,
       originalPreviousComic: undefined,
       originalNextComic: undefined,
@@ -180,7 +181,7 @@ export default {
 				oldName: this.comic.name,
 				cat: this.cat,
 				tag: this.tag,
-				finished: this.finished=='true' ? 1 : 0,
+				state: this.state,
         artist: this.artist,
         previousComic: this.previousComic ? this.previousComic.id : null,
         nextComic: this.nextComic ? this.nextComic.id : null
@@ -215,7 +216,7 @@ export default {
 		resetFields () {
 			this.tag = this.comic.tag + ''
 			this.cat = this.comic.cat + ''
-			this.finished = this.comic.finished ? 'true' : 'false'
+			this.state = this.comic.state
       this.artist = this.comic.artist + ''
       this.nextComic = this.originalNextComic + ''
       this.previousComic = this.originalPreviousComic + ''

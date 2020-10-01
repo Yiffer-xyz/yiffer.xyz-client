@@ -85,7 +85,7 @@ export default {
 .rating-slider {
   max-width: 340px;
   height: 22px;
-  margin: 8px auto;
+  margin: 1rem auto;
   padding: 4px;
   box-sizing: border-box;
   display: flex;

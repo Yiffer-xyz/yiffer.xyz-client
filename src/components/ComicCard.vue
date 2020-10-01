@@ -8,19 +8,26 @@
           <label class="triangle-label" title="Added within 7 days">NEW</label>
         </div>
       </div>
-      <div class="triangle-wrapper triangle-wrapper-right" v-if="!comic.finished">
+      <div class="triangle-wrapper triangle-wrapper-right" v-if="comic.state === 'wip'">
         <div class="triangle-inner">
           <label class="triangle-label" title="Comic not finished">WIP</label>
         </div>
-      </div>  
-      <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
+      </div>
+      <div class="triangle-wrapper triangle-wrapper-right" v-if="comic.state === 'cancelled'">
+        <div class="triangle-inner">
+          <label class="triangle-label triangle-label-cancelled" title="Cancelled before finishing">STOP</label>
+        </div>
+      </div>
+      <!-- <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()"> -->
+      <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()">
     </router-link>
 
     <div class="comic-card-inner-container">
       <div>
         <!-- NAME -->
         <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
-          <p class="comic-card-comic-title">{{comic.name}}</p>
+          <p class="comic-card-comic-title">Navnet</p>
+          <!-- <p class="comic-card-comic-title">{{comic.name}}</p> -->
         </router-link>
 
         <!-- ARTIST -->
@@ -46,7 +53,8 @@
 
       <!-- ALL KEYWORDS -->
       <div class="keyword-container" v-if="showKeywords || $store.getters.detailLevel === 'high'">
-        <div class="emphasized-keyword">{{comic.cat}}</div>
+        <!-- <div class="emphasized-keyword">{{comic.cat}}</div> -->
+        <div class="emphasized-keyword">Kateg.</div>
         <div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
         <div 
           :class="{'keyword': clickableKeyword, 
@@ -142,7 +150,9 @@ export default {
     },
 
     addSelectedKeyword (keywordName) {
-      if ( this.clickableKeyword ) { this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName) }
+      if ( this.clickableKeyword ) {
+        this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName)
+      }
     },
 
     convertTagName (tagName) {
@@ -191,9 +201,14 @@ export default {
       position: absolute;
       color: $themeDark1;
       top: 10px;
+      right: 5px;
       font-weight: 400;
       transform: rotate(45deg);
-      right: 5px;
+    }
+    .triangle-label-cancelled {
+      right: 3px;
+      top: 11px;
+      font-size: 15px;
     }
   }
 }
@@ -239,6 +254,9 @@ export default {
         font-size: 10px;
         top: 8px;
         right: 3px;
+      }
+      .triangle-label-cancelled {
+        right: 1px;
       }
     }
   }

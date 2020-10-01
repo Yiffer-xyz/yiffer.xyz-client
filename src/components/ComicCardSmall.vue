@@ -6,11 +6,17 @@
 
     <div v-if="isNewComic || !comic.finished" class="label-box-container">
       <!-- WIP LABEL -->
-      <div class="wip-label-box" v-if="!comic.finished" 
-      >WIP</div>
+      <div class="wip-label-box" v-if="comic.state === 'wip'">
+        WIP
+      </div>
+      <div class="wip-label-box" v-if="comic.state === 'cancelled'">
+        CUT
+      </div>
+      
       <!-- NEW LABEL -->
-      <div v-if="isNewComic" :class="{'new-label-box': true, 'not-rounded-new-box': !comic.finished}"
-      >NEW</div>
+      <div v-if="isNewComic" :class="{'new-label-box': true, 'not-rounded-new-box': !comic.finished}">
+        NEW
+      </div>
     </div>
 
     <!-- TAG AND CAT -->

@@ -6,18 +6,21 @@
       <router-link v-if="$store.getters.expandedComic.name" :comic="$store.getters.expandedComic" 
         :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }"
         @click.native="closeCard">
-        <img :src="`/comics/${$store.getters.expandedComic.name}/s.jpg`" class="expanded-card-image">
+        <img :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/900px-Larix_decidua_Aletschwald.jpg`" class="expanded-card-image">
+        <!-- <img :src="`/comics/${$store.getters.expandedComic.name}/s.jpg`" class="expanded-card-image"> -->
       </router-link>
 
 
       <!-- COMIC NAME AND ARTIST -->
-      <router-link v-if="$store.getters.expandedComic.name" :comic="comic" 
-        :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }" 
-        @click.native="closeCard"
-        class="comic-card-link underline-link" style="font-size: 16px;">
+      <router-link v-if="$store.getters.expandedComic.name"
+                   :comic="comic" 
+                   :to="{ name: 'comic', params: { comicName: `${$store.getters.expandedComic.name }` } }" 
+                   @click.native="closeCard"
+                   class="comic-card-link underline-link"
+                   style="font-size: 16px; width: fit-content;">
         {{$store.getters.expandedComic.name}}
       </router-link>
-      <p>
+      <p style="margin-top: 0.5rem;">
         by
         <router-link v-if="$store.getters.expandedComic.artist" :comic="$store.getters.expandedComic" 
           :to="{ name: 'artist', params: { artistName: $store.getters.expandedComic.artist } }"
@@ -28,7 +31,7 @@
       </p>
 
       <!-- PAGES & RATING -->
-      <div class="horiz-card-row" style="margin-top: 8px;">
+      <div class="horiz-card-row" style="margin-top: 0.5rem;">
         <p title="Number of pages"><pages-icon title="Number of pages"/> {{$store.getters.expandedComic.numberOfPages}}</p>
         <p title="User rating"><users-icon title="User rating"/> {{formatRating($store.getters.expandedComic.userRating)}}</p>
         <p title="Your rating" v-if="$store.getters.isAuthenticated"><user-icon title="Your rating"/> {{$store.getters.expandedComic.yourRating || '-'}}</p>

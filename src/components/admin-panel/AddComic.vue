@@ -85,12 +85,13 @@
         </tr>
         <tr>
           <td>
-            <p>Finished</p>
+            <p>State</p>
           </td>
           <td>
-            <select v-model="finished">
-              <option value="true">Finished</option>
-              <option value="false">Unfinished</option>
+            <select v-model="state">
+              <option value="wip">WIP</option>
+              <option value="finished">Finished</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </td>
         </tr>
@@ -213,7 +214,7 @@ export default {
       artist: undefined,
       tag: undefined,
       cat: undefined,
-      finished: undefined,
+      state: undefined,
       previousComic: undefined,
       nextComic: undefined,
       selectedFiles: [],
@@ -274,7 +275,7 @@ export default {
         artistId: this.artist.id,
         tag: this.tag,
         cat: this.cat,
-        finished: this.finished,
+        state: this.state,
         keywords: this.selectedKeywords,
         previousComic: this.previousComic ? this.previousComic.id : null,
         nextComic: this.nextComic ? this.nextComic.id : null
@@ -293,7 +294,7 @@ export default {
         this.artist = undefined
         this.cat = undefined
         this.tag = undefined
-        this.finished = undefined
+        this.state = undefined
         this.selectedFiles = []
 				this.selectedKeywords = []
 				this.thumbnailFile = undefined
@@ -320,7 +321,7 @@ export default {
   computed: {
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
-    detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.finished },
+    detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.state },
     readyForUpload () { return this.detailsFilledIn && this.selectedFiles.length>0 && !this.errorMessageThumbnail }
 	},
 }

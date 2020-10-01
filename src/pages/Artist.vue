@@ -6,29 +6,44 @@
   
     <span v-if="artistData">
       <div class="margin-top-16 margin-bottom-16">
-        <a :href="'https://patreon.com/'+artistData.patreonName" v-if="artistData.patreonName" class="artist-big-link underline-link">
-          <img src="/icons/patreon.png" style="height: 24px"/> {{$route.params.artistName}} on Patreon
+        <a :href="'https://patreon.com/'+artistData.patreonName"
+           v-if="artistData.patreonName"
+           class="artist-big-link underline-link">
+          <img src="/icons/patreon.png" style="height: 24px"/>
+          {{$route.params.artistName}} on Patreon
         </a>
         <a :href="'https://e621.net/posts?tags='+artistData.e621Name" v-if="artistData.e621Name" class="artist-big-link underline-link margin-top-8">
-          <img src="/icons/e621.png" style="height: 24px"/> {{$route.params.artistName}} on e621
+          <img src="/icons/e621.png" style="height: 24px"/>
+          {{$route.params.artistName}} on e621
         </a>
       </div>
 
       <div class="artist-link-container" v-if="artistData.links.length > 0">
         <div v-for="link in artistData.links" :key="link.linkUrl" class="artist-link">
           <img :src="`/icons/${link.linkType}.png`" style="height: 22px;"/>
-          <a :href="link.linkUrl" target="_blank" class="underline-link" style="word-break: break-all;">{{prettifyUrl(link.linkUrl)}}</a>
+          <a :href="link.linkUrl"
+             target="_blank"
+             class="underline-link"
+             style="word-break: break-all;">
+            {{prettifyUrl(link.linkUrl)}}
+          </a>
         </div>
       </div>
 
       <h2 id="artistComicsTitle" class="margin-top-16">Comics</h2>
       <div class="comic-card-container" id="comicCardContainerArtist" style="margin-top: 0;">
-        <comic-card v-for="comic in this.artistData.comics" :key="comic.id" :clickableKeyword="false" :comic="comic" :detailLevel="'High detail'"></comic-card>
+        <comic-card v-for="comic in this.artistData.comics"
+                    :key="comic.id"
+                    :clickableKeyword="false"
+                    :comic="comic"
+                    :detailLevel="'High detail'" />
       </div>
 
       <login-modal v-if="$store.state.loginModalVisibility"></login-modal>
     </span>
-    <p v-if="artistNotFound" class="margin-top-16"><sad-face/> Artist not found</p>
+    <p v-if="artistNotFound" class="margin-top-16">
+      <sad-face/> Artist not found
+    </p>
   </div>
 </template>
 

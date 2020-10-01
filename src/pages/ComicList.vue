@@ -2,8 +2,10 @@
   <div style="width: 100%">
     <vue-headful title="Yiffer.xyz"/>
     <div class="upperBodyDiv">
-      <h1 class="yifferTitle">Yiffer.xyz</h1>
-      <p style="font-size: 20px">A collection of high-quality comics</p>
+      <h1 class="yifferTitle">Title</h1>
+      <!-- <h1 class="yifferTitle">Yiffer.xyz</h1> -->
+      <!-- <p style="font-size: 20px">A collection of high-quality comics</p> -->
+      <p style="font-size: 20px">Subtitle subtitle</p>
 
       <p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
         <button class="underline-link text-button link-color" @click.prevent="showLoginModal" style="margin: 0 3px 0 0; font-size: 16px;">
@@ -83,17 +85,20 @@
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Furry') >= 0}"
                   @click="onCategoryFilterClick('Furry')">
-                  Furry
+                  <!-- Furry -->
+                  Ting A
                 </td>        
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('MLP') >= 0}"
                   @click="onCategoryFilterClick('MLP')">
-                  MLP
+                  <!-- MLP -->
+                  Ting b
                 </td>     
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Pokemon') >= 0}"
                   @click="onCategoryFilterClick('Pokemon')">
-                  Pokemon
+                  Ting C
+                  <!-- Pokemon -->
                 </td>     
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Other') >= 0}"
@@ -286,10 +291,15 @@
     </div>
 
     <div class="comic-card-small-container" v-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
-      <comic-card-small v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic"/>
+      <comic-card-small v-for="comic in $store.getters.displayedComics"
+                        :key="comic.id"
+                        :comic="comic"/>
     </div>
+
     <div v-else class="comic-card-container" id="comicCardContainerList">
-      <comic-card v-for="comic in $store.getters.displayedComics" :key="comic.id" :comic="comic">
+      <comic-card v-for="comic in $store.getters.displayedComics"
+                  :key="comic.id"
+                  :comic="comic">
       </comic-card>
     </div>
 
@@ -609,6 +619,7 @@ export default {
     this.$store.commit('setLoginModalVisibility', false)
     this.$store.dispatch('calculateFilteredComics')
     this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
+    this.$store.watch(this.$store.getters.getSelectedKeywords, () => {})
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
     miscApi.logRoute('index')
