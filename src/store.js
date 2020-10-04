@@ -28,14 +28,16 @@ export default new Vuex.Store({
       context.commit('setClickedComic', comic)
       context.commit('setComicForVotingModal', comic)
     },
+
     async fetchKeywordList (context) {
       let keywords = await keywordApi.getKeywordList()
       context.commit('setKeywordList', keywords)
       context.commit('setOrderedKeywordList', keywords)
     },
+
     findKeywordDataFromName (context, keywordName) {
       return context.state.keywordList.find(kw => kw.name === keywordName)
-    }
+    },
   },
 
   mutations: {

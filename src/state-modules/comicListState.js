@@ -1,5 +1,6 @@
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
+import adApi from '../api/advertisingApi'
 import config from '@/config.json'
 import Vue from 'vue'
 
@@ -20,6 +21,8 @@ export default {
     viewMode: 'list',
     comicCardExpanded: false,
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
+    paidImages: [],
+    numberOfPages: 1,
   },
 
   actions: {
@@ -34,6 +37,14 @@ export default {
         resolve(response)
         context.commit('setSorting')
       })
+    },
+    
+    async loadActiveAds (context) {
+      let response = await adApi.getAdsBasic()
+      context.commit('setPaidImages', response.map(ad => ({
+        ...ad,
+        isPaidImage: true,
+      })))
     },
 
     updateOneComicInList (context, comicData) {
@@ -171,7 +182,7 @@ export default {
       state.filteredComics =  comicList
     },
 
-    setDetailLevel ( state, detailLevel ) {
+    setDetailLevel (state, detailLevel) {
       state.detailLevel = detailLevel
     },
 
@@ -189,6 +200,10 @@ export default {
         state.comicCardExpanded = true
       }
     },
+
+    setPaidImages (state, images) { state.paidImages = images },
+
+    setNumberOfPages (state, numberOfPages) { state.numberOfPages = numberOfPages },
   },
 
   getters: {
@@ -209,6 +224,8 @@ export default {
     viewMode: state => state.viewMode,
     comicCardExpanded: state => state.comicCardExpanded,
     expandedComic: state => state.expandedComic,
+    paidImages: state => () => state.paidImages,
+    numberOfPages: state => state.numberOfPages,
   }
 }
 
@@ -226,12 +243,58 @@ function recalculateFilteredComics (state) {
     state.filteredComics = filteredComics
 
   state.numberOfFilteredComics = filteredComics.length
+  let shouldIncludeAds = !state.searchFiltering && filteredComics.length > config.adsPerPage
+  if (shouldIncludeAds) {
+    state.numberOfPages = Math.ceil(filteredComics.length / (config.comicsPerPage-config.adsPerPage))
+  }
+  else {
+    state.numberOfPages = Math.ceil(filteredComics.length / config.comicsPerPage)
+  }
 
   recalculateDisplayedComics(state)
 }
 
 function recalculateDisplayedComics (state) {
-  state.displayedComics = state.filteredComics.slice(
-    config.comicsPerPage*(state.pageNumber-1), config.comicsPerPage*state.pageNumber
-  )
+  let numberOfComics = config.comicsPerPage - config.adsPerPage
+  let shouldIncludeAds = !state.searchFiltering && state.filteredComics.length >= numberOfComics
+  if (shouldIncludeAds) {
+    let indexesOfAds = []
+    let numberOfSections = config.adsPerPage*2 - 1
+    let excludedTopComics = 8
+    let comicsPerSection = Math.floor((config.comicsPerPage-excludedTopComics) / numberOfSections)
+  
+    for (let sectionNo=0; sectionNo<=numberOfSections; sectionNo+=2) {
+      let sectionPosition = Math.floor(Math.random() * comicsPerSection)
+      let listPosition = excludedTopComics + sectionNo*comicsPerSection + sectionPosition
+      indexesOfAds.push(listPosition)
+    }
+  
+  
+    let comicsToBeShown = state.filteredComics.slice(
+      numberOfComics*(state.pageNumber-1), numberOfComics*state.pageNumber
+    );
+  
+    let ads = state.paidImages.filter(ad => ad.adType.includes('card'))
+    let finalList = []
+    let comicCounter = 0;
+    for (let i=0; i<numberOfComics; i++) {
+      if (indexesOfAds.includes(i)) {
+        let indexOfAd = Math.floor(Math.random() * ads.length)
+        let ad = ads.splice(indexOfAd, 1)[0]
+        finalList.push(ad)
+      }
+      else {
+        finalList.push(comicsToBeShown[comicCounter])
+        comicCounter++
+      }
+    }
+
+    state.displayedComics = finalList
+  }
+  else {
+    let comicsToBeShown = state.filteredComics.slice(
+      config.comicsPerPage*(state.pageNumber-1), config.comicsPerPage*state.pageNumber
+    );
+    state.displayedComics = comicsToBeShown
+  }
 }

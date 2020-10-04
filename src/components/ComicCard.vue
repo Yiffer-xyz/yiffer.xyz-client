@@ -1,8 +1,7 @@
 <template>
   <div class="comic-card simple-shadow">
-
-    <!-- NEW AND WIP TRIANGLES, IMAGE -->
     <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+      <!-- NEW AND WIP TRIANGLES -->
       <div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
         <div class="triangle-inner">
           <label class="triangle-label" title="Added within 7 days">NEW</label>
@@ -18,16 +17,26 @@
           <label class="triangle-label triangle-label-cancelled" title="Cancelled before finishing">STOP</label>
         </div>
       </div>
-      <!-- <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()"> -->
-      <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()">
+
+      <!-- AD -->
+      <div class="triangle-wrapper triangle-wrapper-right" v-if="comic.isPaidImage">
+        <div class="triangle-inner">
+          <label class="triangle-label">AD</label>
+        </div>
+      </div>
+
+      <!-- PIC -->
+      <img v-if="!comic.isPaidImage" :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
+      <img v-else :src="`/paid-images/${comic.id}.${comic.filetype}`" @click="storeClickedComicData()">
+      <!-- <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()"> -->
     </router-link>
 
-    <div class="comic-card-inner-container">
+    <div v-if="!comic.isPaidImage" class="comic-card-inner-container">
       <div>
         <!-- NAME -->
         <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
-          <p class="comic-card-comic-title">Navnet</p>
-          <!-- <p class="comic-card-comic-title">{{comic.name}}</p> -->
+          <!-- <p class="comic-card-comic-title">Navnet</p> -->
+          <p class="comic-card-comic-title">{{comic.name}}</p>
         </router-link>
 
         <!-- ARTIST -->
@@ -90,6 +99,8 @@
         <label title="Created on"><plus-icon title="Created on"/> {{prettyDate(comic.created)}}</label>
       </p>
     </div>
+
+    <ComicCardPaidImage v-else :paidImage="comic" class="comic-card-inner-container"/>
   </div>
 </template>
 
@@ -105,6 +116,7 @@ import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import Tags from 'vue-material-design-icons/TagMultiple.vue'
 import HideTags from 'vue-material-design-icons/TagRemove.vue'
+import ComicCardPaidImage from './ComicCardPaidImage.vue'
 
 export default {
   name: 'comic-card',
@@ -119,6 +131,7 @@ export default {
     'refresh-icon': RefreshIcon,
     'tags': Tags,
     'hide-tags': HideTags,
+    ComicCardPaidImage,
   },
 
   props: {

@@ -77,5 +77,11 @@ export default {
     let response = await axios.post(`${baseUrl}/paid-images/${adId}/toggle-renew`, {shouldRenew})
     if (!response.data.error) { return response.data }
     else { return {success: false, message: response.data.error} }
+  },
+
+  async getAdsBasic () {
+    let response = await axios.get(baseUrl + '/paid-images-basic')
+    if (!response.data.error) { return response.data }
+    else { return [] }
   }
 }

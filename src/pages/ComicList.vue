@@ -2,10 +2,10 @@
   <div style="width: 100%">
     <vue-headful title="Yiffer.xyz"/>
     <div class="upperBodyDiv">
-      <h1 class="yifferTitle">Title</h1>
-      <!-- <h1 class="yifferTitle">Yiffer.xyz</h1> -->
-      <!-- <p style="font-size: 20px">A collection of high-quality comics</p> -->
-      <p style="font-size: 20px">Subtitle subtitle</p>
+      <!-- <h1 class="yifferTitle">Title</h1> -->
+      <h1 class="yifferTitle">Yiffer.xyz</h1>
+      <p style="font-size: 20px">A collection of high-quality comics</p>
+      <!-- <p style="font-size: 20px">Subtitle subtitle</p> -->
 
       <p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
         <button class="underline-link text-button link-color" @click.prevent="showLoginModal" style="margin: 0 3px 0 0; font-size: 16px;">
@@ -85,20 +85,20 @@
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Furry') >= 0}"
                   @click="onCategoryFilterClick('Furry')">
-                  <!-- Furry -->
-                  Ting A
+                  Furry
+                  <!-- Ting A -->
                 </td>        
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('MLP') >= 0}"
                   @click="onCategoryFilterClick('MLP')">
-                  <!-- MLP -->
-                  Ting b
+                  MLP
+                  <!-- Ting b -->
                 </td>     
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Pokemon') >= 0}"
                   @click="onCategoryFilterClick('Pokemon')">
-                  Ting C
-                  <!-- Pokemon -->
+                  <!-- Ting C -->
+                  Pokemon
                 </td>     
                 <td 
                   v-bind:class="{'button-selected': $store.getters.categoryFilter.indexOf('Other') >= 0}"
@@ -346,6 +346,7 @@ import DropdownMenu from '@innologica/vue-dropdown-menu'
 import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
 import blogApi from '../api/blogApi'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'comic-list',
@@ -628,11 +629,16 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'numberOfPages',
+    ]),
+
     keywordsMatchingSearch () {
       return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
     },
+
     paginationButtons () {
-      let pages = Math.ceil(this.$store.state.comicList.numberOfFilteredComics / config.comicsPerPage) //todo gettable?
+      let pages = this.numberOfPages
       let currentPage = this.$store.getters.pageNumber
       let buttonList = []
       if (pages <= 9) {

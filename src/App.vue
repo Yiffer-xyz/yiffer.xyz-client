@@ -112,6 +112,7 @@ export default {
 
   created: function () {
     this.$store.dispatch('loadComicList')
+    this.$store.dispatch('loadActiveAds')
     this.$cookies.config('60d')
     this.$store.dispatch('checkAndSetLoginStatus')
     this.$store.dispatch('fetchKeywordList')
