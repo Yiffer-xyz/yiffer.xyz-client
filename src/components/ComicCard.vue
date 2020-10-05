@@ -1,6 +1,6 @@
 <template>
   <div class="comic-card simple-shadow">
-    <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+    <router-link v-if="!comic.isPaidImage" :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
       <!-- NEW AND WIP TRIANGLES -->
       <div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
         <div class="triangle-inner">
@@ -18,18 +18,21 @@
         </div>
       </div>
 
-      <!-- AD -->
+
+      <!-- PIC -->
+      <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
+      <!-- <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()"> -->
+    </router-link>
+
+    <!-- AD -->
+    <a v-else :href="comic.link" target="_blank">
       <div class="triangle-wrapper triangle-wrapper-right" v-if="comic.isPaidImage">
         <div class="triangle-inner">
           <label class="triangle-label">AD</label>
         </div>
       </div>
-
-      <!-- PIC -->
-      <img v-if="!comic.isPaidImage" :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
-      <img v-else :src="`/paid-images/${comic.id}.${comic.filetype}`" @click="storeClickedComicData()">
-      <!-- <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()"> -->
-    </router-link>
+      <img :src="`/paid-images/${comic.id}.${comic.filetype}`" @click="storeClickedComicData()">
+    </a>
 
     <div v-if="!comic.isPaidImage" class="comic-card-inner-container">
       <div>

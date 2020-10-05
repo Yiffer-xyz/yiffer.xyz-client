@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link :to="paidImage.link" class="comic-card-link" style="height: 100%;">
+    <a :href="paidImage.link" class="comic-card-link" style="height: 100%;" target="_blank">
       <p class="comic-card-comic-title">
         {{paidImage.mainText}}
       </p>
@@ -8,7 +8,7 @@
       <p class="mt-8" style="padding: 0 4px;">
         {{paidImage.secondaryText}}
       </p>
-    </router-link>
+    </a>
   </div>
 </template>
 

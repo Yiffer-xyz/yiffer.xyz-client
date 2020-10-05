@@ -56,8 +56,8 @@
           </button> to rate comic
         </p>
 
-        <div id="comicKeywords" class="margin-top-8 horizontal-flex flex-wrap">
-          <span v-if="comic.keywords.length > 0" class="horizontal-flex flex-wrap">
+        <div id="comicKeywords" class="margin-top-8 horizontal-flex flexWrap">
+          <span v-if="comic.keywords.length > 0" class="horizontal-flex flexWrap">
             <div class="keyword-static"
                  v-for="keyword in comic.keywords"
                  :key="keyword">
@@ -116,6 +116,14 @@
 
         <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
                          @closeMessage="closeResponseMessage" class="mt-16"/>
+
+        <div id="paidImageBanner" class="mt-16" style="height: 100px;">
+          <a v-if="paidImage" :href="paidImage.link" target="_blank">
+            <img :src="`/paid-images/${paidImage.id}.${paidImage.filetype}`" height="100"/>
+          </a>
+
+          <div v-else style="height: 100px; width: 680px;"/>
+        </div>
 
         <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
           <p style="margin-right: 4px;">Image fit:</p>
@@ -240,6 +248,7 @@ export default {
       showShareIcon: true,
       isZipping: false,
       downloadStarted: false,
+      paidImage: null,
     }
   },
 
@@ -247,6 +256,34 @@ export default {
     ...mapGetters({
       paidImages: 'paidImagesBanner',
     })
+  },
+
+  async mounted () {
+    if (navigator.share === undefined) {
+      // this.showShareIcon = false todo
+    }
+
+    if (this.paidImages().length > 0) {
+      this.paidImage = this.paidImages()[Math.floor(Math.random() * this.paidImages().length)]
+    }
+    else {
+      this.$store.watch(this.paidImages, () => {
+        if (this.paidImages().length > 0) {
+          this.paidImage = this.paidImages()[Math.floor(Math.random() * this.paidImages().length)]
+        }
+      })
+    }
+
+    this.$store.commit('setLoginModalVisibility', false)
+    if (!this.comic) {
+      this.loadComic()
+    }
+    else {
+      this.initializeImageFitArray()
+      this.fitImagesForMobile()
+    }
+
+    miscApi.logRoute('comic', this.$route.params.comicName)
   },
 
   methods: {
@@ -403,22 +440,6 @@ export default {
     },
     
     closeResponseMessage () { this.responseMessage = '' },
-  },
-
-  async mounted () {
-    if (navigator.share === undefined) {
-      // this.showShareIcon = false todo
-    }
-    this.$store.commit('setLoginModalVisibility', false)
-    if (!this.comic) {
-      this.loadComic()
-    }
-    else {
-      this.initializeImageFitArray()
-      this.fitImagesForMobile()
-    }
-
-    miscApi.logRoute('comic', this.$route.params.comicName)
   },
 
   watch: {
