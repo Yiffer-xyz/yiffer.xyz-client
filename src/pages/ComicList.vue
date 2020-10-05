@@ -318,7 +318,7 @@
       <div @click="paginate('up', shouldScrollToTopOfList=true)" class="pagination-button"><right-arrow/></div>
     </div>
 
-    <expanded-comic-card v-show="$store.getters.comicCardExpanded"/>
+    <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
   </div>
 </template>
 
@@ -392,19 +392,19 @@ export default {
 
   methods: {
     onCategoryFilterClick (filter) {
-      this.$store.commit('addCategoryFilter', filter)
+      this.$store.dispatch('addCategoryFilter', filter)
       this.setRouterQuery()
       miscApi.logEvent('categoryfilter', filter)
     },
 
     onTagFilterClick (filter) {
-      this.$store.commit('addTagFilter', filter)
+      this.$store.dispatch('addTagFilter', filter)
       this.setRouterQuery()
       miscApi.logEvent('tagfilter', filter)
     },
 
     onSortingButtonClick ( sortButtonName ) {
-      this.$store.commit('setSorting', sortButtonName)
+      this.$store.dispatch('setSorting', sortButtonName)
       this.setRouterQuery()
       miscApi.logEvent('sort', sortButtonName)
     },
@@ -437,7 +437,7 @@ export default {
     addSelectedKeyword ( keyword ) {
       if (!this.lastActionWasDeselectingKeyword) {
         this.lastActionWasDeselectingKeyword = true
-        this.$store.commit('addSelectedKeyword', keyword)
+        this.$store.dispatch('addSelectedKeyword', keyword)
         this.keywordSearchFocused = undefined
         this.keywordSearch = ''
       }
@@ -446,7 +446,7 @@ export default {
     },
 
     removeSelectedKeyword ( keyword ) {
-      this.$store.commit('removeSelectedKeyword', keyword)
+      this.$store.dispatch('removeSelectedKeyword', keyword)
       this.setRouterQuery()
     },
 
@@ -499,16 +499,16 @@ export default {
       
       if (!this.$route || !this.$route.query) { return }
       if (this.$route.query.category) {
-        this.$store.commit('setCategoryFilter', this.listify(this.$route.query.category))
+        this.$store.dispatch('setCategoryFilter', this.listify(this.$route.query.category))
       }
       if (this.$route.query.classification) {
-        this.$store.commit('setTagFilter', this.listify(this.$route.query.classification))
+        this.$store.dispatch('setTagFilter', this.listify(this.$route.query.classification))
       }
       if (this.$route.query.orderBy) {
         this.$store.commit('setSorting', this.$route.query.orderBy)
       }
       if (this.$route.query.search) {
-        this.$store.commit('setSearchFiltering', this.$route.query.search)
+        this.$store.dispatch('setSearchFiltering', this.$route.query.search)
         this.searchFiltering = this.$route.query.search
       }
       if (this.$route.query.tags) {
@@ -517,7 +517,7 @@ export default {
           this.setKeywordsFromQuery()
         }
         else {
-          this.$store.watch(this.$store.getters.orderedKeywordListF, _ => {
+          this.$store.watch(this.$store.getters.orderedKeywordListF, () => {
             this.setKeywordsFromQuery()
           })
         }
@@ -537,7 +537,7 @@ export default {
       }
       
       this.suppressQueryUpdates = false
-      this.$store.commit('setSelectedKeywords', selectedKeywords)
+      this.$store.dispatch('setAllSelectedKeywords', selectedKeywords)
     },
 
     showLoginModal () {
@@ -603,7 +603,7 @@ export default {
 
   watch: {
     searchFiltering: function () {
-      this.$store.commit('setSearchFiltering', this.searchFiltering)
+      this.$store.dispatch('setSearchFiltering', this.searchFiltering)
       this.setRouterQuery()
     },
   },

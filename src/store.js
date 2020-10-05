@@ -60,7 +60,7 @@ export default new Vuex.Store({
     comicForVotingModal: state => state.comicForVotingModal,
     getComicForVotingModal: state => () => state.comicForVotingModal,
     keywordList: state => state.keywordList,
-    orderedKeywordList: state => state.orderedKeywordList,
     orderedKeywordListF: state => () => state.orderedKeywordList,
+    orderedKeywordList: state => state.orderedKeywordList,
   }
 })

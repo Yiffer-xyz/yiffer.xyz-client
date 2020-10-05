@@ -112,7 +112,7 @@ export default {
       this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName)
     },
     closeCard () {
-      this.$store.commit('setExpandedComic', undefined)
+      this.$store.dispatch('setExpandedComic', undefined)
     },
     onCardClick (event) {
       event.stopPropagation()

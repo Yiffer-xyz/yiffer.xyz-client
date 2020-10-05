@@ -108,7 +108,7 @@ export default {
   
   methods: {
     onCardClicked () {
-      this.$store.commit('setExpandedComic', this.comic)
+      this.$store.dispatch('setExpandedComic', this.comic)
       this.$store.commit('setComicForVotingModal', this.comic)
     },
 

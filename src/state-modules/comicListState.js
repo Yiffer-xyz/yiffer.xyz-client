@@ -19,32 +19,28 @@ export default {
     numberOfFilteredComics: 0,
     detailLevel: 'low',
     viewMode: 'list',
-    comicCardExpanded: false,
+    isComicCardExpanded: false,
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
     paidImages: [],
     numberOfPages: 1,
   },
 
   actions: {
-    loadComicList: context => {
+    async loadComicList ({commit, dispatch, getters}) {
       comicApi.getFirstComics().then(response => {
-        context.commit('setFirstComicsList', response)
+        commit('setFirstComicsList', response)
       })
-
       return new Promise (async (resolve) => {
         let response = await comicApi.getComics()
-        context.commit('setComicList', response)
+        commit('setComicList', response)
+        dispatch('setSorting', getters.sorting)
         resolve(response)
-        context.commit('setSorting')
       })
     },
     
     async loadActiveAds (context) {
       let response = await adApi.getAdsBasic()
-      context.commit('setPaidImages', response.map(ad => ({
-        ...ad,
-        isPaidImage: true,
-      })))
+      context.commit('setPaidImages', response)
     },
 
     updateOneComicInList (context, comicData) {
@@ -62,8 +58,8 @@ export default {
     },
 
     refreshExpandedComicIfExpanded (context, newComic) {
-      if (context.state.comicCardExpanded) {
-        context.commit('setExpandedComic', newComic)
+      if (context.state.isComicCardExpanded) {
+        context.dispatch('setExpandedComic', newComic)
       }
     },
 
@@ -73,136 +69,137 @@ export default {
 
     addSelectedKeywordByNameOnly (context, keywordName) {
       let keywordObject = context.rootState.keywordList.find(kw => kw.name===keywordName)
-      context.commit('addSelectedKeyword', keywordObject)
+      context.dispatch('addSelectedKeyword', keywordObject)
 
       keywordApi.logKeywordSearch(keywordObject.id, true)
     },
-  },
-
-  mutations: {
-    setComicList: (state, comicList) => {
-      state.comicList = comicList
-      recalculateFilteredComics(state)
-    },
-
-    setFirstComicsList (state, comicList) {
-      state.firstComicsList = comicList
-    },
-
-    setDisplayedComics: (state, newDisplayedComics) => state.displayedComics = newDisplayedComics,
-
-    setPageNumber: (state, newPageNumber) => {
-      state.pageNumber = newPageNumber
-      recalculateDisplayedComics(state)
-    },
-
-    setSorting: (state, newSorting) => {
-      if (!newSorting) { newSorting = state.sorting }
-
-      state.sorting = newSorting
-      state.pageNumber = 1
-      state.comicList.sort( (c1, c2) => {
+    
+    setSorting ({state, commit}, newSorting) {
+      const sortedComicList = [...state.comicList]
+      sortedComicList.sort( (c1, c2) => {
         if ( c1[state.sorting] < c2[state.sorting] ) { return 1 }
         else if ( c1[state.sorting] > c2[state.sorting] ) { return -1 }
         else { return 0 }
       })
-
+      commit('setComicList', sortedComicList)
+      commit('setPageNumber', 1)
+      if (!!newSorting) { commit('setSorting', newSorting) }
+      
       recalculateFilteredComics(state)
     },
 
-    setSearchFiltering: (state, newSearchFiltering) => {
-      state.searchFiltering = newSearchFiltering
-      state.pageNumber = 1
-      recalculateFilteredComics(state)
+    // todo finne ut når alle disse recalculates trengs. 
+    // Kanskje noen av actionenen faktisk kan være mutations
+    setComicList ({state, commit}, comicList) {
+      commit('setComicList', comicList)
+      recalculateFilteredComics(state) //todo
     },
 
-    setCategoryFilter: (state, filterList) => {
-      state.categoryFilter = filterList
-      recalculateFilteredComics(state)
+    setPageNumber ({commit, state}, pageNumber) {
+      commit('setPageNumber', pageNumber)
+      recalculateDisplayedComics(state) // todo
     },
 
-    setTagFilter: (state, filterList) => {
-      state.tagFilter = filterList
-      recalculateFilteredComics(state)
+    setSearchFiltering ({commit, state}, searchFiltering) {
+      commit('setSearchFiltering', searchFiltering)
+      commit('setPageNumber', 1)
+      recalculateFilteredComics(state) // todo
     },
 
-    addCategoryFilter: (state, filter) => {
-      state.pageNumber = 1
-      if (filter === 'All') {
-        state.categoryFilter = ['All']
-      }
+    setCategoryFilter ({commit, state}, filterList) {
+      commit('setCategoryFilter', filterList)
+      recalculateFilteredComics(state) // todo
+    },
+
+    setTagFilter ({commit, state}, filterList) {
+      commit('setTagFilter', filterList)
+      recalculateFilteredComics(state) // todo
+    },
+
+    addCategoryFilter ({commit, state}, filter) {
+      commit('setPageNumber', 1)
+      let newFilter
+
+      if (filter === 'All') { newFilter = ['All'] }
       else if (state.categoryFilter.indexOf(filter) >= 0) {
-        if (state.categoryFilter.length === 1) { state.categoryFilter = ['All'] }
-        else { state.categoryFilter.splice( state.categoryFilter.indexOf(filter), 1 ) }
+        if (state.categoryFilter.length === 1) { newFilter = ['All'] }
+        else { newFilter = state.categoryFilter.filter(c => c !== filter) }
       }
-      else {
-        if ( state.categoryFilter.indexOf('All') >= 0 ) { state.categoryFilter = [filter] }
-        else { state.categoryFilter.push( filter ) }
+      else { 
+        if ( state.categoryFilter.indexOf('All') >= 0 ) { newFilter = [filter] }
+        else { newFilter = [...state.categoryFilter, filter] }
       }
+
+      commit('setCategoryFilter', newFilter)
       recalculateFilteredComics(state)
     },
 
-    addTagFilter: (state, filter) => {
-      state.pageNumber = 1
-      if (filter === 'All') {
-        state.tagFilter = ['All']
-      }
+    addTagFilter ({commit, state}, filter) {
+      commit('setPageNumber', 1)
+      let newFilter
+
+      if (filter === 'All') { newFilter = ['All'] }
       else if (state.tagFilter.indexOf(filter) >= 0) {
-        if (state.tagFilter.length === 1) { state.tagFilter = ['All'] }
-        else { state.tagFilter.splice( state.tagFilter.indexOf(filter), 1 ) }
+        if (state.tagFilter.length === 1) { newFilter = ['All'] }
+        else { newFilter = state.tagFilter.filter(c => c !== filter) }
       }
       else {
-        if ( state.tagFilter.indexOf('All') >= 0 ) { state.tagFilter = [filter] }
-        else { state.tagFilter.push( filter ) }
+        if ( state.tagFilter.indexOf('All') >= 0 ) { newFilter = [filter] }
+        else { newFilter = [...state.tagFilter, filter] }
       }
+
+      commit('setTagFilter', newFilter)
       recalculateFilteredComics(state)
     },
 
-    addSelectedKeyword: (state, keyword) => { 
-      state.pageNumber = 1
+    addSelectedKeyword ({commit, state}, keyword) {
+      commit('setPageNumber', 1);
       if (!state.selectedKeywords.find(kw => kw.id === keyword.id)) {
-        state.selectedKeywords.push(keyword) 
+        commit('setSelectedKeywords', [...state.selectedKeywords, keyword]);
       }
       recalculateFilteredComics(state)
       keywordApi.logKeywordSearch(keyword.id, false)
     },
 
-    removeSelectedKeyword: (state, keyword) => {
-      state.pageNumber = 1
-      state.selectedKeywords.splice(state.selectedKeywords.findIndex(kw => kw.id === keyword.id), 1)
+    setAllSelectedKeywords ({commit, state}, keywords) {
+      commit('setSelectedKeywords', keywords)
       recalculateFilteredComics(state)
     },
 
-    setSelectedKeywords: (state, keywordList) => {
-      state.selectedKeywords = keywordList
+    removeSelectedKeyword ({commit, state}, keyword) {
+      commit('setPageNumber', 1);
+      commit('setSelectedKeywords', state.selectedKeywords.filter(kw => kw.id !== keyword.id))
       recalculateFilteredComics(state)
     },
 
-    setFilteredComics: (state, comicList) => {
-      state.filteredComics =  comicList
-    },
-
-    setDetailLevel (state, detailLevel) {
-      state.detailLevel = detailLevel
-    },
-
-    setViewMode (state, viewMode) {
-      state.viewMode = viewMode
-    },
-
-    setExpandedComic (state, comic) {
+    setExpandedComic ({commit}, comic) {
       if (!comic) {
-        state.comicCardExpanded = false
-        state.expandedComic = {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''}
+        commit('setIsComicCardExpanded', false)
+        commit('setExpandedComic', {name: '', userRating: 0, yourRating: 0, artist: ''})
       }
       else {
-        state.expandedComic = comic
-        state.comicCardExpanded = true
+        commit('setExpandedComic', comic)
+        commit('setIsComicCardExpanded', true)
       }
-    },
+    }
+  },
 
+  mutations: {
+    setComicList (state, comicList) { state.comicList = comicList },
+    setFirstComicsList (state, comicList) { state.firstComicsList = comicList },
+    setDisplayedComics (state, newDisplayedComics) { state.displayedComics = newDisplayedComics },
+    setPageNumber (state, newPageNumber) { state.pageNumber = newPageNumber },
+    setSorting (state, newSorting) { state.sorting = newSorting },
+    setSearchFiltering (state, newSearchFiltering) { state.searchFiltering = newSearchFiltering },
+    setCategoryFilter (state, filterList) { state.categoryFilter = filterList },
+    setTagFilter (state, filterList) { state.tagFilter = filterList },
+    setSelectedKeywords (state, keywordList) { state.selectedKeywords = keywordList },
+    setFilteredComics (state, comicList) { state.filteredComics =  comicList },
+    setDetailLevel (state, detailLevel) { state.detailLevel = detailLevel },
+    setViewMode (state, viewMode) { state.viewMode = viewMode },
+    setExpandedComic (state, comic) { state.expandedComic = comic },
+    setIsComicCardExpanded (state, isExpanded) { state.isExpanded = isExpanded },
     setPaidImages (state, images) { state.paidImages = images },
-
     setNumberOfPages (state, numberOfPages) { state.numberOfPages = numberOfPages },
   },
 
@@ -219,17 +216,24 @@ export default {
     pageNumber: state => state.pageNumber,
     searchFiltering: state => state.searchFiltering,
     selectedKeywords: state => state.selectedKeywords,
-    getFilteredComics: () => state => state.selectedKeywords,
+    getSelectedKeywords: () => state => state.selectedKeywords,
     detailLevel: state => state.detailLevel,
     viewMode: state => state.viewMode,
-    comicCardExpanded: state => state.comicCardExpanded,
+    isComicCardExpanded: state => state.isComicCardExpanded,
     expandedComic: state => state.expandedComic,
-    paidImages: state => () => state.paidImages,
+    paidImagesCard: state => () => state.paidImagesCard
+      .filter(ad => ad.adType.includes('card'))
+      .map(ad => ({
+        ...ad,
+        isPaidImage: true,
+      })),
+    paidImagesBanner: state => () => state.paidImages.filter(ad => ad.adType.includes('banner')),
     numberOfPages: state => state.numberOfPages,
   }
 }
 
 function recalculateFilteredComics (state) {
+  console.log('RECALC')
   if (typeof state.comicList !== "object") { return }
   
   let filteredComics = state.comicList
@@ -256,7 +260,9 @@ function recalculateFilteredComics (state) {
 
 function recalculateDisplayedComics (state) {
   let numberOfComics = config.comicsPerPage - config.adsPerPage
-  let shouldIncludeAds = !state.searchFiltering && state.filteredComics.length >= numberOfComics
+  let shouldIncludeAds = false
+  // let shouldIncludeAds = !state.searchFiltering && state.filteredComics.length >= numberOfComics
+
   if (shouldIncludeAds) {
     let indexesOfAds = []
     let numberOfSections = config.adsPerPage*2 - 1
@@ -274,13 +280,12 @@ function recalculateDisplayedComics (state) {
       numberOfComics*(state.pageNumber-1), numberOfComics*state.pageNumber
     );
   
-    let ads = state.paidImages.filter(ad => ad.adType.includes('card'))
     let finalList = []
     let comicCounter = 0;
     for (let i=0; i<numberOfComics; i++) {
       if (indexesOfAds.includes(i)) {
-        let indexOfAd = Math.floor(Math.random() * ads.length)
-        let ad = ads.splice(indexOfAd, 1)[0]
+        let indexOfAd = Math.floor(Math.random() * state.getters.paidImagesCard.length)
+        let ad = state.getters.paidImagesCard.splice(indexOfAd, 1)[0]
         finalList.push(ad)
       }
       else {

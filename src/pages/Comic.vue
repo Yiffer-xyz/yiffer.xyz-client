@@ -201,6 +201,7 @@ import Tags from 'vue-material-design-icons/TagMultiple.vue'
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'comic',
@@ -240,6 +241,12 @@ export default {
       isZipping: false,
       downloadStarted: false,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      paidImages: 'paidImagesBanner',
+    })
   },
 
   methods: {
