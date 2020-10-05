@@ -38,33 +38,33 @@ export default {
       })
     },
     
-    async loadActiveAds (context) {
+    async loadActiveAds ({commit}) {
       let response = await adApi.getAdsBasic()
-      context.commit('setPaidImages', response)
+      commit('setPaidImages', response)
     },
 
-    updateOneComicInList (context, comicData) {
-      let selectedComicIndex = context.getters.comicList.findIndex(c => c.id === comicData.id)
-      Vue.set(context.state.comicList, selectedComicIndex, comicData)
-      recalculateFilteredComics(context.state)
+    updateOneComicInList ({state, getters}, comicData) {
+      let selectedComicIndex = getters.comicList.findIndex(c => c.id === comicData.id)
+      Vue.set(state.comicList, selectedComicIndex, comicData)
+      recalculateFilteredComics(state)
     },
 
-    refreshOneComicInList (context, comicName) {
+    refreshOneComicInList ({dispatch}, comicName) {
       return new Promise (async (resolve) => {
         let response = await comicApi.getComic(comicName)
-        context.dispatch('updateOneComicInList', response.result)
+        dispatch('updateOneComicInList', response.result)
         resolve(response.result)
       })
     },
 
-    refreshExpandedComicIfExpanded (context, newComic) {
-      if (context.state.isComicCardExpanded) {
-        context.dispatch('setExpandedComic', newComic)
+    refreshExpandedComicIfExpanded ({state, dispatch}, newComic) {
+      if (state.isComicCardExpanded) {
+        dispatch('setExpandedComic', newComic)
       }
     },
 
-    calculateFilteredComics: context => {
-      recalculateFilteredComics(context.state)
+    calculateFilteredComics ({state}) {
+      recalculateFilteredComics(state)
     },
 
     addSelectedKeywordByNameOnly (context, keywordName) {
@@ -77,8 +77,8 @@ export default {
     setSorting ({state, commit}, newSorting) {
       const sortedComicList = [...state.comicList]
       sortedComicList.sort( (c1, c2) => {
-        if ( c1[state.sorting] < c2[state.sorting] ) { return 1 }
-        else if ( c1[state.sorting] > c2[state.sorting] ) { return -1 }
+        if ( c1[newSorting] < c2[newSorting] ) { return 1 }
+        else if ( c1[newSorting] > c2[newSorting] ) { return -1 }
         else { return 0 }
       })
       commit('setComicList', sortedComicList)

@@ -413,17 +413,17 @@ export default {
       if ( pageNumber === '...' ) { return }
       if (pageNumber === 'down') {
         if (this.$store.getters.pageNumber > 1) {
-          this.$store.commit('setPageNumber', this.$store.getters.pageNumber-1)
+          this.$store.dispatch('setPageNumber', this.$store.getters.pageNumber-1)
         } 
       }
       else if (pageNumber === 'up') {
         if (this.$store.getters.pageNumber * config.comicsPerPage < this.$store.getters.filteredComics.length) {
-          this.$store.commit('setPageNumber', this.$store.getters.pageNumber+1)
+          this.$store.dispatch('setPageNumber', this.$store.getters.pageNumber+1)
         }
       }
       else if ( typeof(pageNumber) !== 'number') { pageNumber = 1 }
       else {
-        this.$store.commit('setPageNumber', pageNumber)
+        this.$store.dispatch('setPageNumber', pageNumber)
       }
 
       this.setRouterQuery()
