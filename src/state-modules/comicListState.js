@@ -43,10 +43,10 @@ export default {
       commit('setPaidImages', response)
     },
 
-    updateOneComicInList ({state, getters}, comicData) {
+    updateOneComicInList ({state, dispatch, getters}, comicData) {
       let selectedComicIndex = getters.comicList.findIndex(c => c.id === comicData.id)
       Vue.set(state.comicList, selectedComicIndex, comicData)
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
     },
 
     refreshOneComicInList ({dispatch}, comicName) {
@@ -63,8 +63,8 @@ export default {
       }
     },
 
-    calculateFilteredComics ({state}) {
-      recalculateFilteredComics(state)
+    calculateFilteredComics ({dispatch}) {
+      dispatch('recalculateFilteredComics')
     },
 
     addSelectedKeywordByNameOnly (context, keywordName) {
@@ -74,7 +74,7 @@ export default {
       keywordApi.logKeywordSearch(keywordObject.id, true)
     },
     
-    setSorting ({state, commit}, newSorting) {
+    setSorting ({state, commit, dispatch}, newSorting) {
       const sortedComicList = [...state.comicList]
       sortedComicList.sort( (c1, c2) => {
         if ( c1[newSorting] < c2[newSorting] ) { return 1 }
@@ -85,38 +85,38 @@ export default {
       commit('setPageNumber', 1)
       if (!!newSorting) { commit('setSorting', newSorting) }
       
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
     },
 
     // todo finne ut når alle disse recalculates trengs. 
     // Kanskje noen av actionenen faktisk kan være mutations
-    setComicList ({state, commit}, comicList) {
+    setComicList ({commit, dispatch}, comicList) {
       commit('setComicList', comicList)
-      recalculateFilteredComics(state) //todo
+      dispatch('recalculateFilteredComics') //todo
     },
 
-    setPageNumber ({commit, state}, pageNumber) {
+    setPageNumber ({commit, dispatch}, pageNumber) {
       commit('setPageNumber', pageNumber)
-      recalculateDisplayedComics(state) // todo
+      dispatch('recalculateDisplayedComics') // todo
     },
 
-    setSearchFiltering ({commit, state}, searchFiltering) {
+    setSearchFiltering ({commit, dispatch}, searchFiltering) {
       commit('setSearchFiltering', searchFiltering)
       commit('setPageNumber', 1)
-      recalculateFilteredComics(state) // todo
+      dispatch('recalculateFilteredComics') // todo
     },
 
-    setCategoryFilter ({commit, state}, filterList) {
+    setCategoryFilter ({commit, dispatch}, filterList) {
       commit('setCategoryFilter', filterList)
-      recalculateFilteredComics(state) // todo
+      dispatch('recalculateFilteredComics') // todo
     },
 
-    setTagFilter ({commit, state}, filterList) {
+    setTagFilter ({commit, dispatch}, filterList) {
       commit('setTagFilter', filterList)
-      recalculateFilteredComics(state) // todo
+      dispatch('recalculateFilteredComics') // todo
     },
 
-    addCategoryFilter ({commit, state}, filter) {
+    addCategoryFilter ({state, commit, dispatch}, filter) {
       commit('setPageNumber', 1)
       let newFilter
 
@@ -131,10 +131,10 @@ export default {
       }
 
       commit('setCategoryFilter', newFilter)
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
     },
 
-    addTagFilter ({commit, state}, filter) {
+    addTagFilter ({state, commit, dispatch}, filter) {
       commit('setPageNumber', 1)
       let newFilter
 
@@ -149,27 +149,27 @@ export default {
       }
 
       commit('setTagFilter', newFilter)
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
     },
 
-    addSelectedKeyword ({commit, state}, keyword) {
+    addSelectedKeyword ({state, commit, dispatch}, keyword) {
       commit('setPageNumber', 1);
       if (!state.selectedKeywords.find(kw => kw.id === keyword.id)) {
         commit('setSelectedKeywords', [...state.selectedKeywords, keyword]);
       }
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
       keywordApi.logKeywordSearch(keyword.id, false)
     },
 
-    setAllSelectedKeywords ({commit, state}, keywords) {
+    setAllSelectedKeywords ({commit, dispatch}, keywords) {
       commit('setSelectedKeywords', keywords)
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
     },
 
-    removeSelectedKeyword ({commit, state}, keyword) {
+    removeSelectedKeyword ({state, commit, dispatch}, keyword) {
       commit('setPageNumber', 1);
       commit('setSelectedKeywords', state.selectedKeywords.filter(kw => kw.id !== keyword.id))
-      recalculateFilteredComics(state)
+      dispatch('recalculateFilteredComics')
     },
 
     setExpandedComic ({commit}, comic) {
@@ -180,6 +180,76 @@ export default {
       else {
         commit('setExpandedComic', comic)
         commit('setIsComicCardExpanded', true)
+      }
+    },
+
+    recalculateFilteredComics ({state, commit, dispatch}) {
+      console.log('RECALC')
+      if (typeof state.comicList !== "object") { return }
+      
+      let filteredComics = state.comicList
+        .filter(comicObj => state.categoryFilter.indexOf('All')===0 || state.categoryFilter.indexOf(comicObj.tag)>=0)
+        .filter(comicObj => state.tagFilter.indexOf('All')===0 || state.tagFilter.indexOf(comicObj.cat)>=0)
+        .filter(comicObj => {
+          return comicObj.name.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0 
+            || comicObj.artist.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0
+        })
+        .filter(comicObj => ! state.selectedKeywords.some(kw => comicObj.keywords.indexOf(kw.name) === -1))
+
+      commit('setFilteredComics', filteredComics)
+      commit('setNumberOfFilteredComics', filteredComics.length)
+      let shouldIncludeAds = !state.searchFiltering && filteredComics.length > config.adsPerPage
+      let numberOfPages = shouldIncludeAds 
+        ? Math.ceil(filteredComics.length / (config.comicsPerPage-config.adsPerPage))
+        : Math.ceil(filteredComics.length / config.comicsPerPage)
+      commit('setNumberOfPages', numberOfPages)
+    
+      dispatch('recalculateDisplayedComics')
+    },
+
+    recalculateDisplayedComics ({state, commit, getters}) {
+      let numberOfComics = config.comicsPerPage - config.adsPerPage
+      let shouldIncludeAds = !state.searchFiltering && state.filteredComics.length >= numberOfComics
+    
+      if (shouldIncludeAds) {
+        let indexesOfAds = []
+        let numberOfSections = config.adsPerPage*2 - 1
+        let excludedTopComics = 8
+        let comicsPerSection = Math.floor((config.comicsPerPage-excludedTopComics) / numberOfSections)
+      
+        for (let sectionNo=0; sectionNo<=numberOfSections; sectionNo+=2) {
+          let sectionPosition = Math.floor(Math.random() * comicsPerSection)
+          let listPosition = excludedTopComics + sectionNo*comicsPerSection + sectionPosition
+          indexesOfAds.push(listPosition)
+        }
+      
+      
+        let comicsToBeShown = state.filteredComics.slice(
+          numberOfComics*(state.pageNumber-1), numberOfComics*state.pageNumber
+        );
+      
+        let finalList = []
+        let comicCounter = 0
+        let paidImages = [...getters.paidImagesCard()]
+        for (let i=0; i<numberOfComics; i++) {
+          if (indexesOfAds.includes(i)) {
+            let indexOfAd = Math.floor(Math.random() * paidImages.length)
+            let ad = paidImages.splice(indexOfAd, 1)[0]
+            finalList.push(ad)
+          }
+          else {
+            finalList.push(comicsToBeShown[comicCounter])
+            comicCounter++
+          }
+        }
+    
+        commit('setDisplayedComics', finalList)
+      }
+      else {
+        let comicsToBeShown = state.filteredComics.slice(
+          config.comicsPerPage*(state.pageNumber-1), config.comicsPerPage*state.pageNumber
+        );
+        commit('setDisplayedComics', comicsToBeShown)
       }
     }
   },
@@ -201,6 +271,7 @@ export default {
     setIsComicCardExpanded (state, isExpanded) { state.isExpanded = isExpanded },
     setPaidImages (state, images) { state.paidImages = images },
     setNumberOfPages (state, numberOfPages) { state.numberOfPages = numberOfPages },
+    setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
   },
 
   getters: {
@@ -221,7 +292,7 @@ export default {
     viewMode: state => state.viewMode,
     isComicCardExpanded: state => state.isComicCardExpanded,
     expandedComic: state => state.expandedComic,
-    paidImagesCard: state => () => state.paidImagesCard
+    paidImagesCard: state => () => state.paidImages
       .filter(ad => ad.adType.includes('card'))
       .map(ad => ({
         ...ad,
@@ -229,77 +300,5 @@ export default {
       })),
     paidImagesBanner: state => () => state.paidImages.filter(ad => ad.adType.includes('banner')),
     numberOfPages: state => state.numberOfPages,
-  }
-}
-
-function recalculateFilteredComics (state) {
-  console.log('RECALC')
-  if (typeof state.comicList !== "object") { return }
-  
-  let filteredComics = state.comicList
-    .filter(comicObj => state.categoryFilter.indexOf('All')===0 || state.categoryFilter.indexOf(comicObj.tag)>=0)
-    .filter(comicObj => state.tagFilter.indexOf('All')===0 || state.tagFilter.indexOf(comicObj.cat)>=0)
-    .filter(comicObj => {
-      return comicObj.name.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0 
-        || comicObj.artist.toLowerCase().indexOf( state.searchFiltering.toLowerCase() ) >= 0
-    })
-    .filter(comicObj => ! state.selectedKeywords.some(kw => comicObj.keywords.indexOf(kw.name) === -1))
-    state.filteredComics = filteredComics
-
-  state.numberOfFilteredComics = filteredComics.length
-  let shouldIncludeAds = !state.searchFiltering && filteredComics.length > config.adsPerPage
-  if (shouldIncludeAds) {
-    state.numberOfPages = Math.ceil(filteredComics.length / (config.comicsPerPage-config.adsPerPage))
-  }
-  else {
-    state.numberOfPages = Math.ceil(filteredComics.length / config.comicsPerPage)
-  }
-
-  recalculateDisplayedComics(state)
-}
-
-function recalculateDisplayedComics (state) {
-  let numberOfComics = config.comicsPerPage - config.adsPerPage
-  let shouldIncludeAds = false
-  // let shouldIncludeAds = !state.searchFiltering && state.filteredComics.length >= numberOfComics
-
-  if (shouldIncludeAds) {
-    let indexesOfAds = []
-    let numberOfSections = config.adsPerPage*2 - 1
-    let excludedTopComics = 8
-    let comicsPerSection = Math.floor((config.comicsPerPage-excludedTopComics) / numberOfSections)
-  
-    for (let sectionNo=0; sectionNo<=numberOfSections; sectionNo+=2) {
-      let sectionPosition = Math.floor(Math.random() * comicsPerSection)
-      let listPosition = excludedTopComics + sectionNo*comicsPerSection + sectionPosition
-      indexesOfAds.push(listPosition)
-    }
-  
-  
-    let comicsToBeShown = state.filteredComics.slice(
-      numberOfComics*(state.pageNumber-1), numberOfComics*state.pageNumber
-    );
-  
-    let finalList = []
-    let comicCounter = 0;
-    for (let i=0; i<numberOfComics; i++) {
-      if (indexesOfAds.includes(i)) {
-        let indexOfAd = Math.floor(Math.random() * state.getters.paidImagesCard.length)
-        let ad = state.getters.paidImagesCard.splice(indexOfAd, 1)[0]
-        finalList.push(ad)
-      }
-      else {
-        finalList.push(comicsToBeShown[comicCounter])
-        comicCounter++
-      }
-    }
-
-    state.displayedComics = finalList
-  }
-  else {
-    let comicsToBeShown = state.filteredComics.slice(
-      config.comicsPerPage*(state.pageNumber-1), config.comicsPerPage*state.pageNumber
-    );
-    state.displayedComics = comicsToBeShown
   }
 }
