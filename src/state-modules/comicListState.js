@@ -4,7 +4,7 @@ import adApi from '../api/advertisingApi'
 import config from '@/config.json'
 import Vue from 'vue'
 
-export default {
+const store = {
   state: {
     comicList: [],
     firstComicsList: [],
@@ -300,5 +300,13 @@ export default {
       })),
     paidImagesBanner: state => () => state.paidImages.filter(ad => ad.adType.includes('banner')),
     numberOfPages: state => state.numberOfPages,
-  }
+  },
 }
+
+import { registerFetchNames } from '../utils/statefulFetch'
+
+registerFetchNames(store, 
+  'test',
+)
+
+export default store;
