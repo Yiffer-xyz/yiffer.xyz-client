@@ -128,7 +128,8 @@ export default {
       this.$store.commit('setLoginModalVisibility', true)      
     },
     async refreshComicList () {
-      this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
+      // this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
+      // todo
     },
     async refreshKeywordList () {
       this.keywordList = await keywordApi.getKeywordList()

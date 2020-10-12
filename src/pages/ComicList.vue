@@ -161,9 +161,9 @@
               <div class="search-wrapper">
                 <div class="one-searchbox-container" id="mainSearchBox">
                   <span class="input-icon-wrapper input-icon-wrapper-left"><search-icon title=""/></span>
-                  <input v-model="searchFiltering" type="text" placeholder="title or artist" class="upper-body-searchbox"/>
+                  <input v-model="searchFiltering222" type="text" placeholder="title or artist" class="upper-body-searchbox"/>
                   <span class="input-icon-wrapper input-icon-wrapper-right cursor-pointer"
-                        v-show="searchFiltering"
+                        v-show="searchFiltering222"
                         @click="clearSearchField()">
                     <cross-icon title="Clear"/>
                   </span>
@@ -275,7 +275,10 @@
             </table>
           </div>
 
-          <div style="display: flex; flex-direction: row; align-items: center;" class="upper-body-horiz-row" id="upperPaginationButtons">
+          <div v-if="hasFetchedComics && !isErrorLoadingComics"
+               style="display: flex; flex-direction: row; align-items: center;"
+               class="upper-body-horiz-row"
+               id="upperPaginationButtons">
             <div @click="paginate('down')" class="pagination-button"><left-arrow/></div>
             <div v-for="(pageNo, index) in paginationButtons"
                 :key="index"
@@ -286,18 +289,26 @@
             </div>
             <div @click="paginate('up')" class="pagination-button"><right-arrow/></div>
           </div>
+          <div v-else-if="!isErrorLoadingComics">
+            Skeleton for paginatino
+          </div>
         </span>
       </div>
     </div>
 
-    <div class="comic-card-small-container" v-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
-      <comic-card-small v-for="comic in $store.getters.displayedComics"
+    <div v-if="isErrorLoadingComics">
+      Error fetching comics
+    </div>
+    <div v-else-if="isLoadingComics">
+      Fetching comicsssss
+    </div>
+    <div class="comic-card-small-container" v-else-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
+      <comic-card-small v-for="comic in comicList"
                         :key="comic.id"
                         :comic="comic"/>
     </div>
-
     <div v-else class="comic-card-container" id="comicCardContainerList">
-      <comic-card v-for="comic in $store.getters.displayedComics"
+      <comic-card v-for="comic in comicList"
                   :key="comic.id"
                   :comic="comic">
       </comic-card>
@@ -306,7 +317,9 @@
 
     <button class="y-button y-button-neutral margin-top-16" @click="scrollToTop()"><up-arrow/> to top</button>
 
-    <div style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;" class="upperBodyWidth upper-body-horiz-row">
+    <div v-if="hasFetchedComics && !isErrorLoadingComics"
+         style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;"
+         class="upperBodyWidth upper-body-horiz-row">
       <div @click="paginate('down', shouldScrollToTopOfList=true)" class="pagination-button"><left-arrow/></div>
       <div v-for="(pageNo, index) in paginationButtons"
           :key="index"
@@ -316,6 +329,9 @@
         {{pageNo}}
       </div>
       <div @click="paginate('up', shouldScrollToTopOfList=true)" class="pagination-button"><right-arrow/></div>
+    </div>
+    <div v-else-if="!paginatedComics.failed">
+      Skeleton for paginatino
     </div>
 
     <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
@@ -346,7 +362,9 @@ import DropdownMenu from '@innologica/vue-dropdown-menu'
 import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
 import blogApi from '../api/blogApi'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { doFetch } from '../utils/statefulFetch'
+import comicApi from '../api/comicApi'
 
 export default {
   name: 'comic-list',
@@ -382,48 +400,137 @@ export default {
       keywordResultHovered: undefined,
       lastActionWasDeselectingKeyword: false, // needed because @click of keywordResult fires too often
       smallPagination: undefined,
-      searchFiltering: this.$store.getters.searchFiltering || '',
+      searchFiltering222: this.$store.getters.searchFiltering || '',
       suppressQueryUpdates: false,
       avoidLog: true,
       blogLink: undefined,
       showDropdown: false,
+      searchFilteringHook: null,
+    }
+  },
+
+  computed: {
+    ...mapGetters([
+      'paginatedComics',
+      'paidImages',
+      'comicList',
+      'searchFiltering',
+      'pageNumber',
+      'tagFilter',
+      'categoryFilter',
+      'sorting',
+      'selectedKeywords',
+    ]),
+
+    isLoadingComics () {
+      return !this.paidImages.failed && !this.paginatedComics.failed && 
+        (this.paidImages.fetching || !this.paidImages.fetched
+        || this.paginatedComics.fetching || !this.paginatedComics.fetched)
+    },
+
+    isErrorLoadingComics () {
+      return this.paginatedComics.failed || this.paidImages.failed
+    },
+
+    hasFetchedComics () {
+      return this.paginatedComics.fetched && this.paidImages.fetched
+    },
+
+    keywordsMatchingSearch () {
+      return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
+    },
+
+    paginationButtons () {
+      if (!this.paginatedComics.fetched || this.paginatedComics.failed) { return [] }
+
+      let currentPage = this.paginatedComics.payload.page
+      let pages = this.paginatedComics.payload.numberOfPages
+
+      let buttonList = []
+      if (pages <= 9) {
+        for (var i = 1; i < pages+1; i++) { buttonList.push(i) }
+        return buttonList
+      }
+      if (currentPage <= 5) {
+        return [1, 2, 3, 4, 5, 6, 7, '...', pages]
+      }
+      if (currentPage >= pages-4) {
+        return [1, '...', pages-6, pages-5, pages-4, pages-3, pages-2, pages-1, pages]
+      }
+      else {
+        return [1, '...', currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2, '...', pages]
+      }
     }
   },
 
   methods: {
+    ...mapMutations([
+      'setPageNumber',
+    ]),
+    ...mapActions([
+      'loadActiveAds',
+      'addCategoryFilter',
+      'addTagFilter',
+      'setSorting',
+      'setSearchFiltering',
+    ]),
+    
+    fetchComics () {
+      let searchParams = {
+        search: this.searchFiltering || null,
+        order: this.sorting,
+        page: this.pageNumber,
+      }
+      if (!this.tagFilter.includes('All')) {
+        searchParams.tags = this.tagFilter
+      }
+      if (!this.categoryFilter.includes('All')) {
+        searchParams.categories = this.categoryFilter
+      }
+      if (this.selectedKeywords.length > 0) {
+        searchParams.keywordIds = this.selectedKeywords.map(kw => kw.id)
+      }
+      this.$store.dispatch('fetchComics', searchParams)
+    },
+
     onCategoryFilterClick (filter) {
-      this.$store.dispatch('addCategoryFilter', filter)
+      this.addCategoryFilter(filter)
       this.setRouterQuery()
+      this.fetchComics()
       miscApi.logEvent('categoryfilter', filter)
     },
 
     onTagFilterClick (filter) {
-      this.$store.dispatch('addTagFilter', filter)
+      this.addTagFilter(filter)
       this.setRouterQuery()
+      this.fetchComics()
       miscApi.logEvent('tagfilter', filter)
     },
 
     onSortingButtonClick ( sortButtonName ) {
-      this.$store.dispatch('setSorting', sortButtonName)
+      this.setSorting(sortButtonName)
       this.setRouterQuery()
+      this.fetchComics()
       miscApi.logEvent('sort', sortButtonName)
     },
 
     paginate ( pageNumber, shouldScrollToTopOfList=false ) {
       if ( pageNumber === '...' ) { return }
       if (pageNumber === 'down') {
-        if (this.$store.getters.pageNumber > 1) {
-          this.$store.dispatch('setPageNumber', this.$store.getters.pageNumber-1)
+        if (this.pageNumber > 1) {
+          this.setPageNumber(this.pageNumber-1)
         } 
       }
       else if (pageNumber === 'up') {
-        if (this.$store.getters.pageNumber * config.comicsPerPage < this.$store.getters.filteredComics.length) {
-          this.$store.dispatch('setPageNumber', this.$store.getters.pageNumber+1)
+        if (this.pageNumber * config.comicsPerPage < this.$store.getters.filteredComics.length) {
+          this.setPageNumber(this.pageNumber+1)
         }
       }
-      else if ( typeof(pageNumber) !== 'number') { pageNumber = 1 }
+      else if ( typeof(pageNumber) !== 'number') {
+        pageNumber = 1
+      }
       else {
-        this.$store.dispatch('setPageNumber', pageNumber)
+        this.setPageNumber(pageNumber)
       }
 
       this.setRouterQuery()
@@ -432,6 +539,8 @@ export default {
         let upperPaginationButtons = document.getElementById('upperPaginationButtons')
         upperPaginationButtons.scrollIntoView()
       }
+
+      this.fetchComics()
     },
 
     addSelectedKeyword ( keyword ) {
@@ -443,11 +552,13 @@ export default {
       }
       keywordApi.logKeywordSearch(keyword.id, false)
       this.setRouterQuery()
+      this.fetchComics()
     },
 
     removeSelectedKeyword ( keyword ) {
       this.$store.dispatch('removeSelectedKeyword', keyword)
       this.setRouterQuery()
+      this.fetchComics()
     },
 
     filterComicByTag ( comicObject ) {
@@ -464,8 +575,8 @@ export default {
     },
 
     filterComicByKeywords ( comicObject ) {
-      if ( this.$store.getters.selectedKeywords.length === 0 ) { return true }
-      for (var keyword of this.$store.getters.selectedKeywords) {
+      if ( this.selectedKeywords.length === 0 ) { return true }
+      for (var keyword of this.selectedKeywords) {
         if (comicObject.keywords.indexOf(keyword.name) === -1) { return false }
       }
       return true
@@ -487,8 +598,8 @@ export default {
       if (this.$store.getters.searchFiltering) {
         queryObj.search = this.$store.getters.searchFiltering
       }
-      if (this.$store.getters.selectedKeywords.length > 0) { 
-        queryObj.tags = this.$store.getters.selectedKeywords.map(kw => kw.name)
+      if (this.selectedKeywords.length > 0) { 
+        queryObj.tags = this.selectedKeywords.map(kw => kw.name)
       }
 
       this.$router.push({path: '/', query: queryObj})
@@ -499,17 +610,17 @@ export default {
       
       if (!this.$route || !this.$route.query) { return }
       if (this.$route.query.category) {
-        this.$store.dispatch('setCategoryFilter', this.listify(this.$route.query.category))
+        this.$store.commit('setCategoryFilter', this.listify(this.$route.query.category))
       }
       if (this.$route.query.classification) {
-        this.$store.dispatch('setTagFilter', this.listify(this.$route.query.classification))
+        this.$store.commit('setTagFilter', this.listify(this.$route.query.classification))
       }
       if (this.$route.query.orderBy) {
-        this.$store.commit('setSorting', this.$route.query.orderBy)
+        this.setSorting(this.$route.query.orderBy)
       }
       if (this.$route.query.search) {
-        this.$store.dispatch('setSearchFiltering', this.$route.query.search)
-        this.searchFiltering = this.$route.query.search
+        this.setSearchFiltering(this.$route.query.search)
+        this.searchFiltering222 = this.$route.query.search
       }
       if (this.$route.query.tags) {
         if (this.$store.getters.orderedKeywordList 
@@ -554,7 +665,10 @@ export default {
       // hidden (by the onblur event invoking this method) before the onclick fires,
       // so there is nothing to be "onclicked".
       // In other words, the first if happens whenever the user clicks a keyword.
-      if (this.keywordResultHovered) { this.addSelectedKeyword(this.keywordResultHovered) } 
+      if (this.keywordResultHovered) {
+        this.addSelectedKeyword(this.keywordResultHovered)
+        this.keywordResultHovered = null
+      } 
       this.keywordSearchFocused = isFocused || this.keywordSearch != ''
     },
 
@@ -571,7 +685,7 @@ export default {
     },
 
     clearSearchField () {
-      this.searchFiltering = ''
+      this.searchFiltering222 = ''
       this.setRouterQuery()
     },
 
@@ -602,9 +716,22 @@ export default {
   },
 
   watch: {
-    searchFiltering: function () {
-      this.$store.dispatch('setSearchFiltering', this.searchFiltering)
-      this.setRouterQuery()
+    searchFiltering222: function () {
+      if (this.searchFilteringHook) {
+        clearTimeout(this.searchFilteringHook)
+      }
+      if (this.searchFiltering222 === '') {
+        this.setSearchFiltering('')
+        this.setRouterQuery()
+        this.fetchComics()
+      }
+      else {
+        this.searchFilteringHook = setTimeout(() => {
+          this.setSearchFiltering(this.searchFiltering222)
+          this.setRouterQuery()
+          this.fetchComics()
+        }, 1000)
+      }
     },
   },
 
@@ -618,42 +745,18 @@ export default {
       this.setRouterQuery()
     }
     this.$store.commit('setLoginModalVisibility', false)
-    this.$store.dispatch('calculateFilteredComics')
     this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
-    this.$store.watch(this.$store.getters.getSelectedKeywords, () => {})
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
     miscApi.logRoute('index')
     this.avoidLog = false
     this.getDisplayedBlog()
-  },
 
-  computed: {
-    ...mapGetters([
-      'numberOfPages',
-    ]),
-
-    keywordsMatchingSearch () {
-      return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
-    },
-
-    paginationButtons () {
-      let pages = this.numberOfPages
-      let currentPage = this.$store.getters.pageNumber
-      let buttonList = []
-      if (pages <= 9) {
-        for (var i = 1; i < pages+1; i++) { buttonList.push(i) }
-        return buttonList
-      }
-      if (currentPage <= 5) {
-        return [1, 2, 3, 4, 5, 6, 7, '...', pages]
-      }
-      if (currentPage >= pages-4) {
-        return [1, '...', pages-6, pages-5, pages-4, pages-3, pages-2, pages-1, pages]
-      }
-      else {
-        return [1, '...', currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2, '...', pages]
-      }
+    if (!this.paginatedComics.fetching && !this.paginatedComics.fetched) {
+      this.fetchComics()
+    }
+    if (!this.paidImages.fetching && !this.paidImages.fetched) {
+      this.loadActiveAds()
     }
   },
 }

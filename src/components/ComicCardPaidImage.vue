@@ -1,11 +1,11 @@
 <template>
   <div>
-    <a :href="paidImage.link" class="comic-card-link" style="height: 100%;" target="_blank">
+    <a :href="paidImage.link" class="comic-card-link paidImageTextContainer" target="_blank">
       <p class="comic-card-comic-title">
         {{paidImage.mainText}}
       </p>
 
-      <p class="mt-8" style="padding: 0 4px;">
+      <p class="paidImage2ndText">
         {{paidImage.secondaryText}}
       </p>
     </a>
@@ -28,16 +28,8 @@ import HideTags from 'vue-material-design-icons/TagRemove.vue'
 export default {
   name: 'comic-card-paid-image',
   
-  components: {
-  },
-
   props: {
     paidImage: Object,
-  },
-
-  data: function () {
-    return {
-    }
   },
 
   methods: {
@@ -45,8 +37,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../scss/colors.scss";
+.paidImage2ndText {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  padding: 0 4px;
+}
+.paidImageTextContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .triangle-wrapper {
   position: absolute; top: 0;
 }

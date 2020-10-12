@@ -65,10 +65,9 @@
 
       <!-- ALL KEYWORDS -->
       <div class="keyword-container" v-if="showKeywords || $store.getters.detailLevel === 'high'">
-        <!-- <div class="emphasized-keyword">{{comic.cat}}</div> -->
-        <div class="emphasized-keyword">Kateg.</div>
+        <div class="emphasized-keyword">{{comic.cat}}</div>
         <div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
-        <div 
+        <!-- <div 
           :class="{'keyword': clickableKeyword, 
                    'keyword-static': !clickableKeyword,
                    'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
@@ -77,14 +76,14 @@
           @click="addSelectedKeyword(keyword)"
         >
           {{keyword}}
-        </div>
+        </div> -->
       </div>
       <div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">
         <hide-tags/> hide tags
       </div>
 
       <!-- KEYWORDS, CAT, TAG -->
-      <div class="keyword-container" v-if="!showKeywords && $store.getters.detailLevel === 'low'">
+      <div class="keyword-container" v-if="!showKeywords">
         <div class="emphasized-keyword">{{comic.cat}}</div>
         <div class="emphasized-keyword">{{convertTagName(comic.tag)}}</div>
         <div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">

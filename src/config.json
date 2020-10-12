@@ -1,5 +1,5 @@
 {
-  "comicsPerPage": 50,
-  "adsPerPage": 3,
+  "comicsPerPage": 75,
+  "adsPerPage": 5,
   "apiBaseUrl": "/api"
 }

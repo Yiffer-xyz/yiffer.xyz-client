@@ -12,6 +12,24 @@ export default {
     return response.data
   },
 
+  async getComicsPaginated ({categories, tags, keywordIds, search, order, page}) {
+    let params = {
+      page: page || 1,
+      order,
+    }
+    if (categories) { params.categories = categories }
+    if (tags) { params.tags = tags }
+    if (keywordIds && keywordIds.length>0) { params.keywordIds = keywordIds }
+    if (search) { params.search = search }
+
+    let response = await axios.get(baseUrl + '/comicsPaginated', { params })
+    for (var comic of response.data.comics) {
+      comic.created = new Date(comic.created)
+      comic.updated = new Date(comic.updated)
+    }
+    return response.data
+  },
+
   async getFirstComics () {
     let response = await axios.get(baseUrl + '/firstComics')
     return response.data
