@@ -19,7 +19,7 @@ const store = {
     selectedKeywords: [],
     numberOfFilteredComics: 0,
     detailLevel: 'low',
-    viewMode: 'list',
+    viewMode: 'card',
     isComicCardExpanded: false,
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
   },
@@ -192,7 +192,6 @@ const store = {
     setViewMode (state, viewMode) { state.viewMode = viewMode },
     setExpandedComic (state, comic) { state.expandedComic = comic },
     setIsComicCardExpanded (state, isExpanded) { state.isExpanded = isExpanded },
-    // setNumberOfPages (state, numberOfPages) { state.numberOfPages = numberOfPages },
     setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
   },
 

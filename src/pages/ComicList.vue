@@ -275,6 +275,7 @@
             </table>
           </div>
 
+          <!-- <div v-if="false" -->
           <div v-if="hasFetchedComics && !isErrorLoadingComics"
                style="display: flex; flex-direction: row; align-items: center;"
                class="upper-body-horiz-row"
@@ -289,8 +290,10 @@
             </div>
             <div @click="paginate('up')" class="pagination-button"><right-arrow/></div>
           </div>
-          <div v-else-if="!isErrorLoadingComics">
-            Skeleton for paginatino
+          <div v-else-if="!isErrorLoadingComics" class="upper-body-horiz-row" style="margin-top: -3px;">
+            <SkeletonTheme color="#a6a6a6" highlight="#ddd">
+              <Skeleton height="35px" width="100%"/>
+            </SkeletonTheme>
           </div>
         </span>
       </div>
@@ -299,8 +302,10 @@
     <div v-if="isErrorLoadingComics">
       Error fetching comics
     </div>
-    <div v-else-if="isLoadingComics">
-      Fetching comicsssss
+    <div v-else-if="isLoadingComics" class="comic-card-container">
+      <div :class="['comicCardSkeleton', $store.getters.isAuthenticated ? 'loggedInSkeleton' : '']" v-for="i in 80" :key="i">
+        <Skeleton width="100%" height="100%"/>
+      </div>
     </div>
     <div class="comic-card-small-container" v-else-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
       <comic-card-small v-for="comic in comicList"
@@ -315,7 +320,9 @@
     </div>
 
 
-    <button class="y-button y-button-neutral margin-top-16" @click="scrollToTop()"><up-arrow/> to top</button>
+    <button v-if="hasFetchedComics && !isErrorLoadingComics" class="y-button y-button-neutral margin-top-16" @click="scrollToTop()">
+      <up-arrow/> to top
+    </button>
 
     <div v-if="hasFetchedComics && !isErrorLoadingComics"
          style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;"
@@ -329,9 +336,6 @@
         {{pageNo}}
       </div>
       <div @click="paginate('up', shouldScrollToTopOfList=true)" class="pagination-button"><right-arrow/></div>
-    </div>
-    <div v-else-if="!paginatedComics.failed">
-      Skeleton for paginatino
     </div>
 
     <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
@@ -365,6 +369,7 @@ import blogApi from '../api/blogApi'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { doFetch } from '../utils/statefulFetch'
 import comicApi from '../api/comicApi'
+import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
 
 export default {
   name: 'comic-list',
@@ -387,6 +392,7 @@ export default {
     DropdownMenu,
     MenuDownIcon,
     ModIcon,
+    Skeleton, SkeletonTheme,
   },
 
   data: function () {
@@ -1109,6 +1115,22 @@ export default {
 .allTopLinksContainer {
   &>* {
     margin: 0 0.5rem;
+  }
+}
+.comicCardSkeleton {
+  margin: 10px;
+  width: 200px;
+  height: 391.5px;
+  @media screen and (max-width: 900px) {
+    margin: 6px;
+    width: 100px;
+    height: 296px;
+  }
+}
+.loggedInSkeleton {
+  height: 427px;
+  @media screen and (max-width: 900px) {
+    height: 326px;
   }
 }
 .dark {
