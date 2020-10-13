@@ -276,7 +276,7 @@
           </div>
 
           <!-- <div v-if="false" -->
-          <div v-if="hasFetchedComics && !isErrorLoadingComics"
+          <div v-if="hasFetchedComics"
                style="display: flex; flex-direction: row; align-items: center;"
                class="upper-body-horiz-row"
                id="upperPaginationButtons">
@@ -299,32 +299,36 @@
       </div>
     </div>
 
-    <div v-if="isErrorLoadingComics">
-      Error fetching comics
-    </div>
-    <div v-else-if="isLoadingComics" class="comic-card-container">
+    <p v-if="isErrorLoadingComics" class="comicListMessage">There was an error fetching comics.</p>
+
+    <SkeletonTheme v-else-if="isLoadingComics" :color="isDarkTheme ? '#262d30' : '#eeeeee'" :highlight="isDarkTheme ? '#525456' : '#f5f5f5'" class="comic-card-container">
       <div :class="['comicCardSkeleton', $store.getters.isAuthenticated ? 'loggedInSkeleton' : '']" v-for="i in 80" :key="i">
         <Skeleton width="100%" height="100%"/>
       </div>
-    </div>
+    </SkeletonTheme>
+
     <div class="comic-card-small-container" v-else-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
       <comic-card-small v-for="comic in comicList"
                         :key="comic.id"
                         :comic="comic"/>
     </div>
-    <div v-else class="comic-card-container" id="comicCardContainerList">
+
+    <div v-else-if="comicList.length > 0" class="comic-card-container" id="comicCardContainerList">
       <comic-card v-for="comic in comicList"
                   :key="comic.id"
                   :comic="comic">
       </comic-card>
     </div>
 
+    <p v-else class="comicListMessage">There are no comics matching your query.</p>
 
-    <button v-if="hasFetchedComics && !isErrorLoadingComics" class="y-button y-button-neutral margin-top-16" @click="scrollToTop()">
+    <button v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
+            class="y-button y-button-neutral margin-top-16"
+            @click="scrollToTop()">
       <up-arrow/> to top
     </button>
 
-    <div v-if="hasFetchedComics && !isErrorLoadingComics"
+    <div v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
          style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;"
          class="upperBodyWidth upper-body-horiz-row">
       <div @click="paginate('down', shouldScrollToTopOfList=true)" class="pagination-button"><left-arrow/></div>
@@ -417,6 +421,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'isDarkTheme',
       'paginatedComics',
       'paidImages',
       'comicList',
@@ -426,6 +431,7 @@ export default {
       'categoryFilter',
       'sorting',
       'selectedKeywords',
+      'hasFetchedComicListOnce',
     ]),
 
     isLoadingComics () {
@@ -654,7 +660,7 @@ export default {
       }
       
       this.suppressQueryUpdates = false
-      this.$store.dispatch('setAllSelectedKeywords', selectedKeywords)
+      this.$store.commit('setSelectedKeywords', selectedKeywords)
     },
 
     showLoginModal () {
@@ -723,6 +729,9 @@ export default {
 
   watch: {
     searchFiltering222: function () {
+      if (!this.hasFetchedComicListOnce) {
+        return
+      }
       if (this.searchFilteringHook) {
         clearTimeout(this.searchFilteringHook)
       }
@@ -884,7 +893,7 @@ export default {
     margin: 7px 0px;
   }
   @media (max-width: 900px) {
-    padding: 10px 0;
+    padding: 4px 0;
     >div, >table {
       margin: 5px 0px;
     }
@@ -893,10 +902,10 @@ export default {
 
 .upper-body-horiz-row {
   width: 100%;
-  margin: 7px 0;
+  margin: 0.5rem 0;
 
   @media (max-width: 900px) {
-    margin: 6px 0;
+    margin: 0.75rem 0;
   }
 }
 
@@ -1132,6 +1141,10 @@ export default {
   @media screen and (max-width: 900px) {
     height: 326px;
   }
+}
+.comicListMessage {
+  padding: 3rem 1rem;
+  font-size: 1.2rem !important;
 }
 .dark {
   .linkDropdown {

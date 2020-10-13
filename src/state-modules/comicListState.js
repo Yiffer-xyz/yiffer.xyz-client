@@ -8,6 +8,7 @@ import { registerFetchNames, doFetch } from '../utils/statefulFetch'
 const store = {
   state: {
     comicList: [],
+    hasFetchedComicListOnce: false,
     firstComicsList: [],
     displayedComics: [],
     filteredComics: [],
@@ -27,6 +28,7 @@ const store = {
   actions: {
     async fetchComics ({commit, dispatch}, searchParams) {
       await doFetch(commit, 'paginatedComics', comicApi.getComicsPaginated(searchParams))
+      commit('setHasFetchedComicListOnce')
       dispatch('addAdsToComicList')
     },
     
@@ -148,16 +150,12 @@ const store = {
       commit('setCategoryFilter', newFilter)
     },
 
-    addSelectedKeyword ({state, commit, dispatch}, keyword) {
+    addSelectedKeyword ({state, commit}, keyword) {
       commit('setPageNumber', 1);
       if (!state.selectedKeywords.find(kw => kw.id === keyword.id)) {
         commit('setSelectedKeywords', [...state.selectedKeywords, keyword]);
       }
       keywordApi.logKeywordSearch(keyword.id, false)
-    },
-
-    setAllSelectedKeywords ({commit, dispatch}, keywords) {
-      commit('setSelectedKeywords', keywords)
     },
 
     removeSelectedKeyword ({state, commit}, keyword) {
@@ -193,6 +191,7 @@ const store = {
     setExpandedComic (state, comic) { state.expandedComic = comic },
     setIsComicCardExpanded (state, isExpanded) { state.isExpanded = isExpanded },
     setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
+    setHasFetchedComicListOnce (state) { state.hasFetchedComicListOnce = true },
   },
 
   getters: {
@@ -220,6 +219,7 @@ const store = {
         isPaidImage: true,
       })),
     paidImagesBanner: state => () => state.paidImages.payload.filter(ad => ad.adType.includes('banner')),
+    hasFetchedComicListOnce: state => state.hasFetchedComicListOnce,
   },
 }
 

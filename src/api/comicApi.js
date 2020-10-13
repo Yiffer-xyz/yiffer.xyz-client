@@ -3,15 +3,6 @@ import config from '@/config.json'
 let baseUrl = config.apiBaseUrl
 
 export default {
-  async getComics () {
-    let response = await axios.get(baseUrl + '/comics')
-    for (var comic of response.data) {
-      comic.created = new Date(comic.created)
-      comic.updated = new Date(comic.updated)
-    }
-    return response.data
-  },
-
   async getComicsPaginated ({categories, tags, keywordIds, search, order, page}) {
     let params = {
       page: page || 1,
@@ -27,11 +18,7 @@ export default {
       comic.created = new Date(comic.created)
       comic.updated = new Date(comic.updated)
     }
-    return response.data
-  },
 
-  async getFirstComics () {
-    let response = await axios.get(baseUrl + '/firstComics')
     return response.data
   },
 

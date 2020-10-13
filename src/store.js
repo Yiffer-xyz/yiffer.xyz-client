@@ -62,5 +62,6 @@ export default new Vuex.Store({
     keywordList: state => state.keywordList,
     orderedKeywordListF: state => () => state.orderedKeywordList,
     orderedKeywordList: state => state.orderedKeywordList,
+    isDarkTheme: state => state.darkTheme,
   }
 })
