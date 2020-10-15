@@ -5,7 +5,7 @@
     <span v-if="comic">
 
       <router-link :to="'/admin'" class="underline-link">
-        <back-arrow/> back to admin
+        <BackArrow/> back to admin
       </router-link>
 
       <h2>Thumbnail</h2>
@@ -39,7 +39,9 @@
           <select size="8" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordsNotInComic" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
-          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()">&rarr;</button>
+          <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()" style="width: 100%; margin-top: 1px;">
+            <RightArrow/>
+          </button>
         </div>
       
         <div class="vertical-flex" style="margin: 0 12px 0 12px;">
@@ -48,7 +50,7 @@
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
              :key="keyword.name" class="selected-add-keyword">{{keyword.name}}</p>
           <button class="y-button" v-if="selectedKeywords.length > 0"
-                  @click="confirmAddKeywords()" style="margin-top: 6px;">
+                  @click="confirmAddKeywords()" style="margin: 6px auto 0 auto;">
             Add tags
           </button>
         </div>
@@ -62,7 +64,7 @@
              :key="keyword.name" class="selected-add-keyword" 
              :class="{'keyword-to-be-deleted': keywordsToDelete.findIndex(kw=>kw.id===keyword.id)>=0}">{{keyword.name}}</p>
           <button @click="confirmRemoveKeywords()" class="y-button y-button-red"
-                  v-if="keywordsToDelete.length > 0" style="margin-top: 6px;">
+                  v-if="keywordsToDelete.length > 0" style="margin: 6px auto 0 auto;">
             Remove tags
           </button>
         </div>
@@ -107,7 +109,7 @@
       </div>
 
       <br/>
-      <button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
+      <button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><UpArrow/> to top</button>
     </span>
     <span v-if="comicLoadErrorMessage">
       <p class="error-message margin-top-32">{{comicLoadErrorMessage}}</p>
@@ -118,16 +120,19 @@
 <script>
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import BackArrow from 'vue-material-design-icons/Undo.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'pendingComic',
 
   components: {
-    'up-arrow': UpArrow,
-    'back-arrow': BackArrow,
+    UpArrow,
+    BackArrow,
+    RightArrow,
   },
 
   data: function () {
@@ -149,6 +154,21 @@ export default {
       errorMessageAppendFiles: '',
       successMessageAppendFiles: '',
       comicLoadErrorMessage: '',
+    }
+  },
+
+  computed: {
+    ...mapGetters([
+      'allKeywords',
+    ]),
+    filesAreInput () { return this.selectedFiles.length > 0 },
+    selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
+  },
+
+  async mounted () {
+    this.reloadComic()
+    if (!this.allKeywords.fetched && !this.allKeywords.fetching) {
+      this.$store.dispatch('fetchKeywordList')
     }
   },
 
@@ -297,16 +317,6 @@ export default {
       window.scrollTo(0, 0)
     }
   },
-
-  async created () {
-    this.reloadComic()
-  },
-
-  computed: {
-    filesAreInput () { return this.selectedFiles.length > 0 },
-    selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
-  }
-
 }
 </script>
 
