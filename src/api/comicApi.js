@@ -22,6 +22,12 @@ export default {
     return response.data
   },
 
+  async getAllComics () {
+    let response = await axios.get(`${baseUrl}/all-comics`)
+    if (response.status === 200 && !response.data.error) { return response.data }
+    throw new Error('Error fetching all comics')
+  },
+
   async getComic (comicName) {
     let response = await axios.get(baseUrl + '/comics/' + comicName)
     if (!response.data.error) { return {success: true, result: response.data} }

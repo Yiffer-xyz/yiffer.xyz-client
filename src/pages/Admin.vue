@@ -10,24 +10,21 @@
 
       <comic-suggestions />
 
-      <add-page :comicList="alphabeticComicList"
+      <add-page :comicList="allComics.payload"
                 @refresh-comic-list="refreshComicList()" />
 
-      <add-keywords :comicList="alphabeticComicList"
-                    :keywordList="keywordList"
-                    @refresh-comic-list="refreshComicList()"
-                    @refresh-keyword-list="refreshKeywordList()" />
+      <add-keywords :comicList="allComics.payload"
+                    @refresh-comic-list="refreshComicList()" />
 
-      <correct-comic :comicList="alphabeticComicList" 
+      <correct-comic :comicList="allComics.payload" 
                      :artistList="artistList"
                      @refresh-comic-list="refreshComicList()" />
 
-      <page-manager :comicList="alphabeticComicList"
+      <page-manager :comicList="allComics.payload"
                     @refresh-comic-list="refreshComicList()" />
 
       <add-comic :artistList="artistList" 
-                 :comicList="alphabeticComicList"
-                 :keywordList="keywordList"
+                 :comicList="allComics.payload"
                  @refresh-pending-comics="refreshPendingComics()" />
 
       <artist-manager :artistList="artistList"
@@ -86,6 +83,8 @@ import ModApplications from '@/components/admin-panel/ModApplications.vue'
 import ArtistApi from '../api/artistApi'
 import keywordApi from '../api/keywordApi'
 import comicApi from '../api/comicApi'
+import { mapGetters } from 'vuex'
+import { doFetch } from '../utils/statefulFetch'
 
 export default {
   name: 'admin',
@@ -112,27 +111,22 @@ export default {
   data: function () {
     return {
       alphabeticComicList: [],
-      keywordList: [],
       artistList: [],
       keywordSuggestionList: [],
       pendingComics: [],
     }
   },
+  computed: {
+    ...mapGetters([
+      'allComics',
+    ])
+  },
   methods: {
-    async loadData () {
-      this.artistList = await ArtistApi.getArtistList()
-      this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
-      this.refreshPendingComics()
-    },
     showLoginModal () {
       this.$store.commit('setLoginModalVisibility', true)      
     },
     async refreshComicList () {
-      // this.alphabeticComicList = (await this.$store.dispatch('loadComicList')).sort((c1, c2) => c1.name>c2.name ? 1 : -1)
       // todo
-    },
-    async refreshKeywordList () {
-      this.keywordList = await keywordApi.getKeywordList()
     },
     async refreshArtistList () {
       this.artistList = await ArtistApi.getArtistList()
@@ -142,11 +136,11 @@ export default {
     },
   },
   async mounted () {
-    this.loadData()
-
-    this.$store.watch(this.$store.getters.comicListF, () => {
-      this.alphabeticComicList = this.$store.getters.comicList.concat().sort((c1, c2) => c1.name.toLowerCase()>c2.name.toLowerCase() ? 1 : -1)
-    })
+    if (!this.allComics.fetched && !this.allComics.fetching) {
+      doFetch(this.$store.commit, 'allComics', comicApi.getAllComics())
+    }
+    this.artistList = await ArtistApi.getArtistList()
+    this.refreshPendingComics()
   }
 }
 

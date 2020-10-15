@@ -97,11 +97,14 @@
         <button @click="fitImages('fit')" class="y-button y-button-neutral" style="margin: 4px;">Fit images to page</button>
         <button @click="fitImages('small')" class="y-button y-button-neutral" style="margin: 4px;">Small</button>
       </div>
-      <img  
-        v-for="pageNumber in comic.numberOfPages" 
-        :src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
-        :key="pageNumber"
-        :class="['comic-page', 'image-fit-full', 'comic-page-pending']"/>
+
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <img  
+          v-for="pageNumber in comic.numberOfPages" 
+          :src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+          :key="pageNumber"
+          :class="['comic-page', 'image-fit-full', 'comic-page-pending']"/>
+      </div>
 
       <br/>
       <button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
@@ -130,7 +133,6 @@ export default {
   data: function () {
     return {
       comic: undefined,
-      allKeywords: [],
       keywordsNotInComic: [],
       selectedKeyword: undefined,
       selectedKeywords: [],
@@ -280,10 +282,7 @@ export default {
       let response = await comicApi.getPendingComic(this.$route.params.comicName)
       if (response.success) {
         this.comic = response.result
-        if (this.allKeywords.length === 0) {
-          this.allKeywords = await keywordApi.getKeywordList()
-        }
-        this.keywordsNotInComic = this.allKeywords.filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
+        this.keywordsNotInComic = this.allKeywords.payload.filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
       }
       else {
         this.comicLoadErrorMessage = response.message

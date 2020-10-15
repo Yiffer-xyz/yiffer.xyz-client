@@ -3,7 +3,7 @@
     <vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
     <div id="upperBodyDivComic">
       <span v-if="comic" id="comicUpperDiv">
-        <h1>{{$route.params.comicName}}</h1>
+        <h1 class="loadedComicHeader">{{$route.params.comicName}}</h1>
         <share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
         <h2>by 
           <router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" class="underline-link" style="font-weight:300;">
@@ -57,14 +57,14 @@
         </p>
 
         <div id="comicKeywords" class="margin-top-8 horizontal-flex flexWrap">
-          <span v-if="comic.keywords.length > 0" class="horizontal-flex flexWrap">
+          <span v-if="keywords.length > 0" class="horizontal-flex flexWrap">
             <div class="keyword-static"
-                 v-for="keyword in comic.keywords"
-                 :key="keyword">
-              {{keyword}}
+                 v-for="keyword in keywords"
+                 :key="keyword.id">
+              {{keyword.name}}
             </div>
           </span>
-          <span v-if="comic.keywords.length===0" style="margin-right: 8px;">
+          <span v-if="keywords.length===0" style="margin-right: 8px;">
             <p>No tags</p>
           </span>
 
@@ -81,8 +81,8 @@
             <span class="vertical-flex" style="align-items: center;">
               <label for="addKeyword">Add tag</label>
               <select v-model="addKeyword">
-                <option v-for="keyword in keywordsNotInComic" :key="keyword">
-                  {{keyword}}
+                <option v-for="keyword in keywordsNotInComic" :key="keyword.id">
+                  {{keyword.name}}
                 </option>
               </select>
               <button 
@@ -98,8 +98,8 @@
             <span style="margin-left: 20px; align-items: center;" class="vertical-flex">
               <label for="removeKeyword">Remove tag</label>
               <select v-model="removeKeyword">
-                <option v-for="keyword in comic.keywords" :key="keyword">
-                  {{keyword}}
+                <option v-for="keyword in keywords" :key="keyword.id">
+                  {{keyword.name}}
                 </option>
               </select>
               <button 
@@ -127,9 +127,9 @@
 
         <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
           <p style="margin-right: 4px;">Image fit:</p>
-          <button @click="setAllImagesFit('height')" class="y-button y-button-neutral"><expand-height/></button>
-          <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral"><expand-width/></button>
-          <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Full size</button>
+          <button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Height</button>
+          <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Width</button>
+          <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Full</button>
           <button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Tiny</button>
         </div>
         <p class="smaller-text">You may also click any one image to resize it</p>
@@ -137,11 +137,17 @@
 
       
       <div v-else-if="!comicNotFound">
-        <p style="text-align:center; margin-top: 48px;">Loading comic...</p>
+        <h1>{{$route.params.comicName}}</h1>
+        <h2 style="text-align:center; margin: 2rem 0;">
+          Loading comic...
+        </h2>
       </div>
 
       <div v-else>
-        <p style="text-align:center; margin-top: 48px;"><b>Comic not found</b><br/>There is no comic with the name {{$route.params.comicName}}</p>
+        <h1>{{$route.params.comicName}}</h1>
+        <h2 style="text-align:center; margin: 2rem 0;">
+          There is no comic with this name.
+        </h2>
       </div>
 
     </div>
@@ -209,7 +215,8 @@ import Tags from 'vue-material-design-icons/TagMultiple.vue'
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { doFetch } from '../utils/statefulFetch'
 
 export default {
   name: 'comic',
@@ -240,7 +247,7 @@ export default {
       comicNotFound: false,
       imageFitArray: [],
       keywordSuggestionsActive: false,
-      keywordsNotInComic: [],
+      keywords: [],
       addKeyword: undefined,
       responseMessage: '',
       responseMessageType: 'info',
@@ -249,29 +256,40 @@ export default {
       isZipping: false,
       downloadStarted: false,
       paidImage: null,
+      
     }
   },
 
   computed: {
     ...mapGetters({
       paidImages: 'paidImagesBanner',
-    })
+      allKeywords: 'allKeywords',
+      allPaidImages: 'paidImages'
+    }),
+
+    keywordsNotInComic () {
+      return this.allKeywords.payload.filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
+    }
   },
 
   async mounted () {
-    if (navigator.share === undefined) {
-      // this.showShareIcon = false todo
-    }
-
     if (this.paidImages().length > 0) {
       this.paidImage = this.paidImages()[Math.floor(Math.random() * this.paidImages().length)]
     }
     else {
+      if (!this.allPaidImages.fetching && !this.allPaidImages.fetched) {
+        this.loadActiveAds()
+      }
+
       this.$store.watch(this.paidImages, () => {
         if (this.paidImages().length > 0) {
           this.paidImage = this.paidImages()[Math.floor(Math.random() * this.paidImages().length)]
         }
       })
+    }
+
+    if (this.comic && !this.keywords) {
+      this.keywords = await keywordApi.getComicKeywords(this.comic.id)
     }
 
     this.$store.commit('setLoginModalVisibility', false)
@@ -287,6 +305,10 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      'loadActiveAds',
+    ]),
+
     formatPageNumber: pageNumber => pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber,
 
     formatRating: function (number) {
@@ -329,14 +351,10 @@ export default {
 
     toggleKeywordSuggestions () {
       this.keywordSuggestionsActive = !this.keywordSuggestionsActive
-      if ( this.keywordsNotInComic.length === 0 ) { this.loadKeywords() }
     },
 
     async loadKeywords () {
-      this.allKeywords = await keywordApi.getKeywordList()
-      this.keywordsNotInComic = this.allKeywords
-        .filter(kw => !this.comic.keywords.includes(kw.name))
-        .map(kw => kw.name)
+      doFetch(this.$store.commit, 'comicKeywords', keywordApi.getKeywordForComic(this.comic.id))
     },
 
     async suggestKeywordChange (isAdding) {
@@ -368,6 +386,7 @@ export default {
         this.$store.commit('setComicForVotingModal', this.comic)
         this.initializeImageFitArray()
         this.fitImagesForMobile()
+        this.keywords = await keywordApi.getComicKeywords(this.comic.id)
       }
       else {
         this.comicNotFound = true
@@ -436,7 +455,7 @@ export default {
     },
 
     getKeywordIdFromName (keywordName) {
-      return this.allKeywords.find(kw => kw.name === keywordName).id
+      return this.allKeywords.payload.find(kw => kw.name === keywordName).id
     },
     
     closeResponseMessage () { this.responseMessage = '' },
@@ -453,6 +472,10 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 </script>
 
 <style lang="scss">
+.comic-page {
+  min-height: 90px;
+}
+
 .share-icon {
   position:absolute !important;
   top: 30px;
@@ -508,12 +531,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   flex-direction: column;
   align-items: center;
   text-align: center;
-  h1 {
-    @media (max-width: 900px) {
-      font-size: 32px;
-      max-width: calc(100% - 84px);
-    }
-  }
   h2 {
     @media (max-width: 900px) {
       font-size: 22px;
@@ -522,6 +539,13 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 a {
   text-decoration: none;
+}
+
+#loadedComicHeader {
+  @media (max-width: 900px) {
+    font-size: 32px;
+    max-width: calc(100% - 84px);
+  }
 }
 
 #comicPageContainer {

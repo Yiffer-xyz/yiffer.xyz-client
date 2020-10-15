@@ -9,6 +9,12 @@ export default {
     else { return [] }
   },
 
+  async getComicKeywords (comicId) {
+    let response = await axios.get(`${baseUrl}/comic-keywords/${comicId}`)
+    if (!response.data.error) { return response.data }
+    else { return [] }
+  },
+
   async getKeywordSuggestionList () {
     let response = await axios.get(baseUrl + '/keywordsuggestions')
     if (!response.data.error) { return response.data }

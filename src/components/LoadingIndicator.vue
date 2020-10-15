@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <Spinner/>
-    <p>{{text ? text : 'Loading...'}}</p>
+    <p v-if="text">{{text}}</p>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 @mixin simpleshadow {
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-  transition: box-shadow 200ms;
+  transition: box-shadow 140ms;
   &:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.25);
   }
@@ -8,7 +8,7 @@
 
 @mixin simpleshadowNoHover {
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-  transition: box-shadow 200ms;
+  transition: box-shadow 100ms;
 }
 
 @mixin simpleshadowSmall {
@@ -24,7 +24,7 @@
     box-shadow: 0 3px 7px rgba(0,0,0,0.25);
     border-radius: inherit;
     opacity: 0;
-    transition: opacity 100ms;
+    transition: opacity 50ms;
   }
   &:hover {
     &::before {

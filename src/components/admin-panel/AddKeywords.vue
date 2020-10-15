@@ -10,7 +10,7 @@
 
       <div class="horizontal-flex no-margin-bot margin-top-8" style="flex-wrap: wrap;">
         <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
-        <select v-model="comic">
+        <select v-model="comic" @change="onComicChange">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
             {{comic.name}}
           </option>
@@ -26,11 +26,11 @@
   
       <div class="horizontal-flex"
            style="width: 100%; justify-content: space-evenly; margin-top: 8px;"
-           v-if="comic">
+           v-if="comic && comicKeywords !== null">
         <div class="vertical-flex" style="flex-wrap: wrap;">
           <p class="admin-mini-header">Tag list</p>
           <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" 
+            <option v-for="keyword in allKeywords.payload" 
                     :key="keyword.name" 
                     :value="keyword">
               {{keyword.name}}
@@ -57,7 +57,7 @@
       
         <div class="vertical-flex">
           <p class="admin-mini-header">This comic's tags</p>
-          <p v-if="comic.keywords.length > 0" style="margin-bottom: 6px;">
+          <p v-if="comicKeywords.length > 0" style="margin-bottom: 6px;">
             Click tags to <span class="red-color">remove</span>
           </p>
           <p v-for="keywordName in comic.keywords" @click="addOrRemoveKeywordToDeleteList(keywordName)" 
@@ -70,6 +70,10 @@
             Remove tags
           </button>
         </div>
+      </div>
+
+      <div v-else-if="comic && comicKeywords === null" class="loadingTagsIndicator">
+        <Loading text="Loading tags"/>
       </div>
 
       <h2 style="margin-top: 32px;">Create new tag</h2>
@@ -92,9 +96,11 @@
 
 <script>
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import Loading from '@/components/LoadingIndicator.vue'
 
 import keywordApi from '../../api/keywordApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'addKeywords',
@@ -102,11 +108,11 @@ export default {
 	components: {
     ResponseMessage,
     RightArrow,
+    Loading,
 	},
 
 	props: {
     comicList: Array,
-    keywordList: Array,
 	},
 
   data: function () {
@@ -115,6 +121,7 @@ export default {
       comic: undefined,
       responseMessage: '',
       responseMessageType: 'info',
+      comicKeywords: null,
       selectedKeywords: [],
       selectedKeyword: undefined,
       keywordsToDelete: [],
@@ -123,7 +130,22 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters(['allKeywords']),
+  },
+
+  watch: {
+    async comic () {
+    }
+  },
+
   methods: {
+    async onComicChange (a, b) {
+      console.log(a, b)
+      this.comicKeywords = null
+      this.comicKeywords = await keywordApi.getComicKeywords(this.comic.id)
+    },
+
     addSelectedKeyword () {
       if (!this.selectedKeywords.find(kw => kw.id === this.selectedKeyword.id)) {
         this.selectedKeywords.push(this.selectedKeyword)
@@ -183,17 +205,13 @@ export default {
         this.responseMessage = 'Successfully created tag ' + this.newKeyword
         this.responseMessageType = 'success'
 				this.newKeyword = ''
-				this.refreshKeywordList()
+				this.$store.dispatch('fetchKeywordList')
       }
       else {
         this.responseMessage = 'Error creating tag: ' + response.message
         this.responseMessageType = 'error'
       }
 		},
-		
-		async refreshKeywordList () {
-			this.$emit('refresh-keyword-list')
-    },
     
     closeResponseMessage () { this.responseMessage = '' },
 
@@ -207,9 +225,14 @@ export default {
 			this.comic = this.comicList.find(c => c.id===this.lastComicId)
 		} 
 	},
-
-	mounted () {
-		this.refreshKeywordList()
-	}
 }
 </script>
+
+<style lang="scss">
+.loadingTagsIndicator {
+  min-height: 19.55rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

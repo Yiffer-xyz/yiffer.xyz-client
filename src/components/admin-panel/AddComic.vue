@@ -59,7 +59,7 @@
             <p>Category</p>
           </td>
           <td>
-            <select v-model="tag">
+            <select v-model="cat">
               <option value="Furry">Furry</option>
               <option value="MLP">MLP</option>
               <option value="Pokemon">Pokemon</option>
@@ -72,7 +72,7 @@
             <p>Classification</p>
           </td>
           <td>
-            <select v-model="cat">
+            <select v-model="tag">
               <option value="M">M</option>
               <option value="F">F</option>
               <option value="MF">MF</option>
@@ -153,7 +153,7 @@
       <div class="horizontal-flex margin-top-4">
         <div class="vertical-flex">
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in keywordList" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
+            <option v-for="keyword in allKeywords.payload" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
           <button class="y-button y-button-small y-button-neutral" @click="addSelectedKeyword()" style="width: 100%; margin-top: 1px;">
             <RightArrow/>
@@ -192,6 +192,7 @@ import CrossIcon from 'vue-material-design-icons/Close.vue'
 import comicApi from '../../api/comicApi'
 import keywordApi from '../../api/keywordApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'correctComic',
@@ -199,7 +200,6 @@ export default {
   props: {
     artistList: Array,
     comicList: Array,
-    keywordList: Array,
   },
 
 	components: {
@@ -319,6 +319,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['allKeywords']),
     filesAreInput () { return this.selectedFiles.length > 0 },
     selectedFileNames () { return this.selectedFiles.map( file => file.name ) },
     detailsFilledIn () { return this.comicName && this.artist && this.tag && this.cat && this.state },

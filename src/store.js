@@ -3,10 +3,11 @@ import Vuex from 'vuex'
 import comicList from './state-modules/comicListState'
 import auth from './state-modules/authState'
 import keywordApi from './api/keywordApi.js'
+import { registerFetchNames, doFetch } from './utils/statefulFetch'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = {
   modules: {
     comicList,
     auth
@@ -19,8 +20,8 @@ export default new Vuex.Store({
     loginModalContext: 'login',
     votingModalVisibility: false,
     comicForVotingModal: {},
-    keywordList: [],
     orderedKeywordList: [],
+    comicKeywords: {},
   },
 
   actions: {
@@ -29,10 +30,9 @@ export default new Vuex.Store({
       context.commit('setComicForVotingModal', comic)
     },
 
-    async fetchKeywordList (context) {
-      let keywords = await keywordApi.getKeywordList()
-      context.commit('setKeywordList', keywords)
-      context.commit('setOrderedKeywordList', keywords)
+    async fetchKeywordList ({commit}) {
+      let keywords = await doFetch(commit, 'allKeywords', keywordApi.getKeywordList())
+      commit('setOrderedKeywordList', keywords)
     },
 
     findKeywordDataFromName (context, keywordName) {
@@ -47,7 +47,6 @@ export default new Vuex.Store({
     setLoginModalContext (state, context) { state.loginModalContext = context; },
     setVotingModalVisibility (state, isVisible) { state.votingModalVisibility = isVisible; },
     setComicForVotingModal (state, comic) { state.comicForVotingModal = comic },
-    setKeywordList (state, keywordList) { state.keywordList = keywordList },
     setOrderedKeywordList (state, keywordList) {
       keywordList.sort((a, b) => a.count > b.count ? -1 : 1)
       state.orderedKeywordList = keywordList
@@ -59,9 +58,15 @@ export default new Vuex.Store({
     getLoginModalVisibility: state => () => state.loginModalVisibility,
     comicForVotingModal: state => state.comicForVotingModal,
     getComicForVotingModal: state => () => state.comicForVotingModal,
-    keywordList: state => state.keywordList,
     orderedKeywordListF: state => () => state.orderedKeywordList,
     orderedKeywordList: state => state.orderedKeywordList,
     isDarkTheme: state => state.darkTheme,
   }
-})
+}
+
+registerFetchNames(store, 
+  {name: 'allKeywords', defaultValue: []},
+  {name: 'allComics', defaultValue: []},
+)
+
+export default new Vuex.Store(store)

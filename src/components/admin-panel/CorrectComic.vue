@@ -44,7 +44,7 @@
 
           <div class="vertical-flex">
             <p style="text-align: left;">Category</p>
-            <select v-model="tag">
+            <select v-model="cat">
               <option value="Furry">Furry</option>
               <option value="MLP">MLP</option>
               <option value="Pokemon">Pokemon</option>
@@ -54,7 +54,7 @@
 
           <div class="vertical-flex">
             <p style="text-align: left;">Classification</p>
-            <select v-model="cat">
+            <select v-model="tag">
               <option value="M">M</option>
               <option value="F">F</option>
               <option value="MF">MF</option>

@@ -432,6 +432,7 @@ export default {
       'sorting',
       'selectedKeywords',
       'hasFetchedComicListOnce',
+      'orderedKeywordList',
     ]),
 
     isLoadingComics () {
@@ -449,7 +450,7 @@ export default {
     },
 
     keywordsMatchingSearch () {
-      return this.$store.getters.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
+      return this.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
     },
 
     paginationButtons () {
@@ -635,8 +636,8 @@ export default {
         this.searchFiltering222 = this.$route.query.search
       }
       if (this.$route.query.tags) {
-        if (this.$store.getters.orderedKeywordList 
-            && this.$store.getters.orderedKeywordList.length > 0) {
+        if (this.orderedKeywordList 
+            && this.orderedKeywordList.length > 0) {
           this.setKeywordsFromQuery()
         }
         else {
@@ -653,7 +654,7 @@ export default {
     setKeywordsFromQuery () {
       let selectedKeywords = []
       for (let keywordName of this.listify(this.$route.query.tags)) {
-        let keyword = this.$store.getters.orderedKeywordList.find(kw => kw.name === keywordName)
+        let keyword = this.orderedKeywordList.find(kw => kw.name === keywordName)
         if (keyword) {
           selectedKeywords.push(keyword)
         }
