@@ -45,10 +45,11 @@
           </p>
         </div>
 
-        <p class="margin-top-16">User rating: 
+        <p class="margin-top-16">
+          User rating: 
           <span style="font-weight: 400;">{{formatRating($store.getters.comicForVotingModal.userRating)}}</span>
         </p>
-        <rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;"/>
+        <rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0.5rem;"/>
         <p v-else class="margin-bottom-8"> 
           <button class="underline-link text-button link-color" 
                   @click="$store.commit('setLoginModalVisibility', true)">

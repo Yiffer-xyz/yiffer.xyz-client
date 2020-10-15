@@ -1,6 +1,6 @@
 <template>
   <div class="rating-slider">
-    <label>Rating</label>
+    <label>You</label>
     <input type="range" min="0" max="10" v-model="ratingSliderValue"
            :class="{'rating-slider-norating': ratingSliderValue==0}"
            @change="onNewRatingSet">
@@ -92,11 +92,13 @@ export default {
   flex-direction: row;
   align-items: center;
   width: 100%;
+  cursor: pointer !important;
   input {
     margin: 0 6px;
+    cursor: pointer !important;
   }
   label {
-    width: 42px;
+    width: 2.5rem;
     flex-shrink: 0;
   }
   .rating-number {
@@ -109,10 +111,11 @@ $track-color: $themeDark1 !default;
 $track-background: linear-gradient(to right, $theme2, $theme6);
 $track-background-norating: linear-gradient(to right, #006d4c90, #78fdd690);
 $thumb-color: $themeDark1 !default;
+$thumb-color-focused: $themeDark4 !default;
 
 $thumb-radius: 12px !default;
-$thumb-height: 18px !default;
-$thumb-width: 18px !default;
+$thumb-height: 20px !default;
+$thumb-width: 20px !default;
 $thumb-shadow-size: 2px !default;
 $thumb-shadow-blur: 2px !default;
 $thumb-shadow-color: rgba(0, 0, 0, .2) !default;
@@ -120,7 +123,7 @@ $thumb-border-width: 2px !default;
 $thumb-border-color: #eceff1 !default;
 
 $track-width: 100% !default;
-$track-height: 12px !default;
+$track-height: 14px !default;
 $track-shadow-size: 0px !default;
 $track-shadow-blur: 0px !default;
 $track-shadow-color: rgba(0, 0, 0, .2) !default;
@@ -137,7 +140,6 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
 }
 
 @mixin track {
-  cursor: default;
   height: $track-height;
   transition: all .2s ease;
   width: $track-width;
@@ -148,13 +150,12 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   background: $thumb-color;
   border: $thumb-border-width solid $thumb-border-color;
   border-radius: $thumb-radius;
-  cursor: default;
   height: $thumb-height + $adjustment;
   width: $thumb-width + $adjustment;
 }
 
 @mixin disabled {
-  cursor: not-allowed;
+  // cursor: not-allowed;
 }
 
 [type='range'] {
@@ -162,6 +163,8 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   background: transparent;
   margin: $thumb-height / 2 0;
   width: $track-width;
+  border: none !important;
+  cursor: pointer !important;
 
   &::-moz-focus-outer {
     border: 0;
@@ -170,17 +173,20 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   &:focus {
     outline: 0;
 
-    &::-webkit-slider-runnable-track {
-      background: lighten($track-color, $contrast);
+    &::-webkit-slider-thumb {
+      background: $thumb-color-focused;
     }
+    &::-moz-range-thumb {
+      height: $thumb-height + 4px;
+      width: $thumb-height + 4px;
+    }
+    &::-ms-thumb  {
+      height: 50px;
+    }
+    // &::-webkit-slider-runnable-track {
+    //   background: lighten($track-color, $contrast);
+    // }
 
-    &::-ms-fill-lower {
-      background: $track-background;
-    }
-
-    &::-ms-fill-upper {
-      background: lighten($track-color, $contrast);
-    }
   }
 
   &::-webkit-slider-runnable-track {
@@ -265,7 +271,6 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
       @include disabled;
     }
   }
-
 }
 .rating-slider-norating {
   &::-webkit-slider-runnable-track {
