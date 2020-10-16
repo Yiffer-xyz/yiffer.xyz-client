@@ -64,30 +64,35 @@
       </div>
 
       <!-- ALL KEYWORDS -->
-      <div class="keyword-container" v-if="showKeywords || $store.getters.detailLevel === 'high'">
+      <div class="keyword-container" v-if="isShowingKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
-        <!-- <div 
+        <div 
           :class="{'keyword': clickableKeyword, 
                    'keyword-static': !clickableKeyword,
                    'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
-          v-for="keyword in comic.keywords"
-          :key="keyword"
+          v-for="keyword in comicKeywords[comic.id]"
+          :key="keyword.id"
           @click="addSelectedKeyword(keyword)"
         >
-          {{keyword}}
-        </div> -->
+          {{keyword.name}}
+        </div>
       </div>
-      <div class="keyword" v-if="showHideKeywordsButton" @click="showLocalKeywords = false">
-        <hide-tags/> hide tags
+      <div class="keyword" v-if="isShowingKeywords" @click="() => isShowingKeywords = false">
+        <hide-tags/> Hide tags
+      </div>
+
+      
+      <div class="keyword" v-if="isLoadingKeywords">
+        Loading...
       </div>
 
       <!-- KEYWORDS, CAT, TAG -->
-      <div class="keyword-container" v-if="!showKeywords">
+      <div class="keyword-container" v-if="!isShowingKeywords && !isLoadingKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
-        <div class="keyword" v-if="!showKeywords" @click="showLocalKeywords = true">
-          <tags/> Show tags
+        <div class="keyword" v-if="!isShowingKeywords" @click="showKeywords()">
+          <tags/> Load tags
         </div>
       </div>
 
@@ -119,6 +124,7 @@ import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import Tags from 'vue-material-design-icons/TagMultiple.vue'
 import HideTags from 'vue-material-design-icons/TagRemove.vue'
 import ComicCardPaidImage from './ComicCardPaidImage.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'comic-card',
@@ -148,11 +154,30 @@ export default {
     return {
       isNewComic: new Date() - new Date(this.comic.created) < 2*604800000,  // todo 1 week = 604800000
       recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000),
-      showLocalKeywords: false
+      isShowingKeywords: false,
+      isLoadingKeywords: false,
     }
   },
 
+  computed: {
+    ...mapGetters([
+      'comicKeywords',
+    ]),
+  },
+
   methods: {
+    async showKeywords () {
+      if (this.comic.id in this.comicKeywords) {
+        this.isShowingKeywords = true
+      }
+      else {
+        this.isLoadingKeywords = true
+        await this.$store.dispatch('getComicKeywords', this.comic.id)
+        this.isShowingKeywords = true
+        this.isLoadingKeywords = false
+      }
+    },
+
     formatRating: function (number) {
       if (number == 0 || !number) { return '-' }
       if (number > 8.5) { return Math.round(number * 100) / 100 }
@@ -164,9 +189,9 @@ export default {
       this.$store.dispatch('storeClickedComic', this.comic)
     },
 
-    addSelectedKeyword (keywordName) {
+    addSelectedKeyword (keyword) {
       if ( this.clickableKeyword ) {
-        this.$store.dispatch('addSelectedKeywordByNameOnly', keywordName)
+        this.$store.dispatch('addSelectedKeyword', keyword)
       }
     },
 
@@ -174,16 +199,6 @@ export default {
       return tagName=='Pokemon' ? 'Pkmn' : tagName
     }
   },
-
-  computed: {
-    showKeywords () {
-      return this.$store.getters.detailLevel==='high' || this.showLocalKeywords
-    },
-
-    showHideKeywordsButton () {
-      return this.showLocalKeywords && this.$store.getters.detailLevel!=='high'
-    }
-  }
 }
 </script>
 

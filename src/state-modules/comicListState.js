@@ -23,6 +23,7 @@ const store = {
     viewMode: 'card',
     isComicCardExpanded: false,
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
+    comicKeywords: {},
   },
 
   actions: {
@@ -37,6 +38,11 @@ const store = {
       if (state.comicList.length === 0) {
         dispatch('addAdsToComicList')
       }
+    },
+
+    async getComicKeywords ({state, commit}, comicId) {
+      let keywords = await keywordApi.getComicKeywords(comicId)
+      commit('setComicKeywords', {...state.comicKeywords, [comicId]: keywords})
     },
 
     addAdsToComicList({state, getters, commit}) {
@@ -95,13 +101,6 @@ const store = {
       if (state.isComicCardExpanded) {
         dispatch('setExpandedComic', newComic)
       }
-    },
-
-    addSelectedKeywordByNameOnly (context, keywordName) {
-      let keywordObject = context.rootState.keywordList.find(kw => kw.name===keywordName)
-      context.dispatch('addSelectedKeyword', keywordObject)
-
-      keywordApi.logKeywordSearch(keywordObject.id, true)
     },
 
     setSearchFiltering ({commit}, searchFiltering) {
@@ -192,6 +191,7 @@ const store = {
     setIsComicCardExpanded (state, isExpanded) { state.isExpanded = isExpanded },
     setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
     setHasFetchedComicListOnce (state) { state.hasFetchedComicListOnce = true },
+    setComicKeywords (state, comicKeywords) { state.comicKeywords = comicKeywords },
   },
 
   getters: {
@@ -220,6 +220,7 @@ const store = {
       })),
     paidImagesBanner: state => () => state.paidImages.payload.filter(ad => ad.adType.includes('banner')),
     hasFetchedComicListOnce: state => state.hasFetchedComicListOnce,
+    comicKeywords: state => state.comicKeywords,
   },
 }
 
