@@ -21,11 +21,12 @@ p, li, label, td, th, a {
 
 h1 {
   font-weight: 300;
-  font-size: 46px;
-  margin-top: 24px;
+  font-size: 3rem;
+  padding-top: 2rem;
+  margin-top: 0;
   @media (max-width: 900px) {
-    margin-top: 12px;
-    font-size: 32px;
+    padding-top: 1.5rem;
+    font-size: 2rem;
     &.yifferTitle {
       font-size: 42px;
     }
@@ -113,7 +114,8 @@ ul {
   font-size: 70px;
   font-family: 'Shrikhand', cursive;
   margin-bottom: -10px;
-  margin-top: 24px;
+  margin-top: 0;
+  padding-top: 1.5rem;
 }
 
 h2 {

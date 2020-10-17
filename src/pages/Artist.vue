@@ -117,12 +117,12 @@ export default {
 
 #artistComicsTitle, #artistLinksTitle {
   @media (max-width: 900px) {
-    font-size: 22px
+    font-size: 1.5rem
   }
 }
 #artistTitle {
   @media (max-width: 900px) {
-    font-size: 32px
+    font-size: 2rem;
   }
 }
 

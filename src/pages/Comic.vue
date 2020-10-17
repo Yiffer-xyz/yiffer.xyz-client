@@ -118,9 +118,9 @@
         <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
                          @closeMessage="closeResponseMessage" class="mt-16"/>
 
-        <div id="paidImageBanner" class="mt-16" style="height: 100px;">
+        <div id="paidImageBanner" class="mt-16" style="max-height: 100px;">
           <a v-if="paidImage" :href="paidImage.link" target="_blank">
-            <img :src="`/paid-images/${paidImage.id}.${paidImage.filetype}`" height="100"/>
+            <img :src="`/paid-images/${paidImage.id}.${paidImage.filetype}`" height="100%" width="100%"/>
           </a>
 
           <div v-else style="height: 100px; width: 680px;"/>

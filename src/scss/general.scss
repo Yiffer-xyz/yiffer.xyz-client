@@ -6,14 +6,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  @media (max-width: 900px) {
-    margin-top: 20px;
-  }
+  position: relative;
+  min-height: 100vh;
 }
 
 body {
   margin: 0px;
-  padding-bottom: 10px;
+  min-height: 100vh;
 }
 
 textarea {

@@ -46,18 +46,42 @@
 
     <login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
     <voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
-    <router-view/>
+
+    <div v-if="!hasConsented" class="consent-overlay">
+      <div class="consent-content">
+        <p>Yiffer.xyz contains explicit imagery not suited for those under 18 years old.</p>
+        <p>We also use cookies to enhance your user experience.</p>
+
+        <button @click="setConsent">
+          I am 18+ and I consent to the use of cookies
+        </button>
+      </div>
+    </div>
+
+    <main class="main">
+      <router-view/>
+    </main>
+
+    <footer class="footer">
+      <p><router-link to="/about">Contact/about</router-link></p>
+      <p>Made by <a href="https://twitter.com/Malann_kitty" target="_blank"><TwitterIcon/>Malann</a></p>
+    </footer>
   </div>
 </template>
 
 <script>
 import LoginModal from '@/components/LoginModal.vue'
 import VotingModal from '@/components/VotingModal.vue'
+import TwitterIcon from 'vue-material-design-icons/Twitter.vue'
 
 import miscApi from './api/miscApi'
 
 export default {
-  components: { 'login-modal': LoginModal, 'voting-modal': VotingModal },
+  components: {
+    'login-modal': LoginModal,
+    'voting-modal': VotingModal,
+    TwitterIcon,
+  },
 
   methods: {
     setTheme( themeColor ) {
@@ -87,6 +111,11 @@ export default {
       miscApi.logEvent('theme', themeColor)
     },
 
+    setConsent () {
+      this.hasConsented = true
+      this.$cookies.set('hasConsented', '1')
+    },
+
     showLoginModal () {
       this.$store.commit('setLoginModalVisibility', true)
     },
@@ -106,7 +135,8 @@ export default {
 
   data: function () {
     return {
-      darkTheme: false
+      darkTheme: false,
+      hasConsented: true,
     }
   },
 
@@ -119,6 +149,10 @@ export default {
     }
     else {
       this.setTheme('light')
+    }
+
+    if (!this.$cookies.get('hasConsented')) {
+      this.hasConsented = false
     }
   },
 
@@ -135,4 +169,94 @@ export default {
 @import "@/scss/text-styles.scss";
 @import "@/scss/forms.scss";
 @import "@/scss/general.scss";
+@import "@/scss/shadows.scss";
+
+$footerHeight: 2.25rem;
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: $themeGray1;
+  border-top: 1px solid $themeGray3;
+  height: $footerHeight;
+  width: 100%;
+  margin-top: 2rem;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+  position: absolute;
+  bottom: 0;
+  p {
+    margin: 0 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+.dark {
+  .footer {
+    background-color: $themeDark4;
+    border-color: $themeDark1;
+    color: #ddd;
+  }
+}
+
+.main {
+  padding-bottom: $footerHeight + 1rem;
+}
+
+.consent-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+
+  .consent-content {
+    padding: 2rem;
+    background-color: $themeGray1;
+    border-style: solid;
+    border-width: 0;
+    border-top-width: 10px;
+    border-image: linear-gradient(to right, $theme2, $theme6) 1; 
+    // border-radius: 8px;
+  }
+
+  p {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  button {
+    margin-top: 1rem;
+    outline: none;
+    border: none;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    background-color: $theme5;
+    color: white;
+    border-radius: 4px;
+    font-weight: 400;
+    &:hover {
+      cursor: pointer;
+      background: $theme4;
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    .consent-content {
+      padding: 2rem 1rem;
+    }
+    button {
+      font-size: 1rem;
+      padding: 1rem 1rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }
+}
 </style>

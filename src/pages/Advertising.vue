@@ -33,7 +33,7 @@
 
       <p><span class="bold">*For the earliest advertisers, we are cutting the cost in half during the first few months!</span> So be sure to apply as soon as you're certain, or tell your creative friends!</p>
 
-      <h3 class="mt-16">Pricing</h3>
+      <h3 v-if="$breakpoint.lgAndUp" class="mt-16">Pricing</h3>
       <table v-if="$breakpoint.lgAndUp" class="y-table no-table-hover">
         <thead>
           <tr>
@@ -44,18 +44,16 @@
           </tr>
         </thead>
         <tr>
-          <td rowspan="2">As comic card</td>
+          <td rowspan="2"><b>As comic card</b></td>
           <td>2 months</td>
-          <td>20$ per month<br>(10$ now*)</td>
+          <td><b>20$</b> per month<br>(<b>10$ now*</b>)</td>
           <td rowspan="2">
             <p class="no-margin-top">Your ad will appear at random in the same style as a "comic card" on the index page.</p>
             <p>Pictures below illustrate this kind of ad, on desktop and mobile views respectively.</p>
 
             <div class="ad-pics-container">
-              <img src="/assets/example-1.png" :style="{'max-height': ad1Expanded ? '330px' : '120px'}" class="ad-pic"/>
-              <img src="/assets/example-1-mobile.png" :style="{'max-height': ad1Expanded ? '330px' : '120px'}" class="ad-pic"/>
-              <p v-show="!ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = true">Bigger pictures</p>
-              <p v-show="ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = false">Smaller pictures</p>
+              <img src="/assets/example-1.png" style="max-height: 300px;" class="ad-pic"/>
+              <img src="/assets/example-1-mobile.png" style="max-height: 300px;" class="ad-pic"/>
             </div>
 
             <p>
@@ -68,13 +66,13 @@
 
         <tr>
           <td>4 months</td>
-          <td>15$ per month<br>(7$ now*)</td>
+          <td><b>15$</b> per month<br>(<b>7$ now*</b>)</td>
         </tr>
 
         <tr>
-          <td>Wide banner</td>
+          <td><b>Wide banner</b></td>
           <td>1 month</td>
-          <td>35$ per month<br>(17$ now*)</td>
+          <td><b>35$</b> per month<br>(<b>17$ now*</b>)</td>
           <td>
             <p class="no-margin-top">
               This is an experimental type of ad. If there is interest for it, we will offer long-term commitments for this as well.
@@ -83,23 +81,15 @@
               Your ad will be displayed <u>above comics</u>, between the comic's title and the first comic page. This placement is very eye-catching, hence the increased price. Every comic will have some ad displayed above it.
             </p>
             <p>
-              Pictures below illustrate this kind of ad, on desktop and mobile views respectively.
+              The picture below illustrates this kind of ad, which looks very similar on desktop and mobile.
             </p>
             
-            <div class="ad-pics-container" style="display: flex;" :style="{'flex-direction': ad2Expanded ? 'column' : 'row'}">
-              <img src="/assets/example-2.png" :style="{'max-width': ad2Expanded ? '330px' : '140px'}" class="ad-pic"/>
-              <img src="/assets/example-2-mobile.png" :style="{'max-width': ad2Expanded ? '330px' : '140px'}" class="ad-pic"/>
+            <div class="ad-pics-container" style="display: flex;">
+              <img src="/assets/example-2.png" style="max-width: 420px;" class="ad-pic"/>
             </div>
 
-            <p v-show="!ad2Expanded" class="link-color cursor-pointer" @click="ad2Expanded = true" style="text-align: center;">
-              Bigger pictures
-            </p>
-            <p v-show="ad2Expanded" class="link-color cursor-pointer" @click="ad2Expanded = false" style="text-align: center;">
-              Smaller pictures
-            </p>
-
             <p>
-              Media: PNG or GIF format, 100x680 pixels precisely. Make sure that content is visible when media is scaled down - it will shrink to a mobile phone's width on mobile devices.
+              Media: PNG or GIF format, 100x680 pixels precisely. Make sure that content is visible/readable when media is scaled down - it will shrink to a mobile phone's width on mobile devices.
             </p>
           </td>
         </tr>
@@ -107,13 +97,11 @@
 
       <div v-else>
         <div class="mobile-list-table">
-          <p>
-            <span class="bold">Type</span>: As comic card
-          </p>
+          <h3>Ad type: As comic card</h3>
           <p>
             <span class="bold">Price</span>:<br/>
-            2 months: 20$ per month (10$ now*)<br/>
-            4 months: 15$ per month (7$ now*)
+            2 months: <b>20$</b> per month (<b>10$</b> now*)<br/>
+            4 months: <b>15$</b> per month (<b>7$</b> now*)
           </p>
           <p>
             <span class="bold">Explanation</span>:
@@ -127,8 +115,12 @@
           <div class="ad-pics-container-mobile">
             <img src="/assets/example-1.png" :style="{'max-height': ad1Expanded ? '330px' : '120px'}" class="ad-pic"/>
             <img src="/assets/example-1-mobile.png" :style="{'max-height': ad1Expanded ? '330px' : '120px'}" class="ad-pic"/>
-            <p v-show="!ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = true">Bigger pictures</p>
-            <p v-show="ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = false">Smaller pictures</p>
+            <p v-show="!ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = true" style="margin-top: 0;">
+              Bigger pictures
+            </p>
+            <p v-show="ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = false" style="margin-top: 0;">
+              Smaller pictures
+            </p>
           </div>
           <p>
             Media: PNG or GIF format, 200x283 pixels precisely.<br/>
@@ -137,12 +129,10 @@
           </p>
         </div>
         <div class="mobile-list-table">
-          <p>
-            <span class="bold">Type</span>: Wide banner above comic
-          </p>
+          <h3>Ad type: Banner above comic</h3>
           <p>
             <span class="bold">Price</span>:<br/>
-            1 month: 35$ per month (17$ now*)<br/>
+            1 month: <b>35$</b> per month (<b>17$ now*</b>)<br/>
           </p>
           <p>
             <span class="bold">Explanation</span>:
@@ -154,22 +144,13 @@
             Your ad will be displayed <u>above comics</u>, between the comic's title and the first comic page. This placement is very eye-catching, hence the increased price. Every comic will have some ad displayed above it.
           </p>
           <p>
-            Pictures below illustrate this kind of ad, on desktop and mobile views respectively.
+            The picture below illustrates this kind of ad, which looks very similar on desktop and mobile.
           </p>
-          <div class="ad-pics-container-mobile" style="display: flex;" :style="{'flex-direction': ad2Expanded ? 'column' : 'row'}">
-            <img src="/assets/example-2.png" :style="{'max-width': ad2Expanded ? '330px' : '140px'}" class="ad-pic"/>
-            <img src="/assets/example-2-mobile.png" :style="{'max-width': ad2Expanded ? '330px' : '140px'}" class="ad-pic"/>
-          </div>
 
-          <p v-show="!ad2Expanded" class="link-color cursor-pointer" @click="ad2Expanded = true">
-            Bigger pictures
-          </p>
-          <p v-show="ad2Expanded" class="link-color cursor-pointer" @click="ad2Expanded = false">
-            Smaller pictures
-          </p>
+          <img src="/assets/example-2.png" style="max-width: 100%; max-height: 20rem;" class="ad-pic"/>
 
           <p>
-            Media: PNG or GIF format, 100x680 pixels precisely. Make sure that content is visible when media is scaled down - it will shrink to a mobile phone's width on mobile devices.
+            Media: PNG or GIF format, 100x680 pixels precisely. Make sure that content is visible/readable when media is scaled down - it will shrink to a mobile phone's width on mobile devices.
           </p>
         </div>
 
@@ -182,9 +163,13 @@
       <h3 class="mt-16">Additional information</h3>
       <ul>
         <li>The frequency of your ads showing up entirely depends on how many advertisers there are in total. If there are ten advertisers, every tenth ad (give or take) will be your own. This goes for all types of ads.</li>
-        <li>Each price is for a single ad with a single image/gif. It is perfectly fine to apply several times with different images/gifs, but these will be treated as separate ads and you will have to pay for each one.</li>
-        <li>Any questions you have now or as an advertiser can be directed to EPOST@EPOST.COM. We will happily answer any questions you may have.</li>
-        <li>The ads may be explicit, but don't go overboard. Geniatlia may be visible, but it should not be a big or the entire part of the image/gif.</li>
+
+        <li>Each price is for a single ad with a single image/gif. It is perfectly fine to apply several times with different images/gifs, but these will be treated as separate ads and you will have to pay for each one. Naturally, if you've paid for two ads and there are ten in total, about <i>two</i> out of every ten ads displayed will be yours.</li>
+
+        <li>We will happily answer any questions you may have regarding advertising at EPOST@EPOST.COM.</li>
+
+        <li>The ads may be explicit, as this is mostly a porn site, after all. However, we don't allow content or kinks that are commonly frowned upon in the ad media. If you're uncertain, feel free to ask us at EPOST@EPOST.COM in advance.</li>
+
         <li>Gifs must not have rapidly flashing lights or colors.</li>
       </ul>
 
@@ -266,10 +251,16 @@ export default {
 }
 .mobile-list-table {
   border-top: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
-  p:first-child {
-    margin-top: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  &:last-child {
+    border-bottom: 1px solid #aaa;
   }
-  padding: 0.25rem 0;
+  &:first-child {
+    margin-top: 1rem;
+  }
+  p {
+    margin-top: 0.5rem;
+  }
 }
 </style>
