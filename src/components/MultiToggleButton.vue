@@ -32,7 +32,6 @@ export default {
 
   methods: {
     toggleItem (item) {
-
       let shouldEmitOnChangeEvent = true
       let itemIndex = this.selectedItems.indexOf(item)
       let isItemSelectedAlready = this.selectedItems.includes(item)
@@ -90,10 +89,11 @@ export default {
 .toggleButtonsContainer {
   border-radius: 4px;
   overflow: hidden;
+  width: fit-content;
 
   button {
     background-color: $themeGray7;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Mulish', sans-serif;
     font-size: 14px;
     border: none;
     width: fit-content;

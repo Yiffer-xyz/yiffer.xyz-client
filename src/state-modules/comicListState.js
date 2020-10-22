@@ -24,6 +24,7 @@ const store = {
     isComicCardExpanded: false,
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
     comicKeywords: {},
+    isFilterSectionExpanded: false,
   },
 
   actions: {
@@ -192,6 +193,7 @@ const store = {
     setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
     setHasFetchedComicListOnce (state) { state.hasFetchedComicListOnce = true },
     setComicKeywords (state, comicKeywords) { state.comicKeywords = comicKeywords },
+    setIsFilterSectionExpanded (state, isExpanded) { state.isFilterSectionExpanded = isExpanded }
   },
 
   getters: {
@@ -221,6 +223,7 @@ const store = {
     paidImagesBanner: state => () => state.paidImages.payload.filter(ad => ad.adType.includes('banner')),
     hasFetchedComicListOnce: state => state.hasFetchedComicListOnce,
     comicKeywords: state => state.comicKeywords,
+    isFilterSectionExpanded: state => state.isFilterSectionExpanded,
   },
 }
 

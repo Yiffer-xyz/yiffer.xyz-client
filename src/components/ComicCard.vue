@@ -35,7 +35,7 @@
     </a>
 
     <div v-if="!comic.isPaidImage" class="comic-card-inner-container">
-      <div>
+      <div style="margin: 4px 0">
         <!-- NAME -->
         <router-link :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }" class="comic-card-link">
           <!-- <p class="comic-card-comic-title">Navnet</p> -->
@@ -361,7 +361,8 @@ export default {
   border-radius: 2px;
   margin: 10px;
   padding-bottom: 8px;
-  background-color: $themeGray0p5;
+  background-color: $themeGray0;
+  border-radius: 4px;
   img {
     width: 100%;
     height: 283px;
@@ -389,7 +390,7 @@ export default {
     }
   }
   .comic-card-comic-title {
-    font-weight: 600;
+    font-weight: 400;
     margin: 0px 10px;
     text-align: center;
     color: $cardTextColorLight;
@@ -402,6 +403,9 @@ export default {
     width: 100px;
     margin: 6px;
     font-size: 14px;
+    a, p {
+      font-size: 15px;
+    }
     .comic-card-comic-title {
       font-size: 15px;
       margin: 0px 2px;

@@ -4,7 +4,6 @@
     <div class="upperBodyDiv">
       <!-- <h1 class="yifferTitle">Title</h1> -->
       <h1 class="yifferTitle">Yiffer.xyz</h1>
-      <p style="font-size: 20px">A collection of high-quality comics</p>
       <!-- <p style="font-size: 20px">Subtitle subtitle</p> -->
 
       <p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
@@ -72,8 +71,8 @@
         </span>
       </div>
 
-      <div class="buttons-container">
-        <span class="upperBodyWidth buttons-container-inner">
+      <div class="buttons-container" :class="{'closedFilterContent': !isFilterSectionExpanded}" @click="() => toggleShowSearchFiltering(true)">
+        <span v-if="isFilterSectionExpanded" class="upperBodyWidth buttons-container-inner">
           <div class="upper-body-horiz-row">
             <table class="horiz-row-inner" id="catTable">
               <tr>
@@ -203,16 +202,17 @@
               </div>
             </div>
           </div>
-            <div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" 
-                 class="upper-body-horiz-row" style="margin-top: 0px; border: none;">
-              <div 
-                v-for="keywordObject in $store.getters.selectedKeywords" 
-                :key="keywordObject.id"
-                @click="removeSelectedKeyword(keywordObject)"
-                class="selected-keyword">
-                  {{keywordObject.name}}<cross-icon/>
-              </div>
+
+          <div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" 
+                class="upper-body-horiz-row" style="margin-top: 0px; border: none;">
+            <div 
+              v-for="keywordObject in $store.getters.selectedKeywords" 
+              :key="keywordObject.id"
+              @click="removeSelectedKeyword(keywordObject)"
+              class="selected-keyword">
+                {{keywordObject.name}}<cross-icon/>
             </div>
+          </div>
 
           <div class="upper-body-horiz-row">
             <table class="horiz-row-inner" style="table-layout: auto;">
@@ -236,7 +236,6 @@
             </table>
           </div>
           
-
           <div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly; width: fit-content; margin-left: auto; margin-right: auto; border: none;">
             <!-- MOBILE VIEW: LIST OR CARD -->
             <!-- <table class="horiz-row-inner horiz-row-inner-border" style="width: auto; margin-right: 30px;" v-if="$breakpoint.xsOnly">
@@ -275,7 +274,6 @@
             </table>
           </div>
 
-          <!-- <div v-if="false" -->
           <div v-if="hasFetchedComics"
                style="display: flex; flex-direction: row; align-items: center;"
                class="upper-body-horiz-row"
@@ -295,13 +293,26 @@
               <Skeleton height="35px" width="100%"/>
             </SkeletonTheme>
           </div>
+
+          <div class="filterSectionExpander filterSectionDeExpander"
+               @click="() => toggleShowSearchFiltering(false)">
+            <menu-up-icon class="mdi-arrow"/>
+            <p>Minimize</p>
+            <menu-up-icon class="mdi-arrow"/>
+          </div>
         </span>
+
+        <div v-else class="filterSectionExpander">
+          <menu-down-icon class="mdi-arrow"/>
+          <p>Search &amp; filter</p>
+          <menu-down-icon class="mdi-arrow"/>
+        </div>
       </div>
     </div>
 
     <p v-if="isErrorLoadingComics" class="comicListMessage">There was an error fetching comics.</p>
 
-    <SkeletonTheme v-else-if="isLoadingComics" :color="isDarkTheme ? '#262d30' : '#eeeeee'" :highlight="isDarkTheme ? '#525456' : '#f5f5f5'" class="comic-card-container">
+    <SkeletonTheme v-else-if="isLoadingComics" :color="isDarkTheme ? '#262d30' : '#ddd'" :highlight="isDarkTheme ? '#525456' : '#f5f5f5'" class="comic-card-container">
       <div :class="['comicCardSkeleton', $store.getters.isAuthenticated ? 'loggedInSkeleton' : '']" v-for="i in 80" :key="i">
         <Skeleton width="100%" height="100%"/>
       </div>
@@ -416,6 +427,7 @@ export default {
       blogLink: undefined,
       showDropdown: false,
       searchFilteringHook: null,
+      lastClosedTime: new Date(),
     }
   },
 
@@ -433,6 +445,7 @@ export default {
       'selectedKeywords',
       'hasFetchedComicListOnce',
       'orderedKeywordList',
+      'isFilterSectionExpanded',
     ]),
 
     isLoadingComics () {
@@ -593,6 +606,18 @@ export default {
         if (comicObject.keywords.indexOf(keyword.name) === -1) { return false }
       }
       return true
+    },
+
+    toggleShowSearchFiltering (shouldShow) {
+      if (shouldShow && (new Date()).getTime() - this.lastClosedTime.getTime() < 100) {
+        return
+      }
+      this.$store.commit('setIsFilterSectionExpanded', shouldShow)
+
+      if (!shouldShow) {
+        this.lastClosedTime = new Date()
+      }
+      this.$cookies.set('isSearchFilteringExpanded', shouldShow ? 1 : 0)
     },
 
     setRouterQuery () {
@@ -784,21 +809,25 @@ export default {
   display: flex;
   flex-direction: row;
   width: fit-content;
-  margin: 10px auto 0 auto;
+  margin: 1rem auto 0 auto;
   @media (max-width: 900px) {
-    margin-top: 8px;
+    margin-top: 1rem;
   }
 }
 
-#upperBodyDiv {
+.upperBodyDiv {
   width: 100%;
+  box-shadow: 0px 0px 16px 0px $themeGray4;
+  // border-bottom: 1px solid white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: $themeGray0;
-  color: white;
+  // background: linear-gradient(to bottom right, rgb(241, 225, 234) 6%, rgb(233, 233, 233) 100%);
+  p, h1, div {
+    color: white;
+  }
   h1 {
-    color: #333; //todo
+    // color: #333; //todo
     font-family: 'Shrikhand', cursive;
   }
   h2 {
@@ -806,9 +835,19 @@ export default {
   }
   .text-button {
     color: $theme4;
-    text-decoration: underline;
+    // text-decoration: underline;
+    background-image: linear-gradient(currentColor, currentColor) !important;
+    background-size: 100% 1px;
+    padding-bottom: 1px;
     font-size: 16px;
   }
+
+  background-color: #202325;
+  
+  border-style: solid;
+  border-width: 0;
+  border-bottom-width: 10px;
+  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
 }
 
 #keywordResults {
@@ -879,26 +918,27 @@ export default {
 }
 
 .buttons-container {
-  box-shadow: 0px 0px 16px 0px $themeGray3;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  margin-top: 20px;
-  background: $themeGray1;
-  padding: 24px 0;
-  border-top: 1px solid $themeGray3;
-  border-bottom: 1px solid $themeGray3;
+  // margin-top: 20px;
+  // background: $themeGray1;
+  padding: 1.25rem 0;
+  // border-top: 1px solid $themeGray3;
+  // border-bottom: 1px solid $themeGray3;
   >div, >table {
     margin: 7px 0px;
   }
   @media (max-width: 900px) {
-    padding: 4px 0;
+    // padding: 4px 0;
     >div, >table {
       margin: 5px 0px;
     }
   }
+  max-height: 400px;
+  transition:max-height 0.4s ease-out;
 }
 
 .upper-body-horiz-row {
@@ -911,7 +951,7 @@ export default {
 }
 
 .pagination-button, .horiz-row-inner td {
-  background: $themeGray5;
+  background: $themeGray8;
   color: white;
   padding: 8px 10px;
   font-weight: 400;
@@ -920,7 +960,7 @@ export default {
 
   &:hover {
     cursor: pointer;
-    background: $themeGray3;
+    background: $themeGray5;
   }
 
   @media (max-width: 900px) {
@@ -1048,7 +1088,7 @@ export default {
     background: $theme4p5 !important;
     color: white;
   }
-  #upperBodyDiv {
+  .upperBodyDiv {
     background: linear-gradient(to top right, $themeBlue1, #0D1C23, $theme0);
     h1 {
       color: white;
@@ -1100,6 +1140,31 @@ export default {
   &:hover {
     cursor: default;
   }
+}
+
+.closedFilterContent {
+  padding: 0.5rem 0;
+  max-height: 3rem;
+  width: fit-content;
+}
+
+.filterSectionExpander {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.filterSectionDeExpander {
+  margin: 1rem auto -0.25rem auto;
+  padding: 0 1rem;
+  width: fit-content;
 }
 
 .dropdownElement {

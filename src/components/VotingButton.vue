@@ -43,7 +43,7 @@ export default {
 <style lang="scss">
 .voting-button-todo {
 	@media (max-width: 900px) {
-		padding: 2px 9px 2px 6px !important;
+		padding: 3px 9px 3px 6px !important;
 	}
 }
 </style>

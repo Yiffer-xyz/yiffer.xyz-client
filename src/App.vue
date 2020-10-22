@@ -154,6 +154,11 @@ export default {
     if (!this.$cookies.get('hasConsented')) {
       this.hasConsented = false
     }
+
+    let isExpanded = this.$cookies.get('isSearchFilteringExpanded')
+    if (isExpanded && Number(isExpanded) === 1) {
+      this.$store.commit('setIsFilterSectionExpanded', true)
+    }
   },
 
   watch: {
@@ -178,7 +183,7 @@ $footerHeight: 2.25rem;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: $themeGray1;
+  background-color: #202325;
   border-top: 1px solid $themeGray3;
   height: $footerHeight;
   width: 100%;
@@ -186,10 +191,19 @@ $footerHeight: 2.25rem;
   box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
   position: absolute;
   bottom: 0;
+  p, a {
+    font-size: 0.85rem !important;
+  }
   p {
     margin: 0 1rem;
-    font-size: 0.8rem;
+    color: white;
   }
+    
+  border-style: solid;
+  border-width: 0;
+  border-top-width: 10px;
+  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
+
 }
 
 .dark {
@@ -201,7 +215,7 @@ $footerHeight: 2.25rem;
 }
 
 .main {
-  padding-bottom: $footerHeight + 1rem;
+  padding-bottom: $footerHeight + 1.5rem;
 }
 
 .consent-overlay {

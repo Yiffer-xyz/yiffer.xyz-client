@@ -1,12 +1,15 @@
 <template>
   <span>
     <vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
-    <div id="upperBodyDivComic">
-      <span v-if="comic" id="comicUpperDiv">
-        <h1 class="loadedComicHeader">{{$route.params.comicName}}</h1>
+    <div class="upperBodyDivComic">
+      <h1 class="loadedComicHeader">{{$route.params.comicName}}</h1>
+
+      <div v-if="comic" id="comicUpperDiv">
         <share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
         <h2>by 
-          <router-link :to="{ name: 'artist', params: { artistName: comic.artist } }" class="underline-link" style="font-weight:300;">
+          <router-link :to="{ name: 'artist', params: { artistName: comic.artist } }"
+                       class="underline-link artistNameLink"
+                       style="font-weight:300;">
             {{comic.artist}}
           </router-link>
         </h2>
@@ -57,7 +60,7 @@
           </button> to rate comic
         </p>
 
-        <div id="comicKeywords" class="margin-top-8 horizontal-flex flexWrap">
+        <div id="comicKeywords" class="mt-16 horizontal-flex flexWrap">
           <span v-if="keywords.length > 0" class="horizontal-flex flexWrap">
             <div class="keyword-static"
                  v-for="keyword in keywords"
@@ -77,9 +80,25 @@
           </div>
         </div>
 
-        <div id="keywordEditing" v-if="keywordSuggestionsActive" class="margin-top-8 horizontal-flex">
-          <div id="dropdownContainer">
-            <span class="vertical-flex" style="align-items: center;">
+        <div id="keywordEditing" v-if="keywordSuggestionsActive" class="mt-32 vertical-flex alignCenter">
+          <MultiToggleButton :items="['Add', 'Remove']"
+                             allowNone
+                             @on-change="newVal => isAddingOrRemoving = newVal[0]"/>
+
+          <div v-if="isAddingOrRemoving === 'Add'" class="mt-8">
+            <select v-model="addKeyword">
+              <option v-for="keyword in keywordsNotInComic" :key="keyword.id">
+                {{keyword.name}}
+              </option>
+            </select>
+
+            <button class="y-button m-0"
+                    :class="{'y-button-disabled-dark': !addKeyword}"
+                    @click="suggestKeywordChange(isAdding=true)">
+              Submit
+            </button>
+          </div>
+            <!-- <span class="vertical-flex" style="align-items: center;">
               <label for="addKeyword">Add tag</label>
               <select v-model="addKeyword">
                 <option v-for="keyword in keywordsNotInComic" :key="keyword.id">
@@ -111,48 +130,47 @@
               >
                 Remove
               </button>
-            </span>
-          </div>
+            </span> -->
         </div>
 
         <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
                          @closeMessage="closeResponseMessage" class="mt-16"/>
-
-        <div id="paidImageBanner" class="mt-16" style="max-height: 100px;">
-          <a v-if="paidImage" :href="paidImage.link" target="_blank">
-            <img :src="`/paid-images/${paidImage.id}.${paidImage.filetype}`" height="100%" width="100%"/>
-          </a>
-
-          <div v-else style="height: 100px; width: 680px;"/>
-        </div>
-
-        <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
-          <p style="margin-right: 4px;">Image fit:</p>
-          <button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Height</button>
-          <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Width</button>
-          <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Full</button>
-          <button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Tiny</button>
-        </div>
-        <p class="smaller-text">You may also click any one image to resize it</p>
-      </span>
-
-      
-      <div v-else-if="!comicNotFound">
-        <h1>{{$route.params.comicName}}</h1>
-        <h2 style="text-align:center; margin: 2rem 0;">
-          Loading comic...
-        </h2>
       </div>
+    </div>
 
-      <div v-else>
-        <h1>{{$route.params.comicName}}</h1>
-        <h2 style="text-align:center; margin: 2rem 0;">
-          There is no comic with this name.
-        </h2>
-      </div>
+    <div v-if="!comic && !comicNotFound">
+      <h2 class="comicLoadingInfo">
+        Loading comic...
+      </h2>
+    </div>
 
+    <div v-else-if="!comic">
+      <h2 class="comicLoadingInfo">
+        There is no comic with this name.
+      </h2>
     </div>
   
+
+
+    <div v-if="comic">
+      <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
+        <p style="margin-right: 4px;">Image fit:</p>
+        <button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Height</button>
+        <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Width</button>
+        <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Full</button>
+        <button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Tiny</button>
+      </div>
+      <p class="smaller-text">You may also click any one image to resize it</p>
+
+
+      <div class="paidImageBannerLink" style="max-height: 100px !important;">
+        <a v-if="paidImage" :href="paidImage.link" target="_blank">
+          <img :src="`/paid-images/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
+        </a>
+
+        <div v-else style="height: 100px; width: 680px;"/>
+      </div>
+    </div>
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
       <img 
         v-for="pageNumber in comic.numberOfPages" 
@@ -212,6 +230,7 @@ import ExpandWidth from 'vue-material-design-icons/ArrowExpandHorizontal.vue'
 import ExpandHeight from 'vue-material-design-icons/ArrowExpandVertical.vue'
 import Download from 'vue-material-design-icons/Download.vue'
 import Tags from 'vue-material-design-icons/TagMultiple.vue'
+import MultiToggleButton from '@/components/MultiToggleButton.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
@@ -239,6 +258,7 @@ export default {
     'expand-height': ExpandHeight,
     'download': Download,
     'tags': Tags,
+    MultiToggleButton,
   },
 
   data: function () {
@@ -257,7 +277,7 @@ export default {
       isZipping: false,
       downloadStarted: false,
       paidImage: null,
-      
+      isAddingOrRemoving: undefined,
     }
   },
 
@@ -350,6 +370,10 @@ export default {
       }
     },
 
+    onAddOrRemoveChanged (newVal) {
+      this.isAddingOrRemoving = newVal
+    },
+
     toggleKeywordSuggestions () {
       this.keywordSuggestionsActive = !this.keywordSuggestionsActive
     },
@@ -372,6 +396,7 @@ export default {
 
         this.addKeyword = undefined
         this.removeKeyword = undefined
+        this.isAddingOrRemoving = undefined
       }
       else {
         this.responseMessage = suggestionResponse.message
@@ -513,6 +538,14 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   }
 }
 
+.comicLoadingInfo {
+  text-align:center;
+  margin: 2rem 1rem 1.5rem 1rem;
+  @media screen and (max-width: 900px) {
+    font-size: 1.5rem;
+  }
+}
+
 #keywordEditing {
   width: 100%;
   select {
@@ -523,26 +556,60 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 #dropdownContainer {
   display: flex;
   flex-direction: row;
-  justify-zipContent: center;
+  justify-content: center;
 }
 
-#upperBodyDivComic {
+.upperBodyDivComic {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 2rem;
   text-align: center;
+  box-shadow: 0px 0px 16px 0px $themeGray4;
   h2 {
     @media (max-width: 900px) {
       font-size: 22px;
     }
   }
+
+  h1, h2, p, label {
+    color: white;
+  }
+
+  .keyword-static {
+    color: #ddd;
+  }
+  
+  background-color: #202325;
+  
+  border-style: solid;
+  border-width: 0;
+  border-bottom-width: 10px;
+  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
 }
 a {
   text-decoration: none;
 }
 
-#loadedComicHeader {
+.artistNameLink {
+  font-size: 30px;
+  @media (max-width: 900px) {
+    font-size: 22px;
+  }
+}
+
+.paidImageBannerLink {
+  margin: 1rem 0;
+}
+.paidImageBanner {
+  @media (max-width: 900px) {
+    max-width: 100%;
+  }
+}
+
+.loadedComicHeader {
+  margin: 0.25rem 0 0.5rem 0;
   @media (max-width: 900px) {
     font-size: 32px;
     max-width: calc(100% - 84px);
@@ -550,11 +617,12 @@ a {
 }
 
 #comicPageContainer {
-  img {
+  img:not(.paidImageBanner) {
     margin: 0 auto 16px auto;
     display: block;
   }
 }
+
 
 .img-fit-height {
   max-height: 100vh;

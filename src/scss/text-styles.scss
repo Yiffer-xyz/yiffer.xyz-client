@@ -19,16 +19,23 @@ p, li, label, td, th, a {
   }
 }
 
+p, a, label {
+  line-height: 1.4rem;
+  font-size: 17px;
+}
+
 h1 {
   font-weight: 300;
   font-size: 3rem;
   padding-top: 2rem;
   margin-top: 0;
   @media (max-width: 900px) {
-    padding-top: 1.5rem;
+    padding-top: 2rem;
     font-size: 2rem;
     &.yifferTitle {
       font-size: 42px;
+      padding-top: 2.25rem;
+      padding-bottom: 0.5rem;
     }
   }
 }
@@ -124,22 +131,22 @@ h2 {
 }
 
 a {
-  color: $theme4;
+  color: $theme5;
   width: fit-content;
 }
 
 .underline-link {
-  padding-bottom: 2px;
+  padding-bottom: 1px;
   width: fit-content;
   height: fit-content;
   background-image: linear-gradient(currentColor, currentColor);
   background-position: 50% 100%;
   background-repeat: no-repeat;
-  background-size: 0% 2px;
+  background-size: 0% 1px;
   transition: background-size .2s;
   &:hover, &:focus {
     text-decoration: none;
-    background-size: 100% 2px;
+    background-size: 100% 1px;
     cursor: pointer;
   }
 }
@@ -153,11 +160,11 @@ label {
 }
 
 .link-color {
-  color: $theme4 !important;
+  color: $theme5 !important;
 }
 
 .link-color-light {
-  color: $theme5 !important;
+  color: $theme6 !important;
 }
 
 .red-color {
