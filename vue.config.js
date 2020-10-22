@@ -4,7 +4,7 @@ module.exports = {
     https: false,
     disableHostCheck: true
   },
-  outputDir: '../test',
+  outputDir: './dist',
   css: {
     loaderOptions: {
       sass: {
