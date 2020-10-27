@@ -34,8 +34,8 @@
       <div v-if="comic" class="horizontal-flex flex-wrap">
         <div v-for="i in pagesToShow" :key="i" class="vertical-flex" style="margin: 4px;">
           <p>Page {{i}}</p>
-          <a :href="`/comics/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" target="_blank">
-            <img :src="`/comics/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" 
+          <a :href="`${config.comicDirectory}/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" target="_blank">
+            <img :src="`${config.comicDirectory}/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" 
               class="page-manager-image"/>
           </a>
         </div>
@@ -140,6 +140,7 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import config from '@/config.json'
 
 export default {
   name: 'pageManager',
@@ -155,6 +156,7 @@ export default {
 
   data: function () {
     return {
+      config,
       isOpen: false,
       comic: undefined,
       startPageViewing: 1,
@@ -181,6 +183,8 @@ export default {
       if (response.success) {
         this.setResponseMessage('success', `Successfully swapped pages ${this.swapPage1} and ${this.swapPage2}`)
         this.$store.dispatch('updateOneComicInList', this.comic)
+        this.swapPage1 = undefined
+        this.swapPage2 = undefined
       }
       else {
         this.setResponseMessage('error', 'Error inserting page: ' + response.message)
@@ -194,7 +198,7 @@ export default {
 
       if (response.success) {
         this.setResponseMessage('success', 'Successfully inserted new page ' + (Number(this.insertPageAfterNumber)+1))
-        this.$store.dispatch('updateOneComicInList', this.comic)
+        this.$store.dispatch('refreshOneComicInList', this.comic.name)
         this.imageToInsert = undefined
       }
       else {
@@ -209,6 +213,7 @@ export default {
       if (response.success) {
         this.setResponseMessage('success', `Successfully deleted page ${this.deletePageNumber}`)
         this.$store.dispatch('updateOneComicInList', this.comic)
+        this.deletePageNumber = undefined
       }
       else {
         this.setResponseMessage('error', 'Error deleting page: ' + response.message)

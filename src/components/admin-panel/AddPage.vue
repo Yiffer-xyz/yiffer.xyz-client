@@ -104,6 +104,7 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import comicApi from '../../api/comicApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import config from '@/config.json'
 
 export default {
   name: 'addPage',
@@ -159,7 +160,7 @@ export default {
     },
 
     showLastPage (comic) {
-      comic.lastPageUrl = `/comics/${comic.name}/${this.formattedPageNumber(comic.numberOfPages)}.jpg`
+      comic.lastPageUrl = `${config.comicDirectory}/${comic.name}/${this.formattedPageNumber(comic.numberOfPages)}.jpg`
       comic.name = ' ' + comic.name + ' '
     },
 

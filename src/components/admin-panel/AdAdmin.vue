@@ -101,7 +101,7 @@
               </td>
 
               <td>
-                <a :href="`/paid-images/${ad.id}.${ad.filetype}`" target="_blank">
+                <a :href="`${config.paidImagesDirectory}/${ad.id}.${ad.filetype}`" target="_blank">
                   View
                 </a>
               </td>
@@ -160,6 +160,7 @@
 
 <script>
 import adApi from '../../api/advertisingApi'
+import config from '@/config.json'
 
 import MultiToggleButton from '../MultiToggleButton'
 import ResponseMessage from '@/components/ResponseMessage.vue'
@@ -187,6 +188,7 @@ export default {
       isSaving: false,
       numberOfPendingAds: 0,
       isOpen: false,
+      config,
     }
   },
 

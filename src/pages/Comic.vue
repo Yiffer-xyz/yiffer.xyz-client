@@ -165,7 +165,7 @@
 
       <div class="paidImageBannerLink" style="max-height: 100px !important;">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
-          <img :src="`/paid-images/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
+          <img :src="`${config.paidImagesDirectory}/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
         </a>
 
         <div v-else style="height: 100px; width: 680px;"/>
@@ -174,7 +174,7 @@
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
       <img 
         v-for="pageNumber in comic.numberOfPages" 
-        :src="`/comics/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
+        :src="`${config.comicDirectory}/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
         :alt="`${comic.name} page ${pageNumber}`"
         :id="'page' + (pageNumber-1)"
         :key="pageNumber"
@@ -237,6 +237,7 @@ import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
 import { mapGetters, mapActions } from 'vuex'
 import { doFetch } from '../utils/statefulFetch'
+import config from '@/config.json'
 
 export default {
   name: 'comic',
@@ -278,6 +279,7 @@ export default {
       downloadStarted: false,
       paidImage: null,
       isAddingOrRemoving: undefined,
+      config,
     }
   },
 

@@ -155,9 +155,9 @@
               </div>
 
               <div v-if="!isThisAdBeingEdited(ad.id)" class="mt-8">
-                <router-link :to="`/paid-images/${ad.id}.${ad.filetype}`" target="_blank" class="underline-link">
+                <a :href="`${config.paidImagesDirectory}/${ad.id}.${ad.filetype}`" target="_blank" class="underline-link">
                   See media<RightArrow/>
-                </router-link>
+                </a>
               </div>
               <form v-else class="mt-8">
                 <p>Change media? If not, ignore this and the current one will be kept.</p>
@@ -190,6 +190,7 @@
 <script>
 import authApi from '../api/authApi'
 import miscApi from '../api/miscApi'
+import config from '@/config.json'
 
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
@@ -237,6 +238,7 @@ export default {
       responseMessageType: 'info',
       modApplicationStatus: MOD_APPLICATION_STATUSES.loading,
       modApplicationStatuses: MOD_APPLICATION_STATUSES,
+      config,
     }
   },
 

@@ -20,7 +20,7 @@
 
 
       <!-- PIC -->
-      <img :src="`/comics/${comic.name}/s.jpg`" @click="storeClickedComicData()">
+      <img :src="`${config.comicDirectory}/${comic.name}/s.jpg`" @click="storeClickedComicData()">
       <!-- <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()"> -->
     </router-link>
 
@@ -31,7 +31,7 @@
           <label class="triangle-label">AD</label>
         </div>
       </div>
-      <img :src="`/paid-images/${comic.id}.${comic.filetype}`" @click="storeClickedComicData()">
+      <img :src="`${config.paidImagesDirectory}/${comic.id}.${comic.filetype}`" @click="storeClickedComicData()">
     </a>
 
     <div v-if="!comic.isPaidImage" class="comic-card-inner-container">
@@ -125,6 +125,7 @@ import Tags from 'vue-material-design-icons/TagMultiple.vue'
 import HideTags from 'vue-material-design-icons/TagRemove.vue'
 import ComicCardPaidImage from './ComicCardPaidImage.vue'
 import { mapGetters } from 'vuex'
+import config from '@/config.json'
 
 export default {
   name: 'comic-card',
@@ -156,6 +157,7 @@ export default {
       recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000),
       isShowingKeywords: false,
       isLoadingKeywords: false,
+      config,
     }
   },
 

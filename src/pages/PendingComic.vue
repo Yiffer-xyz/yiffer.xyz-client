@@ -10,7 +10,7 @@
 
       <h2>Thumbnail</h2>
       <span v-if="comic.hasThumbnail">
-        <img :src="`/comics/${comic.name}/s.jpg`"/>
+        <img :src="`${config.comicDirectory}/${comic.name}/s.jpg`"/>
       </span>
       <span style="display: flex; align-items: center; flex-direction: column;">
         <p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one? Find the guidelines in the mod panel's Adding new comic section.</p>
@@ -103,7 +103,7 @@
       <div style="display: flex; flex-direction: column; align-items: center;">
         <img  
           v-for="pageNumber in comic.numberOfPages" 
-          :src="`/comics/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
+          :src="`${config.comicDirectory}/${comic.name}/${formattedPageNumber(pageNumber)}.jpg`"
           :key="pageNumber"
           :class="['comic-page', 'image-fit-full', 'comic-page-pending']"/>
       </div>
@@ -125,6 +125,7 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
 import { mapGetters } from 'vuex'
+import config from '@/config.json'
 
 export default {
   name: 'pendingComic',
@@ -137,6 +138,7 @@ export default {
 
   data: function () {
     return {
+      config,
       comic: undefined,
       keywordsNotInComic: [],
       selectedKeyword: undefined,
