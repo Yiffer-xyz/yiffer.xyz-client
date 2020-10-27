@@ -69,11 +69,11 @@ export default new Router({
       name: 'suggestComic',
       component: SuggestComic,
     },
-    {
-      path: '/donate',
-      name: 'donate',
-      component: Donate,
-    },
+    // {
+    //   path: '/donate',
+    //   name: 'donate',
+    //   component: Donate,
+    // },
     {
       path: '/join-us',
       name: 'joinUs',

@@ -42,9 +42,9 @@
           </p>
 
           <div slot="dropdown" class="linkDropdown simpleShadowNoHover">
-            <router-link :to="{name: 'donate'}" class="underline-link">
+            <!-- <router-link :to="{name: 'donate'}" class="underline-link">
               <donate-icon title=""/> Donate
-            </router-link>
+            </router-link> -->
 
             <router-link :to="{name: 'suggestComic'}" class="underline-link">
               <plus-icon title=""/> Suggest comic
@@ -57,9 +57,9 @@
         </DropdownMenu>
 
         <span v-else class="allTopLinksContainer">
-          <router-link :to="{name: 'donate'}" class="underline-link">
+          <!-- <router-link :to="{name: 'donate'}" class="underline-link">
             <donate-icon title=""/> Donate
-          </router-link>
+          </router-link> -->
 
           <router-link :to="{name: 'suggestComic'}" class="underline-link">
             <plus-icon title=""/> Suggest comic
@@ -71,8 +71,8 @@
         </span>
       </div>
 
-      <div class="buttons-container" :class="{'closedFilterContent': !isFilterSectionExpanded}" @click="() => toggleShowSearchFiltering(true)">
-        <span v-if="isFilterSectionExpanded" class="upperBodyWidth buttons-container-inner">
+      <div class="buttons-container" :class="{'closedFilterContent': !isFilterSectionExpanded && !isSearchFilteringActive}" @click="() => toggleShowSearchFiltering(true)">
+        <span v-if="isFilterSectionExpanded || isSearchFilteringActive" class="upperBodyWidth buttons-container-inner">
           <div class="upper-body-horiz-row">
             <table class="horiz-row-inner" id="catTable">
               <tr>
@@ -274,39 +274,39 @@
             </table>
           </div>
 
-          <div v-if="hasFetchedComics"
-               style="display: flex; flex-direction: row; align-items: center;"
-               class="upper-body-horiz-row"
-               id="upperPaginationButtons">
-            <div @click="paginate('down')" class="pagination-button"><left-arrow/></div>
-            <div v-for="(pageNo, index) in paginationButtons"
-                :key="index"
-                :class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
-                class="pagination-button"
-                @click="paginate(pageNo)">
-              {{pageNo}}
-            </div>
-            <div @click="paginate('up')" class="pagination-button"><right-arrow/></div>
-          </div>
-          <div v-else-if="!isErrorLoadingComics" class="upper-body-horiz-row" style="margin-top: -3px;">
-            <SkeletonTheme color="#a6a6a6" highlight="#ddd">
-              <Skeleton height="35px" width="100%"/>
-            </SkeletonTheme>
-          </div>
-
           <div class="filterSectionExpander filterSectionDeExpander"
-               @click="() => toggleShowSearchFiltering(false)">
-            <menu-up-icon class="mdi-arrow"/>
-            <p>Minimize</p>
-            <menu-up-icon class="mdi-arrow"/>
+               @click="() => {isSearchFilteringActive ? resetAllFilters() : minimizeSearchFiltering()}">
+            <menu-up-icon class="mdi-arrow" title=""/>
+            <p>
+              {{isSearchFilteringActive ? 'Reset and minimize' : 'Minimize'}}
+            </p>
+            <menu-up-icon class="mdi-arrow" title=""/>
           </div>
         </span>
 
         <div v-else class="filterSectionExpander">
-          <menu-down-icon class="mdi-arrow"/>
+          <ChevronRightIcon class="mdi-arrow" title=""/>
           <p>Search &amp; filter</p>
-          <menu-down-icon class="mdi-arrow"/>
+          <ChevronLeftIcon class="mdi-arrow" title=""/>
         </div>
+      </div>
+
+      <div v-if="hasFetchedComics || showPaginationWhileLoading" class="upperBodyPagination">
+        <div @click="paginate('down', false, true)" class="pagination-button paginationButton2"><left-arrow/></div>
+        <div v-for="(pageNo, index) in paginationButtons"
+            :key="index"
+            :class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
+            class="pagination-button paginationButton2"
+            @click="paginate(pageNo, false, true)">
+          {{pageNo}}
+        </div>
+        <div @click="paginate('up', false, true)" class="pagination-button paginationButton2"><right-arrow/></div>
+      </div>
+      <div v-else-if="!isErrorLoadingComics"
+           style="margin-top: -3px; width: 30rem; margin-bottom: 1rem;">
+        <SkeletonTheme color="#a6a6a6" highlight="#ddd">
+          <Skeleton height="35px" width="100%"/>
+        </SkeletonTheme>
       </div>
     </div>
 
@@ -374,6 +374,9 @@ import LoginIcon from 'vue-material-design-icons/Login.vue'
 import SignupIcon from 'vue-material-design-icons/AccountPlusOutline.vue'
 import ExclamationIcon from 'vue-material-design-icons/Bullhorn.vue'
 import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
+import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue'
+
 import ModIcon from 'vue-material-design-icons/AccountStar.vue'
 
 import DropdownMenu from '@innologica/vue-dropdown-menu'
@@ -406,6 +409,8 @@ export default {
     ExclamationIcon,
     DropdownMenu,
     MenuDownIcon,
+    ChevronRightIcon,
+    ChevronLeftIcon,
     ModIcon,
     Skeleton, SkeletonTheme,
   },
@@ -427,6 +432,8 @@ export default {
       blogLink: undefined,
       showDropdown: false,
       searchFilteringHook: null,
+      showPaginationWhileLoading: false,
+      previousPaginationButtons: [],
       lastClosedTime: new Date(),
     }
   },
@@ -454,6 +461,15 @@ export default {
         || this.paginatedComics.fetching || !this.paginatedComics.fetched)
     },
 
+    isSearchFilteringActive () {
+      if (!this.categoryFilter.includes('All')) { return true }
+      if (!this.tagFilter.includes('All')) { return true }
+      if (!!this.searchFiltering) { return true }
+      if (this.sorting !== 'updated') { return true }
+      if (this.selectedKeywords.length > 0) { return true }
+      return false;
+    },
+
     isErrorLoadingComics () {
       return this.paginatedComics.failed || this.paidImages.failed
     },
@@ -467,7 +483,14 @@ export default {
     },
 
     paginationButtons () {
-      if (!this.paginatedComics.fetched || this.paginatedComics.failed) { return [] }
+      if (!this.paginatedComics.fetched || this.paginatedComics.failed) {
+        if (this.showPaginationWhileLoading) {
+          return this.previousPaginationButtons
+        }
+        else {
+          return []
+        }
+      }
 
       let currentPage = this.paginatedComics.payload.page
       let pages = this.paginatedComics.payload.numberOfPages
@@ -520,6 +543,7 @@ export default {
     },
 
     onCategoryFilterClick (filter) {
+      this.showPaginationWhileLoading = false
       this.addCategoryFilter(filter)
       this.setRouterQuery()
       this.fetchComics()
@@ -527,21 +551,26 @@ export default {
     },
 
     onTagFilterClick (filter) {
+      this.showPaginationWhileLoading = false
       this.addTagFilter(filter)
       this.setRouterQuery()
       this.fetchComics()
       miscApi.logEvent('tagfilter', filter)
     },
 
-    onSortingButtonClick ( sortButtonName ) {
+    onSortingButtonClick (sortButtonName) {
+      this.showPaginationWhileLoading = true
       this.setSorting(sortButtonName)
       this.setRouterQuery()
       this.fetchComics()
       miscApi.logEvent('sort', sortButtonName)
     },
 
-    paginate ( pageNumber, shouldScrollToTopOfList=false ) {
+    paginate (pageNumber, shouldScrollToTopOfList=false, showPaginationWhileLoading=false) {
       if ( pageNumber === '...' ) { return }
+
+      this.previousPaginationButtons = [...this.paginationButtons]
+
       if (pageNumber === 'down') {
         if (this.pageNumber > 1) {
           this.setPageNumber(this.pageNumber-1)
@@ -555,9 +584,14 @@ export default {
       else if ( typeof(pageNumber) !== 'number') {
         pageNumber = 1
       }
+
+      if (pageNumber === this.pageNumber) { return }
+
       else {
         this.setPageNumber(pageNumber)
       }
+
+      this.showPaginationWhileLoading = showPaginationWhileLoading
 
       this.setRouterQuery()
   
@@ -569,7 +603,9 @@ export default {
       this.fetchComics()
     },
 
-    addSelectedKeyword ( keyword ) {
+    addSelectedKeyword (keyword) {
+      this.showPaginationWhileLoading = false
+
       if (!this.lastActionWasDeselectingKeyword) {
         this.lastActionWasDeselectingKeyword = true
         this.$store.dispatch('addSelectedKeyword', keyword)
@@ -581,26 +617,28 @@ export default {
       this.fetchComics()
     },
 
-    removeSelectedKeyword ( keyword ) {
+    removeSelectedKeyword (keyword) {
+      this.showPaginationWhileLoading = false
+
       this.$store.dispatch('removeSelectedKeyword', keyword)
       this.setRouterQuery()
       this.fetchComics()
     },
 
-    filterComicByTag ( comicObject ) {
+    filterComicByTag (comicObject) {
       return this.$store.getters.categoryFilter.indexOf('All') === 0 || this.$store.getters.categoryFilter.indexOf(comicObject.tag) >= 0
     },
 
-    filterComicByCategory ( comicObject ) {
+    filterComicByCategory (comicObject) {
       return this.$store.getters.tagFilter.indexOf('All') === 0 || this.$store.getters.tagFilter.indexOf(comicObject.cat) >= 0
     },
 
-    filterComicByNameOrArtist ( comicObject ) {
+    filterComicByNameOrArtist (comicObject) {
       return comicObject.name.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0 
         || comicObject.artist.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0
     },
 
-    filterComicByKeywords ( comicObject ) {
+    filterComicByKeywords (comicObject) {
       if ( this.selectedKeywords.length === 0 ) { return true }
       for (var keyword of this.selectedKeywords) {
         if (comicObject.keywords.indexOf(keyword.name) === -1) { return false }
@@ -618,6 +656,22 @@ export default {
         this.lastClosedTime = new Date()
       }
       this.$cookies.set('isSearchFilteringExpanded', shouldShow ? 1 : 0)
+    },
+
+    minimizeSearchFiltering () {
+      this.toggleShowSearchFiltering(false)
+    },
+
+    resetAllFilters () {
+      this.showPaginationWhileLoading = false
+      this.$store.commit('setCategoryFilter', ['All'])
+      this.$store.commit('setTagFilter', ['All'])
+      this.$store.commit('setSelectedKeywords', [])
+      this.$store.commit('setSorting', 'updated')
+      this.searchFiltering222 = ''
+      this.paginate(1)
+      this.fetchComics()
+      this.toggleShowSearchFiltering(false)
     },
 
     setRouterQuery () {
@@ -755,6 +809,8 @@ export default {
 
   watch: {
     searchFiltering222: function () {
+      this.showPaginationWhileLoading = false
+
       if (!this.hasFetchedComicListOnce) {
         return
       }
@@ -818,16 +874,13 @@ export default {
 .upperBodyDiv {
   width: 100%;
   box-shadow: 0px 0px 16px 0px $themeGray4;
-  // border-bottom: 1px solid white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // background: linear-gradient(to bottom right, rgb(241, 225, 234) 6%, rgb(233, 233, 233) 100%);
   p, h1, div {
     color: white;
   }
   h1 {
-    // color: #333; //todo
     font-family: 'Shrikhand', cursive;
   }
   h2 {
@@ -835,14 +888,14 @@ export default {
   }
   .text-button {
     color: $theme4;
-    // text-decoration: underline;
     background-image: linear-gradient(currentColor, currentColor) !important;
     background-size: 100% 1px;
     padding-bottom: 1px;
     font-size: 16px;
   }
 
-  background-color: #202325;
+  background: #12131b;
+  background: #0d1a23;
   
   border-style: solid;
   border-width: 0;
@@ -923,16 +976,11 @@ export default {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  // margin-top: 20px;
-  // background: $themeGray1;
   padding: 1.25rem 0;
-  // border-top: 1px solid $themeGray3;
-  // border-bottom: 1px solid $themeGray3;
   >div, >table {
     margin: 7px 0px;
   }
   @media (max-width: 900px) {
-    // padding: 4px 0;
     >div, >table {
       margin: 5px 0px;
     }
@@ -943,7 +991,10 @@ export default {
 
 .upper-body-horiz-row {
   width: 100%;
-  margin: 0.5rem 0;
+  margin: 0.75rem 0;
+
+  // todo rem for old style
+  // border: 1px solid rgba(255,255,255,0.2);
 
   @media (max-width: 900px) {
     margin: 0.75rem 0;
@@ -953,7 +1004,7 @@ export default {
 .pagination-button, .horiz-row-inner td {
   background: $themeGray8;
   color: white;
-  padding: 8px 10px;
+  padding: 9px 10px;
   font-weight: 400;
 
   font-size: 14px;
@@ -961,11 +1012,16 @@ export default {
   &:hover {
     cursor: pointer;
     background: $themeGray5;
+    // todo rem for old style
+    background: rgba(255, 255, 255, 0.1);
   }
 
   @media (max-width: 900px) {
     padding: 0.5rem 0.5rem;
   }
+
+  // todo rem for old style
+  background: rgba(255, 255, 255, 0.25);
 }
 
 #catTable td {
@@ -996,25 +1052,31 @@ export default {
 
 .upper-body-searchbox {
   box-sizing: border-box;
-  padding: 7px;
+  padding: 9px;
   text-align: center;
-  border: 0.5px solid $themeGray5;
+  // border: 0.5px solid $themeGray5;
   background: #f0f0f0;
+  background: rgba(255,255,255,0.8);
   outline: none;
   color: #333;
   width: 100%;
   @media (max-width: 900px) {
-    padding: 5px;
+    padding: 7px;
   }
+}
+
+::placeholder {
+  color: $themeGray8;
+  font-size: 12px;
 }
 
 .input-icon-wrapper {
   color: $themeDark1;
   position: absolute;
   display: block;
-  top: 6px;
+  top: 8px;
   @media (max-width: 900px) {
-    top: 4px;
+    top: 6px;
   }
 }
 
@@ -1052,11 +1114,6 @@ export default {
   }
 }
 
-::placeholder {
-  color: $themeGray5;
-  font-size: 12px;
-}
-
 .comic-card-container {
   margin-top: 16px;
   display: flex;
@@ -1077,6 +1134,25 @@ export default {
   padding-top: 6px;
 }
 
+.upperBodyPagination {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 30rem;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.paginationButton2 {
+  background: rgba(255, 255, 255, 0.25);
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
 .dark {
   .buttons-container {
     background-color: rgba(255, 255, 255, 0.04);
@@ -1087,12 +1163,6 @@ export default {
   .button-selected {
     background: $theme4p5 !important;
     color: white;
-  }
-  .upperBodyDiv {
-    background: linear-gradient(to top right, $themeBlue1, #0D1C23, $theme0);
-    h1 {
-      color: white;
-    }
   }
   .upper-body-horiz-row {
     border: 1px solid $themeDark2;
