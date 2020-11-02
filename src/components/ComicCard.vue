@@ -255,6 +255,7 @@ export default {
   border-style: solid;
   .triangle-label {
     cursor: pointer;
+    font-size: 0.9rem;
   }
 }
 
@@ -277,9 +278,9 @@ export default {
     .triangle-inner {
       border-width: 40px 40px 0 0;
       .triangle-label {
-        font-size: 10px;
-        top: 7px;
-        left: 2px;
+        font-size: 11px;
+        top: 5px;
+        left: 1px;
       }
     }
   }
@@ -288,12 +289,12 @@ export default {
     .triangle-inner {
       border-width: 0 40px 40px 0;
       .triangle-label {
-        font-size: 10px;
-        top: 8px;
-        right: 3px;
+        font-size: 11px;
+        top: 5px;
+        right: 2px;
       }
       .triangle-label-cancelled {
-        right: 1px;
+        right: 0px;
       }
     }
   }

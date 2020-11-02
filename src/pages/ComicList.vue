@@ -342,15 +342,15 @@
     <div v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
          style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;"
          class="upperBodyWidth upper-body-horiz-row">
-      <div @click="paginate('down', true, true)" class="pagination-button paginationButton2"><left-arrow/></div>
+      <div @click="paginate('down', true, true)" class="pagination-button paginationButtonLightBg"><left-arrow/></div>
       <div v-for="(pageNo, index) in paginationButtons"
           :key="index"
           :class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
-          class="pagination-button paginationButton2"
+          class="pagination-button paginationButtonLightBg"
           @click="paginate(pageNo, true, true)">
         {{pageNo}}
       </div>
-      <div @click="paginate('up', true, true)" class="pagination-button paginationButton2"><right-arrow/></div>
+      <div @click="paginate('up', true, true)" class="pagination-button paginationButtonLightBg"><right-arrow/></div>
     </div>
 
     <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
@@ -1150,6 +1150,13 @@ export default {
   background: rgba(255, 255, 255, 0.25);
   &:hover {
     background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.paginationButtonLightBg {
+  background: rgba(0,0,0, 0.75);
+  &:hover {
+    background: rgba(0,0,0, 0.85);
   }
 }
 
