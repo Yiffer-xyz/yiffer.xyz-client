@@ -1,5 +1,5 @@
 <template>
-  <div class="comic-card simple-shadow">
+  <div class="comic-card">
     <router-link v-if="!comic.isPaidImage" :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
       <!-- NEW AND WIP TRIANGLES -->
       <div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
@@ -69,8 +69,7 @@
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div 
           :class="{'keyword': clickableKeyword, 
-                   'keyword-static': !clickableKeyword,
-                   'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
+                   'keyword-static': !clickableKeyword}"
           v-for="keyword in comicKeywords[comic.id]"
           :key="keyword.id"
           @click="addSelectedKeyword(keyword)"
@@ -218,7 +217,7 @@ export default {
   left: 0;
   .triangle-inner {
     border-width: 60px 60px 0 0;
-    border-color: $themeGray0p5 transparent transparent transparent;
+    border-color: $themeGray0 transparent transparent transparent;
     .triangle-label {
       color: $theme5;
       position: absolute;
@@ -233,7 +232,7 @@ export default {
   right: 0;
   .triangle-inner {
     border-width: 0 60px 60px 0;
-    border-color: transparent $themeGray0p5 transparent transparent;
+    border-color: transparent $themeGray0 transparent transparent;
     .triangle-label {
       position: absolute;
       color: $themeDark1;
@@ -334,32 +333,6 @@ export default {
   border: 0.5px solid $theme5;
 }
 
-.dark {
-  .circled-text {
-    background-color: #333;
-    color: #bbb !important; //todo
-  }
-
-  .emphasized-keyword {
-    background: $themeGray8;
-    border-color: $themeGray8;
-  }
-
-  .triangle-wrapper-right {
-    .triangle-inner {
-      border-color: transparent $themeDark3 transparent transparent;
-      .triangle-label {
-        color: inherit;
-      }
-    }
-  }
-  .triangle-wrapper-left {
-    .triangle-inner {
-      border-color: $themeDark3 transparent transparent transparent;
-    }
-  }
-}
-
 .comic-card {
   position: relative;
   width: 200px;
@@ -371,6 +344,21 @@ export default {
   padding-bottom: 8px;
   background-color: $themeGray0;
   border-radius: 4px;
+  box-shadow: 0 0px 10px rgba(0,0,0,0.15);
+  &:before {
+    box-shadow: 0 0px 14px rgba(0,0,0,0.1);
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  &:hover::before {
+    opacity: 1;
+  }
   img {
     width: 100%;
     height: 283px;
@@ -423,6 +411,52 @@ export default {
     }
     .voting-button {
       width: 76%;
+    }
+  }
+}
+
+.dark {
+  .circled-text {
+    background-color: #333;
+    color: #bbb !important; //todo
+  }
+
+  .emphasized-keyword {
+    background: $themeGray8;
+    border-color: $themeGray8;
+  }
+
+  .triangle-wrapper-right {
+    .triangle-inner {
+      border-color: transparent $comicCardDark transparent transparent;
+      .triangle-label {
+        color: inherit;
+      }
+    }
+  }
+  .triangle-wrapper-left {
+    .triangle-inner {
+      border-color: $comicCardDark transparent transparent transparent;
+    }
+  }
+
+  .comic-card {
+    background-color: $comicCardDark;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+    &:before {
+      box-shadow: 0 0 10px 1px $theme3;
+      // box-shadow: 0 0px 14px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+      content: ' ';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    &:hover::before {
+      opacity: 1;
     }
   }
 }

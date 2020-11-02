@@ -283,10 +283,6 @@
     p, div, .fas {
       color: #ddd; //todo
     }
-    box-shadow: none;
-    &:hover {
-      box-shadow: 0 0 10px 1px $theme3;
-    }
 
     .y-button {
       background-color: $theme4p5;

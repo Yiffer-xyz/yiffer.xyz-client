@@ -61,7 +61,6 @@
       :style="{'margin-right': keywordsMarginRight}">
         <div 
           class="keyword keyword2"
-          :class="{'keyword-filtered': $store.getters.selectedKeywords.includes(keyword)}"
           v-for="keyword in comic.keywords"
           :key="keyword"
           @click="addSelectedKeyword(keyword, $event)">

@@ -71,7 +71,12 @@
         </span>
       </div>
 
-      <div class="buttons-container" :class="{'closedFilterContent': !isFilterSectionExpanded && !isSearchFilteringActive}" @click="() => toggleShowSearchFiltering(true)">
+      <div class="buttons-container"
+           :class="{
+             'closedFilterContent': !isFilterSectionExpanded && !isSearchFilteringActive,
+             'openFilterContent': isFilterSectionExpanded || isSearchFilteringActive
+            }"
+           @click="() => toggleShowSearchFiltering(true)">
         <span v-if="isFilterSectionExpanded || isSearchFilteringActive" class="upperBodyWidth buttons-container-inner">
           <div class="upper-body-horiz-row">
             <table class="horiz-row-inner" id="catTable">
@@ -979,11 +984,13 @@ export default {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  padding: 1.25rem 0;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
   >div, >table {
     margin: 7px 0px;
   }
   @media (max-width: 900px) {
+    margin: 0.5rem 0;
     >div, >table {
       margin: 5px 0px;
     }
@@ -1161,15 +1168,18 @@ export default {
 }
 
 .dark {
-  .buttons-container {
+  .openFilterContent {
     background-color: rgba(255, 255, 255, 0.04);
-    box-shadow: 0px 0px 16px 0px rgba(255, 255, 255, 0.04);
+    box-shadow: 0px 0px 16px 0px #202020;
     border-top: 1px solid $themeDark2;
     border-bottom: 1px solid $themeDark2;
   }
   .button-selected {
     background: $theme4p5 !important;
     color: white;
+  }
+  .upperBodyDiv {
+    box-shadow: 0px 0px 16px 0px #202020;
   }
   .upper-body-horiz-row {
     border: 1px solid $themeDark2;
@@ -1216,6 +1226,15 @@ export default {
   padding: 0.5rem 0;
   max-height: 3rem;
   width: fit-content;
+}
+.openFilterContent {
+  padding: 0.5rem 0 1rem 0;
+  margin-bottom: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0px 0px 16px 0px #202020;
+    border-top: 1px solid $themeDark2;
+    border-bottom: 1px solid $themeDark2;
+
 }
 
 .filterSectionExpander {

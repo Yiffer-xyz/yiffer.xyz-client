@@ -20,7 +20,7 @@ textarea {
 }
 
 ::selection {
-  background: rgba(120, 253, 214, 0.5);
+  background: #fbb7d080;
 }
 
 body {
@@ -28,7 +28,7 @@ body {
 }
 
 .dark {
-  background-color: #090f14;
+  background-color: #262c30;
   p, h1, h2, div, td, h3 {
     color: #eee;
   }
@@ -336,9 +336,6 @@ select {
   @include simpleshadowSmall;
   border: none;
 }
-.keyword-filtered {
-  border: 0.5px solid $theme4;
-}
 .keyword:hover {
   color: $theme4 !important;
   cursor: pointer;
@@ -421,9 +418,12 @@ input, textarea, select {
   }
 
   .keyword, .keyword-static {
-    border-color: #555;
-    color: #ddd;
-    box-shadow: 0 1px 2px rgba(0,0,0, 0.7);
+    background-color: #333;
+    color: white !important;
+    box-shadow: none;
+  }
+  .keyword:hover {
+    background-color: $theme4;
   }
 }
 
