@@ -291,7 +291,7 @@
         </div>
       </div>
 
-      <div v-if="hasFetchedComics || showPaginationWhileLoading" class="upperBodyPagination">
+      <div v-if="hasFetchedComics || showPaginationWhileLoading" class="upperBodyPagination" id="upperPaginationButtons">
         <div @click="paginate('down', false, true)" class="pagination-button paginationButton2"><left-arrow/></div>
         <div v-for="(pageNo, index) in paginationButtons"
             :key="index"
@@ -304,7 +304,7 @@
       </div>
       <div v-else-if="!isErrorLoadingComics"
            style="margin-top: -3px; width: 30rem; margin-bottom: 1rem;">
-        <SkeletonTheme color="#a6a6a6" highlight="#ddd">
+        <SkeletonTheme color="rgba(255,255,255,0.25)" highlight="#888">
           <Skeleton height="35px" width="100%"/>
         </SkeletonTheme>
       </div>
@@ -342,15 +342,15 @@
     <div v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
          style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;"
          class="upperBodyWidth upper-body-horiz-row">
-      <div @click="paginate('down', shouldScrollToTopOfList=true)" class="pagination-button"><left-arrow/></div>
+      <div @click="paginate('down', true, true)" class="pagination-button paginationButton2"><left-arrow/></div>
       <div v-for="(pageNo, index) in paginationButtons"
           :key="index"
           :class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
-          class="pagination-button"
-          @click="paginate(pageNo, shouldScrollToTopOfList=true)">
+          class="pagination-button paginationButton2"
+          @click="paginate(pageNo, true, true)">
         {{pageNo}}
       </div>
-      <div @click="paginate('up', shouldScrollToTopOfList=true)" class="pagination-button"><right-arrow/></div>
+      <div @click="paginate('up', true, true)" class="pagination-button paginationButton2"><right-arrow/></div>
     </div>
 
     <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
@@ -572,21 +572,23 @@ export default {
       this.previousPaginationButtons = [...this.paginationButtons]
 
       if (pageNumber === 'down') {
-        if (this.pageNumber > 1) {
-          this.setPageNumber(this.pageNumber-1)
-        } 
+        if (this.paginatedComics.payload.page > 1) {
+          this.setPageNumber(this.paginatedComics.payload.page-1)
+        }
+        else { return }
       }
       else if (pageNumber === 'up') {
-        if (this.pageNumber * config.comicsPerPage < this.$store.getters.filteredComics.length) {
-          this.setPageNumber(this.pageNumber+1)
+        if (this.paginatedComics.payload.page < this.paginatedComics.payload.numberOfPages) {
+          this.setPageNumber(this.paginatedComics.payload.page+1)
         }
+        else { return }
       }
-      else if ( typeof(pageNumber) !== 'number') {
+      else if (typeof(pageNumber) !== 'number') {
         pageNumber = 1
       }
-
-      if (pageNumber === this.pageNumber) { return }
-
+      else if (pageNumber === this.pageNumber) {
+        return
+      }
       else {
         this.setPageNumber(pageNumber)
       }
@@ -939,25 +941,26 @@ export default {
   flex-wrap: wrap;
   justify-content: flex-end;
   margin-bottom: 7px;
+  margin: -2px;
 }
   
 .selected-keyword {
-  border: 0.5px solid #666;
-  font-size: 12px;
-  padding: 1px 4px 1.5px 6px;
+  background-color: $theme4;
+  color: white;
+  font-size: 14px;
+  padding: 2px 10px 2.5px 10px;
   border-radius: 15px;
   font-weight: 300;
-  margin: 0px 2px;
+  margin: 2px;
   &:hover {
     cursor: pointer;
-    text-decoration: line-through;
-    color: $themeRed2;
-    border-color: $themeRed2;
+    background-color: $theme2;
   }
   span {
     svg {
       bottom: -0.22em !important;
       margin-right: -1px;
+      padding-left: 4px;
     }
   }
 }
@@ -1098,10 +1101,10 @@ export default {
 }
 
 .search-wrapper {
-  width: 47%;
+  width: calc(50% - 0.37rem);
   position: relative;
   @media (max-width: 900px) {
-    width: 49%;
+    width: calc(50% - 0.37rem);
   }
 }
 
@@ -1109,9 +1112,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  @media (max-width: 900px) {
-    justify-content: space-evenly;
-  }
 }
 
 .comic-card-container {
@@ -1181,13 +1181,6 @@ export default {
     border-color: $themeDark2;
     background: rgba(0, 0, 0, 0.1);
 
-  }
-  .keyword, .selected-keyword {
-    border-color: #555;
-    color: white;
-    &:hover {
-      color: $themeRed2;
-    }
   }
   .keyword-result {
     color: #eee !important;
