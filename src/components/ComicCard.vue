@@ -345,8 +345,8 @@ export default {
   background-color: $themeGray0;
   border-radius: 4px;
   box-shadow: 0 0px 10px rgba(0,0,0,0.15);
-  &:before {
-    box-shadow: 0 0px 14px rgba(0,0,0,0.1);
+  &:after {
+    box-shadow: 0 0px 14px rgba(0,0,0,0.15);
     opacity: 0;
     transition: opacity 0.15s ease-out;
     content: ' ';
@@ -355,8 +355,9 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
+    pointer-events: none;
   }
-  &:hover::before {
+  &:hover::after {
     opacity: 1;
   }
   img {
@@ -443,7 +444,7 @@ export default {
   .comic-card {
     background-color: $comicCardDark;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
-    &:before {
+    &:after {
       box-shadow: 0 0 10px 1px $theme3;
       // box-shadow: 0 0px 14px rgba(0,0,0,0.1);
       opacity: 0;
@@ -455,7 +456,7 @@ export default {
       bottom: 0;
       left: 0;
     }
-    &:hover::before {
+    &:hover::after {
       opacity: 1;
     }
   }
