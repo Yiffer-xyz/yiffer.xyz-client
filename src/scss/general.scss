@@ -396,7 +396,7 @@ input, textarea, select {
     }
   }
 
-  input, textarea {
+  input:not(.upper-body-searchbox), textarea {
     background: rgb(22, 26, 29);
     border: 1px solid #666;
     color: white;

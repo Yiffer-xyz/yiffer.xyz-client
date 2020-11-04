@@ -943,7 +943,7 @@ export default {
   text-align: center;
   color: #444 !important;
   font-size: 12px;
-  padding: 3px 0px;
+  padding: 5px 0px;
   font-weight: 300;
   &:hover {
     background-color: $themeGray1;
@@ -1191,36 +1191,14 @@ export default {
     border-top: 1px solid $themeDark2;
     border-bottom: 1px solid $themeDark2;
   }
-  .button-selected {
-    background: $theme4p5 !important;
-    color: white;
-  }
   .upperBodyDiv {
     box-shadow: 0px 0px 16px 0px #202020;
-  }
-  .upper-body-horiz-row {
-    border: 1px solid $themeDark2;
-  }
-  .horiz-row-inner-border {
-    border: 1px solid $themeDark2;
-  }
-  .horiz-row-inner td, .pagination-button {
-    background: rgba(0, 0, 0, 0.3);
-    &:hover {
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.1);
-    }
-  }
-  .one-searchbox-container input, #keywordSearch {
-    border-color: $themeDark2;
-    background: rgba(0, 0, 0, 0.1);
-
   }
   .keyword-result {
     color: #eee !important;
     background: rgba(9, 15, 20, 0.96);
     &:hover {
-      background: $themeBlue1;
+      background: rgba(49, 53, 56, 0.96);
       color: $themeBlue;
     }
   }
@@ -1244,6 +1222,7 @@ export default {
   max-height: 3rem;
   width: fit-content;
 }
+
 .openFilterContent {
   padding: 0.5rem 0 1rem 0;
   margin-bottom: 0.75rem;
@@ -1251,7 +1230,6 @@ export default {
     box-shadow: 0px 0px 16px 0px #202020;
     border-top: 1px solid $themeDark2;
     border-bottom: 1px solid $themeDark2;
-
 }
 
 .filterSectionExpander {
