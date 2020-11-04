@@ -196,7 +196,8 @@ export default {
     },
 
     addSelectedKeyword (keyword) {
-      if ( this.clickableKeyword ) {
+      if (this.clickableKeyword) {
+        this.$store.commit('setWasKwSelectedFromList', false)
         this.$store.dispatch('addSelectedKeyword', keyword)
       }
     },

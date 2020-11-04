@@ -161,7 +161,7 @@
           </div>
 
           <div style="width: 100%; margin: 7px 0;">
-            <div class="two-search-row">
+            <div class="two-search-row" id="searchInputsContainer">
               <div class="search-wrapper">
                 <div class="one-searchbox-container" id="mainSearchBox">
                   <span class="input-icon-wrapper input-icon-wrapper-left"><search-icon title=""/></span>
@@ -458,6 +458,7 @@ export default {
       'hasFetchedComicListOnce',
       'orderedKeywordList',
       'isFilterSectionExpanded',
+      'wasKwSelectedFromList',
     ]),
 
     isLoadingComics () {
@@ -615,13 +616,24 @@ export default {
 
       if (!this.lastActionWasDeselectingKeyword) {
         this.lastActionWasDeselectingKeyword = true
+        this.$store.commit('setWasKwSelectedFromList', true)
         this.$store.dispatch('addSelectedKeyword', keyword)
         this.keywordSearchFocused = undefined
         this.keywordSearch = ''
       }
+
       keywordApi.logKeywordSearch(keyword.id, false)
+    },
+
+    onKeywordsChange (wasKwRemoved) {
+      this.showPaginationWhileLoading = false
       this.setRouterQuery()
       this.fetchComics()
+      
+      if (!this.wasKwSelectedFromList && !wasKwRemoved) {
+        let searchContainer = document.getElementById('searchInputsContainer')
+        searchContainer.scrollIntoView()
+      }
     },
 
     removeSelectedKeyword (keyword) {
@@ -815,6 +827,10 @@ export default {
   },
 
   watch: {
+    selectedKeywords: function (newKws, oldKws) {
+      let wasKwRemoved = newKws.length < oldKws.length
+      this.onKeywordsChange(wasKwRemoved)
+    },
     searchFiltering222: function () {
       this.showPaginationWhileLoading = false
 
@@ -850,6 +866,7 @@ export default {
     }
     this.$store.commit('setLoginModalVisibility', false)
     this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
+    this.$store.watch(this.$store.getters.getSelectedKeywords, this.onKeywordsChange)
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
     miscApi.logRoute('index')

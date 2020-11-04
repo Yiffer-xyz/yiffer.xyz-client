@@ -25,6 +25,7 @@ const store = {
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
     comicKeywords: {},
     isFilterSectionExpanded: false,
+    wasKwSelectedFromList: true,
   },
 
   actions: {
@@ -193,7 +194,8 @@ const store = {
     setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
     setHasFetchedComicListOnce (state) { state.hasFetchedComicListOnce = true },
     setComicKeywords (state, comicKeywords) { state.comicKeywords = comicKeywords },
-    setIsFilterSectionExpanded (state, isExpanded) { state.isFilterSectionExpanded = isExpanded }
+    setIsFilterSectionExpanded (state, isExpanded) { state.isFilterSectionExpanded = isExpanded },
+    setWasKwSelectedFromList (state, wasSelected) { state.wasKwSelectedFromList = wasSelected },
   },
 
   getters: {
@@ -224,6 +226,7 @@ const store = {
     hasFetchedComicListOnce: state => state.hasFetchedComicListOnce,
     comicKeywords: state => state.comicKeywords,
     isFilterSectionExpanded: state => state.isFilterSectionExpanded,
+    wasKwSelectedFromList: state => state.wasKwSelectedFromList,
   },
 }
 
