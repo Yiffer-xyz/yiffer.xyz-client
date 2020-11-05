@@ -583,7 +583,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
     color: #ddd;
   }
   
-  background-color: #202325;
+  background: #0d1a23;
   
   border-style: solid;
   border-width: 0;
@@ -641,6 +641,12 @@ a {
 #comicSizingButtonsRow {
   .y-button {
     margin: 0px 4px;
+  }
+}
+
+.dark {
+  .upperBodyDivComic {
+    box-shadow: 0px 0px 16px 0px #202020;
   }
 }
 </style>

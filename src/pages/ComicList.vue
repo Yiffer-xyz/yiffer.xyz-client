@@ -918,7 +918,6 @@ export default {
     font-size: 16px;
   }
 
-  background: #12131b;
   background: #0d1a23;
   
   border-style: solid;
