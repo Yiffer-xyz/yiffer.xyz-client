@@ -12,7 +12,15 @@
       <span v-if="comic.hasThumbnail">
         <img :src="`${config.comicDirectory}/${comic.name}/s.jpg`"/>
       </span>
-      <span style="display: flex; align-items: center; flex-direction: column;">
+
+      <ResponseMessage :message="thumbnailResponseMessage"
+                       :messageType="thumbnailResponseMessageType"
+                       @closeMessage="() => thumbnailResponseMessage = ''"
+                       outsideStyle="margin-top: 0.5rem;" />
+
+      <Loading v-if="isSubmittingThumbnail" text="Submitting" style="margin-top: 1rem;" />
+
+      <span v-else style="display: flex; align-items: center; flex-direction: column;">
         <p v-if="!comic.hasThumbnail">There is no thumbnail yet! Help out by adding one? Find the guidelines in the mod panel's Adding new comic section.</p>
         <form enctype="multipart/form-data" novalidate style="width: fit-content" class="margin-top-8">
           <div class="pretty-input-upload">
@@ -24,16 +32,20 @@
         <button v-if="thumbnailFile" @click="processNewThumbnail()" class="y-button margin-top-8">
           Add {{thumbnailFile.name}} as thumbnail
         </button>
-
-        <p class="error-message margin-top-8" v-if="errorMessageThumbnail">{{errorMessageThumbnail}}</p>
-        <p class="success-message margin-top-8" v-if="successMessageThumbnail">{{successMessageThumbnail}}</p>
-        <p class="success-message margin-top-8" v-if="thumbnailUploading">Please wait, uploading...</p>
       </span>
 
 
       <h2 class="margin-top-32">Tags</h2>
       <p v-if="comic.keywords.length === 0">No tags have been added.</p>
-      <div class="horizontal-flex" style="width: 100%; margin-top: 8px;">
+      
+      <ResponseMessage :message="keywordResponseMessage"
+                       :messageType="keywordResponseMessageType"
+                       @closeMessage="() => keywordResponseMessage = ''"
+                       outsideStyle="margin-top: 0.5rem;" />
+
+      <Loading v-if="isSubmittingKeywords" text="Submitting" style="padding-top: 5.5rem; height: 6.5rem;"/>
+
+      <div v-else class="horizontal-flex" style="width: 100%; margin-top: 8px;">
         <div class="vertical-flex" style="margin: 0 12px 0 0;">
           <p class="admin-mini-header">Tag list</p>
           <select size="8" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
@@ -69,14 +81,23 @@
           </button>
         </div>
       </div>
-      <p class="error-message" v-if="errorMessageKeywords" style="margin-top: 8px;">{{errorMessageKeywords}}</p>
-      <p class="success-message" v-if="successMessageKeywords" style="margin-top: 8px;">{{successMessageKeywords}}</p>
 
-      
+
 
       <h2 class="margin-top-32">Comic pages</h2>
-      <button v-if="!appendPages" @click="appendPages = true" class="y-button y-button-neutral">Append pages</button>
-      <span v-if="appendPages" style="display: flex; align-items: center; flex-direction: column;">
+      <button v-if="!appendPages" @click="appendPages = true" class="y-button y-button-neutral mt-4">Append pages</button>
+
+      <Loading v-if="isSubmittingPages"
+               style="margin-top: 0.5rem;"
+               :text="uploadPercent===100 ? `Uploading: ${uploadPercent}%` : 'Processing...'" />
+
+      <ResponseMessage :message="pagesResponseMessage"
+                       :messageType="pagesResponseMessageType"
+                       @closeMessage="() => pagesResponseMessage = ''"
+                       outsideStyle="margin-top: 1rem;" />
+
+      <span v-if="appendPages && !isSubmittingPages"
+            style="display: flex; align-items: center; flex-direction: column; mt-4">
         <form enctype="multipart/form-data" novalidate>
           <div class="pretty-input-upload">
             <input type="file" multiple="true" @change="processApendFilesUploadChange" id="appendPagesFiles" accept="image/x-png,image/jpeg" class="input-file"/>
@@ -89,10 +110,6 @@
 
         <button v-if="selectedFiles.length" @click="uploadAppendPages" class="y-button margin-top-8">Submit {{selectedFiles.length}} pages</button>
       </span>
-
-      <p class="success-message" v-if="uploadPercent" style="margin-top: 8px;">Uploading ({{uploadPercent}}%)</p>
-      <p class="error-message" v-if="errorMessageAppendFiles" style="margin-top: 8px;">{{errorMessageAppendFiles}}</p>
-      <p class="success-message" v-if="successMessageAppendFiles" style="margin-top: 8px;">{{successMessageAppendFiles}}</p>
 
       <div class="horizontal-flex margin-top-16">
         <button @click="fitImages('full')" class="y-button y-button-neutral" style="margin: 4px;">Full size</button>
@@ -121,6 +138,8 @@
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import BackArrow from 'vue-material-design-icons/Undo.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
+import Loading from '@/components/LoadingIndicator.vue'
 
 import comicApi from '../api/comicApi'
 import keywordApi from '../api/keywordApi'
@@ -134,6 +153,8 @@ export default {
     UpArrow,
     BackArrow,
     RightArrow,
+    ResponseMessage,
+    Loading,
   },
 
   data: function () {
@@ -148,14 +169,19 @@ export default {
       appendPages: false,
       selectedFiles: [],
       uploadPercent: undefined,
-      errorMessageThumbnail: '',
-      successMessageThumbnail: '',
-      thumbnailUploading: false,
-      errorMessageKeywords: '',
-      successMessageKeywords: '',
-      errorMessageAppendFiles: '',
-      successMessageAppendFiles: '',
       comicLoadErrorMessage: '',
+
+      isSubmittingThumbnail: false,
+      thumbnailResponseMessage: '',
+      thumbnailResponseMessageType: 'error',
+
+      isSubmittingKeywords: false,
+      keywordResponseMessage: '',
+      keywordResponseMessageType: 'error',
+
+      isSubmittingPages: false,
+      pagesResponseMessage: '',
+      pagesResponseMessageType: 'error',
     }
   },
 
@@ -180,15 +206,14 @@ export default {
     },
     
     async processNewThumbnail () {
-      this.successMessageThumbnail = ''
-      this.errorMessageThumbnail = ''
       let fileReader = new FileReader()
       fileReader.onload = () => {
         let tempImage = new Image()
         tempImage.src = fileReader.result
         tempImage.onload = () => {
           if (tempImage.width !== 200 || tempImage.height !== 283) {
-            this.errorMessageThumbnail = `Sorry, the image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
+            this.thumbnailResponseMessage = `The image does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
+            this.thumbnailResponseMessageType = 'error'
           }
           else {
             this.uploadThumbnailImage()
@@ -199,16 +224,21 @@ export default {
     },
 
     async uploadThumbnailImage () {
-      this.thumbnailUploading = true
+      this.thumbnailResponseMessage = ''
+
+      this.isSubmittingThumbnail = true
       let response = await comicApi.addThumbnailToPendingComic(this.comic, this.thumbnailFile)
-      this.thumbnailUploading = false
+      this.isSubmittingThumbnail = false
+
       if (response.success) {
-        this.successMessageThumbnail = 'Success adding thumbnail!'
+        this.thumbnailResponseMessage = 'Success adding thumbnail!'
+        this.thumbnailResponseMessageType = 'success'
         window.location.reload()
         this.thumbnailFile = undefined
       }
       else {
-        this.errorMessageThumbnail = 'Error adding thumbnail: ' + response.message
+        this.thumbnailResponseMessage = 'Error adding thumbnail: ' + response.message
+        this.thumbnailResponseMessageType = 'error'
       }
     },
 
@@ -232,32 +262,36 @@ export default {
     },
     
     async confirmAddKeywords () {
+      this.isSubmittingKeywords = true
       let response = await keywordApi.addKeywordsToPendingComic(this.comic, this.selectedKeywords)
+      this.isSubmittingKeywords = false
 
       if (response.success) {
-        this.successMessageKeywords = 'Successfully added tags!'
-        this.errorMessageKeywords = ''
+        this.keywordResponseMessage = 'Successfully added tags!'
+        this.keywordResponseMessageType = 'success'
         this.selectedKeywords = []
         this.reloadComic()
       }
       else {
-        this.errorMessageKeywords = 'Error adding tags: ' + response.message
-        this.successMessageKeywords = ''
+        this.keywordResponseMessage = 'Error adding tags: ' + response.message
+        this.keywordResponseMessageType = 'error'
       }
     },
 
     async confirmRemoveKeywords () {
+      this.isSubmittingKeywords = true
       let response = await keywordApi.removeKeywordsFromPendingComic(this.comic, this.keywordsToDelete)
+      this.isSubmittingKeywords = false
 
       if (response.success) {
-        this.successMessageKeywords = 'Successfully removed tags!'
-        this.errorMessageKeywords = ''
+        this.keywordResponseMessage = 'Successfully removed tags!'
+        this.keywordResponseMessageType = 'success'
         this.keywordsToDelete = []
         this.reloadComic()
       }
       else {
-        this.errorMessageKeywords = 'Error removing tags: ' + response.message
-        this.successMessageKeywords = ''
+        this.keywordResponseMessage = 'Error removing tags: ' + response.message
+        this.keywordResponseMessageType = 'error'
       }
     },
     
@@ -266,20 +300,23 @@ export default {
     },
     
     async uploadAppendPages () {
+      this.isSubmittingPages = true
       let response = await comicApi.addPagesToPendingComic(this.comic, this.selectedFiles, this.updateUploadProgress)
-      this.errorMessageAppendFiles = ''
-      this.successMessageAppendFiles = ''
+      this.isSubmittingPages = false
+
       this.uploadPercent = undefined
 
       if (response.success) {
-        this.successMessageAppendFiles = `Success adding ${this.selectedFiles.length} pages to comic!`
+        this.pagesResponseMessage = `Success adding ${this.selectedFiles.length} pages to comic!`
+        this.pagesResponseMessageType = 'success'
         this.selectedFiles = []
         this.appendPages = false
         this.comic.numberOfPages = 0
         this.reloadComic()
       }
       else {
-        this.errorMessageAppendFiles = response.message
+        this.pagesResponseMessage = response.message
+        this.pagesResponseMessageType = 'error'
       }
     },
     
