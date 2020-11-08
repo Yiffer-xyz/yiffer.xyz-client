@@ -11,28 +11,28 @@
       <comic-suggestions />
 
       <add-page :comicList="allComics.payload"
-                @refresh-comic-list="refreshComicList()" />
+                @refresh-comic-list="refreshComicList" />
 
       <add-keywords :comicList="allComics.payload"
-                    @refresh-comic-list="refreshComicList()" />
+                    @refresh-comic-list="refreshComicList" />
 
       <correct-comic :comicList="allComics.payload" 
                      :artistList="artistList"
-                     @refresh-comic-list="refreshComicList()" />
+                     @refresh-comic-list="refreshComicList" />
 
       <page-manager :comicList="allComics.payload"
-                    @refresh-comic-list="refreshComicList()" />
+                    @refresh-comic-list="refreshComicList" />
 
       <add-comic :artistList="artistList" 
                  :comicList="allComics.payload"
-                 @refresh-pending-comics="refreshPendingComics()" />
+                 @refresh-pending-comics="refreshPendingComics" />
 
       <artist-manager :artistList="artistList"
-                      @refresh-artist-list="refreshArtistList()" />
+                      @refresh-artist-list="refreshArtistList" />
 
       <pending-comics :pendingComics="pendingComics"
-                      @refresh-pending-comics="refreshPendingComics()"
-                      @refresh-comic-list="refreshComicList()" />
+                      @refresh-pending-comics="refreshPendingComics"
+                      @refresh-comic-list="refreshComicList" />
 
       <user-manager/>
 
@@ -126,7 +126,7 @@ export default {
       this.$store.commit('setLoginModalVisibility', true)      
     },
     async refreshComicList () {
-      // todo
+      doFetch(this.$store.commit, 'allComics', comicApi.getAllComics())
     },
     async refreshArtistList () {
       this.artistList = await ArtistApi.getArtistList()

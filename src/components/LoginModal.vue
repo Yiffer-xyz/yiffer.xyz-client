@@ -33,7 +33,7 @@
         <ResponseMessage :message="signupErrorMessage"
                          :messageType="'error'"
                          @closeMessage="() => signupErrorMessage = ''"
-                         style="margin-top: 1rem;"/>
+                         outsideStyle="margin-top: 1rem;"/>
 
         <form @submit="signupConfirmClicked" class="login-register-form">
           <label for="signupUsername">Username</label>

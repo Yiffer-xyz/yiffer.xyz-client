@@ -4,9 +4,11 @@
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
-                  class="margin-top-8"/>
+                       outsideStyle="margin: 0.5rem auto;"/>
 
-      <div class="horizontal-flex flex-wrap" style="margin-top: 8px; align-items: center;">
+      <Loading v-if="comicList.length === 0" text="Fetching comics" style="margin-top: 1rem;" />
+
+      <div v-else class="horizontal-flex flex-wrap" style="margin-top: 8px; align-items: center;">
         <p class="admin-mini-header margin-bottom-4 margin-right-8">Comic:</p>
         <select v-model="comic" class="margin-bottom-4">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -19,7 +21,7 @@
         </router-link>
       </div>
 
-      <span v-if="comic" class="margin-top-8" style="width: 100%;">
+      <span v-if="comic && !isSubmitting" class="margin-top-8" style="width: 100%;">
 				<button @click="toggleRename(true)" v-if="!renameActive" class="y-button y-button-neutral margin-bottom-16">Rename comic</button>
 				<span v-if="renameActive" class="horizontal-flex margin-bottom-16" style="align-items: center;">
           <div class="vertical-flex">
@@ -122,6 +124,8 @@
 				</span>
       </span>
 
+      <Loading v-if="isSubmitting" text="Updating..." style="margin-top: 1rem;" />
+
       <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
@@ -135,6 +139,7 @@
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import Loading from '@/components/LoadingIndicator.vue'
 
 import comicApi from '../../api/comicApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
@@ -143,7 +148,7 @@ export default {
 	name: 'correctComic',
   
   components: {
-    ResponseMessage,
+    ResponseMessage, Loading,
     RightArrow, CrossIcon, RefreshIcon
 	},
   
@@ -168,6 +173,7 @@ export default {
       previousComic: undefined,
       nextComic: undefined,
 
+      isSubmitting: false,
       responseMessage: '',
       responseMessageType: 'info',
     }
@@ -175,6 +181,8 @@ export default {
 
   methods: {
     async submitChanges () {
+      this.isSubmitting = true
+
       let response = await comicApi.updateComic({
 				id: this.comic.id,
 				name: (this.renameActive && this.newComicName.length>0) ? this.newComicName : this.comic.name,
@@ -185,7 +193,9 @@ export default {
         artist: this.artist,
         previousComic: this.previousComic ? this.previousComic.id : null,
         nextComic: this.nextComic ? this.nextComic.id : null
-			})
+      })
+      
+      this.isSubmitting = false
 
       if (response.success) {
         this.responseMessage = 'Successfully updated info of ' + this.comic.name
