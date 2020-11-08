@@ -5,20 +5,23 @@
     <back-to-index></back-to-index>
   
     <span v-if="artistData">
-      <div class="margin-top-16 margin-bottom-16">
+      <div class="margin-top-16 margin-bottom-16 artistBigLinksContainer">
         <a :href="'https://patreon.com/'+artistData.patreonName"
            v-if="artistData.patreonName"
            class="artist-big-link underline-link">
           <img src="/icons/patreon.png" style="height: 24px"/>
           {{$route.params.artistName}} on Patreon
         </a>
-        <a :href="'https://e621.net/posts?tags='+artistData.e621Name" v-if="artistData.e621Name" class="artist-big-link underline-link margin-top-8">
+        <a :href="'https://e621.net/posts?tags='+artistData.e621Name"
+           v-if="artistData.e621Name"
+           class="artist-big-link underline-link margin-top-8">
           <img src="/icons/e621.png" style="height: 24px"/>
           {{$route.params.artistName}} on e621
         </a>
       </div>
 
       <div class="artist-link-container" v-if="artistData.links.length > 0">
+        <p style="font-weight: 400;">Other links:</p>
         <div v-for="link in artistData.links" :key="link.linkUrl" class="artist-link">
           <img :src="`/icons/${link.linkType}.png`" style="height: 22px;"/>
           <a :href="link.linkUrl"
@@ -102,9 +105,10 @@ export default {
 
 <style lang="scss">
 .artist-link-container {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  width: 100%;
+  align-items: flex-start;
+  margin: auto;
 }
 .artist-link {
   display: flex;
@@ -137,12 +141,15 @@ export default {
 .artist-big-link {
   font-size: 17px;
   display: flex;
-  align-items: flex-center;
   width: fit-content;
-  margin-right: auto; margin-left: auto;
   img {
     margin-right: 6px;
   }
+}
+
+.artistBigLinksContainer {
+  margin: 1.5rem auto;
+  width: fit-content
 }
 
 @media (min-width: 900px) {
