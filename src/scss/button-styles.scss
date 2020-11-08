@@ -118,7 +118,7 @@
 }
 
 .y-button-close {
-  @include simpleshadowSmall;
+  @include simpleshadow;
   font-weight: 400;
   border-radius: 40px;
   border: none;
@@ -276,6 +276,13 @@
     &:hover {
       background-color: $themeDark2;
     }
+  }
+
+  .y-button-close {
+    border: 1px solid #ddd;
+    color: #ddd;
+    background: transparent;
+    // background: white;
   }
 
   .comic-card {

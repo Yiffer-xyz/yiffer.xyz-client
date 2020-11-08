@@ -5,13 +5,18 @@
 
       <div v-if="$store.getters.loginModalContext==='login'" class="login-modal-inner-wrapper">
         <p class="modal-header">Log in</p>
-        <p v-if="loginErrorMessage" class="modal-error-message">{{loginErrorMessage}}</p>
+
+        <ResponseMessage :message="loginErrorMessage"
+                         :messageType="'error'"
+                         @closeMessage="() => loginErrorMessage = ''"
+                         style="margin-top: 1rem;"/>
+
         <form @submit="loginConfirmClicked" class="login-register-form">
           <label for="loginUsername">Username</label>
-          <input v-model="loginUsername" ref="loginUsernameInput" name="loginUsername" type="text"/>
+          <input v-model="loginUsername" ref="loginUsernameInput" name="loginUsername" type="text" class="loginInput"/>
 
           <label for="loginPassword">Password</label>
-          <input v-model="loginPassword" name="loginPassword" type="password"/>
+          <input v-model="loginPassword" name="loginPassword" type="password" class="loginInput"/>
 
           <button v-if="!loginLoading" type="submit" class="y-button login-button">Log in</button>
           <button v-if="loginLoading" class="y-button y-button-neutral login-button pleasewait-button">Please wait...</button>
@@ -24,13 +29,18 @@
 
       <div v-if="$store.getters.loginModalContext==='register'" class="login-modal-inner-wrapper">
         <p class="modal-header">Sign up</p>
-        <p v-if="signupErrorMessage" class="modal-error-message">{{signupErrorMessage}}</p>
+
+        <ResponseMessage :message="signupErrorMessage"
+                         :messageType="'error'"
+                         @closeMessage="() => signupErrorMessage = ''"
+                         style="margin-top: 1rem;"/>
+
         <form @submit="signupConfirmClicked" class="login-register-form">
           <label for="signupUsername">Username</label>
           <input
             v-model="signupUsername"
             ref="signupUsernameInput"
-            :class="{'valid-input': usernameValidity===true, 'invalid-input': usernameValidity===false}"
+            class="loginInput"
             name="signupUsername"
             type="text"
           />
@@ -38,7 +48,7 @@
           <label for="signupPassword">Password</label>
           <input
             v-model="signupPassword"
-            :class="{'valid-input': passwordValidity===true, 'invalid-input': passwordValidity===false}"
+            class="loginInput"
             name="signupPassword"
             type="password"
           />
@@ -46,7 +56,7 @@
           <label for="signupPassword2">Repeat password</label>
           <input
             v-model="signupPassword2"
-            :class="{'valid-input': passwordValidity2===true, 'invalid-input': passwordValidity2===false}"
+            class="loginInput"
             name="signupPassword2"
             type="password"
           />
@@ -60,7 +70,7 @@
       </div>
 
       <button class="y-button-close" @click="closeModal()" style="  position: absolute; right: 8px; top: 16px;"
-        ><cross-icon title="" :size="40"/></button>
+        ><CrossIcon title="" :size="40"/></button>
     </div>
   </div>
 </template>
@@ -68,6 +78,7 @@
 <script>
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 import authApi from '../api/authApi'
 
@@ -75,8 +86,9 @@ export default {
   name: 'login-modal',
 
   components: {
-    'checkbox-icon': CheckboxIcon,
-    'cross-icon': CrossIcon,
+    CheckboxIcon,
+    CrossIcon,
+    ResponseMessage,
   },
 
   data: function () {
@@ -252,6 +264,7 @@ export default {
 .login-register-form {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   margin-top: 15px;
   label {
     font-size: 14px;
@@ -296,8 +309,8 @@ export default {
 }
 
 .modal-error-message {
-  margin-top: 5px;
-  color: $themeRed2 !important;
+  margin-top: 1rem;
+  color: $themeRed1 !important;
   font-weight: 400;
 }
 
@@ -323,6 +336,11 @@ export default {
     }
     label {
       color: #ccc;
+    }
+    .loginInput {
+      background: rgba(255, 255, 255, 0.075);
+      border: none;
+      border-bottom: 1px solid #ddd;;
     }
   }
   

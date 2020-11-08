@@ -1,5 +1,6 @@
 <template>
   <div :class="{'error-message': messageType==='error', 'success-message': messageType==='success', 'info-message': messageType==='info'}" 
+       :style="style"
        v-show="message && message.length > 0"
        id="responseMessageContainer">
     <p class="no-margin-top">{{message}}</p>
@@ -22,6 +23,7 @@ export default {
     'message': String,
     'messageType': String,
     'preventClose': Boolean,
+    'style': Object,
   },
 
   data: function () {
