@@ -98,39 +98,20 @@
               Submit
             </button>
           </div>
-            <!-- <span class="vertical-flex" style="align-items: center;">
-              <label for="addKeyword">Add tag</label>
-              <select v-model="addKeyword">
-                <option v-for="keyword in keywordsNotInComic" :key="keyword.id">
-                  {{keyword.name}}
-                </option>
-              </select>
-              <button 
-                @click="suggestKeywordChange(isAdding=true)"
-                :class="{'y-button-disabled': !addKeyword}"
-                class="y-button"
-                style="width: fit-zipContent; margin-top: 2px;"
-              >
-                Add
-              </button>
-            </span>
 
-            <span style="margin-left: 20px; align-items: center;" class="vertical-flex">
-              <label for="removeKeyword">Remove tag</label>
-              <select v-model="removeKeyword">
-                <option v-for="keyword in keywords" :key="keyword.id">
-                  {{keyword.name}}
-                </option>
-              </select>
-              <button 
-                @click="suggestKeywordChange(isAdding=false)"
-                class="y-button"
-                :class="{'y-button-disabled': !removeKeyword, 'y-button-red': removeKeyword}"
-                style="width: fit-zipContent; margin-top: 2px;"
-              >
-                Remove
-              </button>
-            </span> -->
+          <div v-else-if="isAddingOrRemoving === 'Remove'" class="mt-8">
+            <select v-model="removeKeyword">
+              <option v-for="keyword in keywords" :key="keyword.id">
+                {{keyword.name}}
+              </option>
+            </select>
+
+            <button class="y-button m-0"
+                    :class="{'y-button-disabled-dark': !removeKeyword}"
+                    @click="suggestKeywordChange(isAdding=false)">
+              Submit
+            </button>
+          </div>
         </div>
 
         <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
@@ -311,7 +292,7 @@ export default {
       })
     }
 
-    if (this.comic && !this.keywords) {
+    if (this.comic && (!this.keywords || this.keywords.length === 0)) {
       this.keywords = await keywordApi.getComicKeywords(this.comic.id)
     }
 
@@ -378,10 +359,9 @@ export default {
 
     toggleKeywordSuggestions () {
       this.keywordSuggestionsActive = !this.keywordSuggestionsActive
-    },
-
-    async loadKeywords () {
-      doFetch(this.$store.commit, 'comicKeywords', keywordApi.getKeywordForComic(this.comic.id))
+      this.isAddingOrRemoving = null
+      this.addKeyword = null
+      this.removeKeyword = null
     },
 
     async suggestKeywordChange (isAdding) {
