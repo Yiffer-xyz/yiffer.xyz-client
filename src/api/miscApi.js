@@ -71,5 +71,13 @@ export default {
     else {
       return { success: false }
     }
-  }
+  },
+
+  async submitFeedback (feedbackText) {
+    let response = await axios.post(`${baseUrl}/feedback/`, {
+      feedbackText
+    })
+    if (!response.data.error) { return {success: true} }
+    else { return {success: false, message: response.data.error} }
+  },
 }

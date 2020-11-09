@@ -10,6 +10,7 @@ import Admin from '@/pages/Admin.vue'
 import PendingComic from '@/pages/PendingComic.vue'
 import Donate from '@/pages/Donate.vue'
 import Account from '@/pages/Account.vue'
+import Feedback from '@/pages/Feedback.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
@@ -68,6 +69,11 @@ export default new Router({
       path: '/suggestcomic',
       name: 'suggestComic',
       component: SuggestComic,
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: Feedback,
     },
     // {
     //   path: '/donate',

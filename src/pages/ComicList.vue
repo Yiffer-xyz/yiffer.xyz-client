@@ -50,6 +50,10 @@
               <plus-icon title=""/> Suggest comic
             </router-link>
 
+            <router-link :to="{name: 'feedback'}" class="underline-link">
+              <plus-icon title=""/> Feedback
+            </router-link>
+
             <router-link :to="{name: 'joinUs'}" class="underline-link">
               <ModIcon title=""/> Become a mod
             </router-link>
@@ -63,6 +67,10 @@
 
           <router-link :to="{name: 'suggestComic'}" class="underline-link">
             <plus-icon title=""/> Suggest comic
+          </router-link>
+
+          <router-link :to="{name: 'feedback'}" class="underline-link">
+            <plus-icon title=""/> Feedback
           </router-link>
 
           <router-link :to="{name: 'joinUs'}" class="underline-link">
