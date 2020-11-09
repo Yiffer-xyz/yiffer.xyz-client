@@ -482,6 +482,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 <style lang="scss">
 .comic-page {
   min-height: 90px;
+  width: fit-content;
 }
 
 .share-icon {

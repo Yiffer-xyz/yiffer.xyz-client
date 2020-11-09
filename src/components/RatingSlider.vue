@@ -5,7 +5,8 @@
            :class="{'rating-slider-norating': ratingSliderValue==0}"
            @change="onNewRatingSet">
     <label :class="{'rating-number': ratingSliderValue>0, 'none-text': ratingSliderValue==0}">
-      {{convertSliderValue(ratingSliderValue)}}</label>
+      {{convertSliderValue(ratingSliderValue)}}
+    </label>
   </div>
 </template>
 
@@ -27,7 +28,7 @@ export default {
 
   methods: {
     convertSliderValue (sliderNumber) {
-      return sliderNumber===0 ? 'None' : sliderNumber
+      return sliderNumber==0 ? 'None' : sliderNumber
     },
 
     setRatingSliderValue () {
@@ -98,7 +99,7 @@ export default {
     cursor: pointer !important;
   }
   label {
-    width: 2.5rem;
+    width: 3rem;
     flex-shrink: 0;
   }
   .rating-number {
