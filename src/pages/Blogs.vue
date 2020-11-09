@@ -89,7 +89,7 @@ export default {
   margin-top: 0 !important;
 }
 .highlightedBlog {
-  background-color: $theme8;
+  background-color: $theme9;
 }
 .dark {
   .blog {

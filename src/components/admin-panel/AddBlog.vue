@@ -18,10 +18,15 @@
           
         <tr>
           <td>
-            <p>Importance</p>
+            <p>Is important?</p>
           </td>
           <td>
-            <input type="number" v-model="importance" />
+            <input type="radio" v-model="isImportant" :value="true" id="importantTrue">
+            <label for="importantTrue">Yes</label>
+            
+            <input type="radio" v-model="isImportant" :value="false" id="importantFalse" style="margin-left: 1rem;">
+            <label for="importantFalse">No</label>
+            <!-- <input type="number" v-model="isImportant" /> -->
           </td>
         </tr>
 
@@ -70,7 +75,7 @@ export default {
     return {
       isOpen: false,
       title: '',
-      importance: 0,
+      isImportant: false,
       displayDays: 0,
       content: '',
       responseMessage: '',
@@ -80,7 +85,7 @@ export default {
 
   methods: {
     async submitNewBlog () {
-      let response = await blogApi.addBlog(this.title, this.importance, this.content, this.displayDays)
+      let response = await blogApi.addBlog(this.title, this.isImportant, this.content, this.displayDays)
 
       if (response.success) {
         this.responseMessage = 'Successfully added blog!'
@@ -95,7 +100,7 @@ export default {
 
     clearContent () {
       this.title = ''
-      this.importance = 0
+      this.isImportant = false
       this.displayDays = 0
       this.content = ''
     },
