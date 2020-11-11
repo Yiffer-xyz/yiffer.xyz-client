@@ -74,10 +74,40 @@ export default {
   },
 
   async submitFeedback (feedbackText) {
-    let response = await axios.post(`${baseUrl}/feedback/`, {
+    let response = await axios.post(`${baseUrl}/feedback`, {
       feedbackText
     })
     if (!response.data.error) { return {success: true} }
     else { return {success: false, message: response.data.error} }
+  },
+
+  async getFeedback () {
+    let response = await axios.get(`${baseUrl}/feedback`)
+    if (response.status === 200) {
+      return response.data
+    }
+    else {
+      return { success: false }
+    }
+  },
+
+  async markFeedbackRead (feedbackId) {
+    let response = await axios.patch(`${baseUrl}/feedback/${feedbackId}/read`)
+    if (response.status === 200) {
+      return { success: true }
+    }
+    else {
+      return { success: false }
+    }
+  },
+
+  async deleteFeedback (feedbackId) {
+    let response = await axios.delete(`${baseUrl}/feedback/${feedbackId}`)
+    if (response.status === 200) {
+      return { success: true }
+    }
+    else {
+      return { success: false }
+    }
   },
 }

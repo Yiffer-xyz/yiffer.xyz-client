@@ -18,7 +18,7 @@
       </p>
       <p v-else class="margin-top-10">Welcome, {{$store.getters.userData.username}}</p>
 
-      <p v-if="blogLink" class="mt-10">
+      <p v-if="blogLink" class="mt-16">
         Blog: 
         <router-link :to="{name: 'blogWithId', params: {id: blogLink.id}}"
                            class="underline-link">
@@ -51,7 +51,7 @@
             </router-link>
 
             <router-link :to="{name: 'feedback'}" class="underline-link">
-              <plus-icon title=""/> Feedback
+              <FeedbackIcon title=""/> Feedback
             </router-link>
 
             <router-link :to="{name: 'joinUs'}" class="underline-link">
@@ -70,7 +70,7 @@
           </router-link>
 
           <router-link :to="{name: 'feedback'}" class="underline-link">
-            <plus-icon title=""/> Feedback
+            <FeedbackIcon title=""/> Feedback
           </router-link>
 
           <router-link :to="{name: 'joinUs'}" class="underline-link">
@@ -389,6 +389,7 @@ import ExclamationIcon from 'vue-material-design-icons/Bullhorn.vue'
 import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue'
+import FeedbackIcon from 'vue-material-design-icons/CommentText.vue'
 
 import ModIcon from 'vue-material-design-icons/AccountStar.vue'
 
@@ -425,6 +426,7 @@ export default {
     ChevronRightIcon,
     ChevronLeftIcon,
     ModIcon,
+    FeedbackIcon,
     Skeleton, SkeletonTheme,
   },
 

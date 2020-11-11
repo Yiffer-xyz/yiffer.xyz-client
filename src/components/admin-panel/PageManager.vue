@@ -125,7 +125,7 @@
       </span>
 
 
-      <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
+      <menu-up-icon @click="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
     <span v-else>

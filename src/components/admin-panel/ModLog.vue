@@ -61,7 +61,7 @@
 				class="y-button y-button-neutral margin-top-16">
 					Show {{Math.min(maxRowsInitial, filteredModLog.length-maxRows)}} more
 				</button>
-      <menu-up-icon @click.native="closeComponent" class="mdi-arrow close-component-arrow"/>
+      <menu-up-icon @click="closeComponent" class="mdi-arrow close-component-arrow"/>
     </span>
 
     <span v-else>

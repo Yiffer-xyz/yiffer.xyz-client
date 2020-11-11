@@ -6,6 +6,7 @@ export function registerFetchNames (store, ...namesWithDefaults) {
     store.state[name] = thisDefaultState
   
     store.getters[name] = state => state[name]
+    store.getters[`get_${name}`] = state => () => state[name]
   
     store.mutations[`set_${name}_fetching`] = 
       (state) => state[name] = {...thisDefaultState, fetching: true}

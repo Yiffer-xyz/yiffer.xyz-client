@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 import comicList from './state-modules/comicListState'
 import auth from './state-modules/authState'
 import keywordApi from './api/keywordApi.js'
-import { registerFetchNames, doFetch } from './utils/statefulFetch'
+import { registerFetchNames, doFetch, doFetchSilent } from './utils/statefulFetch'
+import miscApi from './api/miscApi'
 
 Vue.use(Vuex)
 
@@ -38,6 +39,20 @@ const store = {
     findKeywordDataFromName (context, keywordName) {
       return context.state.keywordList.find(kw => kw.name === keywordName)
     },
+
+    async getFeedback ({commit}) {
+      return doFetch(commit, 'feedback', miscApi.getFeedback())
+    },
+
+    async markFeedbackRead ({commit}, feedbackId) {
+      await miscApi.markFeedbackRead(feedbackId)
+      doFetchSilent(commit, 'feedback', miscApi.getFeedback())
+    },
+
+    async deleteFeedback ({commit}, feedbackId) {
+      await miscApi.deleteFeedback(feedbackId)
+      doFetchSilent(commit, 'feedback', miscApi.getFeedback())
+    },
   },
 
   mutations: {
@@ -67,6 +82,7 @@ const store = {
 registerFetchNames(store, 
   {name: 'allKeywords', defaultValue: []},
   {name: 'allComics', defaultValue: []},
+  {name: 'feedback', defaultValue: []},
 )
 
 export default new Vuex.Store(store)
