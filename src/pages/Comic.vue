@@ -429,6 +429,7 @@ export default {
     },
 
     async shareClicked () {
+      console.log(navigator.share)
       if (navigator.share === undefined) { return }
       let shareDataObject = {
         'title': this.$route.params.comicName + ' - Yiffer.xyz',
