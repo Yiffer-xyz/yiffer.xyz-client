@@ -185,7 +185,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 8px 8px 12px 8px;
+  padding: 0.5rem 0.75rem 0.75rem 0.75rem;
   &:hover {
     cursor: pointer;
   }
@@ -240,6 +240,14 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.paddedAdminBox {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  p {
+    text-align: left;
+  }
 }
 
 .dark {

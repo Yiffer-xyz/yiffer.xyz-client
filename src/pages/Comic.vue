@@ -5,7 +5,10 @@
       <h1 class="loadedComicHeader">{{$route.params.comicName}}</h1>
 
       <div v-if="comic" id="comicUpperDiv">
-        <share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
+
+        <button v-if="showShareIcon" @click="shareClicked()" class="shareIconContainer">
+          <share-icon class="share-icon" />
+        </button>
         <h2>by 
           <router-link :to="{ name: 'artist', params: { artistName: comic.artist } }"
                        class="underline-link artistNameLink"
@@ -64,7 +67,7 @@
           <span v-if="keywords.length > 0" class="horizontal-flex flexWrap">
             <div class="keyword-static"
                  v-for="keyword in keywords"
-                 :key="keyword.id">
+                 :key="keyword.name">
               {{keyword.name}}
             </div>
           </span>
@@ -272,7 +275,9 @@ export default {
     }),
 
     keywordsNotInComic () {
-      return this.allKeywords.payload.filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
+      return this.allKeywords.payload
+        .filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
+        .sort((kw1, kw2) => kw1.name > kw2.name ? 1 : -1)
     }
   },
 
@@ -413,14 +418,17 @@ export default {
     },
 
     async shareClicked () {
+      console.log(navigator.share)
       if (navigator.share === undefined) { return }
       let shareDataObject = {
         'title': this.$route.params.comicName + ' - Yiffer.xyz',
         'text': '',
         'url': 'https://yiffer.xyz/' + this.$route.path
       }
-      await navigator.share(shareDataObject)
-      // todo log something
+      
+      navigator.share(shareDataObject)
+        .then(a => alert(a))
+        .catch(() => {})
     },
 
     async downloadZippedComic () {
@@ -485,11 +493,15 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   width: fit-content;
 }
 
-.share-icon {
+.shareIconContainer {
   position:absolute !important;
   top: 30px;
   right: 12px;
+  padding: 8px 8px 10px 8px;
+}
+.share-icon {
   font-size: 28px;
+  color: white;
   @media (min-width: 900px) {
     display: none !important;
   }

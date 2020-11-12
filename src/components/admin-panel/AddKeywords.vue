@@ -1,82 +1,83 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Add tags to comic</h2>
-    <span class="admin-content-box-inner" v-if="isOpen">
+    <h2 @click="closeComponent" class="cursor-pointer">Tag manager</h2>
+    <span class="admin-content-box-inner paddedAdminBox" v-if="isOpen">
 
-      <p>Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
+      <p class="textLeft">Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>
 
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                        class="margin-top-8"/>
 
-      <div class="horizontal-flex no-margin-bot margin-top-8" style="flex-wrap: wrap;">
-        <p class="admin-mini-header" style="margin-right: 8px;">Comic:</p>
-        <select v-model="comic" @change="onComicChange">
-          <option v-for="comic in comicList" :key="comic.id" :value="comic">
-            {{comic.name}}
-          </option>
-        </select>
-        <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
-                     v-if="comic" 
-                     style="margin-left: 8px;" 
-                     target="_blank"
-                     class="underline-link">
-          Go to comic <RightArrow/>
-        </router-link>
-      </div>
-  
-      <div class="horizontal-flex"
-           style="width: 100%; justify-content: space-evenly; margin-top: 8px;"
-           v-if="comic && comicKeywords !== null">
-        <div class="vertical-flex" style="flex-wrap: wrap;">
-          <p class="admin-mini-header">Tag list</p>
-          <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
-            <option v-for="keyword in allKeywords.payload" 
-                    :key="keyword.name" 
-                    :value="keyword">
-              {{keyword.name}}
+      <div class="centerLeftAlignedContainer marginAuto">
+        <div class="horizontal-flex no-margin-bot mt-16" style="flex-wrap: wrap;">
+          <p class="admin-mini-header mr-8">Comic:</p>
+          <select v-model="comic" @change="onComicChange">
+            <option v-for="comic in comicList" :key="comic.name" :value="comic">
+              {{comic.name}}
             </option>
           </select>
-          <button @click="addSelectedKeyword()" class="y-button y-button-small y-button-neutral" style="width: 100%; margin-top: 1px;">
-            <RightArrow/>
-          </button>
+          <router-link :to="{name: 'comic', params: {'comicName': comic.name}}" 
+                      v-if="comic" 
+                      style="margin-left: 8px;" 
+                      target="_blank"
+                      class="underline-link">
+            Go to comic <RightArrow/>
+          </router-link>
         </div>
-      
-        <div class="vertical-flex">
-          <p class="admin-mini-header">Tags you're adding</p>
-          <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
-          <p v-for="keyword in selectedKeywords" 
-             @click="removeKeywordFromSelection(keyword)" 
-             :key="keyword.id" class="selected-add-keyword">
-            {{keyword.name}}
-           </p>
-          <button class="y-button" v-if="selectedKeywords.length > 0"
-                  @click="confirmAddKeywords()" style="margin: 6px auto 0 auto;">
-            Add tags
-          </button>
+    
+        <div class="horizontal-flex mt-16"
+            v-if="comic && comicKeywords !== null">
+          <div class="vertical-flex mr-40" style="flex-wrap: wrap;">
+            <p class="admin-mini-header">Tag list</p>
+            <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
+              <option v-for="keyword in allKeywords.payload" 
+                      :key="keyword.name" 
+                      :value="keyword">
+                {{keyword.name}}
+              </option>
+            </select>
+            <button @click="addSelectedKeyword()" class="y-button y-button-small y-button-neutral" style="width: 100%; margin-top: 1px;">
+              <RightArrow/>
+            </button>
+          </div>
+        
+          <div class="vertical-flex mr-40">
+            <p class="admin-mini-header">Tags you're adding</p>
+            <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to remove</p>
+            <p v-for="keyword in selectedKeywords" 
+              @click="removeKeywordFromSelection(keyword)" 
+              :key="keyword.id" class="selected-add-keyword">
+              {{keyword.name}}
+            </p>
+            <button class="y-button mt-8" v-if="selectedKeywords.length > 0"
+                    @click="confirmAddKeywords()">
+              Add tags
+            </button>
+          </div>
+        
+          <div class="vertical-flex">
+            <p class="admin-mini-header">This comic's tags</p>
+            <p v-if="comicKeywords.length > 0" style="margin-bottom: 6px;">
+              Click tags to remove
+            </p>
+            <p v-for="keyword in comicKeywords" @click="addOrRemoveKeywordToDeleteList(keyword)" 
+              :key="keyword.id" class="selected-add-keyword" 
+              :class="{'keyword-to-be-deleted': keywordsToDelete.findIndex(kw=>kw.id===keyword.id)>=0}">
+                {{keyword.name}}
+            </p>
+            <button @click="confirmRemoveKeywords()" class="y-button y-button-red mt-8"
+                    v-if="keywordsToDelete.length > 0">
+              Remove tags
+            </button>
+          </div>
         </div>
-      
-        <div class="vertical-flex">
-          <p class="admin-mini-header">This comic's tags</p>
-          <p v-if="comicKeywords.length > 0" style="margin-bottom: 6px;">
-            Click tags to <span class="red-color">remove</span>
-          </p>
-          <p v-for="keywordName in comic.keywords" @click="addOrRemoveKeywordToDeleteList(keywordName)" 
-             :key="keywordName" class="selected-add-keyword" 
-             :class="{'keyword-to-be-deleted': keywordsToDelete.findIndex(kw=>kw.name===keywordName)>=0}">
-              {{keywordName}}
-          </p>
-          <button @click="confirmRemoveKeywords()" class="y-button y-button-red"
-                  v-if="keywordsToDelete.length > 0" style="margin: 6px auto 0 auto;">
-            Remove tags
-          </button>
+
+        <div v-else-if="comic && comicKeywords === null" class="loadingTagsIndicator marginAuto">
+          <Loading text="Loading tags"/>
         </div>
       </div>
 
-      <div v-else-if="comic && comicKeywords === null" class="loadingTagsIndicator">
-        <Loading text="Loading tags"/>
-      </div>
-
-      <h2 style="margin-top: 32px;">Create new tag</h2>
+      <h2 class="mt-32 textCenter width100">Create new tag</h2>
       <p>If a tag is not in the list above, create it here. Double check first though, please.</p>
       <div class="horizontal-flex flex-wrap margin-top-8"
            style="align-items: center;">
@@ -140,9 +141,12 @@ export default {
   },
 
   methods: {
-    async onComicChange (a, b) {
-      console.log(a, b)
+    async onComicChange () {
       this.comicKeywords = null
+      this.fetchComicKeywords()
+    },
+
+    async fetchComicKeywords () {
       this.comicKeywords = await keywordApi.getComicKeywords(this.comic.id)
     },
 
@@ -156,13 +160,12 @@ export default {
       this.selectedKeywords.splice(this.selectedKeywords.findIndex(kw => kw.id===keyword.id), 1)
     },
 
-    async addOrRemoveKeywordToDeleteList (keywordName) {
-      if (!this.keywordsToDelete.find(kw => kw.name===keywordName)) {
-        let keywordWithData = await this.$store.dispatch('findKeywordDataFromName', keywordName)
-        this.keywordsToDelete.push(keywordWithData)
+    async addOrRemoveKeywordToDeleteList (keyword) {
+      if (!this.keywordsToDelete.find(kw => kw.id===keyword.id)) {
+        this.keywordsToDelete.push(keyword)
       }
       else {
-        this.keywordsToDelete.splice(this.keywordsToDelete.findIndex(kw => kw.name===keywordName), 1)
+        this.keywordsToDelete.splice(this.keywordsToDelete.findIndex(kw => kw.id===keyword.id), 1)
       }
     },
     
@@ -173,8 +176,8 @@ export default {
         this.responseMessage = 'Successfully added tags to ' + this.comic.name
         this.responseMessageType = 'success'
 				this.selectedKeywords = []
-				this.lastComicId = this.comic.id
-        this.$emit('refresh-comic-list')
+        this.lastComicId = this.comic.id
+        this.fetchComicKeywords()
       }
       else {
         this.responseMessage = 'Error adding tags: ' + response.message
@@ -190,7 +193,7 @@ export default {
         this.responseMessageType = 'success'
         this.keywordsToDelete = []
 				this.lastComicId = this.comic.id
-        this.$emit('refresh-comic-list')
+        this.fetchComicKeywords()
       }
       else {
         this.responseMessage = 'Error removing tags: ' + response.message
@@ -199,6 +202,7 @@ export default {
     },
 
     async createKeyword () {
+      if (!this.newKeyword) { return }
       let response = await keywordApi.createKeyword(this.newKeyword)
 
       if (response.success) {

@@ -341,7 +341,9 @@ export default {
       let response = await comicApi.getPendingComic(this.$route.params.comicName)
       if (response.success) {
         this.comic = response.result
-        this.keywordsNotInComic = this.allKeywords.payload.filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
+        this.keywordsNotInComic = this.allKeywords.payload
+          .filter(kw => !this.comic.keywords.find(comicKw => comicKw.id === kw.id))
+          .sort((kw1, kw2) => kw1.name > kw2.name ? 1 : -1)
       }
       else {
         this.comicLoadErrorMessage = response.message
