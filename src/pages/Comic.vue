@@ -2,14 +2,24 @@
   <span>
     <vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
     <div class="upperBodyDivComic">
-      <h1 class="loadedComicHeader">{{$route.params.comicName}}</h1>
 
       <div v-if="comic" id="comicUpperDiv">
-        <share-icon class="share-icon" v-if="showShareIcon" @click.native="shareClicked()"/>
+
+        <div style="display: grid; grid-template-columns: 3.5rem 1fr 3.5rem; width: 100%;" class="pt-32">
+          <div></div>
+
+          <h1 class="loadedComicHeader" style="padding: 0;">{{$route.params.comicName}}</h1>
+
+          <button v-if="showShareIcon" @click="shareClicked" class="shareIconContainer">
+            <share-icon class="shareIcon" />
+          </button>
+          <div v-else></div>
+        </div>
+
         <h2>by 
           <router-link :to="{ name: 'artist', params: { artistName: comic.artist } }"
-                       class="underline-link artistNameLink"
-                       style="font-weight:300;">
+                      class="underline-link artistNameLink"
+                      style="font-weight:300;">
             {{comic.artist}}
           </router-link>
         </h2>
@@ -64,7 +74,7 @@
           <span v-if="keywords.length > 0" class="horizontal-flex flexWrap">
             <div class="keyword-static"
                  v-for="keyword in keywords"
-                 :key="keyword.id">
+                 :key="keyword.name">
               {{keyword.name}}
             </div>
           </span>
@@ -255,7 +265,7 @@ export default {
       responseMessage: '',
       responseMessageType: 'info',
       removeKeyword: undefined,
-      showShareIcon: true,
+      showShareIcon: false,
       isZipping: false,
       downloadStarted: false,
       paidImage: null,
@@ -272,7 +282,9 @@ export default {
     }),
 
     keywordsNotInComic () {
-      return this.allKeywords.payload.filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
+      return this.allKeywords.payload
+        .filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
+        .sort((kw1, kw2) => kw1.name > kw2.name ? 1 : -1)
     }
   },
 
@@ -303,6 +315,10 @@ export default {
     else {
       this.initializeImageFitArray()
       this.fitImagesForMobile()
+    }
+
+    if (navigator.share !== undefined) {
+      this.showShareIcon = true
     }
 
     miscApi.logRoute('comic', this.$route.params.comicName)
@@ -419,8 +435,10 @@ export default {
         'text': '',
         'url': 'https://yiffer.xyz/' + this.$route.path
       }
-      await navigator.share(shareDataObject)
-      // todo log something
+      
+      navigator.share(shareDataObject)
+        .then(a => alert(a))
+        .catch(() => {})
     },
 
     async downloadZippedComic () {
@@ -485,11 +503,14 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   width: fit-content;
 }
 
-.share-icon {
-  position:absolute !important;
-  top: 30px;
-  right: 12px;
+.shareIconContainer {
+  background: none;
+  border: none;
+  padding: 8px 8px 10px 8px;
+}
+.shareIcon {
   font-size: 28px;
+  color: $theme5;
   @media (min-width: 900px) {
     display: none !important;
   }
@@ -595,7 +616,6 @@ a {
   margin: 0.25rem 0 0.5rem 0;
   @media (max-width: 900px) {
     font-size: 32px;
-    max-width: calc(100% - 84px);
   }
 }
 
