@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%">
-    <vue-headful :title="$route.params.artistName + ' - Artist - Yiffer.xyz'"/>
     <h1 id="artistTitle">{{$route.params.artistName}}</h1>
     <back-to-index></back-to-index>
   
@@ -61,6 +60,7 @@ import miscApi from '../api/miscApi'
 
 export default {
   name: 'artist',
+
   components: {
     'comic-card': ComicCard,
     'login-modal': LoginModal,
@@ -76,18 +76,7 @@ export default {
     }
   },
 
-  methods: {
-    showLoginModal ( clickEvent ) {
-      clickEvent.preventDefault()
-      this.$store.commit('setLoginModalVisibility', true)
-    },
-    prettifyUrl ( linkUrl ) {
-      if ( linkUrl.endsWith('/') ) { linkUrl = linkUrl.substring(0, linkUrl.length-1) }
-      return linkUrl.replace('https://', '').replace('http://', '').replace('www.', '').replace('%20', ' ')
-    }
-  },
-
-  async created () {
+  async mounted () {
     this.$store.commit('setLoginModalVisibility', false)
     this.clickableKeyword = false
     let apiResponse = await artistApi.getArtistByName(this.$route.params.artistName)
@@ -99,7 +88,29 @@ export default {
     }
 
     miscApi.logRoute('artist', this.$route.params.artistName)
-  }
+  },
+
+  methods: {
+    showLoginModal ( clickEvent ) {
+      clickEvent.preventDefault()
+      this.$store.commit('setLoginModalVisibility', true)
+    },
+    prettifyUrl ( linkUrl ) {
+      if ( linkUrl.endsWith('/') ) { linkUrl = linkUrl.substring(0, linkUrl.length-1) }
+      return linkUrl.replace('https://', '').replace('http://', '').replace('www.', '').replace('%20', ' ')
+    }
+  },
+
+  metaInfo () {
+    let title = `${this.$route.params.artistName} - Artist - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
+  },
 }
 </script>
 

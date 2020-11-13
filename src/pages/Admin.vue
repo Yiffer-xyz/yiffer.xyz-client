@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%">
-    <vue-headful :title="'Admin - Yiffer.xyz'"/>
     <h1>Admin</h1>
     <back-to-index></back-to-index>
 
@@ -90,6 +89,7 @@ import { doFetch } from '../utils/statefulFetch'
 
 export default {
   name: 'admin',
+
   components: {
     'login-modal': LoginModal,
     'back-to-index': BackToIndex,
@@ -111,6 +111,7 @@ export default {
     ModApplications,
     Feedback,
   },
+
   data: function () {
     return {
       alphabeticComicList: [],
@@ -119,11 +120,21 @@ export default {
       pendingComics: [],
     }
   },
+
   computed: {
     ...mapGetters([
       'allComics',
     ])
   },
+
+  async mounted () {
+    if (!this.allComics.fetched && !this.allComics.fetching) {
+      doFetch(this.$store.commit, 'allComics', comicApi.getAllComics())
+    }
+    this.artistList = await ArtistApi.getArtistList()
+    this.refreshPendingComics()
+  },
+
   methods: {
     showLoginModal () {
       this.$store.commit('setLoginModalVisibility', true)      
@@ -138,13 +149,17 @@ export default {
       this.pendingComics = await comicApi.getPendingComics()
     },
   },
-  async mounted () {
-    if (!this.allComics.fetched && !this.allComics.fetching) {
-      doFetch(this.$store.commit, 'allComics', comicApi.getAllComics())
+
+  metaInfo () {
+    let title = `Admin - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
     }
-    this.artistList = await ArtistApi.getArtistList()
-    this.refreshPendingComics()
-  }
+  },
 }
 
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%;">
-    <vue-headful :title="'Advertising - Yiffer.xyz'"/>
     <h1>Advertising</h1>
     <BackToIndex></BackToIndex>
 
@@ -213,15 +212,26 @@ export default {
     }
   },
 
+  mounted () {
+    miscApi.logRoute('advertising')
+  },
+
   methods: {
     showLoginModal () {
       this.$store.commit('setLoginModalVisibility', true)
     },
   },
 
-  mounted () {
-    miscApi.logRoute('advertising')
-  }
+  metaInfo () {
+    let title = `Advertising - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
+  },
 }
 </script>
 

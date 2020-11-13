@@ -47,7 +47,7 @@
     <login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
     <voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
 
-    <div v-if="!hasConsented" class="consent-overlay">
+    <!-- <div v-if="!hasConsented" class="consent-overlay">
       <div class="consent-content">
         <p>Yiffer.xyz contains explicit imagery not suited for those under 18 years old.</p>
         <p>We also use cookies to enhance your user experience.</p>
@@ -56,7 +56,7 @@
           I am 18+ and I consent to the use of cookies
         </button>
       </div>
-    </div>
+    </div> -->
 
     <main class="main">
       <router-view/>
@@ -81,6 +81,24 @@ export default {
     'login-modal': LoginModal,
     'voting-modal': VotingModal,
     TwitterIcon,
+  },
+
+  metaInfo() {
+    return {
+      meta: [
+        {name: 'twitter:card', content: 'summary'},
+        {vmid: 'twitterTitle', name: 'twitter:title', content: 'Yiffer.xyz'},
+        {name: 'twitter:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"},
+        // image must be an absolute path
+        {name: 'twitter:image', content: '/assets/logo.png'},
+        
+        {vmid: 'ogTitle', property: 'og:title', content: 'Yiffer.xyz'},
+        {property: 'og:site_name', content: 'Yiffer.xyz'},
+        {property: 'og:type', content: 'website'},
+        {property: 'og:image', content: '/assets/logo.png'},
+        {property: 'og:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"}
+      ]
+    }
   },
 
   methods: {

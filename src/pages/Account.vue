@@ -1,7 +1,6 @@
 <template>
   <div style="width: 100%">
 
-    <vue-headful :title="'Account - Yiffer.xyz'"/>
     <h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
     <BackToIndex style="margin: auto;"/>
 
@@ -468,6 +467,17 @@ export default {
     miscApi.logRoute('account')
     this.getAds()
     this.getModApplicationStatus()
+  },
+
+  metaInfo() {
+    let title = `Account - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
   },
 }
 </script>

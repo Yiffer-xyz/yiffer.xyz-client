@@ -1,8 +1,6 @@
 <template>
   <span>
-    <vue-headful :title="$route.params.comicName + ' - Yiffer.xyz'"/>
     <div class="upperBodyDivComic">
-
       <div v-if="comic" id="comicUpperDiv">
 
         <div style="display: grid; grid-template-columns: 3.5rem 1fr 3.5rem; width: 100%;" class="pt-32">
@@ -492,7 +490,18 @@ export default {
     $route (to, from){
       this.loadComic()
     }
-  }
+  },
+
+  metaInfo() {
+    let title = `${this.$route.params.comicName} - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
+  },
 }
 
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']

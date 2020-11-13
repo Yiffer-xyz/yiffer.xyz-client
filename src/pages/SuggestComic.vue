@@ -1,8 +1,7 @@
 <template>
   <div style="width: 100%">
-    <vue-headful :title="'Profile - Yiffer.xyz'"/>
     <h1>Suggest new comic</h1>
-    <BackToIndex></BackToIndex>
+    <BackToIndex />
 
     <div class="full-width-text margin-top-12">
       <p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
@@ -92,6 +91,11 @@ export default {
       responseMessageType: 'info',
     }
   },
+  
+  async mounted () {
+    this.rejectedComics = await comicApi.getRejectedComics()
+    miscApi.logRoute('suggestcomic')
+  },
 
   methods: {
     async submitButtonClicked () {
@@ -118,10 +122,16 @@ export default {
 
     closeResponseMessage () { this.responseMessage = '' },
   },
-  
-  async mounted () {
-    this.rejectedComics = await comicApi.getRejectedComics()
-    miscApi.logRoute('suggestcomic')
+
+  metaInfo () {
+    let title = `Suggest comic - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
   },
 }
 </script>

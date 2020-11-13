@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%">
-    <vue-headful :title="'Feedback - Yiffer.xyz'"/>
     <h1>Feedback</h1>
     <BackToIndex></BackToIndex>
 
@@ -67,6 +66,17 @@ export default {
     },
 
     closeResponseMessage () { this.responseMessage = '' },
+  },
+
+  metaInfo () {
+    let title = `Feedback - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
   },
 }
 </script>

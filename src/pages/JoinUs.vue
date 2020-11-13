@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%;">
-    <vue-headful :title="'Join us - Yiffer.xyz'"/>
     <h1>Becoming a mod</h1>
     <back-to-index></back-to-index>
 
@@ -101,14 +100,25 @@ export default {
     RightArrow,
   },
 
+  mounted () {
+    miscApi.logRoute('join us')
+  },
+
   methods: {
     showLoginModal () {
       this.$store.commit('setLoginModalVisibility', true)
     },
   },
 
-  mounted () {
-    miscApi.logRoute('join us')
-  }
+  metaInfo () {
+    let title = `Join us - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
+  },
 }
 </script>

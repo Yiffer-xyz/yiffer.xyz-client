@@ -1,6 +1,5 @@
 <template>
   <span>
-    <vue-headful :title="'Pending: ' + $route.params.comicName + ' - Yiffer.xyz'"/>
     <h1>Pending: {{$route.params.comicName}}</h1>
     <span v-if="comic">
 
@@ -356,6 +355,17 @@ export default {
     
     scrollToTop () {
       window.scrollTo(0, 0)
+    }
+  },
+
+  metaInfo () {
+    let title = `Pending: ${this.$route.params.comicName} - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
     }
   },
 }

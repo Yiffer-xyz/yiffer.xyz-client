@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%;">
-    <vue-headful :title="'Blog - Yiffer.xyz'"/>
     <h1>Blog</h1>
     <back-to-index></back-to-index>
 
@@ -37,6 +36,14 @@ export default {
     }
   },
 
+  async mounted () {
+    miscApi.logRoute('blog')
+    this.blogs = await blogApi.getBlogs()
+    if (this.$route.params.id) {
+      this.$nextTick(() => this.highlightBlog(this.$route.params.id))
+    }
+  },
+
   methods: {
     selectBlog (blogId) {
       this.highlightBlog(blogId)
@@ -64,13 +71,16 @@ export default {
     }
   },
 
-  async mounted () {
-    miscApi.logRoute('blog')
-    this.blogs = await blogApi.getBlogs()
-    if (this.$route.params.id) {
-      this.$nextTick(() => this.highlightBlog(this.$route.params.id))
+  metaInfo () {
+    let title = `Blog - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
     }
-  }
+  },
 }
 </script>
 
