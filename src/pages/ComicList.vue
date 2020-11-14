@@ -778,7 +778,9 @@ export default {
         queryObj.tags = this.selectedKeywords.map(kw => kw.name)
       }
 
-      this.$router.push({path: '/', query: queryObj})
+      if (Object.keys(queryObj).length > 0) {
+        this.$router.push({path: '/', query: queryObj})
+      }
     },
 
     setFiltersFromRouterQuery () {
