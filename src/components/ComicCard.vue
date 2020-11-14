@@ -21,8 +21,9 @@
 
       <!-- PIC -->
       <picture @click="storeClickedComicData()">
-        <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comic.name}/thumbnail-small.webp`">
-        <img :src="`${config.comicDirectory}/${comic.name}/thumbnail.webp`">
+        <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`">
+        <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`">
+        <img :src="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`">
       </picture>
     </router-link>
 
@@ -171,6 +172,9 @@ export default {
     ...mapGetters([
       'comicKeywords',
     ]),
+    comicNameUrlParsed () {
+      return this.comic.name.replaceAll(' ', '%20')
+    }
   },
 
   methods: {
