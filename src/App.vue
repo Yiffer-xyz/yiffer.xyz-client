@@ -195,7 +195,7 @@ $footerHeight: 2.25rem;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #202325;
+  background-color: #0d1a23;
   border-top: 1px solid $themeGray3;
   height: $footerHeight;
   width: 100%;
@@ -220,7 +220,6 @@ $footerHeight: 2.25rem;
 
 .dark {
   .footer {
-    background-color: $themeDark4;
     border-color: $themeDark1;
     color: #ddd;
   }

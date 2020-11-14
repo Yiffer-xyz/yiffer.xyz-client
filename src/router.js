@@ -5,11 +5,17 @@ import Router from 'vue-router'
 import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/Comic.vue'
 import About from '@/pages/About.vue'
+import Artist from '@/pages/Artist.vue'
+import Admin from '@/pages/Admin.vue'
+import PendingComic from '@/pages/PendingComic.vue'
+import Account from '@/pages/Account.vue'
 import Feedback from '@/pages/Feedback.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
+import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 import JoinUs from '@/pages/JoinUs.vue'
+import JoinUsApply from '@/pages/JoinUsApply.vue'
 
 Vue.use(Router)
 
@@ -44,18 +50,18 @@ export default new Router({
     {
       path: '/artist/:artistName',
       name: 'artist',
-      component: () => import('@/pages/Artist.vue'),
+      component: Artist,
     },
     {
       path: '/admin',
       name: 'admin',
-      component: () => import('@/pages/Admin.vue'),
+      component: Admin,
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/account',
       name: 'account',
-      component: () => import('@/pages/Account.vue'),
+      component: Account,
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
@@ -76,7 +82,7 @@ export default new Router({
     {
       path: '/join-us-apply',
       name: 'joinUsApply',
-      component: () => import('@/pages/JoinUsApply.vue'),
+      component: JoinUsApply,
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
@@ -97,13 +103,18 @@ export default new Router({
     {
       path: '/advertising-apply',
       name: 'apply-advertising',
-      component: () => import('@/pages/AdvertisingApply.vue'),
+      component: AdvertisingApply,
       beforeEnter: rerouteIfNotLoggedIn,
+    },
+    {
+      path: '/join-us',
+      name: 'moderating',
+      component: Blog,
     },
     {
       path: '/pendingComics/:comicName',
       name: 'pendingComic',
-      component: () => import('@/pages/PendingComic.vue'),
+      component: PendingComic,
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
