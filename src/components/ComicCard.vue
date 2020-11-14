@@ -20,8 +20,10 @@
 
 
       <!-- PIC -->
-      <img :src="`${config.comicDirectory}/${comic.name}/s.jpg`" @click="storeClickedComicData()">
-      <!-- <img :src="'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Larix_decidua_Aletschwald.jpg/1024px-Larix_decidua_Aletschwald.jpg'" @click="storeClickedComicData()"> -->
+      <picture @click="storeClickedComicData()">
+        <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comic.name}/thumbnail-small.webp`">
+        <img :src="`${config.comicDirectory}/${comic.name}/thumbnail.webp`">
+      </picture>
     </router-link>
 
     <!-- AD -->

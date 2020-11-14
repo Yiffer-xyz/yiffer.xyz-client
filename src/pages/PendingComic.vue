@@ -9,7 +9,7 @@
 
       <h2>Thumbnail</h2>
       <span v-if="comic.hasThumbnail">
-        <img :src="`${config.comicDirectory}/${comic.name}/s.jpg`"/>
+        <img :src="`${config.comicDirectory}/${comic.name}/thumbnail.webp`"/>
       </span>
 
       <ResponseMessage :message="thumbnailResponseMessage"
