@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%;">
-    <vue-headful :title="'Apply as an advertiser - Yiffer.xyz'"/>
     <h1>Apply as an advertiser</h1>
     <BackToIndex></BackToIndex>
 
@@ -146,6 +145,16 @@ export default {
     }
   },
 
+  watch: {
+    adType () {
+      this.checkFileRequirements()
+    }
+  },
+
+  mounted () {
+    miscApi.logRoute('advertising apply')
+  },
+
   methods: {
     async submitApplication () {
       if (!this.isReadyForSubmit) { return }
@@ -227,15 +236,16 @@ export default {
     },
   },
 
-  watch: {
-    adType () {
-      this.checkFileRequirements()
+  metaInfo () {
+    let title = `Advertising - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
     }
   },
-
-  mounted () {
-    miscApi.logRoute('advertising apply')
-  }
 }
 </script>
 

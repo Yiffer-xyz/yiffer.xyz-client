@@ -1,10 +1,7 @@
 <template>
   <div style="width: 100%">
-    <vue-headful title="Yiffer.xyz"/>
     <div class="upperBodyDiv">
-      <!-- <h1 class="yifferTitle">Title</h1> -->
       <h1 class="yifferTitle">Yiffer.xyz</h1>
-      <!-- <p style="font-size: 20px">Subtitle subtitle</p> -->
 
       <p class="margin-top-10" v-if="!$store.getters.isAuthenticated">
         <button class="underline-link text-button link-color" @click.prevent="showLoginModal" style="margin: 0 3px 0 0; font-size: 16px;">
@@ -528,6 +525,61 @@ export default {
     }
   },
 
+  watch: {
+    selectedKeywords: function (newKws, oldKws) {
+      let wasKwRemoved = newKws.length < oldKws.length
+      this.onKeywordsChange(wasKwRemoved)
+    },
+    searchFiltering222: function () {
+      this.showPaginationWhileLoading = false
+
+      if (!this.hasFetchedComicListOnce) {
+        return
+      }
+      if (this.searchFilteringHook) {
+        clearTimeout(this.searchFilteringHook)
+      }
+      if (this.searchFiltering222 === '') {
+        this.setSearchFiltering('')
+        this.setRouterQuery()
+        this.fetchComics()
+      }
+      else {
+        this.searchFilteringHook = setTimeout(() => {
+          this.setSearchFiltering(this.searchFiltering222)
+          this.setRouterQuery()
+          this.fetchComics()
+        }, 1000)
+      }
+    },
+  },
+
+  async mounted () {
+    if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
+    if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
+    if (this.$route.query && Object.keys(this.$route.query).length !== 0) {
+      this.setFiltersFromRouterQuery()
+    }
+    else {
+      this.setRouterQuery()
+    }
+    this.$store.commit('setLoginModalVisibility', false)
+    this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
+    this.$store.watch(this.$store.getters.getSelectedKeywords, this.onKeywordsChange)
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+    miscApi.logRoute('index')
+    this.avoidLog = false
+    this.getDisplayedBlog()
+
+    if (!this.paginatedComics.fetching && !this.paginatedComics.fetched) {
+      this.fetchComics()
+    }
+    if (!this.paidImages.fetching && !this.paidImages.fetched) {
+      this.loadActiveAds()
+    }
+  },
+
   methods: {
     ...mapMutations([
       'setPageNumber',
@@ -836,63 +888,18 @@ export default {
     },
   },
 
-  watch: {
-    selectedKeywords: function (newKws, oldKws) {
-      let wasKwRemoved = newKws.length < oldKws.length
-      this.onKeywordsChange(wasKwRemoved)
-    },
-    searchFiltering222: function () {
-      this.showPaginationWhileLoading = false
-
-      if (!this.hasFetchedComicListOnce) {
-        return
-      }
-      if (this.searchFilteringHook) {
-        clearTimeout(this.searchFilteringHook)
-      }
-      if (this.searchFiltering222 === '') {
-        this.setSearchFiltering('')
-        this.setRouterQuery()
-        this.fetchComics()
-      }
-      else {
-        this.searchFilteringHook = setTimeout(() => {
-          this.setSearchFiltering(this.searchFiltering222)
-          this.setRouterQuery()
-          this.fetchComics()
-        }, 1000)
-      }
-    },
-  },
-
-  async mounted () {
-    if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
-    if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
-    if (this.$route.query && Object.keys(this.$route.query).length !== 0) {
-      this.setFiltersFromRouterQuery()
-    }
-    else {
-      this.setRouterQuery()
-    }
-    this.$store.commit('setLoginModalVisibility', false)
-    this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
-    this.$store.watch(this.$store.getters.getSelectedKeywords, this.onKeywordsChange)
-    this.handleResize()
-    window.addEventListener('resize', this.handleResize)
-    miscApi.logRoute('index')
-    this.avoidLog = false
-    this.getDisplayedBlog()
-
-    if (!this.paginatedComics.fetching && !this.paginatedComics.fetched) {
-      this.fetchComics()
-    }
-    if (!this.paidImages.fetching && !this.paidImages.fetched) {
-      this.loadActiveAds()
+  metaInfo () {
+    let title = `Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
     }
   },
 }
 </script>
-
 
 <style lang="scss">
 .top-links {

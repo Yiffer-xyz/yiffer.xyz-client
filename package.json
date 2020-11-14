@@ -22,9 +22,9 @@
     "style-resources-loader": "^1.2.1",
     "vue": "^2.5.17",
     "vue-cookies": "^1.5.7",
-    "vue-headful": "^2.0.1",
     "vue-loading-skeleton": "^1.1.9",
     "vue-material-design-icons": "^4.10.0",
+    "vue-meta": "^2.4.0",
     "vue-router": "^3.0.1",
     "vue-simple-spinner": "^1.2.10",
     "vuex": "^3.0.1"

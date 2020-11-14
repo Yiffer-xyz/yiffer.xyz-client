@@ -1,6 +1,5 @@
 <template>
   <span>
-    <vue-headful :title="'About - Yiffer.xyz'"/>
     <h1>About Yiffer.xyz</h1>
     <back-to-index/>
     
@@ -46,6 +45,17 @@ export default {
     BackToIndex,
     VotingButton,
     TwitterIcon,
+  },
+
+  metaInfo() {
+    let title = `About - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
   },
 }
 

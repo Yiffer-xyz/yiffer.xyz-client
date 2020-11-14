@@ -1,6 +1,5 @@
 <template>
   <div style="width: 100%;">
-    <vue-headful :title="'Donate - Yiffer.xyz'"/>
     <h1>Donating</h1>
     <back-to-index></back-to-index>
 
@@ -66,6 +65,17 @@ export default {
 
   mounted () {
     miscApi.logRoute('donate')
-  }
+  },
+
+  metaInfo () {
+    let title = `Donate - Yiffer.xyz`
+    return {
+      title: title,
+      meta: [
+        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
+        {vmid: 'ogTitle', property: 'og:title', content: title},
+      ]
+    }
+  },
 }
 </script>
