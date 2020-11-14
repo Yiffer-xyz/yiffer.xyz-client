@@ -222,7 +222,10 @@ const store = {
         ...ad,
         isPaidImage: true,
       })),
-    paidImagesBanner: state => () => state.paidImages.payload.filter(ad => ad.adType.includes('banner')),
+    paidImagesBanner: state => () => {
+      console.log('the paid iamges r ', state.paidImages)
+      return state.paidImages.payload.filter(ad => ad.adType.includes('banner'))
+    },
     hasFetchedComicListOnce: state => state.hasFetchedComicListOnce,
     comicKeywords: state => state.comicKeywords,
     isFilterSectionExpanded: state => state.isFilterSectionExpanded,

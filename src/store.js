@@ -33,6 +33,7 @@ const store = {
 
     async fetchKeywordList ({commit}) {
       let keywords = await doFetch(commit, 'allKeywords', keywordApi.getKeywordList())
+      console.log('KEYWORDS: ', keywords)
       commit('setOrderedKeywordList', keywords)
     },
 
