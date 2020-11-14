@@ -88,7 +88,7 @@ export default {
       meta: [
         {name: 'twitter:card', content: 'summary'},
         {vmid: 'twitterTitle', name: 'twitter:title', content: 'Yiffer.xyz'},
-        {name: 'twitter:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"},
+        {vmid: 'twitterDesc', name: 'twitter:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"},
         // image must be an absolute path
         {name: 'twitter:image', content: '/assets/logo.png'},
         
@@ -96,7 +96,7 @@ export default {
         {property: 'og:site_name', content: 'Yiffer.xyz'},
         {property: 'og:type', content: 'website'},
         {property: 'og:image', content: '/assets/logo.png'},
-        {property: 'og:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"}
+        {vmid: 'ogDesc', property: 'og:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"}
       ]
     }
   },

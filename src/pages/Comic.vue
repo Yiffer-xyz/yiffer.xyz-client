@@ -494,12 +494,19 @@ export default {
   },
 
   metaInfo() {
-    let title = `${this.$route.params.comicName} - Yiffer.xyz`
+    let title = `${this.$route.params.comicName} - beta.yiffer.xyz`
+    let description = "The internet's best collection of high quality furry porn comics, easily readable and free!"
+    if (this.comic && this.comic.artist) {
+      description = `${this.comic.numberOfPages}-page comic by ${this.comic.artist}, on the internet's best furry porn site.`
+    }
+
     return {
       title: title,
       meta: [
         {vmid: 'twitterTitle', name: 'twitter:title', content: title},
         {vmid: 'ogTitle', property: 'og:title', content: title},
+        {vmid: 'twitterDesc', name: 'twitter:description', content: description},
+        {vmid: 'ogDesc', property: 'og:description', content: description},
       ]
     }
   },
