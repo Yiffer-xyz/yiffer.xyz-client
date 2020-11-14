@@ -427,12 +427,13 @@ export default {
     },
 
     async shareClicked () {
-      console.log(navigator.share)
       if (navigator.share === undefined) { return }
+      let artist = this.comic ? this.comic.artist : 'Unknown'
+      let nofPages = this.comic ? this.comic.numberOfPages : 'Unknown'
       let shareDataObject = {
-        'title': this.$route.params.comicName + ' - Yiffer.xyz',
-        'text': '',
-        'url': 'https://yiffer.xyz/' + this.$route.path
+        title: `Comic: ${this.$route.params.comicName} - beta.yiffer.xyz`,
+        text: `By ${artist}. ${nofPages} pages.`,
+        url: `https://beta.yiffer.xyz/${this.$route.path}`
       }
       
       navigator.share(shareDataObject)
