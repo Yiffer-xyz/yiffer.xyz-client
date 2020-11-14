@@ -337,7 +337,8 @@
     <div v-else-if="comicList.length > 0" class="comic-card-container" id="comicCardContainerList">
       <comic-card v-for="comic in comicList"
                   :key="comic.id"
-                  :comic="comic">
+                  :comic="comic"
+                  @image-load="onImageLoad">
       </comic-card>
     </div>
 
@@ -447,6 +448,7 @@ export default {
       showPaginationWhileLoading: false,
       previousPaginationButtons: [],
       lastClosedTime: new Date(),
+      loadedImageCounter: 0,
     }
   },
 
@@ -578,6 +580,7 @@ export default {
     if (!this.paidImages.fetching && !this.paidImages.fetched) {
       this.loadActiveAds()
     }
+    window.prerenderReady = false
   },
 
   methods: {
@@ -871,6 +874,13 @@ export default {
       let blog = await blogApi.getDisplayedBlog()
       if (blog && blog.shouldDisplay) {
         this.blogLink = blog
+      }
+    },
+
+    onImageLoad () {
+      this.loadedImageCounter++
+      if (this.loadedImageCounter === this.config.comicsPerPage) {
+        window.prerenderReady = true
       }
     },
 

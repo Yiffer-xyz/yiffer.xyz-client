@@ -21,9 +21,9 @@
 
       <!-- PIC -->
       <picture @click="storeClickedComicData()">
-        <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`">
-        <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`">
-        <img :src="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`">
+        <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
+        <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
+        <img :src="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
       </picture>
     </router-link>
 
@@ -188,6 +188,10 @@ export default {
         this.isShowingKeywords = true
         this.isLoadingKeywords = false
       }
+    },
+
+    onLoadFinished () {
+      this.$emit('image-load')
     },
 
     formatRating: function (number) {
