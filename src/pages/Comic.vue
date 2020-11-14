@@ -432,12 +432,11 @@ export default {
       let nofPages = this.comic ? this.comic.numberOfPages : 'Unknown'
       let shareDataObject = {
         title: `Comic: ${this.$route.params.comicName} - beta.yiffer.xyz`,
-        text: `By ${artist}. ${nofPages} pages.`,
+        text: `${this.$route.params.comicName}, a comic by ${artist}`,
         url: `https://beta.yiffer.xyz/${this.$route.path}`
       }
       
       navigator.share(shareDataObject)
-        .then(a => alert(a))
         .catch(() => {})
     },
 
