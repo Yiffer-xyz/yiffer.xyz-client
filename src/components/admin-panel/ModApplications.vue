@@ -104,10 +104,7 @@ export default {
       application.isRemoved = shouldRemove
       application.isProcessed = true
       let applicationIndex = this.applications.findIndex(a => a.id === application.id)
-      console.log(applicationIndex)
-      console.log(application)
       this.$set(this.applications, applicationIndex, application)
-      console.log(this.applications)
     },
 
 		prettyDate: dateString => (new Date(dateString)).toString().substring(4, 15),
