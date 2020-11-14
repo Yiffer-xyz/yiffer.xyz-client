@@ -5,18 +5,11 @@ import Router from 'vue-router'
 import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/Comic.vue'
 import About from '@/pages/About.vue'
-import Artist from '@/pages/Artist.vue'
-import Admin from '@/pages/Admin.vue'
-import PendingComic from '@/pages/PendingComic.vue'
-import Donate from '@/pages/Donate.vue'
-import Account from '@/pages/Account.vue'
 import Feedback from '@/pages/Feedback.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
-import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 import JoinUs from '@/pages/JoinUs.vue'
-import JoinUsApply from '@/pages/JoinUsApply.vue'
 
 Vue.use(Router)
 
@@ -51,18 +44,18 @@ export default new Router({
     {
       path: '/artist/:artistName',
       name: 'artist',
-      component: Artist,
+      component: () => import('@/pages/Artist.vue'),
     },
     {
       path: '/admin',
       name: 'admin',
-      component: Admin,
+      component: () => import('@/pages/Admin.vue'),
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
       path: '/account',
       name: 'account',
-      component: Account,
+      component: () => import('@/pages/Account.vue'),
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
@@ -75,11 +68,6 @@ export default new Router({
       name: 'feedback',
       component: Feedback,
     },
-    // {
-    //   path: '/donate',
-    //   name: 'donate',
-    //   component: Donate,
-    // },
     {
       path: '/join-us',
       name: 'joinUs',
@@ -88,7 +76,7 @@ export default new Router({
     {
       path: '/join-us-apply',
       name: 'joinUsApply',
-      component: JoinUsApply,
+      component: () => import('@/pages/JoinUsApply.vue'),
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
@@ -109,18 +97,13 @@ export default new Router({
     {
       path: '/advertising-apply',
       name: 'apply-advertising',
-      component: AdvertisingApply,
+      component: () => import('@/pages/AdvertisingApply.vue'),
       beforeEnter: rerouteIfNotLoggedIn,
-    },
-    {
-      path: '/join-us',
-      name: 'moderating',
-      component: Blog,
     },
     {
       path: '/pendingComics/:comicName',
       name: 'pendingComic',
-      component: PendingComic,
+      component: () => import('@/pages/PendingComic.vue'),
       beforeEnter: rerouteIfNotLoggedIn,
     },
     {
