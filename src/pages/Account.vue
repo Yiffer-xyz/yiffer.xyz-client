@@ -380,7 +380,7 @@ export default {
       this.ads = []
       this.responseMessageAds = ''
 
-      let response = await advertisingApi.getMyAds(this.$store.getters.userData.id)
+      let response = await advertisingApi.getMyAds()
       if (response.success) {
         this.ads = response.ads
         this.adLoadingState = 'success'

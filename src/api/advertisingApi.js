@@ -67,8 +67,8 @@ export default {
     else { return [] }
   },
 
-  async getMyAds (userId) {
-    let response = await axios.get(baseUrl + '/paid-images/user/'+userId)
+  async getMyAds () {
+    let response = await axios.get(baseUrl + '/paid-images/me')
     if (!response.data.error) { return {success: true, ads: response.data} }
     else { return {success: false, message: response.data.error} }
   },

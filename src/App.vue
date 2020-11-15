@@ -24,7 +24,7 @@
         class="navigation-button underline-link">Account</router-link>
 
       <router-link 
-        v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'mod' || $store.getters.userData.userType === 'admin')"
+        v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
         :to="{ name: 'admin' }"
         class="navigation-button underline-link">Admin</router-link>
 
