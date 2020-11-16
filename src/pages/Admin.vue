@@ -33,21 +33,21 @@
                       @refresh-pending-comics="refreshPendingComics"
                       @refresh-comic-list="refreshComicList" />
 
-      <user-manager/>
+      <UserManager v-if="userData.userType==='admin'"/>
 
       <mod-scoreboard/>
 
-      <AdAdmin/>
+      <AdAdmin v-if="userData.userType==='admin'"/>
 
-      <VisitorStats v-if="$store.getters.userData.userType==='admin'"/>
+      <VisitorStats v-if="userData.userType==='admin'"/>
 
-      <AddBlog v-if="$store.getters.userData.userType==='admin'"/>
+      <AddBlog v-if="userData.userType==='admin'"/>
 
-      <mod-log v-if="$store.getters.userData.userType==='admin'"/>
+      <ModLog v-if="userData.userType==='admin'"/>
 
-      <ModApplications v-if="$store.getters.userData.userType==='admin'"/>
+      <ModApplications v-if="userData.userType==='admin'"/>
 
-      <Feedback v-if="$store.getters.userData.userType==='admin'"/>
+      <Feedback v-if="userData.userType==='admin'"/>
     </div>
 
     <div v-else class="margin-top-32">
@@ -102,9 +102,9 @@ export default {
     'keyword-suggestions': KeywordSuggestions,
     'comic-suggestions': ComicSuggestions,
     'page-manager': PageManager,
-    'user-manager': UserManager,
+    UserManager,
     'mod-scoreboard': ModScoreboard,
-    'mod-log': ModLog,
+    ModLog,
     AdAdmin,
     VisitorStats,
     AddBlog,
@@ -124,6 +124,7 @@ export default {
   computed: {
     ...mapGetters([
       'allComics',
+      'userData',
     ])
   },
 

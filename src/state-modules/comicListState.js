@@ -9,7 +9,6 @@ const store = {
   state: {
     comicList: [],
     hasFetchedComicListOnce: false,
-    firstComicsList: [],
     displayedComics: [],
     filteredComics: [],
     categoryFilter: ['All'],
@@ -178,7 +177,6 @@ const store = {
 
   mutations: {
     setComicList (state, comicList) { state.comicList = comicList },
-    setFirstComicsList (state, comicList) { state.firstComicsList = comicList },
     setDisplayedComics (state, newDisplayedComics) { state.displayedComics = newDisplayedComics },
     setPageNumber (state, newPageNumber) { state.pageNumber = newPageNumber },
     setSorting (state, newSorting) { state.sorting = newSorting },
@@ -201,7 +199,6 @@ const store = {
   getters: {
     comicList: state => state.comicList,
     comicListF: state => () => state.comicList,
-    firstComicsList: state => state.firstComicsList,
     displayedComics: state => state.displayedComics,
     filteredComics: state => state.filteredComics,
     getFilteredComics: () => state => state.filteredComics,
