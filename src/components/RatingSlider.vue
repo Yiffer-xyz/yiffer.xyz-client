@@ -32,11 +32,12 @@ export default {
     },
 
     setRatingSliderValue () {
+      console.log('setting rsv val', this.$store.getters.comicForVotingModal.yourRating)
       this.ratingSliderValue = this.$store.getters.comicForVotingModal.yourRating || 0
     },
 
     async onNewRatingSet (newRating) {
-       newRating = Number(newRating.target.value)
+      newRating = Number(newRating.target.value)
       if (new Date() - this.lastRatingSetTime > 500) {
         this.ratingSpamBlocked = undefined
         this.lastRatingSetTime = new Date()
@@ -68,9 +69,8 @@ export default {
     }
   },
   
-  created () {
-    this.vuexWatcher = this.$store.watch(
-      this.$store.getters.getComicForVotingModal, this.setRatingSliderValue)
+  mounted () {
+    this.vuexWatcher = this.$store.watch(this.$store.getters.getComicForVotingModal, this.setRatingSliderValue)
     this.setRatingSliderValue()
   },
 
