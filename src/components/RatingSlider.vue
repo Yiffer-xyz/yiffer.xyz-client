@@ -32,7 +32,6 @@ export default {
     },
 
     setRatingSliderValue () {
-      console.log('setting rsv val', this.$store.getters.comicForVotingModal.yourRating)
       this.ratingSliderValue = this.$store.getters.comicForVotingModal.yourRating || 0
     },
 

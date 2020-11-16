@@ -328,13 +328,16 @@
       </div>
     </SkeletonTheme>
 
-    <div class="comic-card-small-container" v-else-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'">
+    <div v-else-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'"
+         class="comic-card-small-container">
       <comic-card-small v-for="comic in comicList"
                         :key="comic.id"
                         :comic="comic"/>
     </div>
 
-    <div v-else-if="comicList.length > 0" class="comic-card-container" id="comicCardContainerList">
+    <div v-else-if="comicList.length > 0"
+         class="comic-card-container"
+         id="comicCardContainerList">
       <comic-card v-for="comic in comicList"
                   :key="comic.id"
                   :comic="comic"

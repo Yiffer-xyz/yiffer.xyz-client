@@ -325,7 +325,7 @@ export default {
 
 .dark {
   .loginModal {
-    background-color: $themeBlue0p5;
+    background-color: #262c30;
     color: white;
     input {
       color: #ccc;
