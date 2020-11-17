@@ -80,7 +80,7 @@
         </p>
 
         <div v-if="adLoadingState==='success'">
-          <p>To pay or renew, send the specified amount of USD to <span class="bold">TODO@paypal.com</span>, and <span class="bold">make sure to include the ad's ID in the message field!</span> You should not pay unless the status of an ad is <span class="monoWarning">AWAITING PAYMENT</span> or <span class="monoWarning">ACTIVE, AWAITING RENEWAL PAYMENT</span>. After paying, please wait a few days for the admins to process your payment and update the status of your ads. If you suspect that something has gone wrong, do not hesitate to contact us at MAIL@MAIL.COM</p>
+          <p>To pay or renew, send the specified amount of USD to <span class="bold">TODO@paypal.com</span>, and <span class="bold">make sure to include the ad's ID in the message field!</span> You should not pay unless the status of an ad is <span class="monoWarning">AWAITING PAYMENT</span> or <span class="monoWarning">ACTIVE, AWAITING RENEWAL PAYMENT</span>. After paying, please wait a few days for the admins to process your payment and update the status of your ads. If you suspect that something has gone wrong, do not hesitate to contact us via mail at advertising@yiffer.xyz</p>
 
           <div v-for="ad in ads" :key="ad.id" class="singleReklame simpleShadowNoHover">
             <div style="display: flex; justify-content: space-between;">

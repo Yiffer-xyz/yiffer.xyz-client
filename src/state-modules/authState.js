@@ -41,7 +41,7 @@ export default {
           resolve({success: true})
         }
         else {
-          resolve({success: false, message: 'asdasdasdasd todo'})
+          resolve({success: false, message: ''})
         }
       })
     },

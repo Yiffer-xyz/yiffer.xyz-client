@@ -6,7 +6,7 @@
     <div class="full-width-text-container about-container">
       <h3>Contact</h3>
       <p>
-        Should you wish to contact us, please do so at todo@email.com. If you are an artist who wants their content taken down, we will comply with these wishes.
+        If you wish to contact us, please do so by sending an email to contact@yiffer.xyz. If you are an artist who wants their content taken down, we will comply with your wishes.
       </p> 
 
       <h3>About the content</h3>

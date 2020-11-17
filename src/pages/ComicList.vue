@@ -1053,9 +1053,6 @@ export default {
   width: 100%;
   margin: 0.75rem 0;
 
-  // todo rem for old style
-  // border: 1px solid rgba(255,255,255,0.2);
-
   @media (max-width: 900px) {
     margin: 0.75rem 0;
   }
@@ -1072,7 +1069,6 @@ export default {
   &:hover {
     cursor: pointer;
     background: $themeGray5;
-    // todo rem for old style
     background: rgba(255, 255, 255, 0.1);
   }
 
@@ -1080,7 +1076,6 @@ export default {
     padding: 0.5rem 0.5rem;
   }
 
-  // todo rem for old style
   background: rgba(255, 255, 255, 0.25);
 }
 

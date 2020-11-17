@@ -280,15 +280,6 @@ export default {
     background: transparent;
     padding: 6px 4px;
   }
-
-  .invalid-input {
-    border: 2px solid #ec2f4b !important; //todo
-    padding: 4.5px 2.5px;
-  }
-  .valid-input {
-    border: 2px solid $theme5 !important; //todo works? rett farge ??
-    padding: 4.5px 2.5px;
-  }
 }
 
 .register-button {
