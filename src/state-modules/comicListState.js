@@ -47,6 +47,10 @@ const store = {
     },
 
     addAdsToComicList({state, getters, commit}) {
+      if (!state.paginatedComics.fetched) {
+        return
+      }
+
       let indexesOfAds = []
       let numberOfSections = config.adsPerPage*2 - 1
       let excludedTopComics = 8
@@ -66,6 +70,7 @@ const store = {
 
       let paidImages = [...getters.paidImagesCard()]
       let finalList = []
+
       let comicCounter = 0
       for (let i=0; i<config.comicsPerPage + config.adsPerPage; i++) {
         if (comicCounter === state.paginatedComics.payload.comics.length) {
