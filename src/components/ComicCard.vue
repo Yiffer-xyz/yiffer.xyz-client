@@ -54,15 +54,11 @@
       <!-- PAGES AND RATINGS -->
       <div class="horiz-card-row icons-and-numbers-row">
         <p title="Number of pages">
-          <pages-icon title="Number of pages"/>{{comic.numberOfPages}}
+          <PagesIcon title="Number of pages"/>{{comic.numberOfPages}}
         </p>
 
         <p title="User rating">
-          <users-icon title="User rating"/>{{formatRating(comic.userRating)}}
-        </p>
-
-        <p title="Your rating" v-if="$store.getters.isAuthenticated">
-          <user-icon title="Your rating"/>{{comic.yourRating || '-'}}
+          <StarIcon title="User rating"/>{{formatRating(comic.userRating)}}
         </p>
       </div>
 
@@ -81,7 +77,7 @@
         </div>
       </div>
       <div class="keyword" v-if="isShowingKeywords" @click="() => isShowingKeywords = false">
-        <hide-tags/> Hide tags
+        <HideTags/> Hide tags
       </div>
 
       
@@ -94,22 +90,22 @@
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div class="keyword" v-if="!isShowingKeywords" @click="showKeywords()">
-          <tags/> Load tags
+          <Tags title=""/> Load tags
         </div>
       </div>
 
-
-      <voting-button style="margin-top: 7px;"
+      <!-- RATE -->
+      <VotingButton style="margin-top: 7px;"
                      :comic="comic"
                      v-if="$store.getters.isAuthenticated"/>
 
       <p v-if="$store.getters.detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
         <label title="Updated on" style="font-size: 0.8rem;">
-          <refresh-icon title="Updated on"/> {{prettyDate(comic.updated)}}
+          <RefreshIcon title="Updated on"/> {{prettyDate(comic.updated)}}
         </label>
         <br/>
         <label title="Created on" style="font-size: 0.8rem;">
-          <plus-icon title="Created on"/> {{prettyDate(comic.created)}}
+          <PlusIcon title="Created on"/> {{prettyDate(comic.created)}}
         </label>
       </p>
     </div>
@@ -122,10 +118,9 @@
 import keywordApi from '../api/keywordApi'
 
 import VotingButton from '@/components/VotingButton.vue'
-import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
 import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
-import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'
+import StarIcon from 'vue-material-design-icons/StarOutline.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import Tags from 'vue-material-design-icons/TagMultiple.vue'
@@ -138,15 +133,14 @@ export default {
   name: 'comic-card',
   
   components: {
-    'voting-button': VotingButton,
-    'voting-button-single-color': VotingButtonSingleColor,
-    'pages-icon': PagesIcon,
-    'user-icon': UserIcon,
-    'users-icon': UsersIcon,
-    'plus-icon': PlusIcon,
-    'refresh-icon': RefreshIcon,
-    'tags': Tags,
-    'hide-tags': HideTags,
+    VotingButton,
+    PagesIcon,
+    UserIcon,
+    StarIcon,
+    PlusIcon,
+    RefreshIcon,
+    Tags,
+    HideTags,
     ComicCardPaidImage,
   },
 
@@ -403,7 +397,7 @@ export default {
     text-align: center;
     color: $cardTextColorLight;
   }
-  .voting-button {
+  .VotingButton {
     margin-top: 4px;
   }
 
@@ -421,7 +415,7 @@ export default {
     img {
       height: 141px;
     }
-    .voting-button {
+    .VotingButton {
       width: 76%;
     }
   }

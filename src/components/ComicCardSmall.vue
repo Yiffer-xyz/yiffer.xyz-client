@@ -74,7 +74,6 @@
 
 <script>
 import VotingButton from '@/components/VotingButton.vue'
-import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
 import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
 import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'
@@ -85,8 +84,7 @@ export default {
   name: 'comic-card',
   
   components: {
-    VotingButton, VotingButtonSingleColor, 
-    PagesIcon, UserIcon, UsersIcon, PlusIcon, RefreshIcon, 
+    VotingButton, PagesIcon, UserIcon, UsersIcon, PlusIcon, RefreshIcon, 
   },
   
   props: {

@@ -16,7 +16,6 @@
 import keywordApi from '../api/keywordApi'
 
 import VotingButton from '@/components/VotingButton.vue'
-import VotingButtonSingleColor from '@/components/VotingButtonSingleColor.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
 import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
 import UsersIcon from 'vue-material-design-icons/AccountMultipleOutline.vue'

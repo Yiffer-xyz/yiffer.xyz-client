@@ -3,13 +3,15 @@
 					@click="showVotingOrLoginModal()" 
 					:class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
 
-		<span v-if="$store.getters.isAuthenticated">
-			<star-icon/> Rate
+		<span v-if="$store.getters.isAuthenticated && comic.yourRating !== null && comic.yourRating !== 0"
+					class="lessIconMarginContainer">
+			You: {{comic.yourRating}} <StarIcon />
 		</span>
 
-		<span v-else>
-			<login-icon/> Log in to rate
+		<span v-else-if="$store.getters.isAuthenticated">
+			<StarIcon title=""/> Rate
 		</span>
+
 	</button>
 </template>
 
@@ -20,12 +22,13 @@ import StarIcon from 'vue-material-design-icons/Star.vue'
 export default {
 	name: 'votingButton',
 	components: {
-		'login-icon': LoginIcon,
-		'star-icon': StarIcon,
+		LoginIcon, StarIcon,
 	},
+
 	props: {
 		comic: Object,
 	},
+
 	methods: {
 		showVotingOrLoginModal () {
 			if (this.$store.getters.isAuthenticated) {
@@ -44,6 +47,12 @@ export default {
 .voting-button-todo {
 	@media (max-width: 900px) {
 		padding: 3px 9px 3px 6px !important;
+	}
+}
+
+.lessIconMarginContainer {
+	span {
+		margin: auto -2px;
 	}
 }
 </style>
