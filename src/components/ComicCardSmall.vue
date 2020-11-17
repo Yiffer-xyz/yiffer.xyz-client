@@ -10,7 +10,7 @@
         WIP
       </div>
       <div class="wip-label-box" v-if="comic.state === 'cancelled'">
-        CUT
+        DEAD
       </div>
       
       <!-- NEW LABEL -->

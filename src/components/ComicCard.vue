@@ -14,7 +14,7 @@
       </div>
       <div class="triangle-wrapper triangle-wrapper-right" v-if="comic.state === 'cancelled'">
         <div class="triangle-inner">
-          <label class="triangle-label triangle-label-cancelled" title="Cancelled before finishing">STOP</label>
+          <label class="triangle-label triangle-label-cancelled" title="Cancelled">DEAD</label>
         </div>
       </div>
 
