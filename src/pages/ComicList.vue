@@ -225,7 +225,7 @@
           </div>
 
           <div class="upper-body-horiz-row">
-            <table class="horiz-row-inner" style="table-layout: auto;">
+            <table class="horiz-row-inner" style="table-layout: fixed; ">
               <tr>
                 <td
                   :class="{'button-selected': $store.getters.sorting === 'updated'}"
@@ -238,6 +238,7 @@
                   User rating
                 </td>
                 <td
+                  v-if="$store.getters.isAuthenticated"
                   :class="{'button-selected': $store.getters.sorting === 'yourRating'}"
                   @click="onSortingButtonClick('yourRating')">
                   Your rating
@@ -247,25 +248,6 @@
           </div>
           
           <div class="upper-body-horiz-row" style="display: flex; justify-content: space-evenly; width: fit-content; margin-left: auto; margin-right: auto; border: none;">
-            <!-- MOBILE VIEW: LIST OR CARD -->
-            <!-- <table class="horiz-row-inner horiz-row-inner-border" style="width: auto; margin-right: 30px;" v-if="$breakpoint.xsOnly">
-              <tr>
-                <td
-                  @click="setViewMode('list')"
-                  :class="{'button-selected': $store.getters.viewMode === 'list'}"
-                >
-                  List
-                </td>
-                <td
-                  @click="setViewMode('card')"
-                  :class="{'button-selected': $store.getters.viewMode === 'card'}"
-                >
-                  Cards
-                </td>
-              </tr>
-            </table> -->
-            
-            <!-- BIG VIEW: DETAIL LEVEL -->
             <table class="horiz-row-inner horiz-row-inner-border" style="width: auto;">
               <tr>
                 <td
@@ -771,7 +753,10 @@ export default {
       if (!this.$store.getters.tagFilter.includes('All')) {
         queryObj.classification = this.$store.getters.tagFilter
       }
-      if (this.$store.getters.sorting !== 'updated') {
+      if (this.$store.getters.sorting === 'updated') {
+        delete queryObj.orderBy
+      }
+      else {
         queryObj.orderBy = this.$store.getters.sorting
       }
       if (this.$store.getters.searchFiltering) {
@@ -783,6 +768,9 @@ export default {
 
       if (Object.keys(queryObj).length > 0) {
         this.$router.push({path: '/', query: queryObj})
+      }
+      else if (this.$router.history.current.fullPath !== '/') {
+        this.$router.push({path: '/'})
       }
     },
 

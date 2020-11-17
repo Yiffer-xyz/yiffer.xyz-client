@@ -46,9 +46,10 @@ export default {
       })
     },
 
-    async logout (context) {
-      context.dispatch('destroyUserData')
+    async logout ({dispatch}) {
+      dispatch('destroyUserData')
       authApi.logout()
+      window.location = '/'
     },
 
     checkAndSetLoginStatus (context) {
@@ -91,6 +92,7 @@ export default {
 
   getters: {
     isAuthenticated: state => state.isAuthenticated,
+    getIsAuthenticated: () => state => state.isAuthenticated,
     userData: state => state.userData
   }
 }
