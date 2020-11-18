@@ -32,10 +32,6 @@ body {
   p, h1, h2, div, td, h3 {
     color: #eee;
   }
-
-  ::selection {
-    background: rgba(120, 253, 214, 0.7);
-  }
 }
 
 option, select, input {

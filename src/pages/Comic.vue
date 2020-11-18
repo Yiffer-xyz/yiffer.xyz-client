@@ -307,12 +307,11 @@ export default {
     }
 
     this.$store.commit('setLoginModalVisibility', false)
-    if (!this.comic) {
-      this.loadComic()
-    }
-    else {
+    this.loadComic(false)
+    if (this.comic) {
       this.initializeImageFitArray()
       this.fitImagesForMobile()
+      // this.fetchPrevNextComics()
     }
 
     if (navigator.share !== undefined) {
@@ -400,8 +399,10 @@ export default {
       }
     },
 
-    async loadComic () {
-      this.comic = undefined
+    async loadComic (setCurrentUndefined=true) {
+      if (setCurrentUndefined) {
+        this.comic = undefined
+      }
       let response = await comicApi.getComic(this.$route.params.comicName)
       if (response.success) {
         this.comic = response.result

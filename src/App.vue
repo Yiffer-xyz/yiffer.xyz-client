@@ -86,6 +86,7 @@ export default {
   metaInfo() {
     return {
       meta: [
+        {name: 'theme-color', content: '#de2a60'},
         {name: 'twitter:card', content: 'summary'},
         {vmid: 'twitterTitle', name: 'twitter:title', content: 'Yiffer.xyz'},
         {vmid: 'twitterDesc', name: 'twitter:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"},

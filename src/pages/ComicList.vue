@@ -81,7 +81,7 @@
              'closedFilterContent': !isFilterSectionExpanded && !isSearchFilteringActive,
              'openFilterContent': isFilterSectionExpanded || isSearchFilteringActive
             }"
-           @click="() => toggleShowSearchFiltering(true)">
+           @click="() => { if (!isFilterSectionExpanded) { toggleShowSearchFiltering(true) } }">
         <span v-if="isFilterSectionExpanded || isSearchFilteringActive" class="upperBodyWidth buttons-container-inner">
           <div class="upper-body-horiz-row">
             <table class="horiz-row-inner" id="catTable">
@@ -434,6 +434,8 @@ export default {
       previousPaginationButtons: [],
       lastClosedTime: new Date(),
       loadedImageCounter: 0,
+      lastClosedSearchFilteringTime: new Date(),
+      deferFetchingComics: false,
     }
   },
 
@@ -581,8 +583,10 @@ export default {
     ]),
     
     fetchComics () {
+      if (this.deferFetchingComics) { return }
+
       let searchParams = {
-        search: this.searchFiltering || null,
+        search: this.searchFiltering222 || null,
         order: this.sorting,
         page: this.pageNumber,
       }
@@ -716,6 +720,9 @@ export default {
     },
 
     toggleShowSearchFiltering (shouldShow) {
+      if (new Date() - this.lastClosedSearchFilteringTime < 200) { return }
+      this.lastClosedSearchFilteringTime = new Date()
+
       if (shouldShow && (new Date()).getTime() - this.lastClosedTime.getTime() < 100) {
         return
       }
@@ -740,7 +747,9 @@ export default {
       this.searchFiltering222 = ''
       this.paginate(1)
       this.fetchComics()
+      this.deferFetchingComics = true
       this.toggleShowSearchFiltering(false)
+      setTimeout(() => this.deferFetchingComics = false, 1500)
     },
 
     setRouterQuery () {

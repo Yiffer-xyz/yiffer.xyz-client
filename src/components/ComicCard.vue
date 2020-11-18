@@ -48,7 +48,7 @@
         <!-- ARTIST -->
         <router-link :comic="comic"
                      :to="{ name: 'artist', params: { artistName: comic.artist } }"
-                     class="comic-card-link underline-link" style="margin-top: 4px; display: block;">
+                     class="comic-card-link underline-link comicCardArtist">
           {{comic.artist}}
         </router-link>
       </div>
@@ -338,6 +338,12 @@ export default {
 
 .circled-text-red {
   border: 0.5px solid $theme5;
+}
+
+.comicCardArtist {
+  display: block;
+  width: fit-content;
+  margin: 4px auto 0 auto;
 }
 
 .comic-card {
