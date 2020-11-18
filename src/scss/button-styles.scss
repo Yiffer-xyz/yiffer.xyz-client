@@ -82,17 +82,6 @@
   }
 }
 
-.y-button-disabled-dark {
-  background-color: $themeGray4;
-  color: #555;
-  &:hover {
-    cursor: not-allowed;
-    color: #555;
-    background-color: $themeGray4;
-    box-shadow: none;
-  }
-}
-
 .y-button-neutral {
   background-color: $themeGray7 !important;
   &:hover {
@@ -301,5 +290,17 @@
         }
       }
     }
+  }
+}
+
+
+.y-button-disabled-dark {
+  background-color: $themeGray4;
+  color: #555;
+  &:hover {
+    cursor: not-allowed;
+    color: #555;
+    background-color: $themeGray4;
+    box-shadow: none;
   }
 }
