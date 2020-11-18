@@ -1,7 +1,7 @@
 <template>
   <div>
     <a :href="paidImage.link" class="comic-card-link paidImageTextContainer" target="_blank">
-      <p class="comic-card-comic-title">
+      <p class="comic-card-comic-title" style="margin-top: 4px;">
         {{paidImage.mainText}}
       </p>
 

@@ -46,7 +46,9 @@
         </router-link>
 
         <!-- ARTIST -->
-        <router-link :comic="comic" :to="{ name: 'artist', params: { artistName: comic.artist } }" class="comic-card-link underline-link">
+        <router-link :comic="comic"
+                     :to="{ name: 'artist', params: { artistName: comic.artist } }"
+                     class="comic-card-link underline-link" style="margin-top: 4px; display: block;">
           {{comic.artist}}
         </router-link>
       </div>
