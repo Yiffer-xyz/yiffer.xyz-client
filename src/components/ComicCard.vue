@@ -167,7 +167,7 @@ export default {
       'comicKeywords',
     ]),
     comicNameUrlParsed () {
-      return this.comic.name.replaceAll(' ', '%20')
+      return this.comic.name.replace(/ /g, '%20')
     }
   },
 
