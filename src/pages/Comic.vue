@@ -434,7 +434,7 @@ export default {
       let shareDataObject = {
         title: `Comic: ${this.$route.params.comicName} - beta.yiffer.xyz`,
         text: `${this.$route.params.comicName}, a comic by ${artist}`,
-        url: `https://beta.yiffer.xyz${this.$route.path}`
+        url: `https://beta.yiffer.xyz${this.$route.path.replace(/%20/g, ' ')}`
       }
       
       navigator.share(shareDataObject)
