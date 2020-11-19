@@ -497,6 +497,12 @@ export default {
   margin: 1rem 0;
 }
 
+.dark {
+  .singleReklame {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
 .adInput {
   width: 100%;
   box-sizing: border-box;

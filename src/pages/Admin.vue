@@ -33,9 +33,9 @@
                       @refresh-pending-comics="refreshPendingComics"
                       @refresh-comic-list="refreshComicList" />
 
-      <UserManager v-if="userData.userType==='admin'"/>
-
       <mod-scoreboard/>
+
+      <UserManager v-if="userData.userType==='admin'"/>
 
       <AdAdmin v-if="userData.userType==='admin'"/>
 

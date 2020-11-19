@@ -258,19 +258,4 @@ label {
   .mono {
     color: black;
   }
-  .monoSuccess {
-    @extend .mono;
-    background-color: $theme7;
-    border-color: $theme3;
-  }
-  .monoInfo {
-    @extend .mono;
-    background-color: $themeInfo;
-    border-color: $themeInfoBorder;
-  }
-  .monoWarning {
-    @extend .mono;
-    background-color: $themeWarningDark;
-    border-color: $themeWarningDarkBorder;
-  }
 }
