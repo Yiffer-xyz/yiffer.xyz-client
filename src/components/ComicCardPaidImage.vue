@@ -1,6 +1,9 @@
 <template>
   <div>
-    <a :href="paidImage.link" class="comic-card-link paidImageTextContainer" target="_blank">
+    <a :href="paidImage.link"
+       @click="savePaidImageClick"
+       class="comic-card-link paidImageTextContainer"
+       target="_blank">
       <p class="comic-card-comic-title" style="margin-top: 4px;">
         {{paidImage.mainText}}
       </p>
@@ -14,6 +17,7 @@
 
 <script>
 import keywordApi from '../api/keywordApi'
+import paidImageApi from '../api/advertisingApi'
 
 import VotingButton from '@/components/VotingButton.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
@@ -32,6 +36,9 @@ export default {
   },
 
   methods: {
+    async savePaidImageClick () {
+      paidImageApi.logAdClick(this.paidImage.id)
+    }
   },
 }
 </script>

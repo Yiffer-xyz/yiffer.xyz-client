@@ -1,6 +1,8 @@
 <template>
   <div class="comic-card">
-    <router-link v-if="!comic.isPaidImage" :comic="comic" :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
+    <router-link v-if="!comic.isPaidImage"
+                 :comic="comic"
+                 :to="{ name: 'comic', params: { comicName: `${comic.name }` } }">
       <!-- NEW AND WIP TRIANGLES -->
       <div class="triangle-wrapper triangle-wrapper-left" v-if="isNewComic">
         <div class="triangle-inner">
@@ -28,13 +30,13 @@
     </router-link>
 
     <!-- AD -->
-    <a v-else :href="comic.link" target="_blank">
+    <a v-else :href="comic.link" @click="savePaidImageClick()" target="_blank">
       <div class="triangle-wrapper triangle-wrapper-right" v-if="comic.isPaidImage">
         <div class="triangle-inner">
           <label class="triangle-label">AD</label>
         </div>
       </div>
-      <img :src="`${config.paidImagesDirectory}/${comic.id}.${comic.filetype}`" @click="storeClickedComicData()">
+      <img :src="`${config.paidImagesDirectory}/${comic.id}.${comic.filetype}`">
     </a>
 
     <div v-if="!comic.isPaidImage" class="comic-card-inner-container">
@@ -117,6 +119,7 @@
 </template>
 
 <script>
+import paidImageApi from '../api/advertisingApi'
 import keywordApi from '../api/keywordApi'
 
 import VotingButton from '@/components/VotingButton.vue'
@@ -197,8 +200,15 @@ export default {
     },
 
     prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
+
     storeClickedComicData: function () {
       this.$store.dispatch('storeClickedComic', this.comic)
+    },
+
+    savePaidImageClick () {
+      if (this.comic.isPaidImage) {
+        paidImageApi.logAdClick(this.comic.id)
+      }
     },
 
     addSelectedKeyword (keyword) {

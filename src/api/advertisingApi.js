@@ -83,5 +83,10 @@ export default {
     let response = await axios.get(baseUrl + '/paid-images-basic')
     if (!response.data.error) { return response.data }
     else { return [] }
+  },
+
+  async logAdClick (adId) {
+    console.log('clicked ', adId)
+    axios.post(baseUrl + '/paid-images-click', {adId})
   }
 }

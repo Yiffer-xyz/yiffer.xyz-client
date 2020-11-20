@@ -97,7 +97,7 @@
               </td>
 
               <td style="white-space: pre-wrap;">
-                <a :href="ad.link" target="_blank" style="min-width: 6rem;" class="underline-link">{{ad.link}}</a>
+                <a :href="ad.link" target="_blank" style="min-width: 6rem; word-break: normal;" class="underline-link">{{ad.link}}</a>
               </td>
 
               <td>

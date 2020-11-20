@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;">
     <h1>Becoming a mod</h1>
-    <back-to-index></back-to-index>
+    <BackToIndex></BackToIndex>
 
     <div class="full-width-text">
       <p>
@@ -91,13 +91,15 @@ import BackToIndex from '@/components/BackToIndex.vue'
 import miscApi from '../api/miscApi'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import LoginIcon from 'vue-material-design-icons/Login.vue'
 
 export default {
   name: 'joinUs',
   
   components: {
-    'back-to-index': BackToIndex,
+    BackToIndex,
     RightArrow,
+    LoginIcon,
   },
 
   mounted () {
