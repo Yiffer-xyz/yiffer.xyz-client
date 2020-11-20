@@ -60,6 +60,8 @@
 
 					<p>Account created {{prettyDateFromTimestamp(selectedUser.createdTime)}}</p>
 
+					<p>Email: {{selectedUser.email || '-'}}</p>
+
 					<!-- ROLES & DONATOR -->
 					<div class="horisontal-flex margin-top-8">
 						<label>User type </label>
