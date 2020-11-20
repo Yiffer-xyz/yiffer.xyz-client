@@ -230,6 +230,9 @@ select {
 .mt-32 {
   margin-top: 2rem;
 }
+.mt-48 {
+  margin-top: 3rem;
+}
 .pt-32 {
   padding-top: 2rem;
 }
@@ -237,16 +240,19 @@ select {
   margin-bottom: 1px;
 }
 .mb-4 {
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
 }
 .mb-8 {
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 .mb-10 {
   margin-bottom: 10px;
 }
 .mb-16 {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
+}
+.mb-32 {
+  margin-bottom: 2rem;
 }
 .ml-0 {
   margin-left: 0;

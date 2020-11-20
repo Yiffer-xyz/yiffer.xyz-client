@@ -8,14 +8,63 @@
                      class="margin-bottom-10 margin-top-10"/>
 
     <div :class="ads.length>0 ? 'full-width-text' : 'smaller-width-text'">
-      <button v-if="!isChangingPassword"
-              @click="isChangingPassword=true"
-              class="y-button y-button-neutral margin-top-16"
-              style="width: fit-content;">
-        Change password
-      </button>
+      <div class="vertical-flex mt-16">
+        <p v-if="$store.getters.userData.email">
+          Your email: {{$store.getters.userData.email}}
+        </p>
+        <p v-else>
+          Your account does not have an email. This is because your account was created before this website started using emails for accounts. We recommend that you connect your email address now, for account recovery purposes.
+        </p>
 
-      <div v-if="isChangingPassword" class="margin-top-16">
+        <button v-if="!$store.getters.userData.email && !isChangingPassword && !isChangingEmail"
+                @click="isChangingEmail=true"
+                class="y-button y-button-neutral mt-16"
+                style="width: fit-content;">
+          Add email address
+        </button>
+        
+        <button v-if="!isChangingPassword && !isChangingEmail"
+                @click="isChangingPassword=true"
+                class="y-button y-button-neutral mt-16"
+                style="width: fit-content;">
+          Change password
+        </button>
+      </div>
+
+      <!-- CHANGE EMAIL -->
+      <form v-if="isChangingEmail" class="margin-top-16">
+        <p class="bold">Set email address</p>
+        <table id="changePasswordTable">
+          <tr>
+            <td><label>New email address: </label></td>
+            <td><input v-model="newEmail" type="email" class="margin-top-4"/></td>
+          </tr>
+          <tr>
+            <td><label>Current password: </label> </td>
+            <td><input v-model="currentPassword" type="password" class="margin-top-4"/></td>
+          </tr>
+        </table>
+
+        <div v-if="!isSubmittingEmailChange" style="margin: 0.75rem auto 0 auto; width: fit-content;">
+          <button @click="cancelChangeEmail"
+                  type="button"
+                  class="y-button y-button-neutral">
+            Cancel
+          </button>
+
+          <button @click="submitChangeEmail"
+                  @submit.prevent="submitChangeEmail"
+                  type="submit"
+                  class="y-button" 
+                  style="width: fit-content; margin-left: 8px;">
+            Set email
+          </button>
+        </div>
+        <Loading v-else text="Submitting" class="mt-16" />
+      </form>
+
+      <!-- CHANGE PASSWORD -->
+      <form v-if="isChangingPassword" class="margin-top-16">
         <p class="bold">Change password</p>
         <table id="changePasswordTable">
           <tr>
@@ -32,28 +81,23 @@
           </tr>
         </table>
 
-        <div style="margin: 4px auto 0 auto; width: fit-content;">
+        <div v-if="!isSubmittingPassword" style="margin: 0.75rem auto 0 auto; width: fit-content;">
           <button @click="cancelChangePassword"
+                  type="button"
                   class="y-button y-button-neutral">
             Cancel
           </button>
 
           <button @click="submitChangePassword"
+                  @submit.prevent="submitChangePassword"
+                  type="submit"
                   class="y-button" 
                   style="width: fit-content; margin-left: 8px;">
             Change password
           </button>
         </div>
-      </div>
-
-      <div class="margin-top-16" v-show="!isChangingPassword">
-        <p><span class="bold">Donator</span>: {{$store.getters.userData.donator ? 'Yes' : 'No'}}</p>
-      </div>
-
-      <div class="margin-top-16" v-show="!isChangingPassword">
-        <p class="bold">Tag blacklist</p>
-        <p style="font-style: italic; margin-top: 0;">Coming soon!</p>
-      </div>
+        <Loading v-else text="Submitting" class="mt-16" />
+      </form>
 
       <div class="margin-top-16"
            v-show="showModApplicationStatus">
@@ -69,8 +113,8 @@
         </p>
       </div>
 
-      <div v-if="(ads.length > 0 || adLoadingState==='error') && !isChangingPassword">
-        <h3 class="mt-16">Advertising</h3>
+      <div v-if="(ads.length > 0 || adLoadingState==='error') && !isChangingPassword && !isChangingEmail">
+        <h3 class="mt-48">Advertising</h3>
 
         <ResponseMessage :message="responseMessageAds" :messageType="responseMessageTypeAds" @closeMessage="closeResponseMessageAds"
                          class="mb-8" style="margin-left: 0;"/>
@@ -221,7 +265,9 @@ export default {
   data: function () {
     return {
       isChangingPassword: false,
+      isChangingEmail: false,
       currentPassword: '',
+      newEmail: '',
       newPassword1: '',
       newPassword2: '',
       ads: [],
@@ -235,6 +281,8 @@ export default {
       responseMessageTypeAds: 'info',
       responseMessage: '',
       responseMessageType: 'info',
+      isSubmittingPassword: false,
+      isSubmittingEmailChange: false,
       modApplicationStatus: MOD_APPLICATION_STATUSES.loading,
       modApplicationStatuses: MOD_APPLICATION_STATUSES,
       config,
@@ -242,6 +290,29 @@ export default {
   },
 
   methods: {
+    async submitChangeEmail () {
+      if (!this.currentPassword || !this.newEmail) {
+        this.responseMessage = 'Please fill in all fields'
+        this.responseMessageType = 'error'
+        return
+      }
+
+      this.isSubmittingEmailChange = true
+      let response = await authApi.changeEmail(this.currentPassword, this.newEmail)
+      this.isSubmittingEmailChange = false
+
+      if (response.success) {
+        this.responseMessage = 'Email set successfully!'
+        this.responseMessageType = 'success'
+        this.cancelChangeEmail()
+        this.$store.dispatch('refreshUserData')
+      }
+      else {
+        this.responseMessage = `Error changing email: ${response.message}`
+        this.responseMessageType = 'error'
+      }
+    },
+
     async submitChangePassword () {
       if (!this.currentPassword || !this.newPassword1 || !this.newPassword2) {
         this.responseMessage = 'Please fill in all fields'
@@ -256,7 +327,10 @@ export default {
         return
       }
 
+      this.isSubmittingPassword = true
       let response = await authApi.changePassword(this.currentPassword, this.newPassword1, this.newPassword2)
+      this.isSubmittingPassword = false
+
       if (response.success) {
         this.responseMessage = 'Password changed successfully!'
         this.responseMessageType = 'success'
@@ -270,9 +344,16 @@ export default {
 
     cancelChangePassword () {
       this.currentPassword = ''
+      this.currentPassword = ''
       this.newPassword1 = ''
       this.newPassword2 = ''
       this.isChangingPassword = false
+    },
+
+    cancelChangeEmail () {
+      this.newEmail = ''
+      this.currentPassword = ''
+      this.isChangingEmail = false
     },
 
     startAdEditing (ad) {
@@ -495,6 +576,7 @@ export default {
 .singleReklame {
   padding: 1rem;
   margin: 1rem 0;
+  background: white;
 }
 
 .dark {

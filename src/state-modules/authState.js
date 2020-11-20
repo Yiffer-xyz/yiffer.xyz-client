@@ -1,5 +1,9 @@
 import authApi from '../api/authApi';
 
+const avoidReloadLoginPages = [
+  '/advertising', 'suggestcomic', 'feedback', 'join-us'
+]
+
 export default {
   state: {
     userData: undefined,
@@ -13,6 +17,10 @@ export default {
         if (response.success) {
           context.dispatch('setUserData', response.result)
           resolve({success: true})
+          if (!avoidReloadLoginPages.includes(location.pathname)) {
+            // todo terrible - do a smooth fetch of user ratings instead
+            setTimeout(() => location.reload(), 200)
+          }
         }
         else {
           resolve({success: false, message: response.message})
@@ -20,10 +28,13 @@ export default {
       })
     },
 
-    async signup (context, {username, password, password2}) {
-      if (password != password2) { return {success: false, message: 'Passwords do not match'} }
+    async signup (context, {email, username, password, password2}) {
+      if (password != password2) {
+        return {success: false, message: 'Passwords do not match'}
+      }
+
       return new Promise( async resolve => {
-        let response = await authApi.signup(username, password)
+        let response = await authApi.signup(username, email, password)
         if (response.success) {
           context.dispatch('setUserData', response.result)
           resolve({success: true})
@@ -52,19 +63,32 @@ export default {
       window.location = '/'
     },
 
-    checkAndSetLoginStatus (context) {
+    checkAndSetLoginStatus ({commit, dispatch}) {
       return new Promise( async resolve => {
         if ($cookies.isKey('user-data')) {
-          context.commit('setUserData', $cookies.get('user-data'))
-          context.commit('setIsAuthenticated', true)
+          commit('setUserData', $cookies.get('user-data'))
+          commit('setIsAuthenticated', true)
+          dispatch('refreshUserData')
           resolve(true)
         }
         else {
-          context.commit('setIsAuthenticated', false)
-          context.commit('setUserData', undefined)
+          commit('setIsAuthenticated', false)
+          commit('setUserData', undefined)
           resolve(false)
         }
       })
+    },
+
+    async refreshUserData ({commit}) {
+      let response = await authApi.refreshAuth()
+      if (response === null) {
+        commit('setIsAuthenticated', false)
+        commit('setUserData', undefined)
+      }
+      else {
+        commit('setUserData', response)
+        commit('setIsAuthenticated', true)
+      }
     },
 
     setUserData (context, userData) {

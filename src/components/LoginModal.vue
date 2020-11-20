@@ -11,19 +11,25 @@
                          @closeMessage="() => loginErrorMessage = ''"
                          style="margin-top: 1rem;"/>
 
-        <form @submit="loginConfirmClicked" class="login-register-form">
+        <form @submit.prevent="loginConfirmClicked"
+              v-if="!loginLoading"
+              class="login-register-form">
           <label for="loginUsername">Username</label>
           <input v-model="loginUsername" ref="loginUsernameInput" name="loginUsername" type="text" class="loginInput"/>
 
           <label for="loginPassword">Password</label>
           <input v-model="loginPassword" name="loginPassword" type="password" class="loginInput"/>
 
-          <button v-if="!loginLoading" type="submit" class="y-button login-button">Log in</button>
-          <button v-if="loginLoading" class="y-button y-button-neutral login-button pleasewait-button">Please wait...</button>
+          <button type="submit" class="y-button login-button">Log in</button>
         </form>
 
-        <button @click="setModalContext('register')" class="margin-top-4 underline-link link-color text-button"
-          >Click here to <b>sign up</b></button>
+        <Loading v-else text="Logging in" class="mt-48 mb-32" />
+
+        <button @click="setModalContext('register')"
+                v-if="!loginLoading"
+                class="margin-top-4 underline-link link-color text-button">
+          Click here to <b>sign up</b>
+        </button>
       </div>
 
 
@@ -35,7 +41,18 @@
                          @closeMessage="() => signupErrorMessage = ''"
                          outsideStyle="margin-top: 1rem;"/>
 
-        <form @submit="signupConfirmClicked" class="login-register-form">
+        <form @submit.prevent="signupConfirmClicked"
+              v-if="!signupLoading"
+              class="login-register-form">
+          <label for="signupEmail">Email</label>
+          <input
+            v-model="signupEmail"
+            ref="signupEmailInput"
+            class="loginInput"
+            name="signupEmail"
+            type="email"
+          />
+
           <label for="signupUsername">Username</label>
           <input
             v-model="signupUsername"
@@ -45,7 +62,7 @@
             type="text"
           />
 
-          <label for="signupPassword">Password</label>
+          <label for="signupPassword">Password, 6+ characters</label>
           <input
             v-model="signupPassword"
             class="loginInput"
@@ -61,16 +78,23 @@
             type="password"
           />
 
-          <button v-if="!signupLoading" type="submit" class="y-button login-button">Sign up</button>
-          <button v-if="signupLoading" class="y-button login-button pleasewait-button">Please wait...</button>
+          <button type="submit" class="y-button login-button">
+            Sign up
+          </button>
         </form>
 
-        <button @click="setModalContext('login')" class="margin-top-4 underline-link link-color text-button"
-          >Click here to <b>log in</b></button>
+        <Loading v-else text="Submitting" class="mt-48 mb-32" />
+
+        <button @click="setModalContext('login')"
+                v-show="!signupLoading"
+                class="mt-4 underline-link link-color text-button">
+          Click here to <b>log in</b>
+        </button>
       </div>
 
-      <button class="y-button-close" @click="closeModal()" style="  position: absolute; right: 8px; top: 16px;"
-        ><CrossIcon title="" :size="40"/></button>
+      <button class="y-button-close" @click="closeModal()" style="position: absolute; right: 8px; top: 16px;">
+        <CrossIcon title="" :size="40"/>
+      </button>
     </div>
   </div>
 </template>
@@ -79,6 +103,7 @@
 import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import Loading from '@/components/LoadingIndicator.vue'
 
 import authApi from '../api/authApi'
 
@@ -89,6 +114,7 @@ export default {
     CheckboxIcon,
     CrossIcon,
     ResponseMessage,
+    Loading,
   },
 
   data: function () {
@@ -98,6 +124,7 @@ export default {
       loginErrorMessage: '',
       loginLoading: false,
 
+      signupEmail: '',
       signupUsername: '',
       signupPassword: '',
       signupPassword2: '',
@@ -107,38 +134,45 @@ export default {
   },
 
   methods: {
-    setModalContext ( modalContext ) {
+    setModalContext (modalContext) {
       this.$store.commit('setLoginModalContext', modalContext)
       this.emptyInputFields()
       this.clearErrorMessages()
     },
 
-    async loginConfirmClicked ( buttonEvent ) {
-      buttonEvent.preventDefault()
-      this.loginLoading = true
+    async loginConfirmClicked () {
+      this.loginErrorMessage = ''
       let loginData = {username: this.loginUsername, password: this.loginPassword}
+
+      this.loginLoading = true
       let response = await this.$store.dispatch('login', loginData)
       this.loginLoading = false
-      if ( response.success ) {
+
+      if (response.success) {
         this.closeModal()
       }
       else {
-        this.emptyInputFields()
         this.loginErrorMessage = response.message
       }
     },
 
-    async signupConfirmClicked ( buttonEvent ) {
-      buttonEvent.preventDefault()
+    async signupConfirmClicked () {
+      this.signupErrorMessage = ''
+      let signupData = {
+        email: this.signupEmail,
+        username: this.signupUsername,
+        password: this.signupPassword,
+        password2: this.signupPassword2,
+      }
+
       this.signupLoading = true
-      let signupData = {username: this.signupUsername, password: this.signupPassword, password2: this.signupPassword2}
       let response = await this.$store.dispatch('signup', signupData)
       this.signupLoading = false
+
       if ( response.success ) {
         this.closeModal()
       }
       else {
-        this.emptyInputFields()
         this.signupErrorMessage = response.message
       }
     },
@@ -196,9 +230,6 @@ export default {
         if (this.$store.getters.loginModalContext==='login') {
           this.$refs.loginUsernameInput.focus()
         }
-        else {
-          this.$refs.signupUsernameInput.focus()
-        }
       }
     })
   }
@@ -221,10 +252,13 @@ export default {
 }
 
 .login-modal-inner-wrapper {
-  width: 240px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  input {
+    width: 220px;
+  }
 }
 
 .loginModal {
@@ -339,9 +373,4 @@ export default {
     background-color: rgba(0, 0, 0, 0.7);
   }
 }
-</style>
-
-<style>
-  @media (max-width: 795px) {
-  }
 </style>
