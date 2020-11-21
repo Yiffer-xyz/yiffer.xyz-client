@@ -14,11 +14,16 @@
         <form @submit.prevent="loginConfirmClicked"
               v-if="!loginLoading"
               class="login-register-form">
-          <label for="loginUsername">Username</label>
-          <input v-model="loginUsername" ref="loginUsernameInput" name="loginUsername" type="text" class="loginInput"/>
 
-          <label for="loginPassword">Password</label>
-          <input v-model="loginPassword" name="loginPassword" type="password" class="loginInput"/>
+          <div class="yForm2Field">
+            <label for="loginUsername">Username or email:</label>
+            <input type="text" v-model="loginUsername" id="loginUsername" ref="loginUsernameInput" />
+          </div>
+
+          <div class="yForm2Field">
+            <label for="loginPassword">Password:</label>
+            <input type="password" v-model="loginPassword" id="loginPassword" />
+          </div>
 
           <button type="submit" class="y-button login-button">Log in</button>
         </form>
@@ -29,6 +34,12 @@
                 v-if="!loginLoading"
                 class="margin-top-4 underline-link link-color text-button">
           Click here to <b>sign up</b>
+        </button>
+
+        <button @click="setModalContext('forgot-password')"
+                v-if="!loginLoading"
+                class="mt-8 underline-link link-color text-button">
+          Forgot password?
         </button>
       </div>
 
@@ -44,39 +55,26 @@
         <form @submit.prevent="signupConfirmClicked"
               v-if="!signupLoading"
               class="login-register-form">
-          <label for="signupEmail">Email</label>
-          <input
-            v-model="signupEmail"
-            ref="signupEmailInput"
-            class="loginInput"
-            name="signupEmail"
-            type="email"
-          />
 
-          <label for="signupUsername">Username</label>
-          <input
-            v-model="signupUsername"
-            ref="signupUsernameInput"
-            class="loginInput"
-            name="signupUsername"
-            type="text"
-          />
-
-          <label for="signupPassword">Password, 6+ characters</label>
-          <input
-            v-model="signupPassword"
-            class="loginInput"
-            name="signupPassword"
-            type="password"
-          />
-
-          <label for="signupPassword2">Repeat password</label>
-          <input
-            v-model="signupPassword2"
-            class="loginInput"
-            name="signupPassword2"
-            type="password"
-          />
+          <div class="yForm2Field">
+            <label for="signupEmail">Email:</label>
+            <input type="email" v-model="signupEmail" id="signupEmail" />
+          </div>
+          
+          <div class="yForm2Field">
+            <label for="signupUsername">Username:</label>
+            <input type="text" v-model="signupUsername" id="signupUsername" />
+          </div>
+          
+          <div class="yForm2Field">
+            <label for="signupPassword">Password, 6+ characters:</label>
+            <input type="password" v-model="signupPassword" id="signupPassword" />
+          </div>
+          
+          <div class="yForm2Field">
+            <label for="signupPassword2">Repeat password</label>
+            <input type="password" v-model="signupPassword2" id="signupPassword2" />
+          </div>
 
           <button type="submit" class="y-button login-button">
             Sign up
@@ -89,6 +87,47 @@
                 v-show="!signupLoading"
                 class="mt-4 underline-link link-color text-button">
           Click here to <b>log in</b>
+        </button>
+
+        <button @click="setModalContext('forgot-password')"
+                v-if="!loginLoading"
+                class="mt-8 underline-link link-color text-button">
+          Forgot password?
+        </button>
+      </div>
+
+      <div v-if="$store.getters.loginModalContext==='forgot-password'" class="login-modal-inner-wrapper">
+        <p class="modal-header">Forgot password?</p>
+
+        <ResponseMessage :message="forgotPwResponseMessage"
+                         :messageType="forgotPwResponseMessageType"
+                         @closeMessage="() => forgotPwResponseMessage = ''"
+                         style="margin-top: 1rem;"/>
+
+        <form @submit.prevent="forgotPasswordSubmit"
+              v-if="!isForgotPasswordLoading"
+              class="login-register-form">
+              
+          <div class="yForm2Field">
+            <label for="forgotPwEmail">Email address</label>
+            <input type="email" v-model="forgotPwEmail" id="forgotPwEmail" />
+          </div>
+          
+          <button type="submit" class="y-button login-button">Reset password</button>
+        </form>
+
+        <Loading v-else text="Submitting" class="mt-48 mb-32" />
+
+        <button @click="setModalContext('login')"
+                v-if="!loginLoading"
+                class="margin-top-4 underline-link link-color text-button">
+          Click here to <b>log in</b>
+        </button>
+
+        <button @click="setModalContext('register')"
+                v-if="!loginLoading"
+                class="mt-8 underline-link link-color text-button">
+          Click here to <b>sign up</b>
         </button>
       </div>
 
@@ -130,6 +169,11 @@ export default {
       signupPassword2: '',
       signupErrorMessage: '',
       signupLoading: false,
+
+      forgotPwEmail: '',
+      isForgotPasswordLoading: false,
+      forgotPwResponseMessage: '',
+      forgotPwResponseMessageType: 'success'
     }
   },
 
@@ -174,6 +218,29 @@ export default {
       }
       else {
         this.signupErrorMessage = response.message
+      }
+    },
+
+    async forgotPasswordSubmit () {
+      this.forgotPwResponseMessage = ''
+      this.forgotPwResponseMessageType = 'error'
+      if (!this.forgotPwEmail || this.forgotPwEmail.length === 0) {
+        this.forgotPwResponseMessage = 'Please fill in email'
+        return
+      }
+
+      this.isForgotPasswordLoading = true
+      let result = await authApi.submitForgotPassword(this.forgotPwEmail)
+      this.isForgotPasswordLoading = false
+
+      if (result.success) {
+        this.forgotPwResponseMessage = `We have sent a password reset link to this email, if it is connected with an account on Yiffer.xyz.`
+        this.forgotPwResponseMessageType = 'success'
+        this.forgotPwEmail = ''
+      }
+      else {
+        this.forgotPwResponseMessage = result.message
+        this.forgotPwResponseMessageType = 'error'
       }
     },
 
@@ -299,21 +366,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 15px;
-  label {
-    font-size: 14px;
-    color: #555;
-  }
-  input {
-    outline: none;
-    margin-bottom: 17px;
-    margin-top: 3px;
-    border: 0.5px solid #555;
-    border-color: transparent transparent #555 transparent;
-    color: #333;
-    background: transparent;
-    padding: 6px 4px;
-  }
+  margin-top: 1.5rem;
 }
 
 .register-button {

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/'" class="underline-link">
+  <router-link :to="'/'" class="underline-link backToIndex" :class="classes">
     <home-icon/> back to index
   </router-link>
 </template>
@@ -8,6 +8,21 @@
 import HomeIcon from 'vue-material-design-icons/Home.vue'
 export default {
   name: 'backToIndex',
-  components: { HomeIcon }
+
+  props: {
+    'classes': String,
+  },
+
+  components: {
+    HomeIcon
+  },
 }
 </script>
+
+<style lang="scss">
+.backToIndex {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

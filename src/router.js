@@ -16,6 +16,7 @@ import Advertising from '@/pages/Advertising.vue'
 import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 import JoinUs from '@/pages/JoinUs.vue'
 import JoinUsApply from '@/pages/JoinUsApply.vue'
+import ResetPassword from '@/pages/ResetPassword.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,21 @@ async function rerouteIfNotLoggedIn(to, from, next) {
   try {
     let isLoggedIn = await store.dispatch('checkAndSetLoginStatus')
     if (isLoggedIn) {
+      next()
+    }
+    else {
+      next({ name: 'comicList' })
+    }
+  }
+  catch (err) {
+    next({ name: 'comicList' })
+  }
+}
+
+async function rerouteIfLoggedIn(to, from, next) {
+  try {
+    let isLoggedIn = await store.dispatch('checkAndSetLoginStatus')
+    if (!isLoggedIn) {
       next()
     }
     else {
@@ -116,6 +132,12 @@ export default new Router({
       name: 'pendingComic',
       component: PendingComic,
       beforeEnter: rerouteIfNotLoggedIn,
+    },
+    {
+      path: '/reset-password-link/:token',
+      name: 'resetPassword',
+      component: ResetPassword,
+      beforeEnter: rerouteIfLoggedIn,
     },
     {
       path: '/:comicName',

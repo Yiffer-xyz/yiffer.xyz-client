@@ -1031,7 +1031,7 @@ export default {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  margin: 1rem 0;
+  margin: 0 0 0.25rem 0;
   padding: 0.5rem 0;
   >div, >table {
     margin: 7px 0px;
@@ -1250,6 +1250,7 @@ export default {
 
 .openFilterContent {
   padding: 0.5rem 0 1rem 0;
+  margin: 1rem auto;
   margin-bottom: 0.75rem;
     background-color: rgba(255, 255, 255, 0.04);
     box-shadow: 0px 0px 16px 0px #202020;

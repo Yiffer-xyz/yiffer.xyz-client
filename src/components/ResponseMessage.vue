@@ -1,5 +1,9 @@
 <template>
-  <div :class="{'error-message': messageType==='error', 'success-message': messageType==='success', 'info-message': messageType==='info'}" 
+  <div :class="{
+          'error-message': messageType==='error',
+          'success-message': messageType==='success',
+          'info-message': messageType==='info',
+        }" 
        :style="outsideStyle"
        v-show="message && message.length > 0"
        id="responseMessageContainer">

@@ -60,5 +60,26 @@ export default {
     
     if (response.status === 204) { return {success: true} }
     else { return {success: false, message: response.data.error} }
+  },
+
+  async submitForgotPassword (email) {
+    let response = await axios.post(baseUrlNoApi + '/reset-password', {
+      email: email,
+    })
+    
+    if (response.status === 204) { return {success: true} }
+    else { return {success: false, message: response.data.error} }
+  },
+
+  async submitResetPassword (password1, password2, token) {
+    try {
+      await axios.post(`${baseUrlNoApi}/reset-password-link/${token}`, {
+        password1, password2,
+      })
+      return {success: true}
+    }
+    catch (err) {
+      return {success: false, message: err.response.data.error}
+    }    
   }
 }
