@@ -4,24 +4,28 @@ let baseUrl = config.apiBaseUrl
 
 export default {
   async submitAdvertisingApplication (adType, adLink, adMainText, adSecondaryText, file, notes) {
-    let formData = new FormData()
-    formData.append('adType', adType)
-    formData.append('adLink', adLink)
-    formData.append('adMainText', adMainText)
-    formData.append('adSecondaryText', adSecondaryText)
-    formData.append('notes', notes)
-    formData.append('file', file)
+    try {
+      let formData = new FormData()
+      formData.append('adType', adType)
+      formData.append('adLink', adLink)
+      formData.append('adMainText', adMainText)
+      formData.append('adSecondaryText', adSecondaryText)
+      formData.append('notes', notes)
+      formData.append('file', file)
 
-    let response = await axios.post(
-      baseUrl + '/paid-images',
-      formData,
-      {
-        headers: {'Content-Type': 'multipart/form-data'},
-      }
-    )
+      await axios.post(
+        baseUrl + '/paid-images',
+        formData,
+        {
+          headers: {'Content-Type': 'multipart/form-data'},
+        }
+      )
 
-    if (!response.data.error) { return {success: true} }
-    else { return {success: false, message: response.data.error} }
+      return {success: true}
+    }
+    catch (err) {
+      return {success: false, message: err.response.data}
+    }
   },
 
   async updateAd ({id, price, status, activationDate, deactivationDate, adminNotes}) {
@@ -72,9 +76,13 @@ export default {
   },
 
   async getMyAds () {
-    let response = await axios.get(baseUrl + '/paid-images/me')
-    if (!response.data.error) { return {success: true, ads: response.data} }
-    else { return {success: false, message: response.data.error} }
+    try {
+      let response = await axios.get(baseUrl + '/paid-images/me')
+      return response.data
+    }
+    catch (err) {
+      throw {message: err.response.data}
+    }
   },
 
   async toggleRenewal (adId, shouldRenew) {
@@ -93,8 +101,28 @@ export default {
     else { return [] }
   },
 
+  async deleteOrDeactivateAd (adId) {
+    try {
+      await axios.delete(`${baseUrl}/paid-images/${adId}`)
+      return {success: true}
+    }
+    catch (err) {
+      return {success: false, message: err.response.data}
+    }
+  },
+
+  async reactivateAd (adId) {
+    try {
+      await axios.post(`${baseUrl}/paid-images/${adId}/reactivate`)
+      return {success: true}
+    }
+    catch (err) {
+      return {success: false, message: err.response.data}
+    }
+  },
+
   async logAdClick (adId) {
     console.log('clicked ', adId)
     axios.post(baseUrl + '/paid-images-click', {adId})
-  }
+  },
 }

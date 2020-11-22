@@ -45,7 +45,7 @@
         <tr>
           <td rowspan="2"><b>As comic card</b></td>
           <td>2 months</td>
-          <td><b>20$</b> per month<br>(<b>10$ now*</b>)</td>
+          <td><b>14$</b> per month<br>(<b>7$ now*</b>)</td>
           <td rowspan="2">
             <p class="no-margin-top">Your ad will appear at random in the same style as a "comic card" on the index page.</p>
             <p>Pictures below illustrate this kind of ad, on desktop and mobile views respectively.</p>
@@ -58,20 +58,20 @@
             <p>
               Media: PNG or GIF format, 200x283 pixels precisely.<br/>
               Main text max 25 characters.<br/>
-              Secondary text optional, and max 40 characters.
+              Secondary text optional, and max 60 characters.
             </p>
           </td>
         </tr>
 
         <tr>
           <td>4 months</td>
-          <td><b>15$</b> per month<br>(<b>7$ now*</b>)</td>
+          <td><b>12$</b> per month<br>(<b>6$ now*</b>)</td>
         </tr>
 
         <tr>
           <td><b>Wide banner</b></td>
           <td>1 month</td>
-          <td><b>35$</b> per month<br>(<b>17$ now*</b>)</td>
+          <td><b>25$</b> per month<br>(<b>12$ now*</b>)</td>
           <td>
             <p class="no-margin-top">
               This is an experimental type of ad. If there is interest for it, we will offer long-term commitments for this as well.
@@ -99,8 +99,8 @@
           <h3>Ad type: As comic card</h3>
           <p>
             <span class="bold">Price</span>:<br/>
-            2 months: <b>20$</b> per month (<b>10$</b> now*)<br/>
-            4 months: <b>15$</b> per month (<b>7$</b> now*)
+            2 months: <b>14$</b> per month (<b>7$</b> now*)<br/>
+            4 months: <b>12$</b> per month (<b>6$</b> now*)
           </p>
           <p>
             <span class="bold">Explanation</span>:
@@ -124,14 +124,14 @@
           <p>
             Media: PNG or GIF format, 200x283 pixels precisely.<br/>
             Main text max 25 characters.<br/>
-            Secondary text optional, and max 40 characters.
+            Secondary text optional, and max 60 characters.
           </p>
         </div>
         <div class="mobile-list-table">
           <h3>Ad type: Banner above comic</h3>
           <p>
             <span class="bold">Price</span>:<br/>
-            1 month: <b>35$</b> per month (<b>17$ now*</b>)<br/>
+            1 month: <b>25$</b> per month (<b>12$ now*</b>)<br/>
           </p>
           <p>
             <span class="bold">Explanation</span>:
@@ -165,9 +165,9 @@
 
         <li>Each price is for a single ad with a single image/gif. It is perfectly fine to apply several times with different images/gifs, but these will be treated as separate ads and you will have to pay for each one. Naturally, if you've paid for two ads and there are ten in total, about <i>two</i> out of every ten ads displayed will be yours.</li>
 
-        <li>We will happily answer any questions you may have regarding advertising at EPOST@EPOST.COM.</li>
+        <li>We will happily answer any questions you may have regarding advertising vie email at advertising@yiffer.xyz.</li>
 
-        <li>The ads may be explicit, as this is mostly a porn site, after all. However, we don't allow content or kinks that are commonly frowned upon in the ad media. If you're uncertain, feel free to ask us at EPOST@EPOST.COM in advance.</li>
+        <li>The ads may be explicit, as this is mostly a porn site, after all. However, we don't allow content or kinks that are commonly frowned upon in the ad media. If you're uncertain, feel free to ask us at advertising@yiffer.xyz in advance.</li>
 
         <li>Gifs must not have rapidly flashing lights or colors.</li>
       </ul>

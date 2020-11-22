@@ -219,7 +219,7 @@ export default {
     },
 
     remainingCharsSecondaryText () {
-      return 40 - this.adSecondaryText.length
+      return 60 - this.adSecondaryText.length
     },
 
     isReadyForSubmit () {

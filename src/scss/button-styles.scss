@@ -78,7 +78,10 @@
     cursor: not-allowed;
     color: #444;
     background-color: $themeGray1;
-    box-shadow: none;
+    box-shadow: none !important;
+    &::before {
+      box-shadow: none !important;
+    }
   }
 }
 
@@ -233,6 +236,10 @@
     color: #333;
     &:hover, &:focus {
       background-color: $themeGray7 !important;
+      box-shadow: none !important;
+      &::before {
+        box-shadow: none !important;
+      }
     }
   }
 

@@ -7,7 +7,7 @@
     <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                      class="margin-bottom-10 margin-top-10"/>
 
-    <div :class="ads.length>0 ? 'full-width-text' : 'smaller-width-text'">
+    <div class="smaller-width-text">
       <div class="vertical-flex mt-16">
         <p v-if="$store.getters.userData.email">
           Your email: {{$store.getters.userData.email}}
@@ -81,7 +81,7 @@
           </tr>
         </table>
 
-        <div v-if="!isSubmittingPassword" style="margin: 0.75rem auto 0 auto; width: fit-content;">
+        <div v-if="!isSubmittingPassword" style="margin-top: 0.75rem;">
           <button @click="cancelChangePassword"
                   type="button"
                   class="y-button y-button-neutral">
@@ -113,119 +113,11 @@
         </p>
       </div>
 
-      <div v-if="(ads.length > 0 || adLoadingState==='error') && !isChangingPassword && !isChangingEmail">
-        <h3 class="mt-48">Advertising</h3>
-
-        <ResponseMessage :message="responseMessageAds" :messageType="responseMessageTypeAds" @closeMessage="closeResponseMessageAds"
-                         class="mb-8" style="margin-left: 0;"/>
-
-        <p v-if="adLoadingState==='error'">
-          Error fetching ads
-        </p>
-
-        <div v-if="adLoadingState==='success'">
-          <p>To pay or renew, send the specified amount of USD to <span class="bold">TODO@paypal.com</span>, and <span class="bold">make sure to include the ad's ID in the message field!</span> You should not pay unless the status of an ad is <span class="monoWarning">AWAITING PAYMENT</span> or <span class="monoWarning">ACTIVE, AWAITING RENEWAL PAYMENT</span>. After paying, please wait a few days for the admins to process your payment and update the status of your ads. If you suspect that something has gone wrong, do not hesitate to contact us via mail at advertising@yiffer.xyz</p>
-
-          <div v-for="ad in ads" :key="ad.id" class="singleReklame simpleShadowNoHover">
-            <div style="display: flex; justify-content: space-between;">
-              <p>Id: <span class="bold">{{ad.id}}</span></p>
-              <button v-if="ad.status === 'NEEDS CORRECTION' && !isThisAdBeingEdited(ad.id)" @click="startAdEditing(ad)" class="y-button">
-                Edit ad
-              </button>
-              <div v-if="isThisAdBeingEdited(ad.id) && !isAwaitingCorrectionResponse">
-                <button @click="cancelAdEditing()" class="y-button y-button-neutral">
-                  Cancel
-                </button>
-                <button @click="saveEditedAd()" :class="{'y-button-disabled': !isUpdatedAdReadyForSubmit}" class="y-button ml-8">
-                  Save
-                </button>
-              </div>
-              <Loading v-if="isThisAdBeingEdited(ad.id) && isAwaitingCorrectionResponse" text="Updating..."/>
-            </div>
-            <p :class="getAdStatusClass(ad.status)" class="mb-10">
-              {{ad.status}}
-            </p>
-
-            <span v-if="!isThisAdLoading(ad.id)">
-              <p>Type: {{ad.adTypeLong}}</p>
-              <p>Price: {{ad.price}}$</p>
-              <p v-if="showAdActivePeriod(ad.status)">
-                Active: {{formatTimestamp(ad.activationDate)}} to {{formatTimestamp(ad.deactivationDate)}} 
-                <span v-if="ad.status === 'ACTIVE, RENEWAL PAID'">
-                  (renewal paid, will renew on {{formatShortTimestamp(ad.deactivationDate)}})
-                </span>
-              </p>
-
-              <button @click="toggleRenewal(ad, true)" v-if="ad.status === 'ACTIVE'" class="y-button y-button-neutral mt-8">
-                Turn on renewal
-              </button>
-              <button @click="toggleRenewal(ad, false)" v-if="ad.status === 'ACTIVE, AWAITING RENEWAL PAYMENT'" class="y-button y-button-neutral mt-8">
-                Cancel renewal
-              </button>
-
-              <p class="mt-8">
-                Clicks: {{ad.clicks}}
-              </p>
-
-              <p v-if="!isThisAdBeingEdited(ad.id)" class="mt-8">
-                Link: <i>{{ad.link}}</i>
-              </p>
-              <div v-else class="mt-8">
-                <p>Link: </p>
-                <input v-model="adBeingEdited.link" type="text" class="adInput"/>
-              </div>
-
-              <p v-if="ad.mainText && !isThisAdBeingEdited(ad.id)" class="mt-8">
-                Main text: <i>{{ad.mainText}}</i>
-              </p>
-              <div v-else-if="isThisAdBeingEdited(ad.id) && doesAdHaveText(ad)" class="mt-8">
-                <p>Main text: </p>
-                <input v-model="adBeingEdited.mainText" type="text" class="adInput"/>
-                <p v-if="adBeingEdited.mainText" class="smaller-text" :class="{'red-color': remainingCharsMainText<0}">
-                  {{remainingCharsMainText}} characters left
-                </p>
-              </div>
-
-              <p v-if="ad.secondaryText && !isThisAdBeingEdited(ad.id)" class="mt-8">
-                Secondary text: <i>{{ad.secondaryText}}</i>
-              </p>
-              <div v-else-if="isThisAdBeingEdited(ad.id) && doesAdHaveText(ad)" class="mt-8">
-                <p>Secondary text: </p>
-                <input v-model="adBeingEdited.secondaryText" type="text" class="adInput"/>
-                <p v-if="adBeingEdited.secondaryText" class="smaller-text" :class="{'red-color': remainingCharsSecondaryText<0}">
-                  {{remainingCharsSecondaryText}} characters left
-                </p>
-              </div>
-
-              <div v-if="!isThisAdBeingEdited(ad.id)" class="mt-8">
-                <a :href="`${config.paidImagesDirectory}/${ad.id}.${ad.filetype}`" target="_blank" class="underline-link">
-                  See media<RightArrow/>
-                </a>
-              </div>
-              <form v-else class="mt-8">
-                <p>Change media? If not, ignore this and the current one will be kept.</p>
-                <div class="horizontalFlexLeft flexWrap mt-4">
-                  <div class="pretty-input-upload mr-8">
-                    <input type="file" @change="processFileUploadChange" id="cardAdFile" accept="image/x-png,image/gif,image/jpeg" class="input-file"/>
-                    <p>Replace file</p>
-                  </div>
-                  <p v-if="file" class="alignSelfCenter bold" style="word-break: break-all;">
-                    Selected: {{file.name}}
-                  </p>
-                </div>
-
-                <p v-if="fileErrorMessage" class="red-color mt-4 bold">
-                  {{fileErrorMessage}}
-                </p>
-                <p v-else-if="file" class="mt-4">
-                  <CheckIcon/> File matches size requirements.
-                </p>
-              </form>
-            </span>
-            <Loading v-else class="mt-16"/>
-          </div>
-        </div>
-      </div>
+      <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isChangingEmail"
+                   :to="{name: 'adsDashboard'}"
+                   class="adDashboardButton simpleShadow">
+        Go to advertising dashboard
+      </router-link>
     </div>
   </div>
 </template>
@@ -234,6 +126,7 @@
 import authApi from '../api/authApi'
 import miscApi from '../api/miscApi'
 import config from '@/config.json'
+import { doFetch } from '../utils/statefulFetch'
 
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
@@ -262,6 +155,23 @@ export default {
     CheckIcon, RightArrow,
   },
 
+  computed: {
+    showModApplicationStatus () {
+      return !this.isChangingPassword
+             && this.userData
+             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.loading
+             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.none
+    },
+
+    ...mapGetters(['userData', 'myPaidImages']),
+  },
+
+  async mounted () {
+    miscApi.logRoute('account')
+    this.getModApplicationStatus()
+    doFetch(this.$store.commit, 'myPaidImages', advertisingApi.getMyAds())
+  },
+
   data: function () {
     return {
       isChangingPassword: false,
@@ -270,15 +180,6 @@ export default {
       newEmail: '',
       newPassword1: '',
       newPassword2: '',
-      ads: [],
-      adLoadingState: 'initial',
-      adLoadingId: null,
-      adBeingEdited: null,
-      file: null,
-      fileErrorMessage: '',
-      isAwaitingCorrectionResponse: false,
-      responseMessageAds: '',
-      responseMessageTypeAds: 'info',
       responseMessage: '',
       responseMessageType: 'info',
       isSubmittingPassword: false,
@@ -356,121 +257,6 @@ export default {
       this.isChangingEmail = false
     },
 
-    startAdEditing (ad) {
-      this.adBeingEdited = {...ad}
-    },
-
-    async cancelAdEditing () {
-      this.adBeingEdited = null
-      this.file = null
-      this.fileErrorMessage = ''
-      this.responseMessageAds = ''
-    },
-
-    async saveEditedAd () {
-      if (!this.isUpdatedAdReadyForSubmit) { return }
-      
-      this.isAwaitingCorrectionResponse = true
-      let response = await advertisingApi.updateAdNeedingCorrection(
-        this.adBeingEdited.id, this.adBeingEdited.link, this.adBeingEdited.mainText,
-        this.adBeingEdited.secondaryText, this.file
-      )
-      this.isAwaitingCorrectionResponse = false
-
-      if (response.success) {
-        let adIndex = this.ads.findIndex(ad => ad.id === response.ad.id)
-        this.$set(this.ads, adIndex, response.ad)
-        this.cancelAdEditing()
-        this.responseMessageTypeAds = 'success'
-        this.responseMessageAds = `Successfully updated ${response.ad.id}`
-      }
-      else {
-        this.responseMessageTypeAds = 'error'
-        this.responseMessageAds = response.message
-      }
-    },
-
-    processFileUploadChange (changeEvent) {
-      this.file = changeEvent.target.files[0]
-      this.checkFileRequirements()
-    },
-
-		async checkFileRequirements () {
-      if (!this.file) { return }
-      this.fileErrorMessage = ''
-
-			let fileReader = new FileReader()
-			fileReader.onload = () => {
-				let tempImage = new Image()
-				tempImage.src = fileReader.result
-				tempImage.onload = () => {
-          if (this.isEditedAdCard) {
-            if (tempImage.width !== 200 || tempImage.height !== 283) {
-              this.fileErrorMessage = `The file does not match the 200x283 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
-            }
-          }
-          else if (this.isEditedAdBanner) {
-            if (tempImage.width !== 680 || tempImage.height !== 100) {
-              this.fileErrorMessage = `The file does not match the 680x100 pixel requirement (is ${tempImage.width}x${tempImage.height}).`
-            }
-          }
-				}
-			}
-			fileReader.readAsDataURL(this.file)
-		},
-
-    async toggleRenewal (ad, shouldRenew) {
-      this.responseMessageAds = ''
-      this.adLoadingId = ad.id
-      let result = await advertisingApi.toggleRenewal(ad.id, shouldRenew)
-      this.adLoadingId = null
-
-      if (result.success) {
-        this.getAds()
-      }
-      else {
-        this.responseMessageTypeAds = 'error'
-        this.responseMessageAds = result.message
-      }
-    },
-
-    showAdActivePeriod (status) {
-      return ['ACTIVE SOON', 'ACTIVE', 'ACTIVE, AWAITING RENEWAL PAYMENT', 'ACTIVE, RENEWAL PAID', 'ENDED'].includes(status)
-    },
-
-    getAdStatusClass (status) {
-      if (['PENDING', 'ACTIVE SOON'].includes(status)) {
-        return 'monoInfo'
-      }
-      else if (['NEEDS CORRECTION', 'AWAITING PAYMENT', 'ACTIVE, AWAITING RENEWAL PAYMENT '].includes(status)) {
-        return 'monoWarning'
-      }
-      else if (status === 'ENDED') {
-        return 'monoError'
-      }
-      else {
-        return 'monoSuccess'
-      }
-    },
-
-    toggleMediaVisibility (ad) {
-      ad.showMedia = true
-    },
-
-    async getAds () {
-      this.ads = []
-      this.responseMessageAds = ''
-
-      let response = await advertisingApi.getMyAds()
-      if (response.success) {
-        this.ads = response.ads
-        this.adLoadingState = 'success'
-      }
-      else {
-        this.adLoadingState = 'error'
-      }
-    },
-
     async getModApplicationStatus () {
       let { success, applicationStatus }  = await miscApi.getMyModApplicationStatus()
       if (success) { 
@@ -481,18 +267,6 @@ export default {
       }
     },
     
-    isThisAdLoading (adId) {
-      return this.adLoadingId === adId
-    },
-
-    isThisAdBeingEdited (adId) {
-      return this.adBeingEdited && this.adBeingEdited.id === adId
-    },
-
-    doesAdHaveText (ad) {
-      return ad.adType === 'card2M' || ad.adType === 'card4M'
-    },
-
     formatTimestamp (timestamp) {
       if (!timestamp) { return '' }
       return format(new Date(timestamp), 'MMM do yyyy')
@@ -504,50 +278,6 @@ export default {
 
     closeResponseMessage () { this.responseMessage = '' },
     closeResponseMessageAds () { this.responseMessageAds = '' },
-  },
-
-  computed: {
-    isEditedAdCard () {
-      return this.adBeingEdited.adType === 'card2M' || this.adBeingEdited.adType === 'card4M'
-    },
-
-    isEditedAdBanner () {
-      return this.adBeingEdited.adType === 'banner1M'
-    },
-
-    isUpdatedAdReadyForSubmit () {
-      if (this.isEditedAdCard) {
-        return this.remainingCharsMainText>=0 
-          && this.adBeingEdited.mainText.length > 0
-          && this.remainingCharsSecondaryText>=0
-          && !this.fileErrorMessage
-      }
-
-      return !this.fileErrorMessage
-    },
-
-    remainingCharsMainText () {
-      return 25 - this.adBeingEdited.mainText.length
-    },
-
-    remainingCharsSecondaryText () {
-      return 40 - this.adBeingEdited.secondaryText.length
-    },
-
-    showModApplicationStatus () {
-      return !this.isChangingPassword
-             && this.userData
-             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.loading
-             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.none
-    },
-
-    ...mapGetters(['userData']),
-  },
-
-  async mounted () {
-    miscApi.logRoute('account')
-    this.getAds()
-    this.getModApplicationStatus()
   },
 
   metaInfo() {
@@ -573,20 +303,22 @@ export default {
   }
 }
 
-.singleReklame {
-  padding: 1rem;
-  margin: 1rem 0;
-  background: white;
-}
-
-.dark {
-  .singleReklame {
-    background: rgba(255, 255, 255, 0.1);
-  }
-}
-
-.adInput {
+.adDashboardButton {
   width: 100%;
-  box-sizing: border-box;
+  color: white;
+  border: none;
+  outline: none;
+  height: 3rem;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  padding: 0 1rem;
+  background: linear-gradient(to right, $theme4, $theme5, $theme6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>

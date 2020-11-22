@@ -366,7 +366,7 @@ select {
   cursor: default;
 }
 
-.simple-shadow {
+.simple-shadow, .simpleShadow {
   @include simpleshadow;
 }
 .simpleShadowNoHover {

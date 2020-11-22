@@ -85,6 +85,10 @@ ul {
   &>p {
     margin-top: 16px;
   }
+
+  p, a, label {
+    font-size: 1rem;
+  }
 }
 
 .full-width-text-wider {
@@ -93,7 +97,7 @@ ul {
     max-width: 800px;
   }
   @media (max-width: 900px) {
-    max-width: 95%;
+    max-width: 90%;
   }
 }
 
@@ -171,7 +175,7 @@ label {
 }
 
 .red-color {
-  color: $themeRed2 !important;
+  color: $themeRedText !important;
 }
 
 .semiBold {
