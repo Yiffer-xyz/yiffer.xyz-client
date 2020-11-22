@@ -595,9 +595,10 @@ export default {
     border-top: 1px solid #ddd;
   }
 }
+
 .selectedAd {
   td, &:hover>td {
-    background-color: $theme6;
+    background-color: $theme6 !important;
     p:not(.mono) {
       color: white;
     }
@@ -624,6 +625,20 @@ export default {
   .adDashboardBox {
     padding: 1rem;
     margin: 1rem 0;
+  }
+}
+
+.dark {
+  .adDashboardBox {
+    background-color: $themeDark4;
+  }
+
+  .paidImageRow {
+    &:hover {
+      td {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
   }
 }
 </style>

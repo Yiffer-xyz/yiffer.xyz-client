@@ -41,9 +41,9 @@
           <div class="yForm2Field">
             <label for="adType">Type of ad</label>
             <select id="adType" v-model="adType">
-              <option value="card2M">Comic card, 2 months (̶$̶4̶0̶) ($20!)</option>
-              <option value="card4M">Comic card, 4 months (̶$̶6̶0̶) ($30!)</option>
-              <option value="banner1M">Wide banner, 1 month (̶$̶3̶5̶) ($17!)</option>
+              <option value="card2M">Comic card, 2 months (̶$̶2̶8̶) ($14!)</option>
+              <option value="card4M">Comic card, 4 months (̶$̶4̶8̶) ($24!)</option>
+              <option value="banner1M">Wide banner, 1 month (̶$̶2̶5̶) ($12!)</option>
             </select>
           </div>
 

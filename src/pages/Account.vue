@@ -115,6 +115,7 @@
 
       <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isChangingEmail"
                    :to="{name: 'adsDashboard'}"
+                   style="color: white !important;"
                    class="adDashboardButton simpleShadow">
         Go to advertising dashboard
       </router-link>
