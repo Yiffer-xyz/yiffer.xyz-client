@@ -15,7 +15,7 @@
   width: fit-content;
   word-break: keep-all;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $theme4;
     color: white;
     cursor: pointer;
@@ -39,7 +39,7 @@
   padding: 2px 6px;
   border: none;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $theme4;
     cursor: pointer;
   }
@@ -47,7 +47,7 @@
 
 .y-button-red {
   background-color: $themeRed;
-  &:hover {
+  &:hover, &:focus {
     background-color: $themeRed2;
   }
 }
@@ -62,7 +62,7 @@
     color: $themeRed2;
   }
   box-sizing: border-box;
-  &:hover {
+  &:hover, &:focus {
     background-color: $themeRed2;
     color: white;
     svg {
@@ -74,7 +74,7 @@
 .y-button-disabled {
   background-color: $themeGray1;
   color: #444;
-  &:hover {
+  &:hover, &:focus {
     cursor: not-allowed;
     color: #444;
     background-color: $themeGray1;
@@ -84,7 +84,7 @@
 
 .y-button-neutral {
   background-color: $themeGray7 !important;
-  &:hover {
+  &:hover, &:focus {
     background-color: $themeDark1 !important;
   }
 }
@@ -96,7 +96,7 @@
   path {
     color: $themeGray8;  
   }
-  &:hover {
+  &:hover, &:focus {
     background-color: $themeGray8 !important;
     border-color: $themeGray8;
     color: white;
@@ -160,7 +160,7 @@
   color: $theme4;
   font-size: 13px;
   margin: 0 5px;
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.1);
   }
@@ -176,7 +176,7 @@
   font-size: 13px;
   margin: 0 5px;
   font-weight: 400;
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.1);
   }
@@ -201,7 +201,7 @@
     font-weight: 400;
   }
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $themeDark1;
   }
 }
@@ -216,14 +216,14 @@
 .dark {
   .y-button {
     background-color: $theme4p5;
-    &:hover {
+    &:hover, &:focus {
       background-color: $theme3;
     }
   }
 
   .y-button-red {
     background-color: $themeRed1;
-    &:hover {
+    &:hover, &:focus {
       background-color: $themeRed0p5;
     }
   }
@@ -231,7 +231,7 @@
   .y-button-disabled {
     background-color: $themeGray7 !important;
     color: #333;
-    &:hover {
+    &:hover, &:focus {
       background-color: $themeGray7 !important;
     }
   }
@@ -243,7 +243,7 @@
 
   .y-button-neutral {
     background-color: $themeDark1 !important;
-    &:hover {
+    &:hover, &:focus {
       background-color: $themeDark2 !important;
     }
   }
@@ -252,7 +252,7 @@
     background-color: transparent !important;
     color: $themeGray3;
     border: 1px solid $themeGray3;
-    &:hover {
+    &:hover, &:focus {
       background-color: $themeGray3 !important;
       border-color: $themeGray3;
       color: black;
@@ -262,7 +262,7 @@
   .pretty-input-upload {
     background: $themeDark1;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: $themeDark2;
     }
   }
@@ -283,7 +283,7 @@
       span {
         background-color: $theme4p5;
       }
-      &:hover {
+      &:hover, &:focus {
         background-color: $theme3;
         span {
           background-color: $theme3;
@@ -297,7 +297,7 @@
 .y-button-disabled-dark {
   background-color: $themeGray4;
   color: #555;
-  &:hover {
+  &:hover, &:focus {
     cursor: not-allowed;
     color: #555;
     background-color: $themeGray4;

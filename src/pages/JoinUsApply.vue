@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%;">
-    <h1>Apply as an advertiser</h1>
+    <h1>Mod application form</h1>
     <BackToIndex></BackToIndex>
 
     <div class="full-width-text">
@@ -8,26 +8,28 @@
         In order to be accepted as a mod, you must have and use a Telegram account. We use telegram for communication and announcements for mods. If you do not have an account, you will not be accepted.
       </p>
 
-      <form class="y-form" enctype="multipart/form-data" style="width: fit-content; margin: 1rem auto;">
+      <form class="yForm2" enctype="multipart/form-data" style="max-width: 28rem; margin: 1rem auto;">
         <h3>Mod application form</h3>
 
-        <BigSuccess v-show="success" text="Success! See your account page for details."/>
+        <BigSuccess v-show="success" text="Success! We will contact you if we decide to take you in. Thank you!" classes="mb-16"/>
 
         <span v-show="!success">
-          <label for="adLinks">Tell us a little about why you want to be a mod, and what sources you use for finding comics (which websites):</label>
-          <textarea type="text" v-model="notes" id="adLinks" rows="4"/>
+          <div class="yForm2Field">
+            <label for="adLinks">Tell us a little about why you want to be a mod, and what sources you use for finding comics (which websites):</label>
+            <textarea type="text" v-model="notes" id="adLinks" rows="4"/>
+          </div>
 
-          <div class="field mt-32">
+          <div class="yForm2Field">
             <label for="competentAnswerInput">Are you competent at cropping and resizing images (in order to make thumbnails)? MS Paint does not count, as it ruins the images.</label>
             <input type="text" v-model="competentAnswer" id="competentAnswerInput"/>
           </div>
 
-          <div class="field mt-32">
+          <div class="yForm2Field">
             <label for="telegramUsernameInput">Telegram username:</label>
             <input type="text" v-model="telegramUsername" id="telegramUsernameInput"/>
           </div>
 
-          <Loading v-if="isAwaitingResponse" text="Submitting..."/>
+          <Loading v-if="isAwaitingResponse" text="Submitting..." classes="mb-16"/>
 
           <ResponseMessage :message="responseMessage" messageType="error" @closeMessage="closeResponseMessage" class="mb-16"/>
 

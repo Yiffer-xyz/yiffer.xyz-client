@@ -1,5 +1,6 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center;">
+  <div style="display: flex; flex-direction: column; align-items: center;"
+       :class="classes">
     <CheckIcon class="icon-2x"/>
     <p>{{text ? text : 'Success!'}}</p>
   </div>
@@ -13,6 +14,7 @@ export default {
 
   props: {
     text: String,
+    classes: String,
   },
   
   components: {

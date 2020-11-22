@@ -32,13 +32,13 @@
         Keep in mind that as long as this notice stands, there is a 50% discount on all ads!
       </p>
 
-      <form class="y-form" enctype="multipart/form-data" style="width: fit-content; margin: 1rem auto;">
+      <form class="yForm2" enctype="multipart/form-data" style="width: fit-content; margin: 1rem auto;">
         <h3>Application form</h3>
 
-        <BigSuccess v-show="success" text="Success! See your account page for details."/>
+        <BigSuccess v-show="success" text="Success! See your account page for details." classes="mb-16"/>
 
         <span v-show="!success">
-          <div class="field">
+          <div class="yForm2Field">
             <label for="adType">Type of ad</label>
             <select id="adType" v-model="adType">
               <option value="card2M">Comic card, 2 months (̶$̶4̶0̶) ($20!)</option>
@@ -47,12 +47,12 @@
             </select>
           </div>
 
-          <div class="field">
+          <div class="yForm2Field">
             <label for="adLinks">Link (where the users end up when clicking your ad):</label>
             <input type="text" v-model="adLink" id="adLinks"/>
           </div>
 
-          <div class="field" v-if="isCardAd">
+          <div class="yForm2Field" v-if="isCardAd">
             <label for="adMainText">Main text:</label>
             <input type="text" v-model="adMainText" id="adMainText"/>
             <p v-if="adMainText" class="smaller-text" :class="{'red-color': remainingCharsMainText<0}">
@@ -60,7 +60,7 @@
             </p>
           </div>
 
-          <div class="field" v-if="isCardAd">
+          <div class="yForm2Field" v-if="isCardAd">
             <label for="adSecondaryText">Secondary text (optional):</label>
             <input type="text" v-model="adSecondaryText" id="adSecondaryText"/>
             <p v-if="adSecondaryText" class="smaller-text" :class="{'red-color': remainingCharsSecondaryText<0}">
@@ -68,7 +68,7 @@
             </p>
           </div>
 
-          <div class="field" v-if="adType">
+          <div class="yForm2Field" v-if="adType">
             <label for="cardAdFile">Image or gif:</label>
             <div class="horizontalFlexLeft flexWrap mt-4">
               <div class="pretty-input-upload mr-8">
@@ -87,12 +87,12 @@
           </div>
 
 
-          <div class="field">
+          <div class="yForm2Field">
             <label for="notesText">Notes or comments for our staff? (optional)</label>
             <input type="text" v-model="notes" id="notesText"/>
           </div>
 
-          <Loading v-if="isAwaitingResponse" text="Submitting..."/>
+          <Loading v-if="isAwaitingResponse" text="Submitting..." classes="mb-16"/>
 
           <ResponseMessage :message="responseMessage" messageType="error" @closeMessage="closeResponseMessage"/>
 

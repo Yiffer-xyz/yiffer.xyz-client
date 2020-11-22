@@ -99,6 +99,22 @@
   input {
     @extend .yForm2Input;
   }
+  select {
+    border: 0.5px solid transparent;
+    border-bottom-color: #555;
+    background: transparent;
+    padding: 6px 0;
+    border-radius: 3px;
+  }
+  textarea {
+    background: transparent !important;
+    border: 0.5px solid #555;
+    padding: 6px;
+    &:focus {
+      border-color: $theme5;
+      outline: none;
+    }
+  }
   margin-bottom: 2rem;
 }
 
@@ -109,6 +125,14 @@
     border-bottom: 0.5px solid #ccc !important;
     &:focus {
       border-bottom-color: $theme5 !important;
+    }
+  }
+  .yForm2Field {
+    textarea {
+      border-color: #ccc;
+      &:focus {
+        border-color: $theme5;
+      }
     }
   }
 }

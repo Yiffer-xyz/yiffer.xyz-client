@@ -39,16 +39,20 @@ export default {
     if (secondaryText) { formData.append('secondaryText', secondaryText) }
     if (file) { formData.append('file', file) }
 
-    let response = await axios.post(
-      `${baseUrl}/paid-images/${id}/correct`,
-      formData,
-      {
-        headers: {'Content-Type': 'multipart/form-data'},
-      }
-    )
+    try {
+      let response = await axios.post(
+        `${baseUrl}/paid-images/${id}/correct`,
+        formData,
+        {
+          headers: {'Content-Type': 'multipart/form-data'},
+        }
+      )
 
-    if (!response.data.error) { return response.data }
-    else { return {success: false, message: response.data.error} }
+      return response.data
+    }
+    catch (err) {
+      return {success: false, message: err.response.data}
+    }
   },
 
   async getAdsByStatuses (statuses) {
@@ -74,9 +78,13 @@ export default {
   },
 
   async toggleRenewal (adId, shouldRenew) {
-    let response = await axios.post(`${baseUrl}/paid-images/${adId}/toggle-renew`, {shouldRenew})
-    if (!response.data.error) { return response.data }
-    else { return {success: false, message: response.data.error} }
+    try {
+      let response = await axios.post(`${baseUrl}/paid-images/${adId}/toggle-renew`, {shouldRenew})
+      return response.data
+    }
+    catch (err) {
+      return {success: false, message: err.response.data}
+    }
   },
 
   async getAdsBasic () {

@@ -1,5 +1,7 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center;" :style="styles">
+  <div style="display: flex; flex-direction: column; align-items: center;"
+       :style="styles"
+       :class="classes">
     <Spinner v-if="text"
              line-fg-color="#de2a60"
              :text-fg-color="isDarkTheme ? '#ddd' : '#444'"
@@ -20,6 +22,7 @@ export default {
   props: {
     styles: String,
     text: String,
+    classes: String,
   },
   
   components: {
