@@ -11,19 +11,31 @@ export default {
 
   async getArtistByName (artistName) {
     let response = await axios.get(`${baseUrl}/artists/${artistName}`)
-    if (!response.data.error) { return {success: true, result: response.data} }
-    else { return {success: false, message: response.data.error} }
+    if (response.status === 200) {
+      return { success: true, result: response.data }
+    }
+    else {
+      return { success: false, message: response.data }
+    }
   },
 
   async addNewArtist (artistName) {
     let response = await axios.post(baseUrl + '/artists', {artistName: artistName})
-    if (!response.data.error) { return {success: true, result: response.data} }
-    else { return {success: false, message: response.data.error} }
+    if (response.status === 200) {
+      return { success: true, result: response.data }
+    }
+    else {
+      return { success: false, message: response.data }
+    }
   },
 
   async saveArtistChanges (artistId, artistData) {
     let response = await axios.post(`${baseUrl}/artists/${artistId}`, artistData)
-    if (!response.data.error) { return {success: true} }
-    else { return {success: false, message: response.data.error} }
+    if (response.status === 200) {
+      return { success: true }
+    }
+    else {
+      return { success: false, message: response.data }
+    }
   }
 }

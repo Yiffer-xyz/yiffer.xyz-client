@@ -317,6 +317,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   
   &:hover {
     cursor: pointer;
