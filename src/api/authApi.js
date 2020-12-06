@@ -2,16 +2,15 @@ import axios from 'axios'
 axios.defaults.withCredentials = true
 import config from '@/config.json'
 const baseUrl = config.apiBaseUrl
-const baseUrlNoApi = baseUrl.substring(0, baseUrl.length-4)
 
 export default {
   async refreshAuth () {
-    let response = await axios.get(baseUrlNoApi + '/refresh-auth')
+    let response = await axios.get(baseUrl + '/refresh-auth')
     return response.data
   },
 
   async login (username, password) {
-    let response = await axios.post(baseUrlNoApi + '/login', {
+    let response = await axios.post(baseUrl + '/login', {
       username, password
     })
 
@@ -24,7 +23,7 @@ export default {
   },
 
   async signup (username, email, password) {
-    let response = await axios.post(baseUrlNoApi + '/register', {
+    let response = await axios.post(baseUrl + '/register', {
       username, password, email,
     })
     if (response.data.success) {
@@ -36,14 +35,14 @@ export default {
   },
   
   logout () {
-    axios.get(baseUrlNoApi + '/logout')
+    axios.get(baseUrl + '/logout')
   },
 
   async changePassword (oldPassword, newPassword1, newPassword2) {
     if (newPassword1 !== newPassword2) {
       return {success: false, message: 'New passwords not equal'}
     }
-    let response = await axios.post(baseUrlNoApi + '/changepassword', {
+    let response = await axios.post(baseUrl + '/changepassword', {
       oldPassword: oldPassword,
       newPassword: newPassword1
     })
@@ -53,7 +52,7 @@ export default {
   },
 
   async changeEmail (oldPassword, newEmail) {
-    let response = await axios.post(baseUrlNoApi + '/change-email', {
+    let response = await axios.post(baseUrl + '/change-email', {
       email: newEmail,
       password: oldPassword,
     })
@@ -64,7 +63,7 @@ export default {
 
   async submitForgotPassword (email) {
     try {
-      await axios.post(baseUrlNoApi + '/reset-password', {
+      await axios.post(baseUrl + '/reset-password', {
         email: email,
       })
       return {success: true}
@@ -76,7 +75,7 @@ export default {
 
   async submitResetPassword (password1, password2, token) {
     try {
-      await axios.post(`${baseUrlNoApi}/reset-password-link/${token}`, {
+      await axios.post(`${baseUrl}/reset-password-link/${token}`, {
         password1, password2,
       })
       return {success: true}
