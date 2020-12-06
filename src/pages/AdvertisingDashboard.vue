@@ -11,7 +11,7 @@
       <div v-if="isShowingInstructions">
         <h4 class="mt-16">Payment</h4>
         <p>
-          To pay: go to <a href="https://paypal.me/yifferadvertising" target="_blank" class="underline-link">paypal.me/yifferadvertising</a>, or pay manually on PayPal by sending money to advertising@yiffer.xyz. You <u>must</u> put your ad's ID in the message field, otherwise we won't know what the payment is for. After you have paid, we review the payment and update your ad's status, which may take up to a few days.
+          To pay: go to <a href="https://paypal.me/yifferadvertising/USD" target="_blank" class="underline-link">paypal.me/yifferadvertising</a>, or pay manually on PayPal by sending money to advertising@yiffer.xyz. You <u>must</u> put your ad's ID in the message field, otherwise we won't know what the payment is for. After you have paid, we review the payment and update your ad's status, which may take up to a few days.
         </p>
 
         <h4 class="mt-16">Questions/contact</h4>
