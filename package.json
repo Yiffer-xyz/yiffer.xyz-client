@@ -1,19 +1,16 @@
 {
-  "name": "yiffer-xyz",
-  "version": "0.1.0",
-  "private": true,
+  "name": "yifferxyz-client",
+  "version": "3.0.0",
+  "description": "Front-end for yiffer.xyz, now in Vue.js!",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@innologica/vue-dropdown-menu": "^0.1.3",
     "axios": "^0.19.0",
     "better-vue-breakpoints": "^0.1.4",
-    "body-parser": "^1.19.0",
     "date-fns": "^2.14.0",
-    "express": "^4.17.1",
     "jszip": "^3.2.2",
     "multer": "^1.4.2",
     "node-sass": "^4.11.0",
