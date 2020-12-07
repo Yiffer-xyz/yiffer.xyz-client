@@ -314,8 +314,6 @@ import { format } from 'date-fns'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
-import LoginIcon from 'vue-material-design-icons/Login.vue'
-import AddPageVue from '../components/admin-panel/AddPage.vue'
 
 export default {
   name: 'advertisingDashboard',

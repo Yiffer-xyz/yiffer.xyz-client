@@ -115,7 +115,7 @@ const store = {
     },
 
     setSorting ({commit}, newSorting) {
-      if (!!newSorting) {
+      if (newSorting) {
         commit('setPageNumber', 1)
         commit('setSorting', newSorting)
       }
