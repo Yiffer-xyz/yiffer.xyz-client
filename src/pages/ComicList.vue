@@ -213,8 +213,10 @@
             </div>
           </div>
 
-          <div id="selectedKeywords" v-if="$store.getters.selectedKeywords.length > 0" 
-                class="upper-body-horiz-row" style="margin-top: 0px; border: none;">
+          <div id="selectedKeywords"
+               v-if="$store.getters.selectedKeywords.length > 0 || allKeywords.failed" 
+               class="upper-body-horiz-row"
+               style="margin-top: 0px; border: none;">
             <div 
               v-for="keywordObject in $store.getters.selectedKeywords" 
               :key="keywordObject.id"
@@ -222,6 +224,10 @@
               class="selected-keyword">
                 {{keywordObject.name}}<cross-icon/>
             </div>
+
+            <p v-if="allKeywords.failed" style="font-size: 0.8rem;">
+              There was an error fetching searchable tags
+            </p>
           </div>
 
           <div class="upper-body-horiz-row">
@@ -453,6 +459,7 @@ export default {
       'orderedKeywordList',
       'isFilterSectionExpanded',
       'wasKwSelectedFromList',
+      'allKeywords',
     ]),
 
     isLoadingComics () {

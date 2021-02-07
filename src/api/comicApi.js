@@ -24,8 +24,7 @@ export default {
 
   async getAllComics () {
     let response = await axios.get(`${baseUrl}/all-comics`)
-    if (response.status === 200 && !response.data.error) { return response.data }
-    throw new Error('Error fetching all comics')
+    return response.data
   },
 
   async getComic (comicName) {

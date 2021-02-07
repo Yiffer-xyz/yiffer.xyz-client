@@ -88,7 +88,13 @@
           </div>
         </div>
 
-        <div id="keywordEditing" v-if="keywordSuggestionsActive" class="mt-32 vertical-flex alignCenter">
+        <div v-if="keywordSuggestionsActive && allKeywords.failed">
+          <p class="mt-16">There was an error fetching all tags. Please try again later.</p>
+        </div>
+
+        <div id="keywordEditing"
+             v-if="keywordSuggestionsActive && !allKeywords.failed"
+             class="mt-32 vertical-flex alignCenter">
           <MultiToggleButton :items="['Add', 'Remove']"
                              allowNone
                              @on-change="newVal => isAddingOrRemoving = newVal[0]"/>
@@ -280,6 +286,7 @@ export default {
     }),
 
     keywordsNotInComic () {
+      if (this.allKeywords.failed) { return [] }
       return this.allKeywords.payload
         .filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
         .sort((kw1, kw2) => kw1.name > kw2.name ? 1 : -1)

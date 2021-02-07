@@ -5,8 +5,7 @@ let baseUrl = config.apiBaseUrl
 export default {
   async getKeywordList () {
     let response = await axios.get(baseUrl + '/keywords')
-    if (!response.data.error) { return response.data }
-    else { return [] }
+    return response.data
   },
 
   async getComicKeywords (comicId) {

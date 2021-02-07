@@ -139,7 +139,6 @@
 </template>
 
 <script>
-import CheckboxIcon from 'vue-material-design-icons/CheckboxMarkedCircle.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import Loading from '@/components/LoadingIndicator.vue'
@@ -150,7 +149,6 @@ export default {
   name: 'login-modal',
 
   components: {
-    CheckboxIcon,
     CrossIcon,
     ResponseMessage,
     Loading,

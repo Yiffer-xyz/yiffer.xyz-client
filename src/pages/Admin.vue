@@ -3,8 +3,16 @@
     <h1>Admin</h1>
     <back-to-index></back-to-index>
 
+    <div v-if="isSomeError" class="adminErrorBox">
+      <p v-if="allComics.failed">
+        Fetching the list of comics failed. If the problem persists, please message an administrator.
+      </p>
+      <p v-if="allKeywords.failed">
+        Fetching the list of tags failed. If the problem persists, please message an administrator.
+      </p>
+    </div>
+
     <div class="admin-content-container" v-if="$store.getters.isAuthenticated">
-  
       <keyword-suggestions />
 
       <comic-suggestions />
@@ -82,7 +90,6 @@ import ModApplications from '@/components/admin-panel/ModApplications.vue'
 import Feedback from '@/components/admin-panel/Feedback.vue'
 
 import ArtistApi from '../api/artistApi'
-import keywordApi from '../api/keywordApi'
 import comicApi from '../api/comicApi'
 import { mapGetters } from 'vuex'
 import { doFetch } from '../utils/statefulFetch'
@@ -125,7 +132,12 @@ export default {
     ...mapGetters([
       'allComics',
       'userData',
-    ])
+      'allKeywords',
+    ]),
+
+    isSomeError () {
+      return this.allComics.failed || this.allKeywords.failed
+    }
   },
 
   async mounted () {
@@ -225,6 +237,16 @@ export default {
       margin-left: 10px;
       margin-right: 10px;
     }
+  }
+}
+
+.adminErrorBox {
+  padding: 1rem;
+  background-color: rgb(228, 94, 94);
+  width: fit-content;
+  margin: 1rem auto;
+  p {
+    color: white;
   }
 }
 

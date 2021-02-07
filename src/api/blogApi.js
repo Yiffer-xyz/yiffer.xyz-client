@@ -4,15 +4,23 @@ let baseUrl = config.apiBaseUrl
 
 export default {
   async getBlogs () {
-    let response = await axios.get(baseUrl + '/blogs')
-    if (!response.data.error) { return response.data }
-    else { return [] }
+    try {
+      let response = await axios.get(baseUrl + '/blogs')
+      return response.data
+    }
+    catch (err) {
+      return []
+    }
   },
 
   async getDisplayedBlog () {
-    let response = await axios.get(baseUrl + '/blogs/current')
-    if (!response.data.error) { return response.data }
-    else { return { shouldDisplay: false } }
+    try {
+      let response = await axios.get(baseUrl + '/blogs/current')
+      return response.data
+    }
+    catch (err) {
+      return { shouldDisplay: false }
+    }
   },
 
   async addBlog (title, isImportant, content, displayDays) {
