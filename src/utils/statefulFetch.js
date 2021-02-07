@@ -15,7 +15,9 @@ export function registerFetchNames (store, ...namesWithDefaults) {
       (state, payload) => state[name] = {...thisDefaultState, fetched: true, payload}
   
     store.mutations[`set_${name}_error`] =
-      (state, error) => state[name] = {...thisDefaultState, fetched: true, failed: true, errorMessage: error}
+      (state, {message, code}) => state[name] = {
+        ...thisDefaultState, fetched: true, failed: true, errorMessage: message, errorCode: code
+      }
   
     store.mutations[`set_${name}_clear`] =
       (state) => state[name] = thisDefaultState
@@ -33,7 +35,7 @@ export async function doFetch (commit, actionName, fetchPromise, transformFunc) 
     return result
   }
   catch (err) {
-    commit(`set_${actionName}_error`, err.message)
+    commit(`set_${actionName}_error`, {message: err.response.data, code: err.response.status})
     return false
   }
 }

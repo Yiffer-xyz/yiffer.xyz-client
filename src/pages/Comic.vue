@@ -133,19 +133,27 @@
       </div>
     </div>
 
-    <div v-if="!comic && !comicNotFound">
+    <div v-if="!comic && comicNotFound">
       <h2 class="comicLoadingInfo">
-        Loading comic...
+        There is no comic with the name {{$route.params.comicName}}
       </h2>
+    </div>
+
+    <div v-else-if="!comic && fetchComicError">
+      <h2 class="comicLoadingInfo">
+        Comic fetch error
+      </h2>
+      <p class="mb-32">
+        {{fetchComicError}}
+      </p>
     </div>
 
     <div v-else-if="!comic">
       <h2 class="comicLoadingInfo">
-        There is no comic with this name.
+        Loading comic...
       </h2>
     </div>
   
-
 
     <div v-if="comic">
       <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
@@ -262,6 +270,7 @@ export default {
       comic: this.$store.state.clickedComic || undefined,
       userIsDonator: true,
       comicNotFound: false,
+      fetchComicError: undefined,
       imageFitArray: [],
       keywordSuggestionsActive: false,
       keywords: [],
@@ -410,16 +419,21 @@ export default {
       if (setCurrentUndefined) {
         this.comic = undefined
       }
-      let response = await comicApi.getComic(this.$route.params.comicName)
-      if (response.success) {
-        this.comic = response.result
+      try {
+        let response = await comicApi.getComic(this.$route.params.comicName)
+        this.comic = response
         this.$store.commit('setComicForVotingModal', this.comic)
         this.initializeImageFitArray()
         this.fitImagesForMobile()
         this.keywords = await keywordApi.getComicKeywords(this.comic.id)
       }
-      else {
-        this.comicNotFound = true
+      catch (err) {
+        if (err.response?.status === 404) {
+          this.comicNotFound = true
+        }
+        else {
+          this.fetchComicError = err.response.data
+        }
       }
     },
 

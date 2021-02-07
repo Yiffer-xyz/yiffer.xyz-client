@@ -29,8 +29,7 @@ export default {
 
   async getComic (comicName) {
     let response = await axios.get(baseUrl + '/comics/' + comicName)
-    if (!response.data.error) { return {success: true, result: response.data} }
-    else { return {message: 'No comic with that name'} }
+    return response.data
   },
 
   async getPendingComics () {
