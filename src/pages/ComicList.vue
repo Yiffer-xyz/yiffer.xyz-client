@@ -387,8 +387,6 @@ import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
 import blogApi from '../api/blogApi'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { doFetch } from '../utils/statefulFetch'
-import comicApi from '../api/comicApi'
 import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
 
 export default {

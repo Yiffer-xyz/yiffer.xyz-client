@@ -4,13 +4,8 @@ let baseUrl = config.apiBaseUrl
 
 export default {
   async getBlogs () {
-    try {
-      let response = await axios.get(baseUrl + '/blogs')
-      return response.data
-    }
-    catch (err) {
-      return []
-    }
+    let response = await axios.get(baseUrl + '/blogs')
+    return response.data
   },
 
   async getDisplayedBlog () {

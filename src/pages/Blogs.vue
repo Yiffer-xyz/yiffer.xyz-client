@@ -3,10 +3,14 @@
     <h1>Blog</h1>
     <back-to-index></back-to-index>
 
-    <p v-if="!blogs" class="mt-16">Fetching content...</p>
+    <Loading v-if="!blogs.fetched || blogs.fetching" text="Fetching content" class="mt-48 mb-32" />
 
-    <div v-else class="full-width-text mt-16">
-      <div v-for="blog in blogs" :key="blog.id" class="blog simpleShadowNoHover" :blogid="blog.id">
+    <p v-if="blogs.failed" class="mt-48">
+      Error fetching blogs: {{blogs.errorMessage}}
+    </p>
+
+    <div v-else-if="blogs.fetched" class="full-width-text mt-16">
+      <div v-for="blog in blogs.payload" :key="blog.id" class="blog simpleShadowNoHover" :blogid="blog.id">
         <p class="blogTitle underline-link" @click="selectBlog(blog.id)">{{blog.title}}</p>
         <p class="blogAuthor">By {{blog.author}}, {{formatTimestamp(blog.timestamp)}}</p>
         <p v-html="blog.content" class="blogContent" style="text-align: left;"/>
@@ -19,6 +23,9 @@
 import BackToIndex from '@/components/BackToIndex.vue'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { format } from 'date-fns'
+import Loading from '@/components/LoadingIndicator.vue'
+import { doFetch } from '../utils/statefulFetch'
+import { mapGetters } from 'vuex'
 
 import miscApi from '../api/miscApi'
 import blogApi from '../api/blogApi'
@@ -28,17 +35,23 @@ export default {
   
   components: {
     BackToIndex,
+    Loading,
+  },
+
+  computed: {
+    ...mapGetters([
+      'blogs',
+    ]),
   },
 
   data: function () {
     return {
-      blogs: undefined,
     }
   },
 
   async mounted () {
     miscApi.logRoute('blog')
-    this.blogs = await blogApi.getBlogs()
+    doFetch(this.$store.commit, 'blogs', blogApi.getBlogs())
     if (this.$route.params.id) {
       this.$nextTick(() => this.highlightBlog(this.$route.params.id))
     }
@@ -101,7 +114,7 @@ export default {
   margin-top: 0 !important;
 }
 .highlightedBlog {
-  background-color: $theme9;
+  background-color: $theme1;
 }
 .dark {
   .blog {
