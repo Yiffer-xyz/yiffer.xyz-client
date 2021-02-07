@@ -360,7 +360,6 @@ import ExpandedComicCard from '@/components/ExpandedComicCard.vue'
 import config from '@/config.json'
 import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
-import DonateIcon from 'vue-material-design-icons/CurrencyUsd.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
@@ -395,7 +394,6 @@ export default {
     'expanded-comic-card': ExpandedComicCard,
     'search-icon': SearchIcon,
     'tags-icon': TagsIcon,
-    'donate-icon': DonateIcon,
     'plus-icon': PlusIcon,
     'cross-icon': CrossIcon,
     'left-arrow': LeftArrow,
@@ -466,7 +464,7 @@ export default {
     isSearchFilteringActive () {
       if (!this.categoryFilter.includes('All')) { return true }
       if (!this.tagFilter.includes('All')) { return true }
-      if (!!this.searchFiltering) { return true }
+      if (this.searchFiltering) { return true }
       if (this.sorting !== 'updated') { return true }
       if (this.selectedKeywords.length > 0) { return true }
       return false;

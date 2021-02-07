@@ -122,7 +122,6 @@ export default {
   },
 
   async logAdClick (adId) {
-    console.log('clicked ', adId)
     axios.post(baseUrl + '/paid-images-click', {adId})
   },
 }

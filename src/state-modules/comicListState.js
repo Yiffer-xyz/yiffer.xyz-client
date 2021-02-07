@@ -31,7 +31,7 @@ const store = {
     async fetchComics ({commit, dispatch}, searchParams) {
       await doFetch(commit, 'paginatedComics', comicApi.getComicsPaginated(searchParams))
       commit('setHasFetchedComicListOnce')
-      dispatch('addAdsToComicList')
+        dispatch('addAdsToComicList')
     },
     
     async loadActiveAds ({state, commit, dispatch}) {
@@ -70,6 +70,10 @@ const store = {
 
       let paidImages = [...getters.paidImagesCard()]
       let finalList = []
+
+      if (!paidImages || paidImages.length === 0) {
+        return;
+      }
 
       let comicCounter = 0
       for (let i=0; i<config.comicsPerPage + config.adsPerPage; i++) {
