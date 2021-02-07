@@ -99,7 +99,7 @@
 
       <!-- PREVIOUS AND NEXT COMIC LINKS -->
       <p class="admin-mini-header" style="margin-top: 16px; margin-bottom: 4px;">Comic links</p>
-      <div class="horizontal-flex flex-wrap">
+      <div class="horizontalFlex flex-wrap">
         <p>Previous comic </p>
         <select v-model="previousComic" class="margin-bottom-1" style="margin-left: 6px;">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -111,7 +111,7 @@
           <CrossIcon/> Remove link
         </button>
       </div>
-      <div class="horizontal-flex flex-wrap margin-top-4">
+      <div class="horizontalFlex flex-wrap margin-top-4">
         <p>Next comic </p>
         <select v-model="nextComic" class="margin-bottom-1" style="margin-left: 6px;">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -150,8 +150,8 @@
 
       <p class="admin-mini-header no-margin-bot margin-top-16">Add tags <CheckboxIcon v-if="selectedKeywords.length"/></p>
       <p>Adding tags is optional, but appreciated!</p>
-      <div class="horizontal-flex margin-top-4">
-        <div class="vertical-flex">
+      <div class="horizontalFlex margin-top-4">
+        <div class="verticalFlex">
           <select size="10" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in allKeywords.payload" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
           </select>
@@ -160,7 +160,7 @@
           </button>
         </div>
       
-        <div class="vertical-flex" style="margin-left: 15px;">
+        <div class="verticalFlex" style="margin-left: 15px;">
           <p style="margin-bottom: 6px;">Click to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
              :key="keyword.name" class="selected-add-keyword">{{keyword.name}}</p>

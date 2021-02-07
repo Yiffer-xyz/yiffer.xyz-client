@@ -7,8 +7,8 @@
 				Refresh data
 			</button>
 
-			<div class="vertical-flex margin-top-8">
-				<div class="horizontal-flex margin-bottom-8" style="justify-content: start;">
+			<div class="verticalFlex margin-top-8">
+				<div class="horizontalFlex margin-bottom-8" style="justify-content: start;">
 					<p style="margin-right: 4px;">Action type: </p>
 					<select v-model="actionTypeFilter" class="no-margin-bot" style="flex-grow: 1;">
 						<option :value="undefined"> </option>
@@ -18,12 +18,12 @@
 					</select>
 				</div>
 
-				<div class="horizontal-flex margin-bottom-8" style="justify-content: start;">
+				<div class="horizontalFlex margin-bottom-8" style="justify-content: start;">
 					<p style="margin-right: 4px;">Action filter: </p>
 					<input type="text" v-model="actionFilter" style="flex-grow: 1;"/>
 				</div>
 
-				<div class="horizontal-flex margin-bottom-8" style="justify-content: start;">
+				<div class="horizontalFlex margin-bottom-8" style="justify-content: start;">
 					<p style="margin-right: 4px;">Mod name filter: </p>
 					<input type="text" v-model="modNameFilter" style="flex-grow: 1;"/>
 				</div>

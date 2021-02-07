@@ -44,8 +44,8 @@
 
       <Loading v-if="isSubmittingKeywords" text="Submitting" style="padding-top: 5.5rem; height: 6.5rem;"/>
 
-      <div v-else class="horizontal-flex" style="width: 100%; margin-top: 8px;">
-        <div class="vertical-flex" style="margin: 0 12px 0 0;">
+      <div v-else class="horizontalFlex" style="width: 100%; margin-top: 8px;">
+        <div class="verticalFlex" style="margin: 0 12px 0 0;">
           <p class="admin-mini-header">Tag list</p>
           <select size="8" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
             <option v-for="keyword in keywordsNotInComic" :key="keyword.name" :value="keyword">{{keyword.name}}</option>
@@ -55,7 +55,7 @@
           </button>
         </div>
       
-        <div class="vertical-flex" style="margin: 0 12px 0 12px;">
+        <div class="verticalFlex" style="margin: 0 12px 0 12px;">
           <p class="admin-mini-header">Tags you're adding</p>
           <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to <span class="red-color">remove</span></p>
           <p v-for="keyword in selectedKeywords" @click="removeKeywordFromSelection(keyword)" 
@@ -66,7 +66,7 @@
           </button>
         </div>
       
-        <div class="vertical-flex" style="margin: 0 0 0 12px;">
+        <div class="verticalFlex" style="margin: 0 0 0 12px;">
           <p class="admin-mini-header">This comic's tags</p>
           <p v-if="comic.keywords.length > 0" style="margin-bottom: 6px;">
             Click tags to <span class="red-color">remove</span>
@@ -110,7 +110,7 @@
         <button v-if="selectedFiles.length" @click="uploadAppendPages" class="y-button margin-top-8">Submit {{selectedFiles.length}} pages</button>
       </span>
 
-      <div class="horizontal-flex margin-top-16">
+      <div class="horizontalFlex margin-top-16">
         <button @click="fitImages('full')" class="y-button y-button-neutral" style="margin: 4px;">Full size</button>
         <button @click="fitImages('fit')" class="y-button y-button-neutral" style="margin: 4px;">Fit images to page</button>
         <button @click="fitImages('small')" class="y-button y-button-neutral" style="margin: 4px;">Small</button>

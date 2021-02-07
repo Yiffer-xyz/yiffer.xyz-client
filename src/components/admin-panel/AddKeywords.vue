@@ -9,7 +9,7 @@
                        class="margin-top-8"/>
 
       <div class="centerLeftAlignedContainer marginAuto">
-        <div class="horizontal-flex no-margin-bot mt-16" style="flex-wrap: wrap;">
+        <div class="horizontalFlex no-margin-bot mt-16" style="flex-wrap: wrap;">
           <p class="admin-mini-header mr-8">Comic:</p>
           <select v-model="comic" @change="onComicChange">
             <option v-for="comic in comicList" :key="comic.name" :value="comic">
@@ -25,9 +25,9 @@
           </router-link>
         </div>
     
-        <div class="horizontal-flex mt-16"
+        <div class="horizontalFlex mt-16"
             v-if="comic && comicKeywords !== null">
-          <div class="vertical-flex mr-40" style="flex-wrap: wrap;">
+          <div class="verticalFlex mr-40" style="flex-wrap: wrap;">
             <p class="admin-mini-header">Tag list</p>
             <select size="13" style="margin-bottom: 0" v-model="selectedKeyword" @keyup.13="addSelectedKeyword()"> 
               <option v-for="keyword in allKeywords.payload" 
@@ -41,7 +41,7 @@
             </button>
           </div>
         
-          <div class="vertical-flex mr-40">
+          <div class="verticalFlex mr-40">
             <p class="admin-mini-header">Tags you're adding</p>
             <p v-if="selectedKeywords.length > 0" style="margin-bottom: 6px;">Click tag to remove</p>
             <p v-for="keyword in selectedKeywords" 
@@ -55,7 +55,7 @@
             </button>
           </div>
         
-          <div class="vertical-flex">
+          <div class="verticalFlex">
             <p class="admin-mini-header">This comic's tags</p>
             <p v-if="comicKeywords.length > 0" style="margin-bottom: 6px;">
               Click tags to remove
@@ -79,7 +79,7 @@
 
       <h2 class="mt-32 textCenter width100">Create new tag</h2>
       <p>If a tag is not in the list above, create it here. Double check first though, please.</p>
-      <div class="horizontal-flex flex-wrap margin-top-8"
+      <div class="horizontalFlex flex-wrap margin-top-8"
            style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">New tag name:</p>
         <input type="text" v-model="newKeyword" style="width: 128px;"/>

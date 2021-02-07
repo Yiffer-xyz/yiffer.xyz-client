@@ -7,7 +7,7 @@
 
     <span class="admin-content-box-inner" v-if="isOpen">
 
-      <div class="horizontal-flex alignCenter">
+      <div class="horizontalFlex alignCenter">
         <input type="checkbox" v-model="showRemoved" id="showRemovedCheckbox"/>
         <label for="showRemovedCheckbox">Show removed</label>
       </div>

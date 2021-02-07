@@ -11,7 +11,7 @@
             You apply using the forms below, attaching images/gifs. Your application is given an ID and can be found in your user page. Your application gets the status of <span class="monoInfo">PENDING</span>. You are sent an email from advertising@yiffer.xyz to the address connected to your account.
           </li>
           <li>
-            We review your application. If something needs correcting, we will communicate this via <u>email</u>. If this is the case, your application gets the status of <span class="monoWarning">NEEDS CORRECTION</span>, and the details are sent via email.
+            We review your application. If something needs correcting, your application gets the status of <span class="monoWarning">NEEDS CORRECTION</span>. You are sent an email describing the changes needed to have the ad accepted. These requirements can also be found here in the ads dashboard.
           </li>
           <li>
             Your application is accepted. You are then asked to pay the amount in question via PayPal. You must add the ad-ID in the message when paying. Your application gets the status of <span class="monoWarning">AWAITING PAYMENT</span>.

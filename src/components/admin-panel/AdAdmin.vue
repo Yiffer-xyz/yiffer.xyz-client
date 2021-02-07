@@ -47,7 +47,7 @@
                   <EditIcon/>
                 </button>
 
-                <div v-if="isThisAdBeingEdited(ad.id)" class="horizontal-flex">
+                <div v-if="isThisAdBeingEdited(ad.id)" class="horizontalFlex">
                   <button @click="cancelEditing" class="y-button y-button-neutral yButtonRound mr-4">
                     <CancelIcon/>
                   </button>
@@ -81,19 +81,32 @@
               </td>
 
               <td>
-                <p v-if="!isThisAdBeingEdited(ad.id)" :class="getAdStatusClass(ad.status)">
-                  {{ad.status}}
-                </p>
-                <select v-else v-model="editedAd.status" style="width: 8rem;">
-                  <option value="PENDING">PENDING</option>
-                  <option value="NEEDS CORRECTION">NEEDS CORRECTION</option>
-                  <option value="AWAITING PAYMENT">AWAITING PAYMENT</option>
-                  <option value="ACTIVE SOON">ACTIVE SOON</option>
-                  <option value="ACTIVE">ACTIVE</option>
-                  <option value="ACTIVE, AWAITING RENEWAL PAYMENT">ACTIVE, AWAITING RENEWAL PAYMENT</option>
-                  <option value="ACTIVE, RENEWAL PAID">ACTIVE, RENEWAL PAID</option>
-                  <option value="ENDED">ENDED</option>
-                </select>
+                <div v-if="!isThisAdBeingEdited(ad.id)" class="verticalFlex">
+                  <p  :class="getAdStatusClass(ad.status)">
+                    {{ad.status}}
+                  </p>
+                  <p v-if="ad.correctionNote" style="font-size: 0.8rem; white-space: normal;"> 
+                    {{ad.correctionNote}}
+                  </p>
+                </div>
+                <div v-else class="verticalFlex">
+                  <select v-model="editedAd.status" style="width: 10rem;">
+                    <option value="PENDING">PENDING</option>
+                    <option value="NEEDS CORRECTION">NEEDS CORRECTION</option>
+                    <option value="AWAITING PAYMENT">AWAITING PAYMENT</option>
+                    <option value="ACTIVE SOON">ACTIVE SOON</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="ACTIVE, AWAITING RENEWAL PAYMENT">ACTIVE, AWAITING RENEWAL PAYMENT</option>
+                    <option value="ACTIVE, RENEWAL PAID">ACTIVE, RENEWAL PAID</option>
+                    <option value="ENDED">ENDED</option>
+                  </select>
+                  <textarea v-if="editedAd.status === 'NEEDS CORRECTION'"
+                            v-model="editedAd.correctionNote"
+                            rows="3"
+                            class="mt-4"
+                            placeholder="Correction note"
+                            type="text"/>
+                </div>
               </td>
 
               <td style="white-space: pre-wrap;">
@@ -198,6 +211,7 @@ export default {
         id: ad.id,
         price: ad.price,
         status: ad.status,
+        correctionNote: '',
         activationDate: ad.activationDate ? ad.activationDate.substring(0,10) : null,
         deactivationDate: ad.deactivationDate ? ad.deactivationDate.substring(0,10) : null,
         adminNotes: ad.adminNotes,

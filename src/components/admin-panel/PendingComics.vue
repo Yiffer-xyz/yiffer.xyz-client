@@ -19,7 +19,7 @@
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                       class="margin-bottom-10 margin-top-10"/>
 
-      <div v-if="pendingComics.length > 0" class="vertical-flex" style="max-width: 100%;">
+      <div v-if="pendingComics.length > 0" class="verticalFlex" style="max-width: 100%;">
         <p>You can add keywords, a thumbnail, or more pages by <u>clicking the comic title</u>. <br/>
         Comics are approved by admins.<br/>
         The <span class="red-color">numbers</span> in the header mean (1) amount of pending comics, (2) how many are missing tags, and (3) how many are missing a thumbnail.</p>

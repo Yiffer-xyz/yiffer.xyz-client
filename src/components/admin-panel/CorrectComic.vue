@@ -8,7 +8,7 @@
 
       <Loading v-if="comicList.length === 0" text="Fetching comics" style="margin-top: 1rem;" />
 
-      <div v-else class="horizontal-flex flex-wrap" style="margin-top: 8px; align-items: center;">
+      <div v-else class="horizontalFlex flex-wrap" style="margin-top: 8px; align-items: center;">
         <p class="admin-mini-header margin-bottom-4 margin-right-8">Comic:</p>
         <select v-model="comic" class="margin-bottom-4">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -23,8 +23,8 @@
 
       <span v-if="comic && !isSubmitting" class="margin-top-8" style="width: 100%;">
 				<button @click="toggleRename(true)" v-if="!renameActive" class="y-button y-button-neutral margin-bottom-16">Rename comic</button>
-				<span v-if="renameActive" class="horizontal-flex margin-bottom-16" style="align-items: center;">
-          <div class="vertical-flex">
+				<span v-if="renameActive" class="horizontalFlex margin-bottom-16" style="align-items: center;">
+          <div class="verticalFlex">
             <p style="text-align: left;">New name</p>
             <input type="text" v-model="newComicName" style="width: 200px; height: 18px;"/>
           </div>
@@ -34,8 +34,8 @@
 				</span>
 				
 
-        <div id="fourSelectsContainer" class="vertical-flex">
-          <div class="vertical-flex">
+        <div id="fourSelectsContainer" class="verticalFlex">
+          <div class="verticalFlex">
             <p style="text-align: left;">Artist</p>
             <select v-model="artist">
               <option v-for="artist in artistList" :key="artist.name" :value="artist.name">
@@ -44,7 +44,7 @@
             </select>
           </div>
 
-          <div class="vertical-flex">
+          <div class="verticalFlex">
             <p style="text-align: left;">Category</p>
             <select v-model="cat">
               <option value="Furry">Furry</option>
@@ -54,7 +54,7 @@
             </select>
           </div>
 
-          <div class="vertical-flex">
+          <div class="verticalFlex">
             <p style="text-align: left;">Classification</p>
             <select v-model="tag">
               <option value="M">M</option>
@@ -67,7 +67,7 @@
             </select>
           </div>
           
-          <div class="vertical-flex">
+          <div class="verticalFlex">
             <p style="text-align: left;">State</p>
             <select v-model="state">
               <option value="wip">WIP</option>
@@ -79,7 +79,7 @@
 
         <!-- PREVIOUS COMIC -->
         <div class="prev-next-comic-container margin-top-16">
-          <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+          <div class="horizontalFlex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
             <div>
               <p style="text-align: left;">Previous comic</p>
               <select v-model="previousComic">
@@ -97,7 +97,7 @@
 
         <!-- NEXT COMIC -->
         <div class="prev-next-comic-container margin-top-8">
-          <div class="horizontal-flex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
+          <div class="horizontalFlex horiz-space-items-8px" style="align-items: center; flex-wrap: wrap;">
             <div>
               <p style="text-align: left;">Next comic</p>
               <select v-model="nextComic">
@@ -113,7 +113,7 @@
           </div>
         </div>
 
-				<span class="horizontal-flex no-margin-bot" style="margin-top: 16px;">
+				<span class="horizontalFlex no-margin-bot" style="margin-top: 16px;">
         	<button @click="resetFields()"
                   class="y-button y-button-neutral button-with-icon" style="margin-right: 4px;">
             <RefreshIcon/> Reset

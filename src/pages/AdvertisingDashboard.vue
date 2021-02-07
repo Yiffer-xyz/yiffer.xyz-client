@@ -27,7 +27,7 @@
             You may edit the details of your ad at any point until you have paid. If you edit after it has been approved, its state will revert to <span class="monoInfo">PENDING</span> and will need to be approved again.
           </li>
           <li>
-            We review your application. If something needs correcting, we will communicate this via <u>email</u>. If this is the case, your application gets the status of <span class="monoWarning">NEEDS CORRECTION</span>, and the details are sent via email.
+            We review your application. If something needs correcting, your application gets the status of <span class="monoWarning">NEEDS CORRECTION</span>. You are sent an email describing the changes needed to have the ad accepted. These requirements can also be found here in the ads dashboard.
           </li>
           <li>
             Your application is accepted. We will send you an email to notify you of this. You may then pay the amount in question via PayPal. Remember to add the ad-ID in the message when paying. Your application gets the status of <span class="monoWarning">AWAITING PAYMENT</span>.
@@ -60,6 +60,10 @@
 
           <p :class="getAdStatusClass(selectedAd.status)">
             {{selectedAd.status}}
+          </p>
+
+          <p v-if="selectedAd.status === 'NEEDS CORRECTION'" class="correctionNote">
+            Correction note: {{selectedAd.correctionNote}}
           </p>
 
           <p v-if="adTypesWithClicks.includes(selectedAd.status)">
@@ -312,14 +316,13 @@ import config from '@/config.json'
 import { mapGetters } from 'vuex'
 import { format } from 'date-fns'
 
-import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
 
 export default {
   name: 'advertisingDashboard',
   
   components: {
-    BackToIndex, RightArrow, Loading, CheckIcon, ResponseMessage,
+    BackToIndex, Loading, CheckIcon, ResponseMessage,
   },
 
   mounted () {
@@ -617,6 +620,13 @@ export default {
 .editAdLoading {
   width: fit-content;
   margin-top: 2rem;
+}
+
+.correctionNote {
+  border: 1px solid $themeWarningBorder;
+  background-color: $themeWarning;
+  padding: 0.5rem;
+  color: black !important;
 }
 
 @media screen and (max-width: 900px) {

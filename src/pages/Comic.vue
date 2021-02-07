@@ -68,8 +68,8 @@
           </button> to rate comic
         </p>
 
-        <div id="comicKeywords" class="mt-16 horizontal-flex flexWrap">
-          <span v-if="keywords.length > 0" class="horizontal-flex flexWrap">
+        <div id="comicKeywords" class="mt-16 horizontalFlex flexWrap">
+          <span v-if="keywords.length > 0" class="horizontalFlex flexWrap">
             <div class="keyword-static"
                  v-for="keyword in keywords"
                  :key="keyword.name">
@@ -94,7 +94,7 @@
 
         <div id="keywordEditing"
              v-if="keywordSuggestionsActive && !allKeywords.failed"
-             class="mt-32 vertical-flex alignCenter">
+             class="mt-32 verticalFlex alignCenter">
           <MultiToggleButton :items="['Add', 'Remove']"
                              allowNone
                              @on-change="newVal => isAddingOrRemoving = newVal[0]"/>
@@ -156,7 +156,7 @@
   
 
     <div v-if="comic">
-      <div id="comicSizingButtonsRow" class="margin-top-16 horizontal-flex" style="align-items: center;">
+      <div id="comicSizingButtonsRow" class="margin-top-16 horizontalFlex" style="align-items: center;">
         <p style="margin-right: 4px;">Image fit:</p>
         <button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Height</button>
         <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Width</button>

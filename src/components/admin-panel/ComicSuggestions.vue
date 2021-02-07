@@ -39,7 +39,7 @@
               <td style="white-space: pre-wrap;">{{suggestion.description}}</td>
               <td>{{suggestion.user}}</td>
               <td>
-								<div v-if="!suggestion.isRejectingAndAddingToList" class="vertical-flex alignCenter">
+								<div v-if="!suggestion.isRejectingAndAddingToList" class="verticalFlex alignCenter">
 									<button 
 										@click="processSuggestion(suggestion, true)"
 										class="y-button button-with-icon">
@@ -58,10 +58,10 @@
 								</div>
 
                 <!-- REJECT AND ADD TO LIST -->
-                <div v-if="suggestion.isRejectingAndAddingToList" class="vertical-flex">
+                <div v-if="suggestion.isRejectingAndAddingToList" class="verticalFlex">
                   <p>You <i>may</i> provide a reason (shown to users):</p>
                   <input type="text" v-model="rejectReason"/>
-                  <div class="horizontal-flex margin-top-8 margin-bottom-4">
+                  <div class="horizontalFlex margin-top-8 margin-bottom-4">
                     <button 
                       @click="cancelAddingToList(suggestion)"
                       class="y-button y-button-neutral margin-left-4 margin-right-4">

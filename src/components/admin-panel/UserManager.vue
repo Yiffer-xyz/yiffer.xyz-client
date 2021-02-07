@@ -7,9 +7,9 @@
                        class="margin-bottom-10"/>
 
 			<!-- USER SEARCH -->
-			<div class="horizontal-flex alignCenter">
+			<div class="horizontalFlex alignCenter">
 				<form @submit.prevent="searchForUsers()" class="no-margin-bot">
-					<div class="horizontal-flex">
+					<div class="horizontalFlex">
 						<input type="text" v-model="userSearchText" style="width: 110px;"/>
 
 						<button @click="searchForUsers()" 

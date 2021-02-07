@@ -6,7 +6,7 @@
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                        class="margin-top-8"/>
 
-      <div class="horizontal-flex margin-top-8 flex-wrap">
+      <div class="horizontalFlex margin-top-8 flex-wrap">
         <p class="admin-mini-header"
            style="margin-right: 8px;">
            Comic:
@@ -22,7 +22,7 @@
         </router-link>
       </div>
 
-      <div v-if="comic" class="horizontal-flex" style="margin-top: 8px;">
+      <div v-if="comic" class="horizontalFlex" style="margin-top: 8px;">
         <p class="admin-mini-header" style="margin-right: 8px;">Start page viewing range:</p>
         <select v-model="startPageViewing">
           <option v-for="pageNumber in comic.numberOfPages" :key="pageNumber" :value="pageNumber">
@@ -31,8 +31,8 @@
         </select>
       </div>
 
-      <div v-if="comic" class="horizontal-flex flex-wrap">
-        <div v-for="i in pagesToShow" :key="i" class="vertical-flex" style="margin: 4px;">
+      <div v-if="comic" class="horizontalFlex flex-wrap">
+        <div v-for="i in pagesToShow" :key="i" class="verticalFlex" style="margin: 4px;">
           <p>Page {{i}}</p>
           <a :href="`${config.comicDirectory}/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" target="_blank">
             <img :src="`${config.comicDirectory}/${comic.name}/${formattedPageNumber(i)}.jpg?${generateRandomQueryString()}`" 
@@ -45,7 +45,7 @@
         <!-- SWAP PAGES -->
         <h2 style="margin-top: 32px;">Swap pages</h2>
         <p>Swap the positions of two existing pages</p>
-        <div class="horizontal-flex">
+        <div class="horizontalFlex">
           <p>Swap page ...</p>
           <select v-model="swapPage1" style="margin: 0 8px;">
             <option v-for="pageNumber in comic.numberOfPages" :key="pageNumber" :value="pageNumber">
@@ -68,7 +68,7 @@
         <h2 style="margin-top: 32px;">Insert page</h2>
         <p>Insert a page in between two other pages. <u>Don't</u> use this for adding a page to the end of a comic. 
           For that, go to <i>Add pages to comic</i></p>
-        <div class="horizontal-flex">
+        <div class="horizontalFlex">
           <p>Insert an image after page ...</p>
           <select v-model="insertPageAfterNumber" style="margin: 0 8px;">
             <option v-for="pageNumber in comic.numberOfPages" :key="pageNumber" :value="pageNumber">
@@ -94,7 +94,7 @@
         <!-- DELETE PAGE -->
         <h2 style="margin-top: 32px;">Delete page</h2>
         <p>Delete an existing page, in case of duplicate pages (or for some other reason)</p>
-        <div class="horizontal-flex">
+        <div class="horizontalFlex">
           <p>Delete page number...</p>
           <select v-model="deletePageNumber" style="margin: 0 8px;">
             <option v-for="pageNumber in comic.numberOfPages" :key="pageNumber" :value="pageNumber">

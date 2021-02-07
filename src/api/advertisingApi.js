@@ -28,9 +28,9 @@ export default {
     }
   },
 
-  async updateAd ({id, price, status, activationDate, deactivationDate, adminNotes}) {
+  async updateAd ({id, price, status, activationDate, deactivationDate, adminNotes, correctionNote}) {
     let response = await axios.post(`${baseUrl}/paid-images/${id}`, {
-      price, status, activationDate, deactivationDate, adminNotes
+      price, status, activationDate, deactivationDate, adminNotes, correctionNote,
     })
     if (!response.data.error) { return response.data }
     else { return {success: false, message: response.data.error} }

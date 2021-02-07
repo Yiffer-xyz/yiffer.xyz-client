@@ -15,7 +15,7 @@
       <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                   class="margin-top-10"/>
 
-      <div class="horizontal-flex margin-top-8 margin-bottom-8 flex-wrap" style="align-items: center;">
+      <div class="horizontalFlex margin-top-8 margin-bottom-8 flex-wrap" style="align-items: center;">
         <p style="margin-right: 8px; font-weight: 400;">Comic:</p>
         <select v-model="comic" style="margin-bottom: 0">
           <option v-for="comic in comicList" :key="comic.id" :value="comic">
@@ -38,7 +38,7 @@
       </form>
 
       <p v-if="filesAreInput" style="margin-bottom: 0px;"><b>{{selectedFiles.length}}</b> Selected files:</p>
-      <p v-if="filesAreInput" class="courier vertical-flex">
+      <p v-if="filesAreInput" class="courier verticalFlex">
         <span v-for="file in selectedFileNames" :key="file">{{file}}</span>
       </p>
 

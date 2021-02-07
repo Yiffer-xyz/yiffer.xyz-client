@@ -8,7 +8,7 @@
                      class="margin-bottom-10 margin-top-10"/>
 
     <div class="smaller-width-text">
-      <div class="vertical-flex mt-16">
+      <div class="verticalFlex mt-16">
         <p v-if="$store.getters.userData.email">
           Your email: {{$store.getters.userData.email}}
         </p>

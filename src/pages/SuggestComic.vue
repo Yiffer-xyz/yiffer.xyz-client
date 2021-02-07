@@ -24,7 +24,7 @@
         </li>
       </ul>
 
-      <div class="vertical-flex margin-top-32">
+      <div class="verticalFlex margin-top-32">
         <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                          class="margin-bottom-10"/>
 

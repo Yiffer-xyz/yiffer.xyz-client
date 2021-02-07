@@ -4,7 +4,7 @@
     <span class="admin-content-box-inner" v-if="isOpen">
 
       <div>
-        <div class="horizontal-flex alignCenter">
+        <div class="horizontalFlex alignCenter">
           <p class="mr-8">
             Data: 
           </p>
@@ -15,7 +15,7 @@
                              @on-change="onDataTypeChanged"/>
         </div>
         
-        <div class="horizontal-flex alignCenter mb-8 mt-8">
+        <div class="horizontalFlex alignCenter mb-8 mt-8">
           <p class="mr-8">
             Interval: 
           </p>

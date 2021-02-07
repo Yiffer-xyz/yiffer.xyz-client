@@ -42,12 +42,11 @@ select {
   padding: 1px;
 }
 
-.vertical-flex {
+.verticalFlex {
   display: flex;
   flex-direction: column;
 }
-
-.horizontal-flex {
+.horizontalFlex {
   display: flex;
   flex-direction: row;
   justify-content: center;

@@ -6,7 +6,7 @@
       <ResponseMessage :message="responseMessageEdit" :messageType="responseMessageTypeEdit" @closeMessage="closeResponseMessageEdit"
                        class="margin-bottom-10"/>
 
-      <div class="horizontal-flex" style="align-items: center; margin-bottom: 8px;">
+      <div class="horizontalFlex" style="align-items: center; margin-bottom: 8px;">
         <p style="margin-right: 8px;">Artist:</p>
         <select v-model="artist" class="no-margin-bot" @change="artistChanged">
           <option v-for="artist in artistList" :key="artist.id" :value="artist">
@@ -20,7 +20,7 @@
         </router-link>
       </div>
 
-      <span v-if="artist" id="artistContent" class="vertical-flex">
+      <span v-if="artist" id="artistContent" class="verticalFlex">
         <button v-if="!isEditingName" @click="isEditingName=true" class="y-button y-button-neutral button-with-icon margin-top-10 margin-bottom-10">
           <EditIcon/> Edit artist name
         </button>
@@ -81,8 +81,8 @@
         <p class="admin-mini-header no-margin-bot margin-top-8">Artist links</p>
         <p>FurAffinity, Twitter, Pixiv, Weasyl, Artist's own website, etc.</p>
 
-        <div class="vertical-flex scrolling-table-container" style="justify-content: flex-start; align-items: flex-start;">
-          <div v-for="(link, index) in existingArtistLinks" :key="index" class="horizontal-flex margin-top-4">
+        <div class="verticalFlex scrolling-table-container" style="justify-content: flex-start; align-items: flex-start;">
+          <div v-for="(link, index) in existingArtistLinks" :key="index" class="horizontalFlex margin-top-4">
             <button v-if="!link.isBeingDeleted && !link.isBeingEdited" @click="link.isBeingEdited=true" class="y-button y-button-neutral y-button-small">
               <EditIcon/>
             </button>
@@ -114,7 +114,7 @@
 
         <div v-if="newLinks.length > 0">
           <p class="admin-mini-header no-margin-bot margin-top-8">New links</p>
-          <div v-for="(link, index) in newLinks" :key="index" class="horizontal-flex margin-bottom-4">
+          <div v-for="(link, index) in newLinks" :key="index" class="horizontalFlex margin-bottom-4">
             <input type="text" v-model="newLinks[index]" style="width: 360px;"/>
             <button @click="deleteNewLink(index)" title="Delete link" class="y-button y-button-neutral y-button-small" style="margin-left: 4px;">
               <DeleteIcon title="Delete link"/>
@@ -122,7 +122,7 @@
           </div>
         </div>
 
-        <div class="horizontal-flex margin-top-32">
+        <div class="horizontalFlex margin-top-32">
           <button @click="cancelChanges()" class="y-button y-button-red-outline button-with-icon">
             <CancelIcon title=""/> Cancel
           </button>
@@ -139,7 +139,7 @@
       <ResponseMessage :message="responseMessageNewArtist" :messageType="responseMessageTypeNewArtist" @closeMessage="closeResponseMessageNewArtist"
                        class="margin-bottom-10"/>
 
-      <div class="horizontal-flex" style="align-items: center;">
+      <div class="horizontalFlex" style="align-items: center;">
         <p style="margin-right: 8px;">Artist name:</p>
         <input type="text" v-model="artistName"/>
         <button @click="addNewArtist()" class="y-button button-with-icon" style="margin: 0 0 0 8px;">
