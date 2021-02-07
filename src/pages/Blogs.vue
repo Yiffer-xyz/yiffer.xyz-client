@@ -114,7 +114,7 @@ export default {
   margin-top: 0 !important;
 }
 .highlightedBlog {
-  background-color: $theme1;
+  background-color: $theme9;
 }
 .dark {
   .blog {
