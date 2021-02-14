@@ -49,7 +49,6 @@ export default {
   
   async mounted () {
     miscApi.logRoute('feedback')
-    fetchClear(this.$store.commit, 'submitFeedback')
   },
 
   beforeDestroy () {

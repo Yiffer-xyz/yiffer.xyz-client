@@ -32,102 +32,131 @@
         Keep in mind that as long as this notice stands, there is a 50% discount on all ads!
       </p>
 
-      <form class="yForm2" enctype="multipart/form-data" style="width: fit-content; margin: 1rem auto;">
-        <h3>Application form</h3>
+      <Form :buttonText="'Submit application'"
+            :canSubmit="isReadyForSubmit"
+            :errorText="advertisingApplySubmit.errorMessage"
+            :fetchingText="'Submitting...'"
+            :fetchState="advertisingApplySubmit"
+            :header="'Advertiser application form'"
+            :successText="'Success! See your account page for details.'"
+            :hideSubmit="!adType"
+            :maxWidth="'420'"
+            @submit="submitApplication">
+        <div class="yForm2Field">
+          <label for="adType">Type of ad</label>
+          <select id="adType" v-model="adType" style="width: fit-content;">
+            <option value="card2M">Comic card, 2 months (̶$̶2̶8̶) ($14!)</option>
+            <option value="card4M">Comic card, 4 months (̶$̶4̶8̶) ($24!)</option>
+            <option value="banner1M">Wide banner, 1 month (̶$̶2̶5̶) ($12!)</option>
+          </select>
+        </div>
 
-        <BigSuccess v-show="success" text="Success! See your account page for details." classes="mb-16"/>
+        <div class="yForm2Field" v-if="adType">
+          <label for="adLinks">Link (where the users end up when clicking your ad):</label>
+          <input type="text" v-model="adLink" id="adLinks"/>
+        </div>
 
-        <span v-show="!success">
-          <div class="yForm2Field">
-            <label for="adType">Type of ad</label>
-            <select id="adType" v-model="adType">
-              <option value="card2M">Comic card, 2 months (̶$̶2̶8̶) ($14!)</option>
-              <option value="card4M">Comic card, 4 months (̶$̶4̶8̶) ($24!)</option>
-              <option value="banner1M">Wide banner, 1 month (̶$̶2̶5̶) ($12!)</option>
-            </select>
-          </div>
+        <div class="yForm2Field" v-if="isCardAd">
+          <label for="adMainText">Main text:</label>
+          <input type="text" v-model="adMainText" id="adMainText"/>
+          <p v-if="adMainText" class="smaller-text" :class="{'red-color': remainingCharsMainText<0}">
+            {{remainingCharsMainText}} characters left
+          </p>
+        </div>
 
-          <div class="yForm2Field">
-            <label for="adLinks">Link (where the users end up when clicking your ad):</label>
-            <input type="text" v-model="adLink" id="adLinks"/>
-          </div>
+        <div class="yForm2Field" v-if="isCardAd">
+          <label for="adSecondaryText">Secondary text (optional):</label>
+          <input type="text" v-model="adSecondaryText" id="adSecondaryText"/>
+          <p v-if="adSecondaryText" class="smaller-text" :class="{'red-color': remainingCharsSecondaryText<0}">
+            {{remainingCharsSecondaryText}} characters left
+          </p>
+        </div>
 
-          <div class="yForm2Field" v-if="isCardAd">
-            <label for="adMainText">Main text:</label>
-            <input type="text" v-model="adMainText" id="adMainText"/>
-            <p v-if="adMainText" class="smaller-text" :class="{'red-color': remainingCharsMainText<0}">
-              {{remainingCharsMainText}} characters left
-            </p>
-          </div>
-
-          <div class="yForm2Field" v-if="isCardAd">
-            <label for="adSecondaryText">Secondary text (optional):</label>
-            <input type="text" v-model="adSecondaryText" id="adSecondaryText"/>
-            <p v-if="adSecondaryText" class="smaller-text" :class="{'red-color': remainingCharsSecondaryText<0}">
-              {{remainingCharsSecondaryText}} characters left
-            </p>
-          </div>
-
-          <div class="yForm2Field" v-if="adType">
-            <label for="cardAdFile">Image or gif:</label>
-            <div class="horizontalFlexLeft flexWrap mt-4">
-              <div class="pretty-input-upload mr-8">
-                <input type="file" @change="processFileUploadChange" id="cardAdFile" accept="image/x-png,image/gif,image/jpeg" class="input-file"/>
-                <p>Select file</p>
-              </div>
-              <p v-if="file" class="alignSelfCenter">Selected: {{file.name}}</p>
+        <div class="yForm2Field" v-if="adType">
+          <label for="cardAdFile">Image or gif:</label>
+          <div class="horizontalFlexLeft flexWrap mt-4">
+            <div class="pretty-input-upload mr-8">
+              <input type="file" @change="processFileUploadChange" id="cardAdFile" accept="image/x-png,image/gif,image/jpeg" class="input-file"/>
+              <p>Select file</p>
             </div>
-
-            <p v-if="fileErrorMessage" class="red-color mt-4" style="max-width: 24rem;">
-              {{fileErrorMessage}}
-            </p>
-            <p v-else-if="file" class="mt-4">
-              <CheckIcon/> File matches size requirements.
-            </p>
+            <p v-if="file" class="alignSelfCenter">Selected: {{file.name}}</p>
           </div>
 
+          <p v-if="fileErrorMessage" class="red-color mt-4" style="max-width: 24rem;">
+            {{fileErrorMessage}}
+          </p>
+          <p v-else-if="file" class="mt-4">
+            <CheckIcon/> File matches size requirements.
+          </p>
+        </div>
 
-          <div class="yForm2Field">
-            <label for="notesText">Notes or comments for our staff? (optional)</label>
-            <input type="text" v-model="notes" id="notesText"/>
-          </div>
 
-          <Loading v-if="isAwaitingResponse" text="Submitting..." classes="mb-16"/>
-
-          <ResponseMessage :message="responseMessage" messageType="error" @closeMessage="closeResponseMessage"/>
-
-          <button @click.prevent="submitApplication" 
-                  class="y-button"
-                  :class="{'y-button-disabled': !isReadyForSubmit}"
-                  style="align-self: center;"
-                  v-if="!isAwaitingResponse">
-            Submit application
-          </button>
-        </span>
-      </form>
+        <div class="yForm2Field" v-if="adType">
+          <label for="notesText">Notes or comments for our staff? (optional)</label>
+          <input type="text" v-model="notes" id="notesText"/>
+        </div>
+      </Form>
     </div>
   </div>
 </template>
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import Loading from '@/components/LoadingIndicator.vue'
-import BigSuccess from '@/components/BigSuccessMessage.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
+import Form from '../components/Form.vue'
 
 import miscApi from '../api/miscApi'
 import adApi from '../api/advertisingApi'
 
-import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
-import LoginIcon from 'vue-material-design-icons/Login.vue'
 import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
+import { mapGetters } from 'vuex'
+import { doFetch, fetchClear } from '../utils/statefulFetch'
 
 export default {
   name: 'advertisingApply',
   
   components: {
-    BackToIndex, Loading, BigSuccess, ResponseMessage,
-    RightArrow, LoginIcon, CheckIcon,
+    BackToIndex, CheckIcon, Form,
+  },
+
+  computed: {
+    ...mapGetters(['advertisingApplySubmit']),
+
+    isCardAd () {
+      return this.adType === 'card2M' || this.adType === 'card4M'
+    },
+
+    isBannerAd () {
+      return this.adType === 'banner1M'
+    },
+
+    remainingCharsMainText () {
+      return 25 - this.adMainText.length
+    },
+
+    remainingCharsSecondaryText () {
+      return 60 - this.adSecondaryText.length
+    },
+
+    isReadyForSubmit () {
+      if (!this.adType || !this.adLink || !this.file || this.fileErrorMessage || this.isAwaitingResponse) {
+        return false
+      }
+      if (this.isCardAd) {
+        if (!this.adMainText || this.remainingCharsMainText<0 || this.remainingCharsSecondaryText<0) {
+          return false
+        }
+      }
+
+      return true
+    },
+  },
+
+  mounted () {
+    miscApi.logRoute('advertising apply')
+  },
+
+  beforeDestroy () {
+    fetchClear(this.$store.commit, 'advertisingApplySubmit')
   },
 
   data () {
@@ -151,26 +180,13 @@ export default {
     }
   },
 
-  mounted () {
-    miscApi.logRoute('advertising apply')
-  },
-
   methods: {
     async submitApplication () {
       if (!this.isReadyForSubmit) { return }
-
-      this.responseMessage = ''
-      this.isAwaitingResponse = true
-      let result = await adApi.submitAdvertisingApplication(
-        this.adType, this.adLink, this.adMainText, this.adSecondaryText, this.file, this.notes)
-      this.isAwaitingResponse = false
-
-      if (result.success) {
-        this.success = true
-      }
-      else {
-        this.responseMessage = result.message
-      }
+      
+      doFetch(this.$store.commit, 'advertisingApplySubmit', 
+        adApi.submitAdvertisingApplication(
+          this.adType, this.adLink, this.adMainText, this.adSecondaryText, this.file, this.notes))
     },
 
     processFileUploadChange (changeEvent) {
@@ -201,39 +217,6 @@ export default {
 			}
 			fileReader.readAsDataURL(this.file)
 		},
-    
-    closeResponseMessage () { this.responseMessage = '' },
-  },
-
-  computed: {
-    isCardAd () {
-      return this.adType === 'card2M' || this.adType === 'card4M'
-    },
-
-    isBannerAd () {
-      return this.adType === 'banner1M'
-    },
-
-    remainingCharsMainText () {
-      return 25 - this.adMainText.length
-    },
-
-    remainingCharsSecondaryText () {
-      return 60 - this.adSecondaryText.length
-    },
-
-    isReadyForSubmit () {
-      if (!this.adType || !this.adLink || !this.file || this.fileErrorMessage || this.isAwaitingResponse) {
-        return false
-      }
-      if (this.isCardAd) {
-        if (!this.adMainText || this.remainingCharsMainText<0 || this.remainingCharsSecondaryText<0) {
-          return false
-        }
-      }
-
-      return true
-    },
   },
 
   metaInfo () {

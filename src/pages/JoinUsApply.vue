@@ -67,7 +67,6 @@ export default {
 
   mounted () {
     miscApi.logRoute('join us apply')
-    fetchClear(this.$store.commit, 'modApplicationSubmit')
   },
 
   beforeDestroy () {

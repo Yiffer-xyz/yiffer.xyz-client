@@ -4,28 +4,23 @@ let baseUrl = config.apiBaseUrl
 
 export default {
   async submitAdvertisingApplication (adType, adLink, adMainText, adSecondaryText, file, notes) {
-    try {
-      let formData = new FormData()
-      formData.append('adType', adType)
-      formData.append('adLink', adLink)
-      formData.append('adMainText', adMainText)
-      formData.append('adSecondaryText', adSecondaryText)
-      formData.append('notes', notes)
-      formData.append('file', file)
+    let formData = new FormData()
+    formData.append('adType', adType)
+    formData.append('adLink', adLink)
+    formData.append('adMainText', adMainText)
+    formData.append('adSecondaryText', adSecondaryText)
+    formData.append('notes', notes)
+    formData.append('file', file)
 
-      await axios.post(
-        baseUrl + '/paid-images',
-        formData,
-        {
-          headers: {'Content-Type': 'multipart/form-data'},
-        }
-      )
+    let response = await axios.post(
+      baseUrl + '/paid-images',
+      formData,
+      {
+        headers: {'Content-Type': 'multipart/form-data'},
+      }
+    )
 
-      return {success: true}
-    }
-    catch (err) {
-      return {success: false, message: err.response.data}
-    }
+    return response.data
   },
 
   async updateAd ({id, price, status, activationDate, deactivationDate, adminNotes, correctionNote}) {
