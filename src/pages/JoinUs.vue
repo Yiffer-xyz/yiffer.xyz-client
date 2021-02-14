@@ -26,10 +26,7 @@
         </div>
       </div>
 
-      <p>
-      </p>
-
-      <h3>What are a mod's tasks?</h3>
+      <h3 class="mt-32">What are a mod's tasks?</h3>
       <p class="mt-0">
         In short, helping out with keeping comics up to date, adding new ones, and processing user suggestions. We have built a very well functioning admin panel which should make this as comfortable as possible, you should even be able to do the last part - processing user suggestions - on your phone comfortably. Longer and more comprehensive list of the tasks:
         <br/>
@@ -62,7 +59,7 @@
         There are some tasks that only the admin(s) of Yiffer.xyz do: Giving final approval of comics added by mods, dealing with ads, and writing "blog" posts.
       </p>
 
-      <h3 class="mt-16">How much do I have to "work"?</h3>
+      <h3 class="mt-32">How much do I have to "work"?</h3>
       <p class="mt-0">
         There is no defined lower requirement for how much a mod should contribute. In the admin panel, there is a "Mod scoreboard" that we hope might motivate people to do more, <i>but you should not feel bad for not being far up</i>. If we notice that someone is really slacking off, and see no activity for months, we will always message the person in question before taking any action. If you at any point wish to stop being a mod, please do say so instead of simply going inactive.
       </p>

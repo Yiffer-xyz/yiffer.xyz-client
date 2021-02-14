@@ -6,66 +6,58 @@
     <div class="full-width-text margin-top-12">
       <p>Thank you for taking the time to help improve our site! Enter your feedback below.</p>
 
-      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
-                        outsideStyle="margin-bottom: 1rem; margin-top: 1rem;"/>
-
-      <span v-if="!isSubmitting" class="mt-16">
-        <textarea type="text" v-model="feedbackText" style="width: 100%; white-space: pre-wrap; margin-top: 0.5rem;" rows="6"/>
-
-        <button class="y-button margin-top-8"
-                :class="{'y-button-disabled': !feedbackText}"
-                @click="submitFeedback">Submit feedback</button>
-      </span>
-
-      <Loading v-else text="Submitting feedback" class="mt-32" />
+      <Form :canSubmit="feedbackText.length > 5"
+            :header="'Submit feedback'"
+            :buttonText="'Submit feedback'"
+            :errorText="'We apologize, there was an error saving your feedback'"
+            :fetchingText="'Submitting...'"
+            :fetchState="submitFeedback"
+            :successText="'Thank you!'"
+            @submit="sendFeedback"
+      >
+        <div class="yForm2Field">
+          <textarea type="text" v-model="feedbackText" id="adLinks" rows="6"/>
+        </div>
+      </Form>
     </div>
   </div>
 </template>
 
 <script>
 import miscApi from '../api/miscApi'
+import { doFetch, fetchClear } from '../utils/statefulFetch'
+import { mapGetters } from 'vuex'
 
 import BackToIndex from '@/components/BackToIndex.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
-import Loading from '@/components/LoadingIndicator.vue'
+import Form from '../components/Form.vue'
 export default {
   name: 'feedback',
 
-  components: { BackToIndex, ResponseMessage, Loading },
+  components: { BackToIndex, Form, },
+
+  computed: {
+    ...mapGetters(['submitFeedback']),
+  },
 
   data: function () {
     return {
       feedbackText: '',
-      responseMessage: '',
-      responseMessageType: 'info',
+      hideResponseMessage: false,
       isSubmitting: false,
     }
   },
   
   async mounted () {
     miscApi.logRoute('feedback')
+    fetchClear(this.$store.commit, 'submitFeedback')
   },
 
   methods: {
-    async submitFeedback () {
+    async sendFeedback () {
       if (!this.feedbackText) { return }
 
-      this.isSubmitting = true
-      let response = await miscApi.submitFeedback(this.feedbackText)
-      this.isSubmitting = false
-
-      if (response.success) {
-        this.responseMessage = `Thank you for the feedback!`
-        this.responseMessageType = 'success'
-        this.feedbackText = ''
-      }
-      else {
-        this.responseMessage = 'We apologize, there was an error recording your feedback.'
-        this.responseMessageType = 'error'
-      }
+      doFetch(this.$store.commit, 'submitFeedback', miscApi.submitFeedback(this.feedbackText))
     },
-
-    closeResponseMessage () { this.responseMessage = '' },
   },
 
   metaInfo () {

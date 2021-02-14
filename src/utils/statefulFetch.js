@@ -16,7 +16,7 @@ export function registerFetchNames (store, ...namesWithDefaults) {
   
     store.mutations[`set_${name}_error`] =
       (state, {message, code}) => state[name] = {
-        ...thisDefaultState, fetched: true, failed: true, errorMessage: message, errorCode: code
+        ...thisDefaultState, failed: true, errorMessage: message, errorCode: code
       }
   
     store.mutations[`set_${name}_clear`] =

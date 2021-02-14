@@ -87,6 +87,8 @@ registerFetchNames(store,
   {name: 'feedback', defaultValue: []},
   {name: 'myPaidImages', defaultValue: []},
   {name: 'blogs', defaultValue: []},
+  {name: 'submitFeedback', defaultValue: {}},
+  {name: 'modApplicationSubmit', defaultValue: {}},
 )
 
 export default new Vuex.Store(store)

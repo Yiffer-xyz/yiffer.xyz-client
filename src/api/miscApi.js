@@ -45,8 +45,7 @@ export default {
     let response = await axios.post(`${baseUrl}/mod-applications`, {
       notes, competentAnswer, telegramUsername
     })
-    if (!response.data.error) { return response.data }
-    else { return {success: false, message: response.data.error} }
+    return response.data
   },
 
   async getModApplications () {
@@ -77,8 +76,7 @@ export default {
     let response = await axios.post(`${baseUrl}/feedback`, {
       feedbackText
     })
-    if (!response.data.error) { return {success: true} }
-    else { return {success: false, message: response.data.error} }
+    return response.data
   },
 
   async getFeedback () {

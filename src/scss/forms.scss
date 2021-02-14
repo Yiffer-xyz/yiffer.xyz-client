@@ -139,6 +139,7 @@
 
 .yForm2 {
   @extend .simpleShadowNoHover;
+  box-sizing: border-box;
   border-width: 3px;
   border-style: solid;
   border-width: 0;
@@ -171,6 +172,6 @@
 
 .dark {
   .yForm2 {
-    background-color: #212527;
+    background-color: $comicCardDark;
   }
 }

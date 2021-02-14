@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%;">
-    <h1>Mod application form</h1>
+    <h1>Become a mod</h1>
     <BackToIndex></BackToIndex>
 
     <div class="full-width-text">
@@ -8,62 +8,46 @@
         In order to be accepted as a mod, you must have and use a Telegram account. We use telegram for communication and announcements for mods. If you do not have an account, you will not be accepted.
       </p>
 
-      <form class="yForm2" enctype="multipart/form-data" style="max-width: 28rem; margin: 1rem auto;">
-        <h3>Mod application form</h3>
+      <Form :buttonText="'Submit application'"
+            :canSubmit="isReadyForSubmit"
+            :errorText="modApplicationSubmit.errorMessage"
+            :fetchingText="'Submitting...'"
+            :fetchState="modApplicationSubmit"
+            :header="'Mod application form'"
+            :successText="'Success! We will contact you if we decide to take you in. Thank you!'"
+            @submit="submitApplication">
+        <div class="yForm2Field">
+          <label for="adLinks">Tell us a little about why you want to be a mod, and what sources you use for finding comics (which websites):</label>
+          <textarea type="text" v-model="notes" id="adLinks" rows="4"/>
+        </div>
 
-        <BigSuccess v-show="success" text="Success! We will contact you if we decide to take you in. Thank you!" classes="mb-16"/>
+        <div class="yForm2Field">
+          <label for="competentAnswerInput">Are you competent at cropping and resizing images (in order to make thumbnails)? MS Paint does not count, as it ruins the images.</label>
+          <input type="text" v-model="competentAnswer" id="competentAnswerInput"/>
+        </div>
 
-        <span v-show="!success">
-          <div class="yForm2Field">
-            <label for="adLinks">Tell us a little about why you want to be a mod, and what sources you use for finding comics (which websites):</label>
-            <textarea type="text" v-model="notes" id="adLinks" rows="4"/>
-          </div>
-
-          <div class="yForm2Field">
-            <label for="competentAnswerInput">Are you competent at cropping and resizing images (in order to make thumbnails)? MS Paint does not count, as it ruins the images.</label>
-            <input type="text" v-model="competentAnswer" id="competentAnswerInput"/>
-          </div>
-
-          <div class="yForm2Field">
-            <label for="telegramUsernameInput">Telegram username:</label>
-            <input type="text" v-model="telegramUsername" id="telegramUsernameInput"/>
-          </div>
-
-          <Loading v-if="isAwaitingResponse" text="Submitting..." classes="mb-16"/>
-
-          <ResponseMessage :message="responseMessage" messageType="error" @closeMessage="closeResponseMessage" class="mb-16"/>
-
-          <button @click.prevent="submitApplication" 
-                  class="y-button mt-32"
-                  :class="{'y-button-disabled': !isReadyForSubmit}"
-                  style="align-self: center;"
-                  v-if="!isAwaitingResponse">
-            Submit application
-          </button>
-        </span>
-      </form>
+        <div class="yForm2Field">
+          <label for="telegramUsernameInput">Telegram username:</label>
+          <input type="text" v-model="telegramUsername" id="telegramUsernameInput"/>
+        </div>
+      </Form>
     </div>
   </div>
 </template>
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import Loading from '@/components/LoadingIndicator.vue'
-import BigSuccess from '@/components/BigSuccessMessage.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
+import Form from '../components/Form.vue'
+import { doFetch, fetchClear } from '../utils/statefulFetch'
 
 import miscApi from '../api/miscApi'
-
-import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
-import LoginIcon from 'vue-material-design-icons/Login.vue'
-import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'joinUsApply',
   
   components: {
-    BackToIndex, Loading, BigSuccess, ResponseMessage,
-    RightArrow, LoginIcon, CheckIcon,
+    BackToIndex, Form,
   },
 
   data () {
@@ -71,9 +55,6 @@ export default {
       notes: '',
       competentAnswer: '',
       telegramUsername: '',
-      isAwaitingResponse: false,
-      success: false,
-      responseMessage: '',
     }
   },
 
@@ -81,30 +62,21 @@ export default {
     isReadyForSubmit () {
       return this.notes.length > 0 && this.competentAnswer.length > 0 && this.telegramUsername.length > 0
     },
+    ...mapGetters(['modApplicationSubmit']),
   },
 
   mounted () {
     miscApi.logRoute('join us apply')
+    fetchClear(this.$store.commit, 'modApplicationSubmit')
   },
 
   methods: {
     async submitApplication () {
       if (!this.isReadyForSubmit) { return }
 
-      this.responseMessage = ''
-      this.isAwaitingResponse = true
-      let result = await miscApi.submitModApplication(this.notes, this.competentAnswer, this.telegramUsername)
-      this.isAwaitingResponse = false
-
-      if (result.success) {
-        this.success = true
-      }
-      else {
-        this.responseMessage = result.message
-      }
+      doFetch(this.$store.commit, 'modApplicationSubmit', 
+        miscApi.submitModApplication(this.notes, this.competentAnswer, this.telegramUsername))
     },
-
-    closeResponseMessage () { this.responseMessage = '' },
   },
 
   metaInfo () {
