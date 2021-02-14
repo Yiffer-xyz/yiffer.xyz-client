@@ -52,6 +52,10 @@ export default {
     fetchClear(this.$store.commit, 'submitFeedback')
   },
 
+  beforeDestroy () {
+    fetchClear(this.$store.commit, 'submitFeedback')
+  },
+
   methods: {
     async sendFeedback () {
       if (!this.feedbackText) { return }

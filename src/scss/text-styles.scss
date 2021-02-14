@@ -46,9 +46,9 @@ ul {
   list-style-type: none;
   li {
     text-indent: -5px;
-    margin-top: 6px;
+    margin-top: 0.75rem;
     &:before {
-      content: "-";
+      content: "- ";
       text-indent: -5px;
     }
   }

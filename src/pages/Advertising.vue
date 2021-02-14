@@ -22,17 +22,17 @@
 
       <h3 class="mt-16">How it works</h3>
       <p class="no-margin-top">
-        If you are a creator of arts or crafts (digital art, traditional art, fursuits, plushies, writing, photography, etc.), and your content is furry or at least somewhat related, you may apply using the form below! You will submit images or gifs detailed below, which will show up, either in the index page of Yiffer.xyz or in the page for all comics (for instance <router-link :to="'/Masodonia'">yiffer.xyz/Masodonia</router-link>), depending on ad type. Naturally, when a user clicks your ad, they will be directed to a website of your choosing, for instance your FA page, Twitter, etc.
+        If you are a creator of arts or crafts (digital art, traditional art, fursuits, plushies, writing, photography, etc.), and your content is furry or at least somewhat related, you may apply using the form below! You will submit images or gifs detailed below, which will show up, either in the index page of Yiffer.xyz or in the page for all comics (for instance <router-link :to="'/Masodonia'" class="underline-link">yiffer.xyz/Masodonia</router-link>), depending on ad type. Naturally, when a user clicks your ad, they will be directed to a website of your choosing, for instance your FA page, Twitter, etc.
       </p>
 
-      <h3 class="mt-16">Is it worth it?</h3>
+      <h3 class="mt-32">Is it worth it?</h3>
       <p class="no-margin-top">
         Probably! As of the summer of 2020, Yiffer.xyz has about 20,000 unique visitors per day, constantly growing. We record how many clicks your ads get and visualize this on your account page, so after you have been accepted as an advertiser, you can get a better idea of whether or not to keep going. Keep in mind that compared to other sites, Yiffer.xyz will probably - at least in the beginning - have much fewer advertisers, so <u>your own ads will appear more often</u> than they would on other sites. Additionally, these ads <u>cannot be blocked by adblockers</u>.
       </p>
 
       <p><span class="bold">*For the earliest advertisers, we are cutting the cost in half during the first few months!</span> So be sure to apply as soon as you're certain, or tell your creative friends!</p>
 
-      <h3 v-if="$breakpoint.lgAndUp" class="mt-16">Pricing</h3>
+      <h3 v-if="$breakpoint.lgAndUp" class="mt-32">Pricing</h3>
       <table v-if="$breakpoint.lgAndUp" class="y-table no-table-hover">
         <thead>
           <tr>
@@ -159,7 +159,7 @@
         As we don't have any experience with advertisers yet, these prices may change in the future. If you have paid for an X-month commitment, you will not be affected by these changes for the duration of your commitment. Remember the 50% discount as long as it is stated here!
       </p>
 
-      <h3 class="mt-16">Additional information</h3>
+      <h3 class="mt-32">Additional information</h3>
       <ul>
         <li>The frequency of your ads showing up entirely depends on how many advertisers there are in total. If there are ten advertisers, every tenth ad (give or take) will be your own. This goes for all types of ads.</li>
 
@@ -172,7 +172,7 @@
         <li>Gifs must not have rapidly flashing lights or colors.</li>
       </ul>
 
-      <div class="mt-16">
+      <div class="mt-32">
         <router-link :to="{name: 'apply-advertising'}" v-if="$store.getters.isAuthenticated" class="underline-link">
           Apply as an advertiser here <RightArrow/>
         </router-link>

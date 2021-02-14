@@ -70,6 +70,10 @@ export default {
     fetchClear(this.$store.commit, 'modApplicationSubmit')
   },
 
+  beforeDestroy () {
+    fetchClear(this.$store.commit, 'modApplicationSubmit')
+  },
+
   methods: {
     async submitApplication () {
       if (!this.isReadyForSubmit) { return }

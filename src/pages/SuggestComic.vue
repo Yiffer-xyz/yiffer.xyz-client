@@ -24,27 +24,33 @@
         </li>
       </ul>
 
-      <div class="verticalFlex margin-top-32">
-        <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
-                         class="margin-bottom-10"/>
-
-        <label>Comic name</label>
-        <input type="text" v-model="comicName" style="width: 200px;"/>
-
-        <label class="margin-top-16">Artist (if known)</label>
-        <input type="text" v-model="artist" style="width: 200px;"/>
-
-        <div class="margin-top-16">
-          <label>Links, comments</label>
-          <textarea type="text" v-model="linksComments" style="width: 100%; white-space: pre-wrap;" rows="4"/>
-
-          <p class="no-margin-top">
-            Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
-          </p>
+      <Form :buttonText="'Submit suggestion'"
+            :canSubmit="canSubmit"
+            :errorText="comicSuggestionSubmit.errorMessage"
+            :fetchingText="'Submitting...'"
+            :fetchState="comicSuggestionSubmit"
+            :header="'Comic suggestion form'"
+            :successText="`Thank you for your suggestion of ${comicName+''}!`"
+            @submit="submitSuggestion">
+        <div class="yForm2Field">
+          <label for="comicNameInput">Comic name:</label>
+          <input type="text" v-model="comicName" id="comicNameInput"/>
         </div>
-      </div>
 
-      <button class="y-button margin-top-8" @click="submitButtonClicked()">Submit</button>
+        <div class="yForm2Field">
+          <label for="artistInput">Artist (if known):</label>
+          <input type="text" v-model="artist" id="artistInput"/>
+        </div>
+
+        <div class="yForm2Field">
+          <label for="linksCommentsInput">Links, comments:</label>
+          <textarea type="text" v-model="linksComments" id="linksCommentsInput" rows="4"/>
+        </div>
+
+        <p class="no-margin-top">
+          Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
+        </p>
+      </Form>
 
       <div id="rejectedComics" class="margin-top-32 scrolling-table-container">
         <h2>Previously rejected comics</h2>
@@ -75,11 +81,13 @@ import comicApi from '../api/comicApi'
 import miscApi from '../api/miscApi'
 
 import BackToIndex from '@/components/BackToIndex.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
+import Form from '../components/Form.vue'
+import { mapGetters } from 'vuex'
+import { fetchClear, doFetch } from '../utils/statefulFetch'
 export default {
   name: 'suggestComic',
 
-  components: { BackToIndex, ResponseMessage },
+  components: { BackToIndex, Form },
 
   data: function () {
     return {
@@ -87,40 +95,34 @@ export default {
       artist: '',
       linksComments: '',
       rejectedComics: [],
-      responseMessage: '',
-      responseMessageType: 'info',
     }
   },
   
   async mounted () {
     this.rejectedComics = await comicApi.getRejectedComics()
     miscApi.logRoute('suggestcomic')
+    fetchClear(this.$store.commit, 'comicSuggestionSubmit')
+  },
+
+  computed: {
+    ...mapGetters(['comicSuggestionSubmit']),
+
+    canSubmit () {
+      return this.comicName.length > 0 && this.linksComments.length > 0
+    }
   },
 
   methods: {
-    async submitButtonClicked () {
-      let response
-      if (!this.comicName || !this.linksComments) {
-        this.responseMessage = 'Please provide a comic name and some link to some page or an album somehwere'
-        this.responseMessageType = 'error'
-      }
-      else {
-        response = await comicApi.addComicSuggestion(this.comicName, this.artist, this.linksComments)
-      }
-      if (response.success) {
-        this.responseMessage = `Thank you for your suggestion of ${this.comicName+''}!`
-        this.responseMessageType = 'success'
-        this.comicName = ''
-        this.artist = ''
-        this.linksComments = ''
-      }
-      else {
-        this.responseMessage = response.message
-        this.responseMessageType = 'error'
-      }
-    },
+    async submitSuggestion () {
+      if (!this.comicName || !this.linksComments) { return }
 
-    closeResponseMessage () { this.responseMessage = '' },
+      doFetch(this.$store.commit, 'comicSuggestionSubmit', 
+        comicApi.addComicSuggestion(this.comicName, this.artist, this.linksComments))
+    },
+  },
+
+  beforeDestroy () {
+    fetchClear(this.$store.commit, 'comicSuggestionSubmit')
   },
 
   metaInfo () {

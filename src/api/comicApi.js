@@ -148,8 +148,7 @@ export default {
   async addComicSuggestion (comicName, artist, linksComments) {
     let response = await axios.post(baseUrl + '/comicsuggestions', 
       {comicName: comicName, artist: artist, comment: linksComments})
-    if (response.data.error) { return {success: false, message: response.data.error} }
-    if (!response.data.error) { return {success: true} }
+    return response.data
   },
 
   async swapComicPages (comicName, comicId, pageNumber1, pageNumber2) {

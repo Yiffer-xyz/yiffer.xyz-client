@@ -2,25 +2,27 @@
   <form class="yForm2" enctype="multipart/form-data" style="width: min(600px, 95%); margin: 1rem auto;">
     <h3>{{header}}</h3>
 
-    <span v-show="!fetchState.fetched && !fetchState.fetching">
+    <span v-show="!fetchState.fetched">
       <slot></slot>
     </span>
 
     <BigSuccess v-show="fetchState.fetched" :text="successText" classes="mb-16"/>
 
-    <Loading v-if="fetchState.fetching" :text="fetchingText" classes="mb-16"/>
-
     <ErrorMessage v-if="fetchState.failed"
                   :message="errorText"
                   class="mb-16"/>
 
-    <button @click.prevent="submit" 
-            class="y-button mt-32"
-            :class="{'y-button-disabled': !canSubmit || fetchState.fetching}"
-            style="align-self: center;"
-            v-if="!fetchState.fetching && !fetchState.fetched">
-      {{buttonText}}
-    </button>
+    <div style="height: 3.65rem" class="mt-32" v-if="!fetchState.fetched">
+      <Loading v-if="fetchState.fetching" :text="fetchingText" classes="mb-8"/>
+
+      <button @click.prevent="submit"
+              class="y-button"
+              :class="{'y-button-disabled': !canSubmit || fetchState.fetching}"
+              style="align-self: center;"
+              v-if="!fetchState.fetching && !fetchState.fetching && !fetchState.fetched">
+        {{buttonText}}
+      </button>
+    </div>
   </form>
 </template>
 
