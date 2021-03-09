@@ -9,10 +9,10 @@
           <div class="buttonsRow catButtonsRow">
             <div v-for="(category, index) in ['All', 'Furry', 'MLP', 'Pokemon', 'Other']"
                 :key="category"
-                :class="{'buttonSelected': $store.getters.categoryFilter.indexOf(category) >= 0}"
+                :class="{'buttonSelected': categoryFilter.indexOf(category) >= 0}"
                 :style="{
                   'border-color': categoryHighlightColors[index],
-                  'background-color': $store.getters.categoryFilter.indexOf(category) >= 0 ? categoryHighlightColors[index] : 'transparent',
+                  'background-color': categoryFilter.indexOf(category) >= 0 ? categoryHighlightColors[index] : 'transparent',
                 }"
                 class="searchFilterButton"
                 @click="$emit('categoryFilter', category)">
@@ -24,18 +24,37 @@
             <div v-for="(tag, index) in ['All', 'M', 'F', 'MF', 'MM', 'FF', 'MF+', 'I']"
                 :key="tag"
                 :class="{
-                  'buttonSelected': $store.getters.tagFilter.indexOf(tag) >= 0,
+                  'buttonSelected': tagFilter.indexOf(tag) >= 0,
                   'extraBtnMargins': ['MM','MF+'].indexOf(tag) >= 0,
                 }"
                 :style="{
                   'border-color': tagHighlightColors[index],
-                  'background-color': $store.getters.tagFilter.indexOf(tag) >= 0 ? tagHighlightColors[index] : 'transparent',
+                  'background-color': tagFilter.indexOf(tag) >= 0 ? tagHighlightColors[index] : 'transparent',
                 }"
                 class="searchFilterButton"
                 @click="$emit('tagFilter', tag)">
               {{tag}}
             </div>
           </div>
+
+          <div class="selectsGrid">
+            <Select :options="[
+                      {value: 'updated', text: 'Recently updated'},
+                      {value: 'userRating', text: 'User rating'},
+                    ]"
+                    title="Ordering"
+                    :borderTheme1="true"
+                    @change="onSortingChange"/>
+
+            <Select :options="[
+                      {value: 'low', text: 'Simple'},
+                      {value: 'high', text: 'Detailed'},
+                    ]"
+                    title="Detail level"
+                    :borderTheme2="true"
+                    @change="onDetailLevelChange"/>
+          </div>
+
 
           <div class="buttonsRow searchButtonsRow">
             <div class="positionRelative">
@@ -99,58 +118,6 @@
             </p>
           </div>
 
-          <div :class="isAuthenticated ? 'threeBtnRow' : 'twoBtnRow'" class="buttonsRow">
-            <div :class="{'buttonSelected': $store.getters.sorting === 'updated'}"
-                :style="{
-                  'border-color': sortHighlightColors.updated,
-                  'background-color': $store.getters.sorting === 'updated' ? sortHighlightColors.updated : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('setSort', 'updated')">
-              Recently updated
-            </div>
-            <div :class="{'buttonSelected': $store.getters.sorting === 'userRating'}"
-                :style="{
-                  'border-color': sortHighlightColors.userRating,
-                  'background-color': $store.getters.sorting === 'userRating' ? sortHighlightColors.userRating : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('setSort', 'userRating')">
-              User rating
-            </div>
-            <div v-if="isAuthenticated"
-                :class="{'buttonSelected': $store.getters.sorting === 'yourRating'}"
-                :style="{
-                  'border-color': sortHighlightColors.yourRating,
-                  'background-color': $store.getters.sorting === 'yourRating' ? sortHighlightColors.yourRating : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('setSort', 'yourRating')">
-              Your rating
-            </div>
-          </div>
-
-          <div class="buttonsRow detailLevelButtonsRow">
-            <div :class="{'buttonSelected': detailLevel === 'low'}"
-                :style="{
-                  'border-color': detailHighlighColors[0],
-                  'background-color': detailLevel === 'low' ? detailHighlighColors[0] : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('setDetailLevel', 'low')">
-              Simple
-            </div>
-            <div :class="{'buttonSelected': detailLevel === 'high'}"
-                :style="{
-                  'border-color': detailHighlighColors[0],
-                  'background-color': detailLevel === 'high' ? detailHighlighColors[0] : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('setDetailLevel', 'high')">
-              Detailed
-            </div>
-          </div>
-
           <div class="filterSectionExpander filterSectionDeExpander"
                 @click="() => {$emit(isSearchFilteringActive ? 'resetAllFilters' : 'toggleShowSearchFiltering', false)}">
             <menu-up-icon class="mdi-arrow" title=""/>
@@ -179,9 +146,10 @@
 import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
-import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue'
+
+import Select from '../../components/Select.vue'
 
 import { mapGetters } from 'vuex'
 
@@ -189,6 +157,7 @@ export default {
   name: 'searchFiltering',
 
   components: {
+    Select,
     SearchIcon, CrossIcon, TagsIcon, ChevronRightIcon, ChevronLeftIcon,
   },
 
@@ -204,6 +173,9 @@ export default {
       'allKeywords',
       'isAuthenticated',
       'detailLevel',
+      'sorting',
+      'tagFilter',
+      'categoryFilter',
     ]),
 
     keywordsMatchingSearch () {
@@ -233,8 +205,19 @@ export default {
     },
   },
 
+  watch: {
+    sorting (newSorting) {
+      this.sortingValue = newSorting
+    },
+    detailLevel (newDetailLevel) {
+      this.detailValue = newDetailLevel
+    },
+  },
+
   data: function () {
     return {
+      sortingValue: this.sorting || 'updated',
+      detailValue: this.detailLevel || 'low',
       searchValue: '',
       keywordSearchValue: '',
       keywordResultHovered: undefined,
@@ -247,6 +230,14 @@ export default {
   },
 
   methods: {
+    onSortingChange (newSort) {
+      this.$emit('setSort', newSort)
+    },
+
+    onDetailLevelChange (newDetail) {
+      this.$emit('setDetailLevel', newDetail)
+    },
+
     clearSearchField () {
       this.searchValue = ''
       this.$emit('searchChanged', '')
@@ -296,7 +287,6 @@ export default {
 
 .buttonsContainer {
   width: 100%;
-  overflow: hidden;
   padding: 0.5rem 0;
   margin: 1rem auto;
   max-height: 22rem;
@@ -478,7 +468,7 @@ $nonHighlightHeight: 2px;
 }
 
 .filterSectionDeExpander {
-  margin: 1rem auto -0.25rem auto;
+  margin: 2rem auto -0.25rem auto;
   padding: 0 1rem;
   width: fit-content;
 }
@@ -514,4 +504,21 @@ $nonHighlightHeight: 2px;
     left: 6px;
   }
 }
+
+.selectsGrid {
+  margin-bottom: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  @media screen and (max-width: 360px) {
+    grid-template-columns: 1fr;
+  }
+  gap: 1rem;
+}
+
+.dark {
+  .buttonSelected {
+    color: #333;
+  }
+}
+
 </style>
