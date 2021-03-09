@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Add pages to comic</h2>
+    <h2 @click="closeComponent" class="cursorPointer">Add pages to comic</h2>
     <span class="admin-content-box-inner description-text" v-if="isOpen">
       <p>
         - Files must be either .jpg or .png. File name does not matter, except for ordering.<br/>
@@ -76,12 +76,12 @@
               <td>{{comic.numberOfPages}}</td>
               <td>{{comic.daysSinceUpdate}}</td>
               <td>
-                <span v-if="!comic.lastPageUrl" class="link-color cursor-pointer" @click="showLastPage(comic)">Load image</span>
+                <span v-if="!comic.lastPageUrl" class="link-color cursorPointer" @click="showLastPage(comic)">Load image</span>
                 <a v-if="comic.lastPageUrl" :href="comic.lastPageUrl" target="_blank">
                   <img :src="comic.lastPageUrl" style="max-width: 250px;"/>
                 </a>
                 <br>
-                <span v-if="comic.lastPageUrl" class="link-color cursor-pointer" @click="unshowLastPage(comic)">Hide image</span>
+                <span v-if="comic.lastPageUrl" class="link-color cursorPointer" @click="unshowLastPage(comic)">Hide image</span>
               </td>
             </tr>
           </tbody>

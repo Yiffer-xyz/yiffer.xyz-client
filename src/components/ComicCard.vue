@@ -22,11 +22,13 @@
 
 
       <!-- PIC -->
-      <picture @click="storeClickedComicData()">
-        <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
-        <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
-        <img :src="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
-      </picture>
+      <div class="imgContainer">
+        <picture @click="storeClickedComicData()" style="overflow: hidden;">
+          <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
+          <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
+          <img :src="`${config.comicDirectory}/s${comicNameUrlParsed}/thumbnail.jpg`" class="comicCardImg" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
+        </picture>
+      </div>
     </router-link>
 
     <!-- AD -->
@@ -36,7 +38,9 @@
           <label class="triangle-label">AD</label>
         </div>
       </div>
-      <img :src="`${config.paidImagesDirectory}/${comic.id}.${comic.filetype}`">
+      <div class="imgContainer">
+        <img :src="`${config.paidImagesDirectory}/${comic.id}.${comic.filetype}`">
+      </div>
     </a>
 
     <div v-if="!comic.isPaidImage" class="comic-card-inner-container">
@@ -120,7 +124,6 @@
 
 <script>
 import paidImageApi from '../api/advertisingApi'
-import keywordApi from '../api/keywordApi'
 
 import VotingButton from '@/components/VotingButton.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
@@ -229,6 +232,7 @@ export default {
 @import "../scss/colors.scss";
 .triangle-wrapper {
   position: absolute; top: 0;
+  z-index: 2;
 }
 .triangle-wrapper-left {
   left: 0;
@@ -365,7 +369,7 @@ export default {
   border-radius: 2px;
   margin: 10px;
   padding-bottom: 8px;
-  background-color: $themeGray0;
+  // background-color: $themeGray0;
   border-radius: 4px;
   box-shadow: 0 0px 10px rgba(0,0,0,0.15);
   &:after {
@@ -383,9 +387,16 @@ export default {
   &:hover::after {
     opacity: 1;
   }
-  img {
+  .imgContainer {
     width: 100%;
-    height: 283px;
+    // height: 283px;
+    overflow: hidden;
+    img {
+      transition: transform .25s ease;
+    }
+  }
+  &:hover img{
+    transform: scale(1.08);
   }
   a {
     text-decoration: none;

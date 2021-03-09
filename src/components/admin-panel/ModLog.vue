@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Mod log</h2>
+    <h2 @click="closeComponent" class="cursorPointer">Mod log</h2>
     <span class="admin-content-box-inner" v-if="isOpen">
 
 			<button class="y-button y-button-neutral" @click="getModLogData()">
@@ -48,8 +48,8 @@
 							<td>{{row.actionType}}</td>
 							<td>{{row.action}}</td>
 							<td style="white-space: pre-wrap;">
-								<p v-if="row.detailsExpanded" @click="row.detailsExpanded=false" class="cursor-pointer">{{row.actionDetails}}</p>
-								<p v-else-if="row.actionDetails" @click="row.detailsExpanded=true" class="link-color cursor-pointer">Show</p>
+								<p v-if="row.detailsExpanded" @click="row.detailsExpanded=false" class="cursorPointer">{{row.actionDetails}}</p>
+								<p v-else-if="row.actionDetails" @click="row.detailsExpanded=true" class="link-color cursorPointer">Show</p>
 							</td>
 							<td>{{prettyDate(row.date)}}</td>
 						</tr>

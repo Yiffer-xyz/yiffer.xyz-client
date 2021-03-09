@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Tag suggestions
+    <h2 @click="closeComponent" class="cursorPointer">Tag suggestions
       <span v-if="keywordSuggestionList.length>0" class="red-color"> ({{keywordSuggestionList.length}})</span>
       <span v-else style="color: #999;">(0)</span>
     </h2>

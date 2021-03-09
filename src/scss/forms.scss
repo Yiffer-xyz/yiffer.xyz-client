@@ -1,77 +1,5 @@
 @import "shadows.scss";
 
-.y-form {
-  @extend .simpleShadowNoHover;
-
-  padding: 2rem;
-  border-width: 3px;
-  border-style: solid;
-  border-width: 0;
-  border-top-width: 10px;
-  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
-
-  h3 {
-    margin-bottom: 1rem;
-  }
-
-  label {
-    font-weight: 400;
-    max-width: 24rem;
-  }
-
-  select {
-    border: 0.5px solid transparent;
-    border-bottom-color: #555;
-    background: transparent;
-    padding: 6px 0;
-  }
-
-  >span {
-    display: flex;
-    flex-direction: column;
-  }
-
-  textarea {
-    width: 100%;
-    background: transparent;
-    border: 0.5px solid #555;
-    border-color: transparent transparent #555 transparent;
-  }
-
-  .field:not(:first-of-type) {
-    margin: 1.5rem 0;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    &>* {
-      width: fit-content;
-    }
-
-    input[type=text] {
-      width: 24rem;
-      @media (max-width: 900px) {
-        width: 16rem;
-      }
-      outline: none;
-      border: 0.5px solid #555;
-      border-color: transparent transparent #555 transparent;
-      background: transparent;
-      padding: 6px 4px;
-    }
-
-    .errorInput {
-      border: 2px solid #ec2f4b !important; //todo
-      padding: 2px 0px;
-    }
-
-    select {
-      border-radius: 3px;
-    }
-  }
-}
-
 .yForm2Input {
   outline: none;
   border: 0.5px solid #555;
@@ -80,7 +8,7 @@
   background: transparent;
   padding: 8px 4px;
   &:focus {
-    border-bottom-color: $theme5;
+    border-bottom-color: $themeBlueDark;
   }
 }
 
@@ -111,7 +39,7 @@
     border: 0.5px solid #555;
     padding: 6px;
     &:focus {
-      border-color: $theme5;
+      border-color: $themeBlueDark;
       outline: none;
     }
   }
@@ -144,7 +72,7 @@
   border-style: solid;
   border-width: 0;
   border-top-width: 10px;
-  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
+  border-image: linear-gradient(left, $themeGreen1, $themeGreen2) 1;
   padding: 2rem 2rem 1rem 2rem;
   background-color: white;
   width: fit-content;

@@ -24,7 +24,7 @@ textarea {
 }
 
 body {
-  background-color: $themeGray0p5;
+  background-color: #fafafa;
 }
 
 .dark {
@@ -84,10 +84,14 @@ select {
   width: 100%;
 }
 
-.cursor-pointer {
+.cursorPointer {
   &:hover {
     cursor: pointer;
   }
+}
+
+.positionRelative {
+  position: relative;
 }
 
 .scrolling-table-container {
@@ -276,6 +280,9 @@ select {
 }
 .mr-8 {
   margin-right: 0.5rem;
+}
+.mr-12 {
+  margin-right: 0.75rem;
 }
 .mr-16 {
   margin-right: 16px;

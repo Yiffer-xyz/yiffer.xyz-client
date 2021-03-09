@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/'" class="underline-link backToIndex" :class="classes">
-    <home-icon/> back to index
+    <home-icon/> to front page
   </router-link>
 </template>
 

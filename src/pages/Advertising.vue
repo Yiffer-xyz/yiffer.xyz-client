@@ -114,10 +114,10 @@
           <div class="ad-pics-container-mobile">
             <img src="/assets/example-1.png" :style="{'max-height': ad1Expanded ? '330px' : '120px'}" class="ad-pic"/>
             <img src="/assets/example-1-mobile.png" :style="{'max-height': ad1Expanded ? '330px' : '120px'}" class="ad-pic"/>
-            <p v-show="!ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = true" style="margin-top: 0;">
+            <p v-show="!ad1Expanded" class="link-color cursorPointer" @click="ad1Expanded = true" style="margin-top: 0;">
               Bigger pictures
             </p>
-            <p v-show="ad1Expanded" class="link-color cursor-pointer" @click="ad1Expanded = false" style="margin-top: 0;">
+            <p v-show="ad1Expanded" class="link-color cursorPointer" @click="ad1Expanded = false" style="margin-top: 0;">
               Smaller pictures
             </p>
           </div>

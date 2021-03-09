@@ -32,11 +32,6 @@ h1 {
   @media (max-width: 900px) {
     padding-top: 2rem;
     font-size: 2rem;
-    &.yifferTitle {
-      font-size: 42px;
-      padding-top: 2.25rem;
-      padding-bottom: 0.5rem;
-    }
   }
 }
 
@@ -124,12 +119,63 @@ ul {
   }
 }
 
-.yifferTitle {
+.shrikhand {
+  font-family: 'Shrikhand', cursive;
+  font-weight: 400 !important;
+}
+
+.yifferTitleContainer {
   font-size: 70px;
   font-family: 'Shrikhand', cursive;
   margin-bottom: -10px;
   margin-top: 0;
-  padding-top: 1.5rem;
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(94.75deg, rgb(5, 157, 255) 0%, rgb(101, 73, 213) 43.66%, rgb(227, 63, 161) 64.23%, rgb(246, 79, 86) 80.09%, rgb(251, 83, 67) 83.76%, rgb(253, 123, 66) 100%);
+}
+.yifferTitle {
+  font-size: 4.25rem;
+  font-family: 'Shrikhand', cursive;
+  margin-bottom: -10px;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+  color: $themeText !important;
+  // background-image: -webkit-gradient(
+  //   linear, left top, right top, 
+  //   color-stop(0.2, $themeGreen1Dark),
+  //   color-stop(0.8, $themeGreen2Dark)
+  // );
+  // color: transparent;
+  // background-clip: text;
+  @media screen and (max-width: 900px) {
+    font-size: 3rem;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 2.5rem;
+  }
+}
+.coloredYifferTitle {
+  font-size: 4.25rem;
+  font-family: 'Shrikhand', cursive;
+  margin-bottom: -10px;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+  background-image: -webkit-gradient(
+    linear, left top, right top, 
+    color-stop(0.2, $themeGreen1Dark),
+    color-stop(0.8, $themeGreen2Dark)
+  );
+  color: transparent;
+  background-clip: text;
+  @media screen and (max-width: 900px) {
+    font-size: 3rem;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 2.5rem;
+  }
 }
 
 h2 {
@@ -137,8 +183,15 @@ h2 {
   font-size: 30px;
 }
 
+// h1 {
+//   font-size: 72px;
+//   background: -webkit-linear-gradient(left, $themeGreen1, $themeGreen2);
+//   -webkit-background-clip: text;
+//   -webkit-text-fill-color: transparent;
+// }
+
 a {
-  color: $theme5;
+  color: $themeBlueDark;
   width: fit-content;
 }
 
@@ -167,11 +220,11 @@ label {
 }
 
 .link-color {
-  color: $theme5 !important;
+  color: $themeBlueDark !important;
 }
 
 .link-color-light {
-  color: $theme6 !important;
+  color: $themeBlueDark !important;
 }
 
 .red-color {
@@ -256,9 +309,9 @@ label {
 }
 
 .dark {
-  .link-color, a, .theme-button, .navigation-button {
-    color: $theme5 !important;
-  }
+  // .link-color, a, .theme-button, .navigation-button {
+  //   color: $theme5 !important;
+  // }
   .mono {
     color: black;
   }

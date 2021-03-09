@@ -22,7 +22,7 @@ Vue.use(breakpoint, {
   xs: 500,
   sm: 900,
   md: 1200,
-  lg: 1500,
+  lg: 1920,
   xl: 1920,
 })
 

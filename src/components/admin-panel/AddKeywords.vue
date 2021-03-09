@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">Tag manager</h2>
+    <h2 @click="closeComponent" class="cursorPointer">Tag manager</h2>
     <span class="admin-content-box-inner paddedAdminBox" v-if="isOpen">
 
       <p class="textLeft">Select a comic. Then, if you you click on the tag list below, you can navigate quickly to tags by typing, and press enter to add them. You <i>do</i> have to wait about a second between adding tags this way though.</p>

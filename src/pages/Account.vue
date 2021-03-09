@@ -18,14 +18,14 @@
 
         <button v-if="!$store.getters.userData.email && !isChangingPassword && !isChangingEmail"
                 @click="isChangingEmail=true"
-                class="y-button y-button-neutral mt-16"
+                class="y-button y-button mt-16"
                 style="width: fit-content;">
           Add email address
         </button>
         
         <button v-if="!isChangingPassword && !isChangingEmail"
                 @click="isChangingPassword=true"
-                class="y-button y-button-neutral mt-16"
+                class="y-button y-button mt-16"
                 style="width: fit-content;">
           Change password
         </button>
@@ -115,9 +115,9 @@
 
       <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isChangingEmail"
                    :to="{name: 'adsDashboard'}"
-                   style="color: white !important;"
                    class="adDashboardButton simpleShadow">
         Go to advertising dashboard
+        <RightArrow/>
       </router-link>
     </div>
   </div>
@@ -306,14 +306,14 @@ export default {
 
 .adDashboardButton {
   width: 100%;
-  color: white;
+  color: $themeDark1;
   border: none;
   outline: none;
   height: 3rem;
   font-size: 1rem;
   margin-top: 1.5rem;
   padding: 0 1rem;
-  background: linear-gradient(to right, $theme4, $theme5, $theme6);
+  background: linear-gradient(to right, $themeGreen1, $themeGreen2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -321,6 +321,11 @@ export default {
   
   &:hover {
     cursor: pointer;
+  }
+
+  span {
+    margin-bottom: 2px;
+    margin-left: 0.25rem;
   }
 }
 </style>

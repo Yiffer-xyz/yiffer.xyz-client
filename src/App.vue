@@ -1,48 +1,83 @@
 <template>
   <div id="app">
-    <div class="theme-button-container">
-      <span
-        class="navigation-button underline-link" 
-        @click="setTheme('light')" 
-      >Light</span>
+    <nav>
+      <div class="navInner">
+        <div class="navLeft">
+          <router-link 
+            :to="{ name: 'comicList' }"
+            v-if="$breakpoint.xs"
+            class="navlink">
+            <HomeIcon/>
+          </router-link>
+          <router-link 
+            :to="{ name: 'comicList' }"
+            v-else
+            style="font-size: 1.25rem"
+            class="navlink shrikhand">
+            Yiffer.xyz
+          </router-link>
 
-      <span
-        class="navigation-button underline-link" 
-        @click="setTheme('dark')"  
-      >Dark</span>
-    </div>
+          <router-link 
+            v-if="$store.getters.isAuthenticated"
+            class="navlink"
+            :to="{ name: 'account' }">
+            Account
+          </router-link>
 
-    <div class="theme-button-container theme-button-container-left">
-      <router-link 
-        :to="{ name: 'comicList' }"
-        class="navigation-button underline-link"
-        style="margin-left: 2px;">Home</router-link>
+          <router-link 
+            v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
+            class="navlink"
+            :to="{ name: 'admin' }">
+            Admin
+          </router-link>
 
-      <router-link 
-        v-if="$store.getters.isAuthenticated"
-        :to="{ name: 'account' }"
-        class="navigation-button underline-link">Account</router-link>
+          <span
+            v-show="!$store.getters.isAuthenticated" 
+            class="navlink"
+            @click="showLoginModal()">
+            Log in
+          </span>
 
-      <router-link 
-        v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
-        :to="{ name: 'admin' }"
-        class="navigation-button underline-link">Admin</router-link>
+          <span
+            v-show="!$store.getters.isAuthenticated" 
+            class="navlink"
+            @click="showSignupModal()">
+            Sign up
+          </span>
 
-      <span
-        v-show="!$store.getters.isAuthenticated" 
-        class="navigation-button underline-link" 
-        @click="showLoginModal()">Log in</span>
+          <span 
+            v-show="$store.getters.isAuthenticated" 
+            class="navlink"
+            @click="logout()">
+            Log out
+          </span>
+        </div>
 
-      <span
-        v-show="!$store.getters.isAuthenticated" 
-        class="navigation-button underline-link" 
-        @click="showSignupModal()">Sign up</span>
+        <div class="navRight">
+          <span @click="setTheme('light')"
+                v-if="$breakpoint.xs"
+                class="navlink">
+            <LightIcon/>
+          </span>
+          <span @click="setTheme('light')"
+                v-else
+                class="navlink">
+            Light
+          </span>
 
-      <span 
-        v-show="$store.getters.isAuthenticated" 
-        class="navigation-button underline-link" 
-        @click="logout()">Log out</span>
-    </div>
+          <span @click="setTheme('dark')"
+                v-if="$breakpoint.xs"
+                class="navlink">
+            <DarkIcon/>
+          </span>
+          <span @click="setTheme('dark')"
+                v-else
+                class="navlink">
+            Dark
+          </span>
+        </div>
+      </div>
+    </nav>
 
     <login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
     <voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
@@ -62,9 +97,16 @@
       <router-view/>
     </main>
 
-    <footer class="footer">
-      <p><router-link to="/about">Contact/about</router-link></p>
-      <p>Made by <a href="https://twitter.com/Malann_kitty" target="_blank"><TwitterIcon/>Malann</a></p>
+    <footer class="footer" style="display: flex;"> 
+      <p>
+        <router-link to="/about" class="underline-link">Contact/about</router-link>
+      </p>
+      <p style="display: flex;">
+        Made by
+        <a href="https://twitter.com/Malann_kitty" target="_blank" class="underline-link ml-4">
+          <TwitterIcon/>Malann
+        </a>
+      </p>
     </footer>
   </div>
 </template>
@@ -73,6 +115,9 @@
 import LoginModal from '@/components/LoginModal.vue'
 import VotingModal from '@/components/VotingModal.vue'
 import TwitterIcon from 'vue-material-design-icons/Twitter.vue'
+import DarkIcon from 'vue-material-design-icons/LightbulbOutline.vue'
+import LightIcon from 'vue-material-design-icons/Lightbulb.vue'
+import HomeIcon from 'vue-material-design-icons/Home.vue'
 
 import miscApi from './api/miscApi'
 
@@ -80,7 +125,7 @@ export default {
   components: {
     'login-modal': LoginModal,
     'voting-modal': VotingModal,
-    TwitterIcon,
+    TwitterIcon, DarkIcon, LightIcon, HomeIcon,
   },
 
   metaInfo() {
@@ -191,38 +236,105 @@ export default {
 
 $footerHeight: 2.25rem;
 
+nav {
+  background: linear-gradient(to right, $themeGreen1, $themeGreen2);
+  width: 100%;
+  box-shadow: 0 0px 5px #0000001a;
+}
+
+.navInner {
+  max-width: 80%;
+  @media screen and (max-width: 1000px) {
+    max-width: 100%;
+  }
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  button {
+    border: none;
+    outline: none;
+  }
+}
+
+.navLeft, .navRight {
+  padding: 0.5rem 4rem;
+  @media screen and (max-width: 1000px) {
+    padding: 0.5rem 0rem;
+  }
+}
+
+.navlink {
+  color: $themeDark1;
+  padding: 0.5rem 1rem;
+  @media screen and (max-width: 550px) {
+    padding: 0.5rem 0.25rem;
+  }
+  font-weight: 600;
+  &:hover {
+    cursor: pointer;
+    color: $themeBlueDark;
+  }
+}
+
+.navRight {
+  @media screen and (max-width: 500px) {
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    .navlink {
+      padding: 0 0.5rem;
+    }
+  }
+}
+.navLeft {
+  @media screen and (max-width: 500px) {
+    .navlink:first-child {
+      padding: 0 0.25rem 0 0.5rem !important;
+      svg {
+        margin-bottom: -1px;
+      }
+    }
+  }
+}
+
 .footer {
+  box-shadow: 0 0px 5px #0000001a;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #0d1a23;
-  border-top: 1px solid $themeGray3;
+  background: linear-gradient(to right, $themeGreen1, $themeGreen2);
   height: $footerHeight;
   width: 100%;
   margin-top: 2rem;
-  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
   position: absolute;
   bottom: 0;
   p, a {
     font-size: 0.85rem !important;
+    font-weight: 400;
+    color: $themeDark1;
   }
   p {
     margin: 0 1rem;
-    color: white;
   }
-    
-  border-style: solid;
-  border-width: 0;
-  border-top-width: 10px;
-  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
-
 }
 
 .dark {
+  nav {
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 0 1 100%;
+    background: #161f23;
+    a, span {
+      color: $themeBlueDark;
+    }
+  }
   .footer {
-    border-color: $themeDark1;
-    color: #ddd;
+    border-style: solid;
+    border-width: 0;
+    border-top-width: 4px;
+    border-image: linear-gradient(left, $themeGreen1, $themeGreen2) 1; 
+    background: #161f23;
   }
 }
 

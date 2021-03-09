@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%">
-    <h1 id="artistTitle">{{$route.params.artistName}}</h1>
+    <h1 id="artistTitle">Artist: {{$route.params.artistName}}</h1>
     <back-to-index></back-to-index>
   
     <span v-if="artistData">

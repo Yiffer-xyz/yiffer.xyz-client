@@ -1,6 +1,6 @@
 <template>
   <div class="admin-content-box" @click="openComponent" :class="{'admin-content-box-open': isOpen}">
-    <h2 @click="closeComponent" class="cursor-pointer">
+    <h2 @click="closeComponent" class="cursorPointer">
       Ad admin
       <span v-if="numberOfPendingAds>0" class="red-color"> ({{numberOfPendingAds}})</span>
       <span v-else style="color: #999;">(0)</span>

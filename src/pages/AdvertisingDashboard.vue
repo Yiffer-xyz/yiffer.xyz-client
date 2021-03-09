@@ -4,7 +4,7 @@
     <BackToIndex></BackToIndex>
 
     <div class="full-width-text">
-      <p class="link-color cursor-pointer" @click="() => isShowingInstructions = !isShowingInstructions">
+      <p class="link-color cursorPointer" @click="() => isShowingInstructions = !isShowingInstructions">
         {{isShowingInstructions ? 'Hide instructions' : 'Click to show instructions'}}
       </p>
 
