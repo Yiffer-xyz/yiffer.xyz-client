@@ -218,11 +218,6 @@ export default {
     if (!this.$cookies.get('hasConsented')) {
       this.hasConsented = false
     }
-
-    let isExpanded = this.$cookies.get('isSearchFilteringExpanded')
-    if (isExpanded && Number(isExpanded) === 1) {
-      this.$store.commit('setIsFilterSectionExpanded', true)
-    }
   },
 }
 </script>

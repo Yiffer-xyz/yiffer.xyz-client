@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-select" :tabindex="tabindex" @blur="isOpen = false">
+  <div class="customSelect" :tabindex="tabindex" @blur="isOpen = false">
     <p v-if="title" class="titleText">
       {{ title }}
     </p>
@@ -85,7 +85,8 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/shadows.scss";
 $height: 2.25rem;
-$padding: 0.75rem;
+$paddingBig: 0.75rem;
+$paddingSmall: 0.4rem;
 $borderRadius: 0px;
 
 $lightThemeColor: #333;
@@ -94,11 +95,14 @@ $darkThemeColor: #eee;
 .titleText {
   position: absolute;
   font-size: 0.75rem;
-  left: 0.75rem;
   top: 0;
+  left: $paddingBig;
+  @media (max-width: 900px) {
+    left: $paddingSmall
+  }
 }
 
-.custom-select {
+.customSelect {
   position: relative;
   width: 100%;
   text-align: left;
@@ -108,33 +112,39 @@ $darkThemeColor: #eee;
   padding-top: 0.75rem;
 }
 
-.custom-select .selected {
+.customSelect .selected {
   border-radius: $borderRadius;
   color: $lightThemeColor;
-  padding-left: $padding;
   cursor: pointer;
   user-select: none;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
   border-width: 2px;
   border-bottom-style: solid;
+  padding-left: $paddingBig;
+  @media (max-width: 900px) {
+    padding-left: $paddingSmall
+  }
 }
 
-.custom-select .selected.open {
+.customSelect .selected.open {
   border-radius: $borderRadius $borderRadius 0px 0px;
 }
 
-.custom-select .selected:after {
+.customSelect .selected:after {
   position: absolute;
   content: "";
   bottom: 0.65rem;
-  right: $padding;
   width: 0;
   height: 0;
   border: 5px solid transparent;
   border-color: $lightThemeColor transparent transparent transparent;
+  right: $paddingBig;
+  @media (max-width: 900px) {
+    right: $paddingSmall
+  }
 }
 
-.custom-select .items {
+.customSelect .items {
   color: $lightThemeColor;
   border-radius: 0px 0px $borderRadius $borderRadius;
   overflow: hidden;
@@ -147,14 +157,17 @@ $darkThemeColor: #eee;
   z-index: 1;
 }
 
-.custom-select .items div {
+.customSelect .items div {
   color: $lightThemeColor;
-  padding-left: $padding;
   cursor: pointer;
   user-select: none;
+  padding-left: $paddingBig;
+  @media (max-width: 900px) {
+    padding-left: $paddingSmall
+  }
 }
 
-.custom-select .items div:hover {
+.customSelect .items div:hover {
   background: linear-gradient(left, $themeGreen1, $themeGreen2);
 }
 
@@ -173,21 +186,21 @@ $darkThemeColor: #eee;
 }
 
 .dark {
-  .custom-select .selected,
-  .custom-select .items,
-  .custom-select .items div {
+  .customSelect .selected,
+  .customSelect .items,
+  .customSelect .items div {
     color: $darkThemeColor;
   }
 
-  .custom-select .selected:after {
+  .customSelect .selected:after {
     border-color: $darkThemeColor transparent transparent transparent;
   }
 
-  .custom-select .items {
+  .customSelect .items {
     background-color: $themeDark1;
   }
 
-  .custom-select .items div:hover {
+  .customSelect .items div:hover {
     color: #333;
   }
 }

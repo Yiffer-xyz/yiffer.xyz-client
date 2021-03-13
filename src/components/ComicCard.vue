@@ -127,7 +127,6 @@ import paidImageApi from '../api/advertisingApi'
 
 import VotingButton from '@/components/VotingButton.vue'
 import PagesIcon from 'vue-material-design-icons/FileOutline.vue'
-import UserIcon from 'vue-material-design-icons/AccountOutline.vue'
 import StarIcon from 'vue-material-design-icons/StarOutline.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
@@ -143,7 +142,6 @@ export default {
   components: {
     VotingButton,
     PagesIcon,
-    UserIcon,
     StarIcon,
     PlusIcon,
     RefreshIcon,

@@ -653,34 +653,6 @@ export default {
       this.fetchComics()
     },
 
-    shortenBtnNamesIfSmallScreen (btnName) {
-      if (this.$breakpoint.xs && btnName === 'Pokemon') {
-        return 'Pkmn'
-      }
-      return btnName
-    },
-
-    filterComicByTag (comicObject) {
-      return this.$store.getters.categoryFilter.indexOf('All') === 0 || this.$store.getters.categoryFilter.indexOf(comicObject.tag) >= 0
-    },
-
-    filterComicByCategory (comicObject) {
-      return this.$store.getters.tagFilter.indexOf('All') === 0 || this.$store.getters.tagFilter.indexOf(comicObject.cat) >= 0
-    },
-
-    filterComicByNameOrArtist (comicObject) {
-      return comicObject.name.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0 
-        || comicObject.artist.toLowerCase().indexOf( this.$store.getters.searchFiltering.toLowerCase() ) >= 0
-    },
-
-    filterComicByKeywords (comicObject) {
-      if ( this.selectedKeywords.length === 0 ) { return true }
-      for (var keyword of this.selectedKeywords) {
-        if (comicObject.keywords.indexOf(keyword.name) === -1) { return false }
-      }
-      return true
-    },
-
     toggleShowSearchFiltering (shouldShow) {
       if (new Date() - this.lastClosedSearchFilteringTime < 200) { return }
       this.lastClosedSearchFilteringTime = new Date()
@@ -789,27 +761,6 @@ export default {
       
       this.suppressQueryUpdates = false
       this.$store.commit('setSelectedKeywords', selectedKeywords)
-    },
-
-    showLoginModal () {
-      this.$store.commit('setLoginModalVisibility', true)
-    },
-
-    showSignupModal () {
-      this.$store.commit('setLoginModalContext', 'register')
-      this.$store.commit('setLoginModalVisibility', true)
-    },
-
-    setKeywordSearchFocused ( isFocused ) {
-      // Needed because if there is no search term, then technically the results div is 
-      // hidden (by the onblur event invoking this method) before the onclick fires,
-      // so there is nothing to be "onclicked".
-      // In other words, the first if happens whenever the user clicks a keyword.
-      if (this.keywordResultHovered) {
-        this.addSelectedKeyword(this.keywordResultHovered)
-        this.keywordResultHovered = null
-      } 
-      this.keywordSearchFocused = isFocused || this.keywordSearch != ''
     },
 
     setDetailLevel (detailLevel) {
@@ -1068,12 +1019,6 @@ export default {
       color: white !important;
     }
   }
-  .openFilterContent {
-    background-color: rgba(255, 255, 255, 0.04);
-    box-shadow: 0px 0px 16px 0px #202020;
-    border-top: 1px solid $themeDark2;
-    border-bottom: 1px solid $themeDark2;
-  }
 }
   
 .upperBodyWidth {
@@ -1087,40 +1032,6 @@ export default {
   &:hover {
     cursor: default;
   }
-}
-
-.closedFilterContent {
-  padding: 0.5rem 0;
-  max-height: 3rem;
-}
-
-.openFilterContent {
-  padding: 0.5rem 0 1rem 0;
-  margin: 1rem auto;
-  margin-bottom: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.3);
-  @include simpleshadowNoHover;
-}
-
-.filterSectionExpander {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  width: fit-content;
-  &:hover {
-    cursor: pointer;
-  }
-  svg {
-    margin-bottom: 0.25rem;
-  }
-}
-
-.filterSectionDeExpander {
-  margin: 1rem auto -0.25rem auto;
-  padding: 0 1rem;
-  width: fit-content;
 }
 
 .dropdownElement {
@@ -1190,6 +1101,9 @@ export default {
         background-color: rgba($comicCardDark, 0.4);
       }
     }
+  }
+  .paginateRight, .paginateLeft {
+    color: #444;
   }
 }
 </style>

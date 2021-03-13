@@ -135,7 +135,6 @@ import Loading from '@/components/LoadingIndicator.vue'
 import advertisingApi from '../api/advertisingApi'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
-import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
 import { format } from 'date-fns'
 
 import { mapGetters } from 'vuex'
@@ -152,8 +151,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, ResponseMessage, Loading,
-    CheckIcon, RightArrow,
+    BackToIndex, ResponseMessage, Loading, RightArrow,
   },
 
   computed: {

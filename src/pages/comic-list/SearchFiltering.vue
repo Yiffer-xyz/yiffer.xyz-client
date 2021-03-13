@@ -1,131 +1,119 @@
 <template>
   <div class="buttonsContainer"
-        :class="{
-          'closedFilterContent': !isFilterSectionExpanded && !isSearchFilteringActive,
-          'openFilterContent': isFilterSectionExpanded || isSearchFilteringActive
-        }">
-    <span v-if="isFilterSectionExpanded || isSearchFilteringActive" class="upperBodyWidth buttonsContainer-inner">
-        <div class="searchFilterContentContainer">
-          <div class="buttonsRow catButtonsRow">
-            <div v-for="(category, index) in ['All', 'Furry', 'MLP', 'Pokemon', 'Other']"
-                :key="category"
-                :class="{'buttonSelected': categoryFilter.indexOf(category) >= 0}"
-                :style="{
-                  'border-color': categoryHighlightColors[index],
-                  'background-color': categoryFilter.indexOf(category) >= 0 ? categoryHighlightColors[index] : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('categoryFilter', category)">
-              {{shortenBtnNamesIfSmallScreen(category)}}
-            </div>
+       :class="{
+         'closedFilterContent': !isOpen,
+         'openFilterContent': isOpen,
+         'overflowVisible': shouldShowOverflow,
+       }">
+    <span v-if="isOpen" class="upperBodyWidth buttonsContainer-inner">
+      <div class="searchFilterContentContainer">
+        <div class="buttonsRow catButtonsRow">
+          <div v-for="(category, index) in ['All', 'Furry', 'MLP', 'Pokemon', 'Other']"
+               :key="category"
+               :class="{'buttonSelected': categoryFilter.indexOf(category) >= 0}"
+               :style="{
+                 'border-color': categoryHighlightColors[index],
+                 'background-color': categoryFilter.indexOf(category) >= 0 ? categoryHighlightColors[index] : 'transparent',
+               }"
+               class="searchFilterButton"
+               @click="$emit('categoryFilter', category)">
+            {{shortenBtnNamesIfSmallScreen(category)}}
           </div>
+        </div>
 
-          <div class="buttonsRow tagButtonsRow">
-            <div v-for="(tag, index) in ['All', 'M', 'F', 'MF', 'MM', 'FF', 'MF+', 'I']"
-                :key="tag"
-                :class="{
-                  'buttonSelected': tagFilter.indexOf(tag) >= 0,
-                  'extraBtnMargins': ['MM','MF+'].indexOf(tag) >= 0,
-                }"
-                :style="{
-                  'border-color': tagHighlightColors[index],
-                  'background-color': tagFilter.indexOf(tag) >= 0 ? tagHighlightColors[index] : 'transparent',
-                }"
-                class="searchFilterButton"
-                @click="$emit('tagFilter', tag)">
-              {{tag}}
-            </div>
+        <div class="buttonsRow tagButtonsRow">
+          <div v-for="(tag, index) in ['All', 'M', 'F', 'MF', 'MM', 'FF', 'MF+', 'I']"
+               :key="tag"
+               :class="{
+                 'buttonSelected': tagFilter.indexOf(tag) >= 0,
+                 'extraBtnMargins': ['MM','MF+'].indexOf(tag) >= 0,
+               }"
+               :style="{
+                 'border-color': tagHighlightColors[index],
+                 'background-color': tagFilter.indexOf(tag) >= 0 ? tagHighlightColors[index] : 'transparent',
+               }"
+               class="searchFilterButton"
+               @click="$emit('tagFilter', tag)">
+            {{tag}}
           </div>
+        </div>
 
-          <div class="selectsGrid">
-            <Select :options="[
-                      {value: 'updated', text: 'Recently updated'},
-                      {value: 'userRating', text: 'User rating'},
-                    ]"
-                    title="Ordering"
-                    :borderTheme1="true"
-                    @change="onSortingChange"/>
+        <div class="selectsGrid">
+          <Select :options="[
+                    {value: 'updated', text: 'Recently updated'},
+                    {value: 'userRating', text: 'User rating'},
+                  ]"
+                  title="Order by"
+                  :borderTheme1="true"
+                  @change="onSortingChange"/>
 
-            <Select :options="[
-                      {value: 'low', text: 'Simple'},
-                      {value: 'high', text: 'Detailed'},
-                    ]"
-                    title="Detail level"
-                    :borderTheme2="true"
-                    @change="onDetailLevelChange"/>
-          </div>
+          <Select :options="[
+                    {value: 'low', text: 'Simple'},
+                    {value: 'high', text: 'Detailed'},
+                  ]"
+                  title="Detail level"
+                  :borderTheme2="true"
+                  @change="onDetailLevelChange"/>
+        </div>
 
 
-          <div class="buttonsRow searchButtonsRow">
-            <div class="positionRelative">
-              <span class="inputIconWrapper inputIconWrapperLeft">
-                <SearchIcon title=""/>
-              </span>
-              <input v-model="searchValue"
-                    @input="changeEvent => $emit('searchChanged', changeEvent.target.value)"
-                    type="text"
-                    placeholder="Title or artist"
-                    class="upperBodySearchbox"/>
-              <span class="inputIconWrapper inputIconWrapperRight cursorPointer"
-                    v-show="searchValue"
-                    @click="clearSearchField">
-                <CrossIcon title="Clear"/>
-              </span>
-            </div>
+        <div class="buttonsRow searchButtonsRow" id="searchInputsContainer">
+          <TextInput :value="searchValue"
+                      @change="onSearchChange"
+                      title="Filter by search"
+                      startIcon
+                      includeClearButton
+                      borderTheme1
+                      placeholder="Title or artist"/>
 
-            <div class="positionRelative">
-              <span class="inputIconWrapper inputIconWrapperLeft"><TagsIcon title=""/></span>
-              <input 
-                type="text"
-                placeholder="Tags"
-                autocomplete="off"
-                class="upperBodySearchbox"
-                v-model="keywordSearchValue"
-                @click="lastActionWasDeselectingKeyword = false"
-                @focus="setisKeywordSearchFocused(true)"
-                @blur="setisKeywordSearchFocused(false)"
-              />
-              <span class="inputIconWrapper inputIconWrapperRight cursorPointer"
-                    v-show="keywordSearchValue"
-                    @click="clearKeywordSearchField">
-                <cross-icon title="Clear"/>
-              </span>
-              <div class="keywordResults" v-if="isKeywordSearchFocused" style="max-height: 11rem;">
-                <div
-                  v-for="keywordObject in keywordsMatchingSearch" 
-                  :key="keywordObject.id"
-                  @click="addKeyword(keywordObject)"
-                  @mouseover="keywordResultHovered = keywordObject"
-                  @mouseout="keywordResultHovered = undefined"
-                  class="keywordResult">
-                    {{keywordObject.name}} ({{keywordObject.count}})
-                </div>
+          <div class="positionRelative">
+            <TextInput :value="keywordSearchValue"
+                        @change="onKeywordSearchChange"
+                        title="Filter by tags"
+                        startIcon
+                        includeClearButton
+                        borderTheme2
+                        placeholder="Search tags"
+                        @focus="setisKeywordSearchFocused(true)"
+                        @blur="setisKeywordSearchFocused(false)"
+                        @click="lastActionWasDeselectingKeyword = false"
+                        :wrapperStyle="'position: initial'"/>
+            <div class="keywordResults" v-if="isKeywordSearchFocused" style="max-height: 11rem;">
+              <div
+                v-for="keywordObject in keywordsMatchingSearch" 
+                :key="keywordObject.id"
+                @click="addKeyword(keywordObject)"
+                @mouseover="keywordResultHovered = keywordObject"
+                @mouseout="keywordResultHovered = undefined"
+                class="keywordResult">
+                  {{keywordObject.name}} ({{keywordObject.count}})
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="selectedKeywords buttonsRow"
-              v-if="selectedKeywords.length > 0 || allKeywords.failed" >
-            <div v-for="keywordObject in selectedKeywords" 
-                :key="keywordObject.id"
-                @click="$emit('removeKeyword', keywordObject)"
-                class="selectedKeyword">
-              {{keywordObject.name}}<CrossIcon title=""/>
-            </div>
-
-            <p v-if="allKeywords.failed" style="font-size: 0.8rem;">
-              There was an error fetching searchable tags
-            </p>
+        <div class="selectedKeywords buttonsRow"
+            v-if="selectedKeywords.length > 0 || allKeywords.failed" >
+          <div v-for="keywordObject in selectedKeywords" 
+              :key="keywordObject.id"
+              @click="$emit('removeKeyword', keywordObject)"
+              class="selectedKeyword">
+            {{keywordObject.name}}<CrossIcon title=""/>
           </div>
 
-          <div class="filterSectionExpander filterSectionDeExpander"
-                @click="() => {$emit(isSearchFilteringActive ? 'resetAllFilters' : 'toggleShowSearchFiltering', false)}">
-            <menu-up-icon class="mdi-arrow" title=""/>
-            <p>
-              {{isSearchFilteringActive ? 'Reset and minimize' : 'Minimize'}}
-            </p>
-            <menu-up-icon class="mdi-arrow" title=""/>
-          </div>
+          <p v-if="allKeywords.failed" style="font-size: 0.8rem;">
+            There was an error fetching searchable tags
+          </p>
+        </div>
+
+        <div class="filterSectionExpander filterSectionDeExpander"
+              @click="() => {$emit(isSearchFilteringActive ? 'resetAllFilters' : 'toggleShowSearchFiltering', false)}">
+          <menu-up-icon class="mdi-arrow" title=""/>
+          <p>
+            {{isSearchFilteringActive ? 'Reset and minimize' : 'Minimize'}}
+          </p>
+          <menu-up-icon class="mdi-arrow" title=""/>
+        </div>
       </div>
     </span>
 
@@ -143,13 +131,13 @@
 </template>
 
 <script>
-import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue'
 
 import Select from '../../components/Select.vue'
+import TextInput from '../../components/TextInput.vue'
 
 import { mapGetters } from 'vuex'
 
@@ -157,8 +145,8 @@ export default {
   name: 'searchFiltering',
 
   components: {
-    Select,
-    SearchIcon, CrossIcon, TagsIcon, ChevronRightIcon, ChevronLeftIcon,
+    Select, TextInput,
+    CrossIcon, TagsIcon, ChevronRightIcon, ChevronLeftIcon,
   },
 
   props: {
@@ -172,11 +160,16 @@ export default {
       'selectedKeywords',
       'allKeywords',
       'isAuthenticated',
+      'searchFiltering',
       'detailLevel',
       'sorting',
       'tagFilter',
       'categoryFilter',
     ]),
+
+    isOpen () {
+      return this.isFilterSectionExpanded || this.isSearchFilteringActive
+    },
 
     keywordsMatchingSearch () {
       return this.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearchValue))
@@ -212,13 +205,28 @@ export default {
     detailLevel (newDetailLevel) {
       this.detailValue = newDetailLevel
     },
+    searchFiltering (newSearchFiltering) {
+      this.searchValue = newSearchFiltering
+    },
+    isOpen (newIsOpen) {
+      // This stuff in order to ensure smooth slide-expand when opening, and also
+      // allowing keyword search results to expand beyond the container when open
+      if (newIsOpen) {
+        setTimeout(() => {
+          this.shouldShowOverflow = true
+        }, 400)
+      }
+      else {
+        this.shouldShowOverflow = false
+      }
+    }
   },
 
   data: function () {
     return {
       sortingValue: this.sorting || 'updated',
       detailValue: this.detailLevel || 'low',
-      searchValue: '',
+      searchValue: this.searchFiltering || '',
       keywordSearchValue: '',
       keywordResultHovered: undefined,
       isKeywordSearchFocused: false,
@@ -226,10 +234,20 @@ export default {
       categoryHighlightColors: ['#9aebe7', '#9df0e6', '#a1f5e5', '#a6fae3', '#adfee0'],
       tagHighlightColors: ['#9aebe7', '#9ceee7', '#9df1e6', '#a0f3e5', '#a2f6e4', '#a6f9e3', '#a9fbe2', '#adfee0'],
       detailHighlighColors: ['#9aebe7', '#adfee0'],
+      shouldShowOverflow: true,
     }
   },
 
   methods: {
+    onSearchChange (newSearch) {
+      this.searchValue = newSearch
+      this.$emit('searchChanged', newSearch)
+    },
+
+    onKeywordSearchChange (newSearch) {
+      this.keywordSearchValue = newSearch
+    },
+
     onSortingChange (newSort) {
       this.$emit('setSort', newSort)
     },
@@ -289,8 +307,13 @@ export default {
   width: 100%;
   padding: 0.5rem 0;
   margin: 1rem auto;
-  max-height: 22rem;
-  transition:max-height 0.4s ease-out;
+  max-height: 27rem;
+  transition:max-height 0.4s linear;
+  overflow: hidden;
+}
+
+.overflowVisible {
+  overflow: visible;
 }
 
 .upperBodyWidth {
@@ -306,10 +329,11 @@ export default {
 }
 
 .openFilterContent {
-  padding: 0.5rem 0 1rem 0;
+  padding: 1rem 0;
   margin: 1rem auto;
   margin-bottom: 2rem;
   background-color: rgba(255, 255, 255, 0.3);
+  max-height: 27rem;
   @include simpleshadowNoHover;
 }
 
@@ -320,6 +344,8 @@ export default {
 .searchFilterContentContainer {
   width: 42rem;
   margin: auto;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
   @media screen and (max-width: 900px) {
     width: 100%;
   }
@@ -383,24 +409,10 @@ $nonHighlightHeight: 2px;
   // background-color: transparent !important;
 }
 
-.upperBodySearchbox {
-  box-sizing: border-box;
-  padding: 9px;
-  text-align: center;
-  background: #f0f0f0;
-  background: rgba(255,255,255,0.8);
-  outline: none;
-  color: #333;
-  width: 100%;
-  @media (max-width: 900px) {
-    padding: 7px;
-  }
-}
-
 .keywordResult {
   width: 100%;
   text-align: center;
-  color: #444 !important;
+  color: #444;
   font-size: 12px;
   padding: 5px 0px;
   font-weight: 300;
@@ -418,7 +430,7 @@ $nonHighlightHeight: 2px;
   flex-direction: column;
   justify-content: center;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 1);
   box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
 }
 
@@ -427,7 +439,7 @@ $nonHighlightHeight: 2px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
-  margin-top: -0.25rem;
+  margin-top: -0.5rem;
 }
 
 .selectedKeyword {
@@ -468,8 +480,7 @@ $nonHighlightHeight: 2px;
 }
 
 .filterSectionDeExpander {
-  margin: 2rem auto -0.25rem auto;
-  padding: 0 1rem;
+  padding-top: 2rem;
   width: fit-content;
 }
 
@@ -478,38 +489,11 @@ $nonHighlightHeight: 2px;
   font-size: 12px;
 }
 
-.inputIconWrapper {
-  color: $themeDark1;
-  position: absolute;
-  display: block;
-  top: 8px;
-  @media (max-width: 900px) {
-    top: 6px;
-  }
-}
-
-.inputIconWrapperRight {
-  right: 9px;
-  @media (max-width: 900px) {
-    right: 6px;
-  }
-  &:hover {
-    color: $themeBlueDark;
-  }
-}
-
-.inputIconWrapperLeft {
-  left: 9px;
-  @media (max-width: 900px) {
-    left: 6px;
-  }
-}
-
 .selectsGrid {
   margin-bottom: 1.25rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  @media screen and (max-width: 360px) {
+  @media screen and (max-width: 340px) {
     grid-template-columns: 1fr;
   }
   gap: 1rem;
@@ -518,6 +502,12 @@ $nonHighlightHeight: 2px;
 .dark {
   .buttonSelected {
     color: #333;
+  }
+  .keywordResults {
+    background: rgba(77, 77, 77, 1);
+  }
+  .keywordResult {
+    color: white;
   }
 }
 
