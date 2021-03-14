@@ -56,7 +56,6 @@
                   @change="onDetailLevelChange"/>
         </div>
 
-
         <div class="buttonsRow searchButtonsRow" id="searchInputsContainer">
           <TextInput :value="searchValue"
                       @change="onSearchChange"
@@ -77,6 +76,7 @@
                         @focus="setisKeywordSearchFocused(true)"
                         @blur="setisKeywordSearchFocused(false)"
                         @click="lastActionWasDeselectingKeyword = false"
+                        @clear="clearKeywordSearchField"
                         :wrapperStyle="'position: initial'"/>
             <div class="keywordResults" v-if="isKeywordSearchFocused" style="max-height: 11rem;">
               <div
@@ -332,7 +332,7 @@ export default {
   padding: 1rem 0;
   margin: 1rem auto;
   margin-bottom: 2rem;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: $filterPaginationDarkMain;
   max-height: 27rem;
   @include simpleshadowNoHover;
 }
@@ -406,6 +406,7 @@ $nonHighlightHeight: 2px;
   border-bottom-width: $highlightHeight;
   border-bottom-style: solid;
   padding-bottom: $buttonPadding - $highlightHeight;
+  border-image: none;
   // background-color: transparent !important;
 }
 
@@ -417,8 +418,7 @@ $nonHighlightHeight: 2px;
   padding: 5px 0px;
   font-weight: 300;
   &:hover {
-    // background-color: $themeGray1;
-    color: $themeBlueDark !important;
+    background: linear-gradient(left, $themeGreen1, $themeGreen2);
     cursor: pointer;
   }
 }

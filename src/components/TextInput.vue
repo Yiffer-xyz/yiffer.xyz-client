@@ -90,6 +90,7 @@ export default {
     clear () {
       this.localValue = ''
       this.$emit('change', '')
+      this.$emit('clear')
     },
   },
 }

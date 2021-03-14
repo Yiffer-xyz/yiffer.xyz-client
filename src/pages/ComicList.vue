@@ -228,33 +228,20 @@
                      @resetAllFilters="resetAllFilters"
                      :isSearchFilteringActive="isSearchFilteringActive"/>
 
-    <div style="margin: 0 auto 0 auto; width: fit-content;">
-      <div v-if="hasFetchedComics || showPaginationWhileLoading" class="upperBodyPagination simpleShadowNoHover" id="upperPaginationButtons">
-        <div @click="paginate('down', false, true)" class="pagination-button paginationButton2 paginateLeft">
-          <left-arrow/>
-        </div>
-        <div v-for="(pageNo, index) in paginationButtons"
-            :key="index"
-            :class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
-            class="pagination-button paginationButton2"
-            @click="paginate(pageNo, false, true)">
-          {{pageNo}}
-        </div>
-        <div @click="paginate('up', false, true)" class="pagination-button paginationButton2 paginateRight">
-          <right-arrow/>
-        </div>
-      </div>
-      <div v-else-if="!isErrorLoadingComics"
-            style="margin-top: -3px; width: 30rem; margin-bottom: 1rem;">
-        <SkeletonTheme color="rgba(255,255,255,0.25)" highlight="#888">
-          <Skeleton height="35px" width="100%"/>
-        </SkeletonTheme>
-      </div>
-    </div>
+    <Pagination v-if="!isErrorLoadingComics && comicList.length > 0"
+                :isLoading="!hasFetchedComics"
+                :shouldHide="isErrorLoadingComics"
+                :showWhileLoading="showPaginationWhileLoading"
+                :onPaginate="paginate"/>
 
-    <p v-if="isErrorLoadingComics" class="comicListMessage">There was an error fetching comics.</p>
+    <p v-if="isErrorLoadingComics" class="comicListMessage">
+      There was an error fetching comics.
+    </p>
 
-    <SkeletonTheme v-else-if="isLoadingComics" :color="isDarkTheme ? '#262d30' : 'rgba(238,238,238,0.75)'" :highlight="isDarkTheme ? '#525456' : '#fbfbfb'" class="comic-card-container">
+    <SkeletonTheme v-else-if="isLoadingComics"
+                   :color="isDarkTheme ? '#383f45' : 'rgba(238,238,238,0.75)'"
+                   :highlight="isDarkTheme ? '#525456' : '#fbfbfb'"
+                   class="comic-card-container">
       <div :class="['comicCardSkeleton', isAuthenticated ? 'loggedInSkeleton' : '']" v-for="i in 80" :key="i">
         <Skeleton width="100%" height="100%"/>
       </div>
@@ -277,27 +264,22 @@
       </comic-card>
     </div>
 
-    <p v-else class="comicListMessage">There are no comics matching your query.</p>
+    <p v-else class="comicListMessage">
+      There are no comics matching your search.
+    </p>
 
     <button v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
-            class="y-button y-button-neutral margin-top-16"
+            class="y-button mt-16 mb-16"
             @click="scrollToTop()">
       <up-arrow/> to top
     </button>
 
-    <div v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
-         style="display: flex; flex-direction: row; align-items: center; margin: 1rem auto;"
-         class="upperBodyWidth upper-body-horiz-row paginationButtonsLower">
-      <div @click="paginate('down', true, true)" class="pagination-button"><left-arrow/></div>
-      <div v-for="(pageNo, index) in paginationButtons"
-          :key="index"
-          :class="{'button-selected': $store.getters.pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
-          class="pagination-button"
-          @click="paginate(pageNo, true, true)">
-        {{pageNo}}
-      </div>
-      <div @click="paginate('up', true, true)" class="pagination-button"><right-arrow/></div>
-    </div>
+
+    <Pagination v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
+                :isLoading="!hasFetchedComics"
+                :shouldHide="isErrorLoadingComics"
+                :showWhileLoading="showPaginationWhileLoading"
+                :onPaginate="paginate"/>
 
     <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
   </div>
@@ -309,14 +291,13 @@ import ComicCardSmall from '@/components/ComicCardSmall.vue'
 import ExpandedComicCard from '@/components/ExpandedComicCard.vue'
 import config from '@/config.json'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
-import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ExclamationIcon from 'vue-material-design-icons/Bullhorn.vue'
 import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
 import FeedbackIcon from 'vue-material-design-icons/CommentText.vue'
 
 import SearchFiltering from './comic-list/SearchFiltering.vue'
+import Pagination from './comic-list/Pagination.vue'
 
 import ModIcon from 'vue-material-design-icons/AccountStar.vue'
 
@@ -340,9 +321,7 @@ export default {
     'comic-card-small': ComicCardSmall,
     'expanded-comic-card': ExpandedComicCard,
     'plus-icon': PlusIcon,
-    'left-arrow': LeftArrow,
     'up-arrow': UpArrow,
-    'right-arrow': RightArrow,
     ExclamationIcon,
     DropdownMenu,
     MenuDownIcon,
@@ -350,6 +329,7 @@ export default {
     FeedbackIcon,
     Skeleton, SkeletonTheme,
     SearchFiltering,
+    Pagination,
   },
 
   data: function () {
@@ -369,7 +349,6 @@ export default {
       showDropdown: false,
       searchFilteringHook: null,
       showPaginationWhileLoading: false,
-      previousPaginationButtons: [],
       lastClosedTime: new Date(),
       loadedImageCounter: 0,
       lastClosedSearchFilteringTime: new Date(),
@@ -437,35 +416,6 @@ export default {
     keywordsMatchingSearch () {
       return this.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
     },
-
-    paginationButtons () {
-      if (!this.paginatedComics.fetched || this.paginatedComics.failed) {
-        if (this.showPaginationWhileLoading) {
-          return this.previousPaginationButtons
-        }
-        else {
-          return []
-        }
-      }
-
-      let currentPage = this.paginatedComics.payload.page
-      let pages = this.paginatedComics.payload.numberOfPages
-
-      let buttonList = []
-      if (pages <= 9) {
-        for (var i = 1; i < pages+1; i++) { buttonList.push(i) }
-        return buttonList
-      }
-      if (currentPage <= 5) {
-        return [1, 2, 3, 4, 5, 6, 7, '...', pages]
-      }
-      if (currentPage >= pages-4) {
-        return [1, '...', pages-6, pages-5, pages-4, pages-3, pages-2, pages-1, pages]
-      }
-      else {
-        return [1, '...', currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2, '...', pages]
-      }
-    }
   },
 
   watch: {
@@ -573,6 +523,7 @@ export default {
     },
 
     onSortingButtonClick (sortButtonName) {
+      if (this.sorting === sortButtonName) { return }
       this.showPaginationWhileLoading = true
       this.setSorting(sortButtonName)
       this.setRouterQuery()
@@ -586,8 +537,6 @@ export default {
 
     paginate (pageNumber, shouldScrollToTopOfList=false, showPaginationWhileLoading=false) {
       if ( pageNumber === '...' ) { return }
-
-      this.previousPaginationButtons = [...this.paginationButtons]
 
       if (pageNumber === 'down') {
         if (this.paginatedComics.payload.page > 1) {
@@ -903,47 +852,7 @@ export default {
   }
 }
 
-.fancySvg {
-  overflow: hidden;
-  position: absolute;
-  // top: -140px;
-  z-index: -1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  opacity: 1;
-}
-
-.pagination-button {
-  padding: 5px;
-  flex: 1;
-  &:not(:first-child) {
-    border-left: none;
-  }
-}
-
-.pagination-button {
-  background: $themeGray8;
-  color: #444;
-  padding: 9px 10px;
-  font-weight: 400;
-
-  font-size: 14px;
-
-  &:hover {
-    cursor: pointer;
-    background: $themeGray5;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  @media (max-width: 900px) {
-    padding: 0.5rem 0.5rem;
-  }
-
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.button-selected {
+.buttonSelected {
   border-bottom-width: 5px;
   border-bottom-style: solid;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1;
@@ -971,69 +880,19 @@ export default {
   padding-top: 6px;
 }
 
-.upperBodyPagination {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 30rem;
-  @media (max-width: 900px) {
-    width: 100%;
-  }
-  // border: 1px solid rgba(255,255,255,0.2);
-}
-
-.paginationButton2 {
-  background: rgba(255, 255, 255, 0.4);
-  // background: $themeGray0;
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-}
-
-.paginateLeft {
-  background-color: $themeGreen1;
-  &:hover {
-    background-color: $themeGreen1;
-  }
-}
-.paginateRight {
-  background-color: $themeGreen2;
-  &:hover {
-    background-color: $themeGreen2;
-  }
-}
-
-.paginationButtonLightBg {
-  background: rgba(0,0,0, 0.75);
-  &:hover {
-    background: rgba(0,0,0, 0.85);
-  }
-}
-
 .dark {
-  .fancySvg {
-    filter: brightness(0.4);
-  }
   .upperBodyDiv {
     h1, p {
       color: white !important;
     }
   }
 }
-  
 .upperBodyWidth {
   width: 50%;
   @media (max-width: 900px) {
     width: 100%;
   }
 }
-
-.dot-dot-dot-button {
-  &:hover {
-    cursor: default;
-  }
-}
-
 .dropdownElement {
   &:hover {
     cursor: pointer;
@@ -1080,30 +939,10 @@ export default {
   padding: 3rem 1rem;
   font-size: 1.2rem !important;
 }
-.paginationButtonsLower {
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  div:not(.button-selected) {
-    background-color: $themeGray7;
-    &:hover {
-      background-color: $themeDark1;
-    }
-  }
-}
 .dark {
   .linkDropdown {
     background-color: $themeDark4;
     border: 1px solid #444;
-  }
-  .paginationButtonsLower {
-    div:not(.button-selected) {
-      background-color: $comicCardDark;
-      &:hover {
-        background-color: rgba($comicCardDark, 0.4);
-      }
-    }
-  }
-  .paginateRight, .paginateLeft {
-    color: #444;
   }
 }
 </style>
