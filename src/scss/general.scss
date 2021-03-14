@@ -351,7 +351,7 @@ select {
   text-decoration: line-through;
 }
 
-.keyword, .keyword-static {
+.keyword, .keywordStatic {
   font-size: 12px;
   border: 0.5px solid #ccc; //todo
   margin: 1.5px 3px;
@@ -368,7 +368,7 @@ select {
   cursor: pointer;
   border-color: $themeBlueDarker;
 }
-.keyword-static:hover {
+.keywordStatic:hover {
   cursor: default;
 }
 
@@ -444,7 +444,7 @@ input, textarea, select {
     background-color: $themeDark4;
   }
 
-  .keyword, .keyword-static {
+  .keyword, .keywordStatic {
     background-color: $themeDark3;
     color: white !important;
     box-shadow: none;

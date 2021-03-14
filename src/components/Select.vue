@@ -1,6 +1,6 @@
 <template>
-  <div class="customSelect" :tabindex="tabindex" @blur="isOpen = false">
-    <p v-if="title" class="titleText">
+  <div class="customSelect" :tabindex="tabindex" @blur="isOpen = false" :style="wrapperStyle">
+    <p v-if="title && selected" class="titleText">
       {{ title }}
     </p>
     <div class="selected"
@@ -9,15 +9,16 @@
            open: isOpen,
            overrideBorderColor: (overrideBorderColor || borderTheme1 || borderTheme2),
            borderTheme1: borderTheme1,
-           borderTheme2: borderTheme2
+           borderTheme2: borderTheme2,
+           placeholderStyle: !selected,
          }"
          @click="isOpen = !isOpen">
-      {{ selected.text }}
+      {{ selected ? selected.text : title }}
     </div>
     <div class="items" :class="{ selectHide: !isOpen }">
       <div
         v-for="option of options"
-        :key="option.value"
+        :key="option.text"
         @click="
           selected = option
           isOpen = false
@@ -41,6 +42,10 @@ export default {
       type: Array,
       required: true,
     },
+    defaultValue: {
+      type: Object,
+      required: false,
+    },
     overrideBorderColor: {
       type: String,
       required: false,
@@ -53,16 +58,16 @@ export default {
       type: Boolean,
       required: false,
     },
-    default: {
-      type: String,
-      required: false,
-      default: null,
-    },
     tabindex: {
       type: Number,
       required: false,
       default: 0,
     },
+    wrapperStyle: {
+      type: String,
+      required: false,
+      default: '',
+    }
   },
 
   mounted() {
@@ -71,11 +76,7 @@ export default {
 
   data() {
     return {
-      selected: this.default
-        ? this.default
-        : this.options.length > 0
-        ? this.options[0]
-        : null,
+      selected: this.defaultValue,
       isOpen: false,
     }
   },
@@ -144,7 +145,7 @@ $darkThemeColor: #eee;
   }
 }
 
-.customSelect .items {
+.items {
   color: $lightThemeColor;
   border-radius: 0px 0px $borderRadius $borderRadius;
   overflow: hidden;
@@ -155,9 +156,12 @@ $darkThemeColor: #eee;
   left: 0;
   right: 0;
   z-index: 1;
+
+  max-height: 20rem;
+  overflow-y: scroll;
 }
 
-.customSelect .items div {
+.items div {
   color: $lightThemeColor;
   cursor: pointer;
   user-select: none;
@@ -167,7 +171,7 @@ $darkThemeColor: #eee;
   }
 }
 
-.customSelect .items div:hover {
+.items div:hover {
   background: linear-gradient(left, $themeGreen1, $themeGreen2);
 }
 
@@ -185,10 +189,14 @@ $darkThemeColor: #eee;
   border-color: $themeGreen2;
 }
 
+.placeholderStyle {
+  color: $themeGray7 !important;
+}
+
 .dark {
   .customSelect .selected,
-  .customSelect .items,
-  .customSelect .items div {
+  .items,
+  .items div {
     color: $darkThemeColor;
   }
 
@@ -196,11 +204,11 @@ $darkThemeColor: #eee;
     border-color: $darkThemeColor transparent transparent transparent;
   }
 
-  .customSelect .items {
+  .items {
     background-color: $themeDark1;
   }
 
-  .customSelect .items div:hover {
+  .items div:hover {
     color: #333;
   }
 }

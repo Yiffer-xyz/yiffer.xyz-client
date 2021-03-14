@@ -76,7 +76,7 @@
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div 
           :class="{'keyword': clickableKeyword, 
-                   'keyword-static': !clickableKeyword}"
+                   'keywordStatic': !clickableKeyword}"
           v-for="keyword in comicKeywords[comic.id]"
           :key="keyword.id"
           @click="addSelectedKeyword(keyword)"

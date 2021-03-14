@@ -254,9 +254,10 @@
   }
 
   .y-button-neutral {
-    background-color: $themeDark1 !important;
+    background-color: $themeGray9 !important;
+    color: #eee;
     &:hover, &:focus {
-      background-color: $themeDark2 !important;
+      background-color: $themeGray7 !important;
     }
   }
 
@@ -302,17 +303,5 @@
         }
       }
     }
-  }
-}
-
-
-.y-button-disabled-dark {
-  background-color: $themeGray4;
-  color: #555;
-  &:hover, &:focus {
-    cursor: not-allowed;
-    color: #555;
-    background-color: $themeGray4;
-    box-shadow: none;
   }
 }

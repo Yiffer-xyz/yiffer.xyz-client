@@ -3,7 +3,7 @@ import store from '@/store.js'
 import Router from 'vue-router'
 
 import ComicList from '@/pages/ComicList.vue'
-import Comic from '@/pages/Comic.vue'
+import Comic from '@/pages/comic/Comic.vue'
 import About from '@/pages/About.vue'
 import Artist from '@/pages/Artist.vue'
 import Admin from '@/pages/Admin.vue'

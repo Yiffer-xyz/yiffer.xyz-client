@@ -9,7 +9,7 @@
           <h1 class="loadedComicHeader" style="padding: 0;">{{$route.params.comicName}}</h1>
 
           <button v-if="showShareIcon" @click="shareClicked" class="shareIconContainer">
-            <share-icon class="shareIcon" />
+            <ShareIcon class="shareIcon" />
           </button>
           <div v-else></div>
         </div>
@@ -22,7 +22,7 @@
           </router-link>
         </h2>
 
-        <back-to-index class="margin-top-16"></back-to-index>
+        <BackToIndex class="margin-top-16"></BackToIndex>
 
         <button @click="downloadZippedComic()"
                 v-if="$store.getters.isAuthenticated 
@@ -30,7 +30,7 @@
                       && !isZipping 
                       && !downloadStarted" 
                 class="y-button">
-          <download/>  Download comic
+          <DownloadIcon/>  Download comic
         </button>
 
         <Loading text="Zipping, please wait..." v-if="$store.getters.isAuthenticated && $store.getters.userData.donator && isZipping" class="mt-16"/>
@@ -43,7 +43,7 @@
           <p v-if="comic.previousComic">
             <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
                          class="underline-link" style="font-weight: 400;">
-              <left-arrow/>
+              <LeftArrow/>
               {{comic.previousComic}}
             </router-link>
           </p>
@@ -51,7 +51,7 @@
             <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }"
                          class="underline-link" style="font-weight: 400;">
               {{comic.nextComic}} 
-              <right-arrow/>
+              <RightArrow/>
             </router-link>
           </p>
         </div>
@@ -60,82 +60,22 @@
           User rating: 
           <span style="font-weight: 400;">{{formatRating($store.getters.comicForVotingModal.userRating)}}</span>
         </p>
-        <rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0.5rem;"/>
+        <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0.5rem;"/>
         <p v-else class="margin-bottom-8"> 
           <button class="underline-link text-button link-color" 
                   @click="$store.commit('setLoginModalVisibility', true)">
-            <login-icon/> Log in
+            <LoginIcon/> Log in
           </button> to rate comic
         </p>
 
-        <div id="comicKeywords" class="mt-16 horizontalFlex flexWrap">
-          <span v-if="keywords.length > 0" class="horizontalFlex flexWrap">
-            <div class="keyword-static"
-                 v-for="keyword in keywords"
-                 :key="keyword.name">
-              {{keyword.name}}
-            </div>
-          </span>
-          <span v-if="keywords.length===0" style="margin-right: 8px;">
-            <p>No tags</p>
-          </span>
-
-          <div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="!keywordSuggestionsActive">
-            add/remove tags
-          </div>
-          <div class="keyword-static keyword-button" @click="toggleKeywordSuggestions()" v-if="keywordSuggestionsActive">
-            hide adding/removing tags
-          </div>
-        </div>
-
-        <div v-if="keywordSuggestionsActive && allKeywords.failed">
-          <p class="mt-16">There was an error fetching all tags. Please try again later.</p>
-        </div>
-
-        <div id="keywordEditing"
-             v-if="keywordSuggestionsActive && !allKeywords.failed"
-             class="mt-32 verticalFlex alignCenter">
-          <MultiToggleButton :items="['Add', 'Remove']"
-                             allowNone
-                             @on-change="newVal => isAddingOrRemoving = newVal[0]"/>
-
-          <div v-if="isAddingOrRemoving === 'Add'" class="mt-8">
-            <select v-model="addKeyword">
-              <option v-for="keyword in keywordsNotInComic" :key="keyword.id">
-                {{keyword.name}}
-              </option>
-            </select>
-
-            <button class="y-button m-0"
-                    :class="{'y-button-disabled-dark': !addKeyword}"
-                    @click="suggestKeywordChange(isAdding=true)">
-              Submit
-            </button>
-          </div>
-
-          <div v-else-if="isAddingOrRemoving === 'Remove'" class="mt-8">
-            <select v-model="removeKeyword">
-              <option v-for="keyword in keywords" :key="keyword.id">
-                {{keyword.name}}
-              </option>
-            </select>
-
-            <button class="y-button m-0"
-                    :class="{'y-button-disabled-dark': !removeKeyword}"
-                    @click="suggestKeywordChange(isAdding=false)">
-              Submit
-            </button>
-          </div>
-        </div>
-
-        <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
-                         @closeMessage="closeResponseMessage" class="mt-16"/>
+        <ComicKeywords v-if="comic"
+                       :comicData="comic"/>
       </div>
     </div>
 
     <div v-if="!comic && comicNotFound">
       <h2 class="comicLoadingInfo">
-        There is no comic with the name {{$route.params.comicName}}
+        There is no comic with the name "{{$route.params.comicName}}".
       </h2>
     </div>
 
@@ -189,32 +129,32 @@
       <p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
       <p v-if="comic.previousComic">
         <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link" style="font-weight: 400;">
-          <left-arrow/>
+          <LeftArrow/>
           {{comic.previousComic}}
         </router-link>
       </p>
       <p v-if="comic.nextComic">
         <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link" style="font-weight: 400;">
           {{comic.nextComic}} 
-          <right-arrow/>
+          <RightArrow/>
         </router-link>
       </p>
     </div>
 
     <span v-if="comic">
       <p class="margin-top-8">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
-      <rating-slider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
+      <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
       <p v-else class="margin-bottom-16"> 
         <button class="underline-link text-button link-color" 
                 @click="$store.commit('setLoginModalVisibility', true)">
-          <login-icon/> Log in
+          <LoginIcon/> Log in
         </button> to rate comic
       </p>
 
       <button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
       <br>
     </span>
-    <back-to-index />
+    <BackToIndex />
     <div style="margin-top: 16px;"> </div>
   </span>
 </template>
@@ -223,23 +163,17 @@
 import BackToIndex from '@/components/BackToIndex.vue'
 import RatingSlider from '@/components/RatingSlider.vue'
 import Loading from '@/components/LoadingIndicator.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 import LoginIcon from 'vue-material-design-icons/Login.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
-import ExpandWidth from 'vue-material-design-icons/ArrowExpandHorizontal.vue'
-import ExpandHeight from 'vue-material-design-icons/ArrowExpandVertical.vue'
-import Download from 'vue-material-design-icons/Download.vue'
-import Tags from 'vue-material-design-icons/TagMultiple.vue'
-import MultiToggleButton from '@/components/MultiToggleButton.vue'
+import DownloadIcon from 'vue-material-design-icons/Download.vue'
+import ComicKeywords from './ComicKeywords.vue'
 
-import comicApi from '../api/comicApi'
-import keywordApi from '../api/keywordApi'
-import miscApi from '../api/miscApi'
+import comicApi from '../../api/comicApi'
+import miscApi from '../../api/miscApi'
 import { mapGetters, mapActions } from 'vuex'
-import { doFetch } from '../utils/statefulFetch'
 import config from '@/config.json'
 
 export default {
@@ -250,19 +184,8 @@ export default {
   },
 
   components: {
-    'back-to-index': BackToIndex,
-    'rating-slider': RatingSlider,
-    Loading, ResponseMessage,
-    'left-arrow': LeftArrow,
-    'right-arrow': RightArrow,
-    'share-icon': ShareIcon,
-    'login-icon': LoginIcon,
-    'up-arrow': UpArrow,
-    'expand-width': ExpandWidth,
-    'expand-height': ExpandHeight,
-    'download': Download,
-    'tags': Tags,
-    MultiToggleButton,
+    BackToIndex, RatingSlider, Loading, ComicKeywords,
+    LeftArrow, RightArrow, ShareIcon, LoginIcon, UpArrow, DownloadIcon,
   },
 
   data: function () {
@@ -272,17 +195,11 @@ export default {
       comicNotFound: false,
       fetchComicError: undefined,
       imageFitArray: [],
-      keywordSuggestionsActive: false,
       keywords: [],
-      addKeyword: undefined,
-      responseMessage: '',
-      responseMessageType: 'info',
-      removeKeyword: undefined,
       showShareIcon: false,
       isZipping: false,
       downloadStarted: false,
       paidImage: null,
-      isAddingOrRemoving: undefined,
       config,
     }
   },
@@ -290,16 +207,8 @@ export default {
   computed: {
     ...mapGetters({
       paidImages: 'paidImagesBanner',
-      allKeywords: 'allKeywords',
       allPaidImages: 'paidImages'
     }),
-
-    keywordsNotInComic () {
-      if (this.allKeywords.failed) { return [] }
-      return this.allKeywords.payload
-        .filter(kw => !this.keywords.find(thisKw => thisKw.id === kw.id))
-        .sort((kw1, kw2) => kw1.name > kw2.name ? 1 : -1)
-    }
   },
 
   async mounted () {
@@ -318,16 +227,11 @@ export default {
       })
     }
 
-    if (this.comic && (!this.keywords || this.keywords.length === 0)) {
-      this.keywords = await keywordApi.getComicKeywords(this.comic.id)
-    }
-
     this.$store.commit('setLoginModalVisibility', false)
     this.loadComic(false)
     if (this.comic) {
       this.initializeImageFitArray()
       this.fitImagesForMobile()
-      // this.fetchPrevNextComics()
     }
 
     if (navigator.share !== undefined) {
@@ -382,39 +286,6 @@ export default {
       }
     },
 
-    onAddOrRemoveChanged (newVal) {
-      this.isAddingOrRemoving = newVal
-    },
-
-    toggleKeywordSuggestions () {
-      this.keywordSuggestionsActive = !this.keywordSuggestionsActive
-      this.isAddingOrRemoving = null
-      this.addKeyword = null
-      this.removeKeyword = null
-    },
-
-    async suggestKeywordChange (isAdding) {
-      this.closeResponseMessage()
-      let relevantKeywordName = isAdding===true ? this.addKeyword : this.removeKeyword
-      if (!relevantKeywordName) { return }
-
-      let relevantKeywordId = this.getKeywordIdFromName(relevantKeywordName)
-      let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comic.id, relevantKeywordId, isAdding)
-
-      if (suggestionResponse.success) {
-        this.responseMessage = `Thank you! Your suggestion will be reviewed soon (${isAdding ? 'Add' : 'Remove'} ${relevantKeywordName})`
-        this.responseMessageType = 'success'
-
-        this.addKeyword = undefined
-        this.removeKeyword = undefined
-        this.isAddingOrRemoving = undefined
-      }
-      else {
-        this.responseMessage = suggestionResponse.message
-        this.responseMessageType = 'error'
-      }
-    },
-
     async loadComic (setCurrentUndefined=true) {
       if (setCurrentUndefined) {
         this.comic = undefined
@@ -425,7 +296,6 @@ export default {
         this.$store.commit('setComicForVotingModal', this.comic)
         this.initializeImageFitArray()
         this.fitImagesForMobile()
-        this.keywords = await keywordApi.getComicKeywords(this.comic.id)
       }
       catch (err) {
         if (err.response?.status === 404) {
@@ -500,16 +370,10 @@ export default {
     scrollToTop () {
       window.scrollTo(0, 0)
     },
-
-    getKeywordIdFromName (keywordName) {
-      return this.allKeywords.payload.find(kw => kw.name === keywordName).id
-    },
-    
-    closeResponseMessage () { this.responseMessage = '' },
   },
 
   watch: {
-    $route (to, from){
+    $route (){
       this.loadComic()
     }
   },
@@ -565,21 +429,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   }
 }
 
-#comicKeywords {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.keyword-button {
-  border-color: $themeBlueDark !important;
-  color: $themeBlueDark !important;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
 .comicLoadingInfo {
   text-align:center;
   margin: 2rem 1rem 1.5rem 1rem;
@@ -595,43 +444,18 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   }
 }
 
-#dropdownContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
 .upperBodyDivComic {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   text-align: center;
-  box-shadow: 0px 0px 16px 0px $themeGray4;
   h2 {
     @media (max-width: 900px) {
       font-size: 22px;
     }
   }
-
-  h1, h2, p, label {
-    color: white;
-  }
-
-  .keyword-static {
-    color: #ddd;
-  }
-  
-  background: #0d1a23;
-  
-  border-style: solid;
-  border-width: 0;
-  border-bottom-width: 10px;
-  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
-}
-a {
-  text-decoration: none;
 }
 
 .artistNameLink {
@@ -680,12 +504,6 @@ a {
 #comicSizingButtonsRow {
   .y-button {
     margin: 0px 4px;
-  }
-}
-
-.dark {
-  .upperBodyDivComic {
-    box-shadow: 0px 0px 16px 0px #202020;
   }
 }
 </style>

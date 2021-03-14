@@ -39,20 +39,16 @@
         </div>
 
         <div class="selectsGrid">
-          <Select :options="[
-                    {value: 'updated', text: 'Recently updated'},
-                    {value: 'userRating', text: 'User rating'},
-                  ]"
+          <Select :options="availableSortOptions"
                   title="Order by"
                   :borderTheme1="true"
+                  :defaultValue="availableSortOptions.find(opt => opt.value === this.sortingValue)"
                   @change="onSortingChange"/>
 
-          <Select :options="[
-                    {value: 'low', text: 'Simple'},
-                    {value: 'high', text: 'Detailed'},
-                  ]"
+          <Select :options="detailOptions"
                   title="Detail level"
                   :borderTheme2="true"
+                  :defaultValue="detailOptions.find(opt => opt.value === this.detailValue)"
                   @change="onDetailLevelChange"/>
         </div>
 
@@ -177,14 +173,14 @@ export default {
     availableSortOptions () {
       if (this.isAuthenticated) {
         return [
-          {id: 'updated', text: 'Recently updated'},
-          {id: 'userRating', text: 'User rating'},
-          {id: 'yourRating', text: 'Your rating'},
+          {text: 'Recently updated', value: 'updated'},
+          {text: 'User rating', value: 'userRating'},
+          {text: 'Your rating', value: 'yourRating'},
         ]
       }
       return [
-        {id: 'updated', text: 'Recently updated'},
-        {id: 'userRating', text: 'User rating'},
+        {value: 'updated', text: 'Recently updated'},
+        {value: 'userRating', text: 'User rating'},
       ]
     },
 
@@ -234,6 +230,10 @@ export default {
       tagHighlightColors: ['#9aebe7', '#9ceee7', '#9df1e6', '#a0f3e5', '#a2f6e4', '#a6f9e3', '#a9fbe2', '#adfee0'],
       detailHighlighColors: ['#9aebe7', '#adfee0'],
       shouldShowOverflow: true,
+      detailOptions: [
+        {value: 'low', text: 'Simple'},
+        {value: 'high', text: 'Detailed'},
+      ]
     }
   },
 

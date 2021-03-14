@@ -15,7 +15,7 @@
              :placeholder="placeholder"
              class="paddedInput"
              :class="{
-               inputWithIcon: startIcon,
+               inputWithIcon: startIconVariant,
                borderTheme1: borderTheme1,
                borderTheme2: borderTheme2
              }"
