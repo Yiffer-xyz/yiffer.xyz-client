@@ -364,9 +364,9 @@ select {
   border: none;
 }
 .keyword:hover {
-  color: $theme4 !important;
+  color: $themeBlueDarker !important;
   cursor: pointer;
-  border-color: $theme4;
+  border-color: $themeBlueDarker;
 }
 .keyword-static:hover {
   cursor: default;
@@ -445,12 +445,12 @@ input, textarea, select {
   }
 
   .keyword, .keyword-static {
-    background-color: #333;
+    background-color: $themeDark3;
     color: white !important;
     box-shadow: none;
   }
   .keyword:hover {
-    background-color: $theme4;
+    background-color: $themeBlueDarker;
   }
 }
 

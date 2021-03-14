@@ -367,7 +367,7 @@ export default {
   border-radius: 2px;
   margin: 10px;
   padding-bottom: 8px;
-  // background-color: $themeGray0;
+  background: rgba(255,255,255,0.45);
   border-radius: 4px;
   box-shadow: 0 0px 10px rgba(0,0,0,0.15);
   &:after {
@@ -428,6 +428,7 @@ export default {
     margin-top: 4px;
   }
 
+
   @media (max-width: 900px) {
     width: 100px;
     margin: 6px;
@@ -455,8 +456,8 @@ export default {
   }
 
   .emphasized-keyword {
-    background: $themeGray8;
-    border-color: $themeGray8;
+    background: $themeGray6;
+    border-color: $themeGray6;
   }
 
   .triangle-wrapper-right {
@@ -477,7 +478,7 @@ export default {
     background-color: $comicCardDark;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
     &:after {
-      box-shadow: 0 0 10px 1px $theme3;
+      box-shadow: 0 0 10px 2px rgba(0,0,0,0.5);
       // box-shadow: 0 0px 14px rgba(0,0,0,0.1);
       opacity: 0;
       transition: opacity 0.15s ease-out;

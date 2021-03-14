@@ -269,7 +269,7 @@ nav {
   font-weight: 600;
   &:hover {
     cursor: pointer;
-    color: $themeBlueDark;
+    color: $themeBlueDarker;
   }
 }
 
@@ -316,10 +316,8 @@ nav {
 
 .dark {
   nav {
-    border-bottom-width: 4px;
-    border-bottom-style: solid;
-    border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 0 1 100%;
-    background: #161f23;
+    background: transparent;
+    box-shadow: none;
     a, span {
       color: $themeBlueDark;
     }

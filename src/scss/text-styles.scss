@@ -183,15 +183,8 @@ h2 {
   font-size: 30px;
 }
 
-// h1 {
-//   font-size: 72px;
-//   background: -webkit-linear-gradient(left, $themeGreen1, $themeGreen2);
-//   -webkit-background-clip: text;
-//   -webkit-text-fill-color: transparent;
-// }
-
 a {
-  color: $themeBlueDark;
+  color: $themeBlueDarker;
   width: fit-content;
 }
 
@@ -220,11 +213,11 @@ label {
 }
 
 .link-color {
-  color: $themeBlueDark !important;
+  color: $themeBlueDarker !important;
 }
 
 .link-color-light {
-  color: $themeBlueDark !important;
+  color: $themeBlueDarker !important;
 }
 
 .red-color {

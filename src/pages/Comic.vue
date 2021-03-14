@@ -573,8 +573,8 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 
 .keyword-button {
-  border-color: $theme4 !important;
-  color: $theme4 !important;
+  border-color: $themeBlueDark !important;
+  color: $themeBlueDark !important;
   &:hover {
     cursor: pointer;
   }

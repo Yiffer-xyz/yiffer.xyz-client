@@ -13,7 +13,7 @@
                :class="{'buttonSelected': categoryFilter.indexOf(category) >= 0}"
                :style="{
                  'border-color': categoryHighlightColors[index],
-                 'background-color': categoryFilter.indexOf(category) >= 0 ? categoryHighlightColors[index] : 'transparent',
+                 'background-color': categoryFilter.indexOf(category) >= 0 ? categoryHighlightColors[index] : '',
                }"
                class="searchFilterButton"
                @click="$emit('categoryFilter', category)">
@@ -30,7 +30,7 @@
                }"
                :style="{
                  'border-color': tagHighlightColors[index],
-                 'background-color': tagFilter.indexOf(tag) >= 0 ? tagHighlightColors[index] : 'transparent',
+                 'background-color': tagFilter.indexOf(tag) >= 0 ? tagHighlightColors[index] : '',
                }"
                class="searchFilterButton"
                @click="$emit('tagFilter', tag)">
@@ -60,7 +60,7 @@
           <TextInput :value="searchValue"
                       @change="onSearchChange"
                       title="Filter by search"
-                      startIcon
+                      startIconVariant="search"
                       includeClearButton
                       borderTheme1
                       placeholder="Title or artist"/>
@@ -69,8 +69,8 @@
             <TextInput :value="keywordSearchValue"
                         @change="onKeywordSearchChange"
                         title="Filter by tags"
-                        startIcon
                         includeClearButton
+                        startIconVariant="tags"
                         borderTheme2
                         placeholder="Search tags"
                         @focus="setisKeywordSearchFocused(true)"
@@ -132,7 +132,6 @@
 
 <script>
 import CrossIcon from 'vue-material-design-icons/Close.vue'
-import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue'
 
@@ -146,7 +145,7 @@ export default {
 
   components: {
     Select, TextInput,
-    CrossIcon, TagsIcon, ChevronRightIcon, ChevronLeftIcon,
+    CrossIcon, ChevronRightIcon, ChevronLeftIcon,
   },
 
   props: {
@@ -388,26 +387,27 @@ export default {
 $buttonPadding: 10px;
 $highlightHeight: 6px;
 $nonHighlightHeight: 2px;
+$hoverBorderWidth: 6px;
 
 .searchFilterButton {
   border-bottom-width: $nonHighlightHeight;
   border-bottom-style: solid;
-  // border-top-width: $nonHighlightHeight;
-  // border-top-style: solid;
   padding: $buttonPadding 0;
   padding-top: $buttonPadding - 2px;
   padding-bottom: $buttonPadding - $nonHighlightHeight;
   &:hover {
     cursor: pointer;
+    border-bottom-width: $hoverBorderWidth;
+    padding-bottom: $buttonPadding - $nonHighlightHeight - ($hoverBorderWidth - 2px);
   }
+
+  transition: border-bottom-width 100ms linear, padding-bottom 100ms linear;
 }
 
 .buttonSelected {
-  border-bottom-width: $highlightHeight;
   border-bottom-style: solid;
   padding-bottom: $buttonPadding - $highlightHeight;
   border-image: none;
-  // background-color: transparent !important;
 }
 
 .keywordResult {
@@ -446,11 +446,11 @@ $nonHighlightHeight: 2px;
   background-color: $themeBlue;
   color: $themeDark2;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 14px;
-  padding: 2px 10px 2.5px 10px;
+  font-size: 0.95rem;
+  padding: 2px 12px 4px 10px;
   border-radius: 15px;
-  font-weight: 300;
   margin: 2px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   &:hover {
     cursor: pointer;
     background-color: $themeBlueDark;
@@ -504,10 +504,21 @@ $nonHighlightHeight: 2px;
     color: #333;
   }
   .keywordResults {
-    background: rgba(77, 77, 77, 1);
+    background: $themeDark1;
   }
   .keywordResult {
     color: white;
+    &:hover {
+      color: #444;
+    }
+  }
+  .selectedKeyword {
+    background-color: $themeBlueLight;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    font-weight: 400;
+    &:hover {
+      background-color: $themeBlueDark;
+    }
   }
 }
 

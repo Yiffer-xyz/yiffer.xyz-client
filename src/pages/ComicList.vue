@@ -789,7 +789,7 @@ export default {
     margin-top: 1rem;
   }
   a {
-    color: $themeBlueDark;
+    color: $themeBlueDarker;
   }
 }
 

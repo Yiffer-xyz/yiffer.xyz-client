@@ -5,8 +5,9 @@
     </p>
 
     <div class="positionRelative innerInputWrapper">
-      <span v-if="startIcon" class="inputIconWrapper inputIconWrapperLeft">
-        <SearchIcon title=""/>
+      <span v-if="startIconVariant" class="inputIconWrapper inputIconWrapperLeft">
+        <SearchIcon title="" v-if="startIconVariant === 'search'"/>
+        <TagsIcon title="" v-if="startIconVariant === 'tags'"/>
       </span>
       <input v-model="localValue"
              @input="changeEvent => $emit('change', changeEvent.target.value)"
@@ -33,10 +34,11 @@
 <script>
 import SearchIcon from 'vue-material-design-icons/Magnify.vue'
 import CrossIcon from 'vue-material-design-icons/Close.vue'
+import TagsIcon from 'vue-material-design-icons/TagMultiple.vue'
 
 export default {
   components: {
-    SearchIcon, CrossIcon,
+    SearchIcon, CrossIcon, TagsIcon,
   },
 
   props: {
@@ -48,8 +50,8 @@ export default {
       type: String,
       required: false,
     },
-    startIcon: {
-      type: Boolean,
+    startIconVariant: {
+      type: String,
       required: false,
     },
     placeholder: {
