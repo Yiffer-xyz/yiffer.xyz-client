@@ -67,11 +67,24 @@ export default {
       type: String,
       required: false,
       default: '',
+    },
+    resetValue: {
+      type: [String, Object],
+      required: false,
     }
   },
 
   mounted() {
     this.$emit("input", this.selected)
+  },
+
+  watch: {
+    // THIS IS BAD. Change the number to reset the select value
+    resetValue () {
+      if (this.resetValue) {
+        this.selected = this.defaultValue
+      }
+    }
   },
 
   data() {

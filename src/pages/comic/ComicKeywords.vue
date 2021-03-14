@@ -35,7 +35,8 @@
         <Select :options="keywordsNotInComic"
                 title="Tag to add"
                 @change="onAddKeywordChange"
-                wrapperStyle="min-width: 13rem;"/>
+                wrapperStyle="min-width: 13rem;"
+                :resetValue="responseMessage"/>
 
         <button class="y-button ml-8"
                 :class="{'y-button-disabled': !addKeyword}"
@@ -48,7 +49,8 @@
         <Select :options="comicKeywordOptions"
                 title="Tag to remove"
                 @change="onRemoveKeywordChange"
-                wrapperStyle="min-width: 13rem;"/>
+                wrapperStyle="min-width: 13rem;"
+                :resetValue="responseMessage"/>
 
         <button class="y-button ml-8"
                 :class="{'y-button-disabled': !removeKeyword}"
