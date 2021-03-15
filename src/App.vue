@@ -82,7 +82,7 @@
     <login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
     <voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
 
-    <!-- <div v-if="!hasConsented" class="consent-overlay">
+    <div v-if="!hasConsented" class="consent-overlay">
       <div class="consent-content">
         <p>Yiffer.xyz contains explicit imagery not suited for those under 18 years old.</p>
         <p>We also use cookies to enhance your user experience.</p>
@@ -91,7 +91,7 @@
           I am 18+ and I consent to the use of cookies
         </button>
       </div>
-    </div> -->
+    </div>
 
     <main class="main">
       <router-view/>
@@ -349,12 +349,11 @@ nav {
 
   .consent-content {
     padding: 2rem;
-    background-color: $themeGray1;
+    background-color: $themeGray0;
     border-style: solid;
     border-width: 0;
     border-top-width: 10px;
-    border-image: linear-gradient(to right, $theme2, $theme6) 1; 
-    // border-radius: 8px;
+    border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
   }
 
   p {
@@ -362,18 +361,19 @@ nav {
     margin-top: 0.5rem;
   }
   button {
+    @include simpleshadow;
     margin-top: 1rem;
     outline: none;
     border: none;
     font-size: 1.1rem;
     padding: 1rem 1.5rem;
-    background-color: $theme5;
-    color: white;
+    background-color: $themeBlueVeryLight;
+    color: $themeDark4;
     border-radius: 4px;
     font-weight: 400;
     &:hover {
+      background-color: $themeBlueLight;
       cursor: pointer;
-      background: $theme4;
     }
   }
 

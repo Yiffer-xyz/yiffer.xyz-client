@@ -71,7 +71,7 @@
       </div>
 
       <!-- ALL KEYWORDS -->
-      <div class="keyword-container" v-if="isShowingKeywords">
+      <div class="keywordContainer" v-if="isShowingKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div 
@@ -94,7 +94,7 @@
       </div>
 
       <!-- KEYWORDS, CAT, TAG -->
-      <div class="keyword-container" v-if="!isShowingKeywords && !isLoadingKeywords">
+      <div class="keywordContainer" v-if="!isShowingKeywords && !isLoadingKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div class="keyword" v-if="!isShowingKeywords" @click="showKeywords()">
@@ -238,7 +238,7 @@ export default {
     border-width: 60px 60px 0 0;
     border-color: $themeGray0 transparent transparent transparent;
     .triangle-label {
-      color: $theme5;
+      color: $themeGreen1Darker;
       position: absolute;
       top: 10px;
       transform: rotate(-45deg);
@@ -325,33 +325,6 @@ export default {
   }
 }
 
-.circled-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 33px;
-  width: 33px;
-  border-radius: 35px;
-  font-size: 12px;
-  font-weight: 400;
-  margin: 3px 0;
-  color: #444 !important;
-  background-color: $themeGray2;
-
-  &:hover {
-    cursor: default;
-  }
-}
-
-.circled-text-autowidth {
-  min-width: 33px;
-  width: auto;
-}
-
-.circled-text-red {
-  border: 0.5px solid $theme5;
-}
-
 .comicCardArtist {
   display: block;
   width: fit-content;
@@ -387,14 +360,13 @@ export default {
   }
   .imgContainer {
     width: 100%;
-    // height: 283px;
     overflow: hidden;
     img {
-      transition: transform .25s ease;
+      // transition: transform .25s ease;
     }
   }
   &:hover img{
-    transform: scale(1.08);
+    // transform: scale(1.08);
   }
   a {
     text-decoration: none;
@@ -450,11 +422,6 @@ export default {
 }
 
 .dark {
-  .circled-text {
-    background-color: #333;
-    color: #bbb !important; //todo
-  }
-
   .emphasized-keyword {
     background: $themeGray6;
     border-color: $themeGray6;
@@ -479,7 +446,6 @@ export default {
     box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
     &:after {
       box-shadow: 0 0 10px 2px rgba(0,0,0,0.5);
-      // box-shadow: 0 0px 14px rgba(0,0,0,0.1);
       opacity: 0;
       transition: opacity 0.15s ease-out;
       content: ' ';
@@ -495,7 +461,7 @@ export default {
   }
 }
 
-.keyword-container {
+.keywordContainer {
   margin-top: 7px;
   display: flex;
   flex-direction: row;

@@ -114,7 +114,8 @@ export default {
   }
 }
 .selectedMultiButton {
-  background: $theme5 !important;
+  background: linear-gradient(to right, $themeGreen1, $themeGreen2) !important;
+  color: $themeDark4 !important;
 }
 .dark {
   .toggleButtonsContainer {
@@ -124,9 +125,6 @@ export default {
       &:hover {
         background-color: $themeDark3;
       }
-    }
-    .selectedMultiButton:hover {
-      background: $theme4p5;
     }
   }
 }

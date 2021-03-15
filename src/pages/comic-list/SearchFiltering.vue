@@ -443,7 +443,7 @@ $hoverBorderWidth: 6px;
 }
 
 .selectedKeyword {
-  background-color: $themeBlue;
+  background-color: $themeBlueVeryLight;
   color: $themeDark2;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 0.95rem;

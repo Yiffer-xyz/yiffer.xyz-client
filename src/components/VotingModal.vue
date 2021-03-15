@@ -78,7 +78,7 @@ export default {
 
 	position: absolute;
 	content: "";
-	background: linear-gradient(to right, $theme2, $theme6);
+	background: linear-gradient(to right, $themeGreen1, $themeGreen2);
 	top: -3px;
 
 }

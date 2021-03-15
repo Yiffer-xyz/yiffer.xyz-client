@@ -114,15 +114,15 @@ export default {
   margin-top: 0 !important;
 }
 .highlightedBlog {
-  background-color: $theme9;
+  background-color: $themeGreen1VeryLight;
+  border-color: $themeGreen1VeryLight;
 }
 .dark {
   .blog {
-    border: 1px solid #444;
+    background: $comicCardDark;
   }
   .highlightedBlog {
-    background-color: $theme1;
-    border-color: $theme1;
+    background-color: $themeGreen1VeryDark;
   }
 }
 </style>

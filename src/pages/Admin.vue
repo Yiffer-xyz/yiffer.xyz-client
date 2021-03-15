@@ -256,7 +256,7 @@ export default {
   border-style: solid;
   border-width: 0;
   border-top-width: 10px;
-  border-image: linear-gradient(to right, $theme2, $theme6) 1; 
+  border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
 
   width: 95%;
   height: auto;

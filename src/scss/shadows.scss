@@ -1,6 +1,6 @@
 @mixin simpleshadow {
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-  &:hover {
+  &:hover, &:focus {
     box-shadow: 0 5px 15px rgba(0,0,0,0.25);
   }
 }
@@ -24,7 +24,7 @@
     opacity: 0;
     transition: opacity 80ms;
   }
-  &:hover {
+  &:hover, &:focus {
     &::before {
       opacity: 1;
     }

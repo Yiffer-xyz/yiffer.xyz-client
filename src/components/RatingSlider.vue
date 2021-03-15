@@ -108,7 +108,7 @@ export default {
 }
 
 $track-color: $themeDark1 !default;
-$track-background: linear-gradient(to right, $theme2, $theme6);
+$track-background: linear-gradient(to right, $themeGreen1, $themeGreen2);
 $track-background-norating: linear-gradient(to right, #814b5e, #dba1b5);
 $thumb-color: $themeDark1 !default;
 $thumb-color-focused: $themeDark4 !default;

@@ -412,7 +412,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 .shareIcon {
   font-size: 28px;
-  color: $theme5;
+  color: $themeGreen1Dark;
   @media (min-width: 900px) {
     display: none !important;
   }

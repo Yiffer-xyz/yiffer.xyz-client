@@ -247,13 +247,6 @@
       </div>
     </SkeletonTheme>
 
-    <div v-else-if="$breakpoint.xsOnly && $store.getters.viewMode=='list'"
-         class="comic-card-small-container">
-      <comic-card-small v-for="comic in comicList"
-                        :key="comic.id"
-                        :comic="comic"/>
-    </div>
-
     <div v-else-if="comicList.length > 0"
          class="comic-card-container"
          id="comicCardContainerList">
@@ -287,7 +280,6 @@
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
-import ComicCardSmall from '@/components/ComicCardSmall.vue'
 import ExpandedComicCard from '@/components/ExpandedComicCard.vue'
 import config from '@/config.json'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
@@ -318,7 +310,6 @@ export default {
 
   components: {
     'comic-card': ComicCard,
-    'comic-card-small': ComicCardSmall,
     'expanded-comic-card': ExpandedComicCard,
     'plus-icon': PlusIcon,
     'up-arrow': UpArrow,
@@ -449,7 +440,6 @@ export default {
 
   async mounted () {
     if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
-    if (this.$cookies.get('viewMode')) { this.setviewMode(this.$cookies.get('viewMode')) }
     if (this.$route.query && Object.keys(this.$route.query).length !== 0) {
       this.setFiltersFromRouterQuery()
     }
@@ -718,12 +708,6 @@ export default {
       if (!this.avoidLog) { miscApi.logEvent('detail', detailLevel) }
     },
 
-    setViewMode (viewMode) {
-      this.$store.commit('setViewMode', viewMode)
-      this.$cookies.set('viewmode', viewMode)
-      if (!this.avoidLog) { miscApi.logEvent('viewmode', viewMode) }
-    },
-
     clearSearchField () {
       this.searchFiltering222 = ''
       this.setRouterQuery()
@@ -788,9 +772,6 @@ export default {
   @media (max-width: 900px) {
     margin-top: 1rem;
   }
-  a {
-    color: $themeBlueDarker;
-  }
 }
 
 .subtitleContainer {
@@ -837,11 +818,6 @@ export default {
   h2 {
     margin: 45px 0px;
   }
-  .text-button {
-    color: $theme4;
-    padding-bottom: 1px;
-    font-size: 16px;
-  }
 
   padding: 5rem 0 3rem 0;
   border-style: solid;
@@ -871,13 +847,6 @@ export default {
   @media (max-width: 900px) {
     margin-top: 12px;
   }
-}
-
-.comic-card-small-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 6px;
 }
 
 .dark {

@@ -589,7 +589,7 @@ export default {
   &:hover {
     cursor: pointer;
     td {
-      background-color: $theme10;
+      background-color: $themeGreen1VeryLight;
     }
   }
   td {
@@ -598,10 +598,11 @@ export default {
 }
 
 .selectedAd {
+  background: linear-gradient(to right, $themeGreen1, $themeGreen2) !important;
   td, &:hover>td {
-    background-color: $theme6 !important;
+    background: transparent !important;
     p:not(.mono) {
-      color: white;
+      color: $themeDark4;
     }
   }
 }

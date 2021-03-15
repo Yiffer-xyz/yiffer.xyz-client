@@ -19,7 +19,6 @@ const store = {
     selectedKeywords: [],
     numberOfFilteredComics: 0,
     detailLevel: 'low',
-    viewMode: 'card',
     isComicCardExpanded: false,
     expandedComic: {'name': '', 'userRating': 0, 'yourRating': 0, 'artist': ''},
     comicKeywords: {},
@@ -195,7 +194,6 @@ const store = {
     setSelectedKeywords (state, keywordList) { state.selectedKeywords = keywordList },
     setFilteredComics (state, comicList) { state.filteredComics =  comicList },
     setDetailLevel (state, detailLevel) { state.detailLevel = detailLevel },
-    setViewMode (state, viewMode) { state.viewMode = viewMode },
     setExpandedComic (state, comic) { state.expandedComic = comic },
     setIsComicCardExpanded (state, isExpanded) { state.isExpanded = isExpanded },
     setNumberOfFilteredComics (state, num) { state.numberOfFilteredComics = num },
@@ -219,7 +217,6 @@ const store = {
     selectedKeywords: state => state.selectedKeywords,
     getSelectedKeywords: () => state => state.selectedKeywords,
     detailLevel: state => state.detailLevel,
-    viewMode: state => state.viewMode,
     isComicCardExpanded: state => state.isComicCardExpanded,
     expandedComic: state => state.expandedComic,
     paidImagesCard: state => () => state.paidImages.payload

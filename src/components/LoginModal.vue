@@ -367,36 +367,10 @@ export default {
   margin-top: 1.5rem;
 }
 
-.register-button {
-  font-size: 14px;
-  font-weight: 300;
-  margin-top: 10px;
-}
-
 .login-button {
   padding: 6px 30px;
   align-self: center;
   margin-bottom: 32px;
-}
-
-.modal-input-explanation {
-  font-size: 12px;
-  margin-bottom: 16px;
-}
-
-.modal-error-message {
-  margin-top: 1rem;
-  color: $themeRed1 !important;
-  font-weight: 400;
-}
-
-.pleasewait-button {
-  background-color: $theme5;
-  color: white;
-  cursor: pointer;
-  &:hover {
-    cursor: default !important;
-  }
 }
 
 .dark {
@@ -412,11 +386,6 @@ export default {
     }
     label {
       color: #ccc;
-    }
-    .loginInput {
-      background: rgba(255, 255, 255, 0.075);
-      border: none;
-      border-bottom: 1px solid #ddd;;
     }
   }
   
