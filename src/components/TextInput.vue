@@ -11,7 +11,7 @@
       </span>
       <input v-model="localValue"
              @input="changeEvent => $emit('change', changeEvent.target.value)"
-             type="text"
+             :type="type"
              :placeholder="placeholder"
              class="paddedInput"
              :class="{
@@ -45,11 +45,16 @@ export default {
   props: {
     value: {
       type: String,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
       required: false,
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'text'
     },
     textAlign: {
       type: String,

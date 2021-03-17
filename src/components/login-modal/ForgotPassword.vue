@@ -10,10 +10,12 @@
     <form @submit.prevent="forgotPasswordSubmit"
           v-if="!isForgotPasswordLoading && forgotPwResponseMessageType !== 'success'"
           class="login-register-form">
-      <div class="yForm2Field">
-        <label for="forgotPwEmail">Email address</label>
-        <input type="email" v-model="forgotPwEmail" id="forgotPwEmail" />
-      </div>
+
+      <TextInput @change="newVal => forgotPwEmail = newVal"
+                  type="email"
+                  title="Email address"
+                  textAlign="left"
+                  classes="width100 mb-32"/>
       
       <button type="submit" class="y-button login-button">Reset password</button>
     </form>
@@ -38,10 +40,11 @@
 import authApi from '../../api/authApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import Loading from '@/components/LoadingIndicator.vue'
+import TextInput from '@/components/TextInput.vue'
 
 export default {
   components: {
-    ResponseMessage, Loading,
+    ResponseMessage, Loading, TextInput,
   },
 
   data () {

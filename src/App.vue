@@ -263,6 +263,7 @@ nav {
 .navlink {
   color: $themeDark1;
   padding: 0.5rem 1rem;
+  font-size: 0.9rem;
   @media screen and (max-width: 550px) {
     padding: 0.5rem 0.25rem;
   }

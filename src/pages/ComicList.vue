@@ -33,7 +33,7 @@
                       :right="true" 
                       class="dropdownElement ml-4" 
                       style="width: 8rem;">
-          <p dropdown-toggle class="link-color" style="font-weight: 400;">
+          <p dropdown-toggle class="link-color" style="font-weight: 600;">
             More <MenuDownIcon/>
           </p>
 

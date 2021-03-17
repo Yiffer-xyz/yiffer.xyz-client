@@ -17,8 +17,7 @@
                  textAlign="left"
                  classes="width100 mb-32"/>
 
-      <TextInput :value="loginPassword"
-                 @change="newVal => loginPassword = newVal"
+      <TextInput @change="newVal => loginPassword = newVal"
                  title="Password"
                  textAlign="left"
                  classes="width100 mb-32"/>

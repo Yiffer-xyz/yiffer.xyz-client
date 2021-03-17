@@ -443,17 +443,18 @@ $hoverBorderWidth: 6px;
 }
 
 .selectedKeyword {
-  background-color: $themeBlueVeryLight;
-  color: $themeDark2;
+  background-color: $themeBlueDark;
+  color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 0.95rem;
   padding: 2px 12px 4px 10px;
   border-radius: 15px;
   margin: 2px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
   &:hover {
     cursor: pointer;
-    background-color: $themeBlueDark;
+    background-color: $themeBlueDarker;
   }
   span {
     svg {
@@ -476,6 +477,10 @@ $hoverBorderWidth: 6px;
   }
   svg {
     margin-bottom: 0.25rem;
+  }
+  p, svg {
+    color: $themeBlueDark;
+    font-weight: 400;
   }
 }
 
@@ -513,11 +518,16 @@ $hoverBorderWidth: 6px;
     }
   }
   .selectedKeyword {
-    background-color: $themeBlueLight;
+    background-color: $themeBlueDT;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     font-weight: 400;
     &:hover {
-      background-color: $themeBlueDark;
+      background-color: $themeBlueDTDarker;
+    }
+  }
+  .filterSectionExpander {
+    p, svg {
+      color: white;
     }
   }
 }

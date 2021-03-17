@@ -11,25 +11,28 @@
           v-if="!signupLoading"
           class="login-register-form">
 
-      <div class="yForm2Field">
-        <label for="signupEmail">Email:</label>
-        <input type="email" v-model="signupEmail" id="signupEmail" />
-      </div>
-      
-      <div class="yForm2Field">
-        <label for="signupUsername">Username:</label>
-        <input type="text" v-model="signupUsername" id="signupUsername" />
-      </div>
-      
-      <div class="yForm2Field">
-        <label for="signupPassword">Password, 6+ characters:</label>
-        <input type="password" v-model="signupPassword" id="signupPassword" />
-      </div>
-      
-      <div class="yForm2Field">
-        <label for="signupPassword2">Repeat password</label>
-        <input type="password" v-model="signupPassword2" id="signupPassword2" />
-      </div>
+      <TextInput @change="newVal => signupEmail = newVal"
+                 type="email"
+                 title="Email"
+                 textAlign="left"
+                 classes="width100 mb-32"/>
+
+      <TextInput @change="newVal => signupUsername = newVal"
+                 title="Username"
+                 textAlign="left"
+                 classes="width100 mb-32"/>
+
+      <TextInput @change="newVal => signupPassword = newVal"
+                 type="password"
+                 title="Password, 6+ characters"
+                 textAlign="left"
+                 classes="width100 mb-32"/>
+
+      <TextInput @change="newVal => signupPassword2 = newVal"
+                 type="password"
+                 title="Repeat password"
+                 textAlign="left"
+                 classes="width100 mb-32"/>
 
       <button type="submit" class="y-button login-button">
         Sign up
@@ -54,11 +57,12 @@
 
 <script>
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import TextInput from '@/components/TextInput.vue'
 import Loading from '@/components/LoadingIndicator.vue'
 
 export default {
   components: {
-    ResponseMessage, Loading,
+    ResponseMessage, Loading, TextInput,
   },
 
   props: {
