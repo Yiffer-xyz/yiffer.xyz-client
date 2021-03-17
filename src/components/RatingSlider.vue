@@ -108,8 +108,8 @@ export default {
 }
 
 $track-color: $themeDark1 !default;
-$track-background: linear-gradient(to right, $themeGreen1, $themeGreen2);
-$track-background-norating: linear-gradient(to right, #814b5e, #dba1b5);
+$track-background: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark);
+$track-background-norating: linear-gradient(to right, $themeGreen1Trans, $themeGreen2Trans);
 $thumb-color: $themeDark1 !default;
 $thumb-color-focused: $themeDark4 !default;
 
@@ -183,10 +183,6 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
     &::-ms-thumb  {
       height: 50px;
     }
-    // &::-webkit-slider-runnable-track {
-    //   background: lighten($track-color, $contrast);
-    // }
-
   }
 
   &::-webkit-slider-runnable-track {

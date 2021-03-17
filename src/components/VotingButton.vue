@@ -16,13 +16,12 @@
 </template>
 
 <script>
-import LoginIcon from 'vue-material-design-icons/Login.vue'
 import StarIcon from 'vue-material-design-icons/Star.vue'
 
 export default {
 	name: 'votingButton',
 	components: {
-		LoginIcon, StarIcon,
+		StarIcon,
 	},
 
 	props: {
@@ -45,6 +44,7 @@ export default {
 
 <style lang="scss">
 .voting-button-todo {
+	border: none;
 	@media (max-width: 900px) {
 		padding: 3px 9px 3px 6px !important;
 	}

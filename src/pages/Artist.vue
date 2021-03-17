@@ -51,7 +51,7 @@
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
-import LoginModal from '@/components/LoginModal.vue'
+import LoginModal from '@/components/login-modal/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import SadFace from 'vue-material-design-icons/EmoticonSadOutline.vue'
 

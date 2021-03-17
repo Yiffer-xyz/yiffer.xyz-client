@@ -16,8 +16,8 @@
 
         <h2>by 
           <router-link :to="{ name: 'artist', params: { artistName: comic.artist } }"
-                      class="underline-link artistNameLink"
-                      style="font-weight:300;">
+                       class="underline-link artistNameLink"
+                       style="font-family: 'Mulish', sans-serif;">
             {{comic.artist}}
           </router-link>
         </h2>
@@ -42,14 +42,14 @@
           <p>This comic is part of a series!</p>
           <p v-if="comic.previousComic">
             <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
-                         class="underline-link" style="font-weight: 400;">
+                         class="underline-link">
               <LeftArrow/>
               {{comic.previousComic}}
             </router-link>
           </p>
           <p v-if="comic.nextComic">
             <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }"
-                         class="underline-link" style="font-weight: 400;">
+                         class="underline-link">
               {{comic.nextComic}} 
               <RightArrow/>
             </router-link>
@@ -460,6 +460,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 .artistNameLink {
   font-size: 30px;
+  font-weight: 400;
   @media (max-width: 900px) {
     font-size: 22px;
   }

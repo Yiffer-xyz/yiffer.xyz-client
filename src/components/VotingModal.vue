@@ -85,7 +85,7 @@ export default {
 
 .dark {
 	.voting-modal {
-		background-color: $themeBlue0p5;
+		background-color: $themeDark3;
 		color: white;
 		input {
 			color: #ccc;

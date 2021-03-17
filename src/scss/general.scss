@@ -24,7 +24,7 @@ textarea {
 }
 
 body {
-  background-color: #fafafa;
+  // background-color: #fafafa;
 }
 
 .dark {
@@ -423,7 +423,7 @@ input, textarea, select {
     }
   }
 
-  input:not(.paddedInput), textarea {
+  input:not(.paddedInput):not([type=range]), textarea {
     background: rgb(22, 26, 29);
     border: 1px solid #666;
     color: white;

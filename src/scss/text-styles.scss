@@ -142,13 +142,6 @@ ul {
   padding-top: 0;
   padding-bottom: 1.5rem;
   color: $themeText !important;
-  // background-image: -webkit-gradient(
-  //   linear, left top, right top, 
-  //   color-stop(0.2, $themeGreen1Dark),
-  //   color-stop(0.8, $themeGreen2Dark)
-  // );
-  // color: transparent;
-  // background-clip: text;
   @media screen and (max-width: 900px) {
     font-size: 3rem;
   }
@@ -184,12 +177,14 @@ h2 {
 }
 
 a {
-  color: $themeBlueDarker;
+  color: $themeBlueDark;
   width: fit-content;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .underline-link {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   padding-bottom: 1px;
   width: fit-content;
   height: fit-content;
@@ -214,11 +209,9 @@ label {
 }
 
 .link-color {
-  color: $themeBlueDarker !important;
-}
-
-.link-color-light {
-  color: $themeBlueDarker !important;
+  color: $themeBlueDark !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
 }
 
 .red-color {
@@ -296,12 +289,12 @@ label {
   }
 
   a {
-    color: $themeBlueDark;
+    color: $themeBlueDTText;
     width: fit-content;
     text-decoration: none;
   }
   
   .link-color {
-    color: $themeBlueDark !important;
+    color: $themeBlueDTText !important;
   }
 }

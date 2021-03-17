@@ -123,7 +123,7 @@
         </div>
 
         <div class="horizontalFlex margin-top-32">
-          <button @click="cancelChanges()" class="y-button y-button-red-outline button-with-icon">
+          <button @click="cancelChanges()" class="y-button y-button-neutral button-with-icon">
             <CancelIcon title=""/> Cancel
           </button>
           <button @click="saveArtistChanges()" class="y-button button-with-icon margin-left-16">

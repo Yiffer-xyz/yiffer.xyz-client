@@ -1,5 +1,5 @@
 <template>
-  <div class="customTextInput" :style="wrapperStyle">
+  <div :class="`customTextInput ${classes}`" :style="wrapperStyle">
     <p v-if="title" class="titleText">
       {{ title }}
     </p>
@@ -19,6 +19,7 @@
                borderTheme1: borderTheme1,
                borderTheme2: borderTheme2
              }"
+             :style="`text-align: ${textAlign}`"
              @focus="$emit('focus')"
              @blur="$emit('blur')"
              @click="$emit('click')"/>
@@ -50,6 +51,11 @@ export default {
       type: String,
       required: false,
     },
+    textAlign: {
+      type: String,
+      required: false,
+      default: 'center'
+    },
     startIconVariant: {
       type: String,
       required: false,
@@ -73,7 +79,11 @@ export default {
     wrapperStyle: {
       type: String,
       required: false,
-    }
+    },
+    classes: {
+      type: String,
+      required: false,
+    },
   },
 
   data: function () {
@@ -100,7 +110,7 @@ export default {
 
 <style lang="scss" scoped>
 $darkThemeColor: #eee;
-$paddingBig: 0.75rem;
+$paddingBig: 0.5rem;
 $paddingSmall: 0.4rem;
 
 ::placeholder {
@@ -109,7 +119,7 @@ $paddingSmall: 0.4rem;
 
 .titleText {
   position: absolute;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   top: 0;
   left: $paddingBig;
   @media (max-width: 900px) {
@@ -155,7 +165,7 @@ $paddingSmall: 0.4rem;
 .paddedInput {
   text-align: left;
   box-sizing: border-box;
-  padding: 9px;
+  padding: 9px $paddingBig;
   text-align: center;
   background: transparent;
   outline: none;
@@ -165,6 +175,9 @@ $paddingSmall: 0.4rem;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
   border-bottom-style: solid;
   border-bottom-width: 2px;
+  @media (max-width: 900px) {
+    padding: 9px $paddingSmall;
+  }
 }
 
 .borderTheme1 {

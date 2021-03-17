@@ -3,6 +3,7 @@
           'error-message': messageType==='error',
           'success-message': messageType==='success',
           'info-message': messageType==='info',
+          [classes]: classes,
         }" 
        :style="outsideStyle"
        v-show="message && message.length > 0"
@@ -28,6 +29,7 @@ export default {
     'messageType': String,
     'preventClose': Boolean,
     'outsideStyle': String,
+    'classes': String,
   },
 
   data: function () {

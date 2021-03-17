@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import LoginModal from '@/components/LoginModal.vue'
+import LoginModal from '@/components/login-modal/LoginModal.vue'
 import VotingModal from '@/components/VotingModal.vue'
 import TwitterIcon from 'vue-material-design-icons/Twitter.vue'
 import DarkIcon from 'vue-material-design-icons/LightbulbOutline.vue'
@@ -319,7 +319,10 @@ nav {
     background: transparent;
     box-shadow: none;
     a, span {
-      color: $themeBlueDark;
+      color: $themeBlueDTText;
+      &:hover {
+        color: $themeBlueDTText;
+      }
     }
   }
   .footer {

@@ -329,6 +329,7 @@ export default {
   display: block;
   width: fit-content;
   margin: 4px auto 0 auto;
+  font-weight: 400;
 }
 
 .comic-card {
@@ -361,12 +362,6 @@ export default {
   .imgContainer {
     width: 100%;
     overflow: hidden;
-    img {
-      // transition: transform .25s ease;
-    }
-  }
-  &:hover img{
-    // transform: scale(1.08);
   }
   a {
     text-decoration: none;

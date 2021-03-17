@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import LoginModal from '@/components/LoginModal.vue'
+import LoginModal from '@/components/login-modal/LoginModal.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import AddPage from '@/components/admin-panel/AddPage.vue'
 import AddKeywords from '@/components/admin-panel/AddKeywords.vue'
