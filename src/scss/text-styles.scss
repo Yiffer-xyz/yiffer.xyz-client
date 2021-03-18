@@ -124,16 +124,6 @@ ul {
   font-weight: 400 !important;
 }
 
-.yifferTitleContainer {
-  font-size: 70px;
-  font-family: 'Shrikhand', cursive;
-  margin-bottom: -10px;
-  margin-top: 0;
-  padding-top: 0;
-  padding-bottom: 1.5rem;
-  -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(94.75deg, rgb(5, 157, 255) 0%, rgb(101, 73, 213) 43.66%, rgb(227, 63, 161) 64.23%, rgb(246, 79, 86) 80.09%, rgb(251, 83, 67) 83.76%, rgb(253, 123, 66) 100%);
-}
 .yifferTitle {
   font-size: 4.25rem;
   font-family: 'Shrikhand', cursive;
@@ -169,6 +159,12 @@ ul {
   @media screen and (max-width: 500px) {
     font-size: 2.5rem;
   }
+}
+
+.smallYifferTitleLink {
+  font-size: 1.25rem;
+  color: $themeDark1;
+  font-family: 'Shrikhand', cursive;
 }
 
 h2 {
@@ -295,6 +291,19 @@ label {
   }
   
   .link-color {
-    color: $themeBlueDTText !important;
+    color: $themeBlueDTText;
+  }
+
+  .smallYifferTitleLink {
+    color: $themeBlueDTText;
+  }
+  .coloredSmallYifferTitle {
+    background-clip: text;
+    background-image: -webkit-gradient(
+      linear, left top, right top, 
+      color-stop(0.2, $themeGreen1Dark),
+      color-stop(0.8, $themeGreen2Dark)
+    );
+    color: transparent !important;
   }
 }

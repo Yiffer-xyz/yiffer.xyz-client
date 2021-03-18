@@ -60,7 +60,7 @@
       </div>
 
       <!-- PAGES AND RATINGS -->
-      <div class="horiz-card-row icons-and-numbers-row">
+      <div class="horiz-card-row icons-and-numbers-row" v-if="detailLevel !== 'minimum'">
         <p title="Number of pages">
           <PagesIcon title="Number of pages"/>{{comic.numberOfPages}}
         </p>
@@ -71,7 +71,7 @@
       </div>
 
       <!-- ALL KEYWORDS -->
-      <div class="keywordContainer" v-if="isShowingKeywords">
+      <div class="keywordContainer" v-if="isShowingKeywords && detailLevel !== 'minimum'">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div 
@@ -94,7 +94,7 @@
       </div>
 
       <!-- KEYWORDS, CAT, TAG -->
-      <div class="keywordContainer" v-if="!isShowingKeywords && !isLoadingKeywords">
+      <div class="keywordContainer" v-if="!isShowingKeywords && !isLoadingKeywords && detailLevel !== 'minimum'">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div class="keyword" v-if="!isShowingKeywords" @click="showKeywords()">
@@ -107,7 +107,7 @@
                      :comic="comic"
                      v-if="$store.getters.isAuthenticated"/>
 
-      <p v-if="$store.getters.detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
+      <p v-if="detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
         <label title="Updated on" style="font-size: 0.8rem;">
           <RefreshIcon title="Updated on"/> {{prettyDate(comic.updated)}}
         </label>
@@ -171,6 +171,7 @@ export default {
   computed: {
     ...mapGetters([
       'comicKeywords',
+      'detailLevel',
     ]),
     comicNameUrlParsed () {
       return this.comic.name.replace(/ /g, '%20')

@@ -80,8 +80,10 @@ $buttonBorderWidth: 2px;
 
 .y-button-red {
   background-color: $themeRed;
+  border-color: $themeRed;
   color: white;
   &:hover, &:focus {
+    border-color: $themeRed2;
     background-color: $themeRed2;
   }
 }
@@ -241,8 +243,10 @@ $buttonBorderWidth: 2px;
 
   .y-button-red {
     background-color: $themeRed2;
+    border-color: $themeRed2;
     &:hover, &:focus {
-      background-color: $themeRed;
+      background-color: $themeRed3;
+      border-color: $themeRed3;
     }
   }
 

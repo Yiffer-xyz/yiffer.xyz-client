@@ -9,13 +9,16 @@
             class="navlink">
             <HomeIcon/>
           </router-link>
-          <router-link 
-            :to="{ name: 'comicList' }"
-            v-else
-            style="font-size: 1.25rem"
-            class="navlink shrikhand">
-            Yiffer.xyz
-          </router-link>
+          <span v-else
+                class="smallYifferTitle"
+                style="padding: 0 1rem 0 0.5rem;">
+            <router-link 
+              :to="{ name: 'comicList' }"
+              :class="{'coloredSmallYifferTitle': isDarkTheme && this.$route.path !== '/'}"
+              class="shrikhand smallYifferTitleLink">
+              Yiffer.xyz
+            </router-link>
+          </span>
 
           <router-link 
             v-if="$store.getters.isAuthenticated"
@@ -120,6 +123,7 @@ import LightIcon from 'vue-material-design-icons/Lightbulb.vue'
 import HomeIcon from 'vue-material-design-icons/Home.vue'
 
 import miscApi from './api/miscApi'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -195,6 +199,10 @@ export default {
         this.$router.replace('/')
       }
     }
+  },
+
+  computed: {
+    ...mapGetters(['isDarkTheme']),
   },
 
   data: function () {
@@ -331,7 +339,13 @@ nav {
     border-width: 0;
     border-top-width: 4px;
     border-image: linear-gradient(left, $themeGreen1, $themeGreen2) 1; 
-    background: #161f23;
+    background: $themeDark4;
+    p {
+      color: white;
+    }
+    a {
+      color: $themeBlueDTText;
+    }
   }
 }
 

@@ -231,6 +231,7 @@ export default {
       detailHighlighColors: ['#9aebe7', '#adfee0'],
       shouldShowOverflow: true,
       detailOptions: [
+        {value: 'minimum', text: 'Minimum'},
         {value: 'low', text: 'Simple'},
         {value: 'high', text: 'Detailed'},
       ]

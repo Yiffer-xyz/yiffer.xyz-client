@@ -362,11 +362,12 @@ select {
 .keyword {
   @include simpleshadowSmall;
   border: none;
-}
-.keyword:hover {
-  color: $themeBlueDarker !important;
-  cursor: pointer;
-  border-color: $themeBlueDarker;
+  transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
+  &:hover {
+    color: $themeGreen1Darker !important;
+    border-color: $themeGreen1Darker;
+    cursor: pointer;
+  }
 }
 .keywordStatic:hover {
   cursor: default;
