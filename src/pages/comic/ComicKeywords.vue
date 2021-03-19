@@ -191,8 +191,8 @@ export default {
 }
 
 .keywordButton {
-  border-color: $themeGreen1Darker !important;
-  color: $themeGreen1Darker !important;
+  border-color: $themeBlueDark !important;
+  color: $themeBlueDark !important;
   &:hover {
     cursor: pointer;
   }

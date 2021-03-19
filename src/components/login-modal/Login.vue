@@ -18,6 +18,7 @@
                  classes="width100 mb-32"/>
 
       <TextInput @change="newVal => loginPassword = newVal"
+                 type="password"
                  title="Password"
                  textAlign="left"
                  classes="width100 mb-32"/>

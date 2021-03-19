@@ -59,10 +59,13 @@ export default {
 
 <style lang="scss">
 .error-message, .success-message, .info-message {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
   display: flex; 
   flex-direction: row;
-  padding: 12px 20px;
+  padding: 22px 34px;
   color: white !important;
+  border-radius: 4px;
   p {
     color: white;
   }
@@ -92,12 +95,12 @@ export default {
 }
 
 .error-message {
-  background-color: rgb(228, 94, 94);
+  background: linear-gradient(45deg, #f35757, #e2557f);
 }
 .success-message {
-  background-color: rgb(50, 133, 47);
+  background: linear-gradient(45deg, $themeGreen1Dark, $themeGreen2Dark);
 }
 .info-message {
-  background-color: rgb(45, 101, 175);
+  background: linear-gradient(45deg, #57b5f3, #55c1e2);
 }
 </style>

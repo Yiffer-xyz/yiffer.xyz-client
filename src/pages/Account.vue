@@ -25,7 +25,7 @@
         
         <button v-if="!isChangingPassword && !isChangingEmail"
                 @click="isChangingPassword=true"
-                class="y-button y-button mt-16"
+                class="y-button y-button-neutral y-button mt-16"
                 style="width: fit-content;">
           Change password
         </button>

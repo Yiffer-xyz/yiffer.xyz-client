@@ -22,8 +22,6 @@
           </router-link>
         </h2>
 
-        <BackToIndex class="margin-top-16"></BackToIndex>
-
         <button @click="downloadZippedComic()"
                 v-if="$store.getters.isAuthenticated 
                       && $store.getters.userData.donator 
@@ -38,35 +36,38 @@
           Download started!
         </p>
 
-        <div class="margin-top-16" v-if="comic && (comic.previousComic || comic.nextComic)">
-          <p>This comic is part of a series!</p>
-          <p v-if="comic.previousComic">
-            <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
-                         class="underline-link">
-              <LeftArrow/>
-              {{comic.previousComic}}
-            </router-link>
+        <div class="verticalFlex" style="align-items: flex-start;">
+          <div class="margin-top-16 textAlignLeft" v-if="comic && (comic.previousComic || comic.nextComic)">
+            <p>This comic is part of a series!</p>
+            <p v-if="comic.previousComic">
+              <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
+                          class="underline-link">
+                <LeftArrow/>
+                {{comic.previousComic}}
+              </router-link>
+            </p>
+            <p v-if="comic.nextComic">
+              <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }"
+                          class="underline-link">
+                {{comic.nextComic}} 
+                <RightArrow/>
+              </router-link>
+            </p>
+          </div>
+
+          <p class="margin-top-16">
+            User rating: 
+            <span style="font-weight: 400;">{{formatRating($store.getters.comicForVotingModal.userRating)}}</span>
           </p>
-          <p v-if="comic.nextComic">
-            <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }"
-                         class="underline-link">
-              {{comic.nextComic}} 
-              <RightArrow/>
-            </router-link>
+          <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0.5rem;"/>
+          <p v-else class="margin-bottom-8"> 
+            <button class="underline-link text-button link-color" 
+                    @click="$store.commit('setLoginModalVisibility', true)">
+              <LoginIcon/> Log in
+            </button> to rate comic
           </p>
         </div>
 
-        <p class="margin-top-16">
-          User rating: 
-          <span style="font-weight: 400;">{{formatRating($store.getters.comicForVotingModal.userRating)}}</span>
-        </p>
-        <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0.5rem;"/>
-        <p v-else class="margin-bottom-8"> 
-          <button class="underline-link text-button link-color" 
-                  @click="$store.commit('setLoginModalVisibility', true)">
-            <LoginIcon/> Log in
-          </button> to rate comic
-        </p>
 
         <ComicKeywords v-if="comic"
                        :comicData="comic"/>

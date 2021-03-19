@@ -21,7 +21,7 @@ $buttonBorderWidth: 2px;
 
 .y-button {
   @include simpleShadowSmallBtn;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: $buttonPaddingTopBot $buttonPaddingSides;
   font-family: 'Mulish', sans-serif;
   font-size: 14px;
