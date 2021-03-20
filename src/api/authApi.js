@@ -5,7 +5,7 @@ const baseUrl = config.apiBaseUrl
 
 export default {
   async refreshAuth () {
-    let response = await axios.get(baseUrl + '/refresh-auth')
+    let response = await axios.get(`${baseUrl}/refresh-auth`)
     return response.data
   },
 
@@ -48,13 +48,10 @@ export default {
   },
 
   async changeEmail (oldPassword, newEmail) {
-    let response = await axios.post(baseUrl + '/change-email', {
+    await axios.post(baseUrl + '/change-email', {
       email: newEmail,
       password: oldPassword,
     })
-    
-    if (response.status === 204) { return {success: true} }
-    else { return {success: false, message: response.data.error} }
   },
 
   async submitForgotPassword (email) {

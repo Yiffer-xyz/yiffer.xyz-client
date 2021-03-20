@@ -4,67 +4,30 @@
     <h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
     <BackToIndex style="margin: auto;"/>
 
-    <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
-                     class="margin-bottom-10 margin-top-10"/>
-
-    <div class="smaller-width-text" v-if="!isChangingPassword">
+    <div class="smaller-width-text" v-if="!isChangingPassword && !isAddingEmail">
       <div class="verticalFlex mt-16">
         <p v-if="$store.getters.userData.email">
           Your email: {{$store.getters.userData.email}}
         </p>
         <p v-else>
-          Your account does not have an email. This is because your account was created before this website started using emails for accounts. We recommend that you connect your email address now, for account recovery purposes.
+          Your account does not have an email. This is because your account was created before this website started using emails for accounts. We recommend that you connect your email address now, for account recovery purposes. Don't worry, we will never spam you.
         </p>
 
-        <button v-if="!$store.getters.userData.email && !isChangingPassword && !isChangingEmail"
-                @click="isChangingEmail=true"
+        <button @click="isAddingEmail=true"
                 class="y-button y-button mt-16"
                 style="width: fit-content;">
           Add email address
         </button>
         
-        <button v-if="!isChangingPassword && !isChangingEmail"
-                @click="isChangingPassword=true"
-                class="y-button y-button mt-32 mb-32 button-with-icon"
+        <button @click="isChangingPassword=true"
+                class="y-button y-button mt-16 mb-16 button-with-icon"
                 style="width: fit-content;">
           Change password
         </button>
       </div>
 
-      <!-- CHANGE EMAIL -->
-      <form v-if="isChangingEmail" class="margin-top-16">
-        <p class="bold">Set email address</p>
-        <table id="changePasswordTable">
-          <tr>
-            <td><label>New email address: </label></td>
-            <td><input v-model="newEmail" type="email" class="margin-top-4"/></td>
-          </tr>
-          <tr>
-            <td><label>Current password: </label> </td>
-            <td><input v-model="currentPassword" type="password" class="margin-top-4"/></td>
-          </tr>
-        </table>
-
-        <div v-if="!isSubmittingEmailChange" style="margin: 0.75rem auto 0 auto; width: fit-content;">
-          <button @click="cancelChangeEmail"
-                  type="button"
-                  class="y-button y-button-neutral">
-            Cancel
-          </button>
-
-          <button @click="submitChangeEmail"
-                  @submit.prevent="submitChangeEmail"
-                  type="submit"
-                  class="y-button" 
-                  style="width: fit-content; margin-left: 8px;">
-            Set email
-          </button>
-        </div>
-        <Loading v-else text="Submitting" class="mt-16" />
-      </form>
-
       <div class="margin-top-16"
-           v-show="showModApplicationStatus">
+           v-show="showModApplicationStatus && !isChangingPassword && !isAddingEmail">
         <p class="bold">Mod application status</p>
         <p class="mt-0" v-if="modApplicationStatus === modApplicationStatuses.pending">
           Pending review
@@ -77,7 +40,7 @@
         </p>
       </div>
 
-      <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isChangingEmail"
+      <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
                    :to="{name: 'adsDashboard'}"
                    class="adDashboardButton simpleShadow">
         Go to advertising dashboard
@@ -86,6 +49,7 @@
     </div>
     
     <ChangePassword v-if="isChangingPassword" @cancel="isChangingPassword = false"/>
+    <AddEmail v-if="isAddingEmail" @cancel="isAddingEmail = false"/>
   </div>
 </template>
 
@@ -96,6 +60,7 @@ import config from '@/config.json'
 import { doFetch } from '@/utils/statefulFetch'
 
 import ChangePassword from './ChangePassword.vue'
+import AddEmail from './AddEmail.vue'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import advertisingApi from '@/api/advertisingApi'
@@ -117,7 +82,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, ResponseMessage, RightArrow, ChangePassword,
+    BackToIndex, ResponseMessage, RightArrow, ChangePassword, AddEmail,
   },
 
   computed: {
@@ -140,12 +105,7 @@ export default {
   data: function () {
     return {
       isChangingPassword: false,
-      isChangingEmail: false,
-      newEmail: '',
-      responseMessage: '',
-      responseMessageType: 'info',
-      isSubmittingPassword: false,
-      isSubmittingEmailChange: false,
+      isAddingEmail: false,
       modApplicationStatus: MOD_APPLICATION_STATUSES.loading,
       modApplicationStatuses: MOD_APPLICATION_STATUSES,
       config,
@@ -153,64 +113,6 @@ export default {
   },
 
   methods: {
-    async submitChangeEmail () {
-      if (!this.currentPassword || !this.newEmail) {
-        this.responseMessage = 'Please fill in all fields'
-        this.responseMessageType = 'error'
-        return
-      }
-
-      this.isSubmittingEmailChange = true
-      let response = await authApi.changeEmail(this.currentPassword, this.newEmail)
-      this.isSubmittingEmailChange = false
-
-      if (response.success) {
-        this.responseMessage = 'Email set successfully!'
-        this.responseMessageType = 'success'
-        this.cancelChangeEmail()
-        this.$store.dispatch('refreshUserData')
-      }
-      else {
-        this.responseMessage = `Error changing email: ${response.message}`
-        this.responseMessageType = 'error'
-      }
-    },
-
-    async submitChangePassword () {
-      if (!this.currentPassword || !this.newPassword1 || !this.newPassword2) {
-        this.responseMessage = 'Please fill in all fields'
-        this.responseMessageType = 'error'
-        return
-      }
-      else if (this.newPassword1 != this.newPassword2) {
-        this.responseMessage = 'New passwords do not match'
-        this.responseMessageType = 'error'
-        this.newPassword1 = ''
-        this.newPassword2 = ''
-        return
-      }
-
-      this.isSubmittingPassword = true
-      let response = await authApi.changePassword(this.currentPassword, this.newPassword1, this.newPassword2)
-      this.isSubmittingPassword = false
-
-      if (response.success) {
-        this.responseMessage = 'Password changed successfully!'
-        this.responseMessageType = 'success'
-        this.cancelChangePassword()
-      }
-      else {
-        this.responseMessage = `Error changing password: ${response.message}`
-        this.responseMessageType = 'error'
-      }
-    },
-
-    cancelChangeEmail () {
-      this.newEmail = ''
-      this.currentPassword = ''
-      this.isChangingEmail = false
-    },
-
     async getModApplicationStatus () {
       let { success, applicationStatus }  = await miscApi.getMyModApplicationStatus()
       if (success) { 
@@ -259,14 +161,15 @@ export default {
 
 .adDashboardButton {
   width: 100%;
-  color: $themeDark1;
+  border-radius: 4px;
+  color: white;
   border: none;
   outline: none;
   height: 3rem;
   font-size: 1rem;
   margin-top: 1.5rem;
   padding: 0 1rem;
-  background: linear-gradient(to right, $themeGreen1, $themeGreen2);
+  background: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark);
   display: flex;
   align-items: center;
   justify-content: center;

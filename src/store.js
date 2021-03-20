@@ -91,6 +91,7 @@ registerFetchNames(store,
   {name: 'modApplicationSubmit', defaultValue: {}},
   {name: 'comicSuggestionSubmit', defaultValue: {}},
   {name: 'changePasswordSubmit', defaultValue: {}},
+  {name: 'addEmailSubmit', defaultValue: {}},
   {name: 'advertisingApplySubmit', defaultValue: {}},
 )
 
