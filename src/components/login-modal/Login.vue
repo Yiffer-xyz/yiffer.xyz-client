@@ -8,7 +8,6 @@
                      style="margin-top: 1rem;"/>
 
     <form @submit.prevent="loginConfirmClicked"
-          v-if="!loginLoading"
           class="login-register-form">
 
       <TextInput @change="newVal => loginUsername = newVal"
@@ -23,19 +22,16 @@
                  textAlign="left"
                  classes="width100 mb-32"/>
 
-      <button type="submit" class="y-button login-button">Log in</button>
+      <LoadingButton text="Log in"
+                     :isLoading="loginLoading"/>
     </form>
 
-    <Loading v-else text="Logging in" class="mt-48 mb-32" />
-
     <button @click="setModalContext('register')"
-            v-if="!loginLoading"
-            class="margin-top-4 underline-link link-color text-button">
+            class="mt-32 underline-link link-color text-button">
       Click here to <b>sign up</b>
     </button>
 
     <button @click="setModalContext('forgot-password')"
-            v-if="!loginLoading"
             class="mt-8 underline-link link-color text-button">
       Forgot password?
     </button>
@@ -44,12 +40,12 @@
 
 <script>
 import ResponseMessage from '@/components/ResponseMessage.vue'
-import Loading from '@/components/LoadingIndicator.vue'
 import TextInput from '@/components/TextInput.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 
 export default {
   components: {
-    ResponseMessage, Loading, TextInput,
+    ResponseMessage, LoadingButton, TextInput,
   },
 
   props: {
@@ -66,16 +62,6 @@ export default {
       loginErrorMessage: '',
       loginLoading: false,
     }
-  },
-
-  mounted () {
-    this.$store.watch(this.$store.getters.getLoginModalVisibility, (visibility) => {
-      if (visibility) {
-        if (this.$store.getters.loginModalContext==='login') {
-          this.$refs.loginUsernameInput.focus()
-        }
-      }
-    })
   },
 
   methods: {

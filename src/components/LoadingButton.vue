@@ -1,9 +1,10 @@
 <template>
-  <button class="yButtonSubmit"
-          :class="{yButtonDisabled: isDisabled, yButtonLoading: isLoading}"
+  <button type="submit"
+          class="yButtonSubmit"
+          :class="{yBtnIconPadding: iconType || isLoading, yButtonDisabled: isDisabled, yButtonLoading: isLoading}"
           @click="$emit('click')"
           :style="style">
-    <div style="width: 1rem; height: 1rem; margin-right: 0.25rem;">
+    <div style="width: 1rem; height: 1rem; margin-right: 0.25rem;" v-if="iconType || isLoading">
       <Spinner v-if="isLoading"
                size="12"
                :line-size="1"
@@ -39,7 +40,7 @@ export default {
     },
     iconType: {
       type: String,
-      required: true,
+      required: false,
       validator: prop => ['check', 'save'].includes(prop),
     },
     style: {
@@ -71,8 +72,6 @@ $buttonBorderWidth: 2px;
   }
   border-radius: 4px;
   padding: $buttonPaddingTopBot $buttonPaddingSides;
-  padding-right: $buttonPaddingSides+2px;
-  padding-left: $buttonPaddingSides - 2px;
   font-family: 'Mulish', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -96,6 +95,12 @@ $buttonBorderWidth: 2px;
     margin-bottom: 1px;
   }
 }
+
+.yBtnIconPadding {
+  padding-right: $buttonPaddingSides+2px;
+  padding-left: $buttonPaddingSides - 2px;
+}
+
 .dark {
   .yButtonSubmit {
     background-color: $themeBlueDT;

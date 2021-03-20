@@ -8,7 +8,6 @@
                       outsideStyle="margin-top: 1rem;"/>
 
     <form @submit.prevent="signupConfirmClicked"
-          v-if="!signupLoading"
           class="login-register-form">
 
       <TextInput @change="newVal => signupEmail = newVal"
@@ -34,21 +33,16 @@
                  textAlign="left"
                  classes="width100 mb-32"/>
 
-      <button type="submit" class="y-button login-button">
-        Sign up
-      </button>
+      <LoadingButton text="Sign up"
+                     :isLoading="signupLoading"/>
     </form>
 
-    <Loading v-else text="Submitting" class="mt-48 mb-32" />
-
     <button @click="setModalContext('login')"
-            v-show="!signupLoading"
-            class="mt-4 underline-link link-color text-button">
+            class="mt-32 underline-link link-color text-button">
       Click here to <b>log in</b>
     </button>
 
     <button @click="setModalContext('forgot-password')"
-            v-if="!signupLoading"
             class="mt-8 underline-link link-color text-button">
       Forgot password?
     </button>
@@ -58,11 +52,11 @@
 <script>
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import TextInput from '@/components/TextInput.vue'
-import Loading from '@/components/LoadingIndicator.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 
 export default {
   components: {
-    ResponseMessage, Loading, TextInput,
+    ResponseMessage, LoadingButton, TextInput,
   },
 
   props: {

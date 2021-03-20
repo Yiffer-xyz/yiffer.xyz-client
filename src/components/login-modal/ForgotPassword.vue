@@ -3,12 +3,12 @@
     <p class="modal-header">Forgot password?</p>
 
     <ResponseMessage :message="forgotPwResponseMessage"
-                      :messageType="forgotPwResponseMessageType"
-                      preventClose
-                      classes="mt-32 mb-32"/>
+                     :messageType="forgotPwResponseMessageType"
+                     preventClose
+                     classes="mt-32 mb-32"/>
 
     <form @submit.prevent="forgotPasswordSubmit"
-          v-if="!isForgotPasswordLoading && forgotPwResponseMessageType !== 'success'"
+          v-if="forgotPwResponseMessageType !== 'success'"
           class="login-register-form">
 
       <TextInput @change="newVal => forgotPwEmail = newVal"
@@ -17,19 +17,16 @@
                   textAlign="left"
                   classes="width100 mb-32"/>
       
-      <button type="submit" class="y-button login-button">Reset password</button>
+      <LoadingButton text="Reset password"
+                     :isLoading="isForgotPasswordLoading"/>
     </form>
 
-    <Loading v-if="isForgotPasswordLoading" text="Submitting" class="mt-48 mb-32" />
-
     <button @click="setModalContext('login')"
-            v-if="!isForgotPasswordLoading"
-            class="margin-top-4 underline-link link-color text-button">
+            class="mt-32 underline-link link-color text-button">
       Click here to <b>log in</b>
     </button>
 
     <button @click="setModalContext('register')"
-            v-if="!isForgotPasswordLoading"
             class="mt-8 underline-link link-color text-button">
       Click here to <b>sign up</b>
     </button>
@@ -39,12 +36,12 @@
 <script>
 import authApi from '../../api/authApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
-import Loading from '@/components/LoadingIndicator.vue'
 import TextInput from '@/components/TextInput.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 
 export default {
   components: {
-    ResponseMessage, Loading, TextInput,
+    ResponseMessage, LoadingButton, TextInput,
   },
 
   data () {

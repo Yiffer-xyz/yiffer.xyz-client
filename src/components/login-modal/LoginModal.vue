@@ -140,7 +140,7 @@ export default {
 .login-register-form {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 1.5rem;
   min-width: 12rem;
 }

@@ -71,7 +71,6 @@
 import keywordApi from '../../api/keywordApi'
 import { mapGetters } from 'vuex'
 import ResponseMessage from '@/components/ResponseMessage.vue'
-import Loading from '@/components/LoadingIndicator.vue'
 import Select from '../../components/Select.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 
@@ -81,7 +80,7 @@ export default {
   },
 
   components: {
-    ResponseMessage, Select, Loading, LoadingButton,
+    ResponseMessage, Select, LoadingButton,
   },
 
   computed: {
