@@ -25,7 +25,7 @@
         
         <button v-if="!isChangingPassword && !isChangingEmail"
                 @click="isChangingPassword=true"
-                class="y-button y-button-neutral y-button mt-16"
+                class="y-button y-button mt-16 button-with-icon"
                 style="width: fit-content;">
           Change password
         </button>
@@ -84,16 +84,16 @@
         <div v-if="!isSubmittingPassword" style="margin-top: 0.75rem;">
           <button @click="cancelChangePassword"
                   type="button"
-                  class="y-button y-button-neutral">
-            Cancel
+                  class="y-button y-button-neutral button-with-icon">
+            <CrossIcon title=""/> Cancel
           </button>
 
           <button @click="submitChangePassword"
                   @submit.prevent="submitChangePassword"
                   type="submit"
-                  class="y-button" 
+                  class="y-button button-with-icon" 
                   style="width: fit-content; margin-left: 8px;">
-            Change password
+            <CheckIcon title=""/> Change password
           </button>
         </div>
         <Loading v-else text="Submitting" class="mt-16" />
@@ -135,6 +135,8 @@ import Loading from '@/components/LoadingIndicator.vue'
 import advertisingApi from '../api/advertisingApi'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import CrossIcon from 'vue-material-design-icons/Close.vue'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
 import { format } from 'date-fns'
 
 import { mapGetters } from 'vuex'
@@ -151,7 +153,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, ResponseMessage, Loading, RightArrow,
+    BackToIndex, ResponseMessage, Loading, RightArrow, CrossIcon, CheckIcon,
   },
 
   computed: {

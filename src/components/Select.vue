@@ -171,7 +171,7 @@ $darkThemeColor: #eee;
   z-index: 1;
 
   max-height: 20rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .items div {

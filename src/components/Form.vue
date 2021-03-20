@@ -4,18 +4,15 @@
         :style="`width: min(${maxWidth || '600'}px, 95%); margin: 1rem auto;`">
     <h3>{{header}}</h3>
 
-    <span v-show="!fetchState.fetched">
-      <slot></slot>
-    </span>
+    <slot v-if="!fetchState.fetched"></slot>
 
-    <BigSuccess v-show="fetchState.fetched" :text="successText" classes="mb-16"/>
+    <ResponseMessage :message="fetchState.failed ? errorText : (fetchState.fetched ? successText : null)"
+                     :messageType="fetchState.failed ? 'error' : 'success'"
+                     preventClose
+                     :style="fetchState.fetched ? 'margin-top: 0; width: 100%;' : 'margin-top: 2rem; width: 100%;'"/>
 
-    <ErrorMessage v-if="fetchState.failed"
-                  :message="errorText"
-                  class="mb-16"/>
-
-    <div style="height: 3.65rem" class="mt-32" v-if="!fetchState.fetched && !hideSubmit">
-      <Loading v-if="fetchState.fetching" :text="fetchingText" classes="mb-16"/>
+    <div v-if="!fetchState.fetched && !hideSubmit">
+      <Loading v-if="fetchState.fetching" :text="fetchingText" classes="mb-16 mt-32"/>
 
       <button @click.prevent="submit"
               class="y-button"
@@ -29,14 +26,13 @@
 </template>
 
 <script>
-import BigSuccess from '@/components/BigSuccessMessage.vue'
-import ErrorMessage from '@/components/ErrorMessage.vue'
 import Loading from '@/components/LoadingIndicator.vue'
+import ResponseMessage from '@/components/ResponseMessage.vue'
 
 export default {
   name: 'yifferForm',
 
-  components: { ErrorMessage, Loading, BigSuccess, },
+  components: { ResponseMessage, Loading, },
 
   props: {
     fetchState: Object,

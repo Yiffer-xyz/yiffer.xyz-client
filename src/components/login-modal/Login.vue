@@ -3,9 +3,9 @@
     <p class="modal-header">Log in</p>
 
     <ResponseMessage :message="loginErrorMessage"
-                      :messageType="'error'"
-                      @closeMessage="() => loginErrorMessage = ''"
-                      style="margin-top: 1rem;"/>
+                     :messageType="'error'"
+                     @closeMessage="() => loginErrorMessage = ''"
+                     style="margin-top: 1rem;"/>
 
     <form @submit.prevent="loginConfirmClicked"
           v-if="!loginLoading"

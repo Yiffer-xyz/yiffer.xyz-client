@@ -29,23 +29,30 @@
             :errorText="comicSuggestionSubmit.errorMessage"
             :fetchingText="'Submitting...'"
             :fetchState="comicSuggestionSubmit"
-            :header="'Comic suggestion form'"
+            :header="'Suggest comic'"
             :successText="`Thank you for your suggestion of ${comicName+''}!`"
             @submit="submitSuggestion">
-        <div class="yForm2Field">
-          <label for="comicNameInput">Comic name:</label>
-          <input type="text" v-model="comicName" id="comicNameInput"/>
-        </div>
 
-        <div class="yForm2Field">
-          <label for="artistInput">Artist (if known):</label>
-          <input type="text" v-model="artist" id="artistInput"/>
-        </div>
+        <TextInput :value="comicName"
+                    @change="newVal => comicName = newVal"
+                    title="Comic name"
+                    textAlign="left"
+                    classes="width100 mb-48"/>
 
-        <div class="yForm2Field">
-          <label for="linksCommentsInput">Links, comments:</label>
-          <textarea type="text" v-model="linksComments" id="linksCommentsInput" rows="4"/>
-        </div>
+        <TextInput :value="artist"
+                   @change="newVal => artist = newVal"
+                   ref="loginUsernameInput"
+                   title="Artist (if known)"
+                   textAlign="left"
+                   classes="width100 mb-48"/>
+
+        <TextInput :value="linksComments"
+                   @change="newVal => linksComments = newVal"
+                   ref="loginUsernameInput"
+                   title="Links, comments"
+                   type="textarea"
+                   textAlign="left"
+                   classes="width100 mb-8"/>
 
         <p class="no-margin-top">
           Please provide some link (e.g. e621, FurAffinity, u18chan, reddit, anything not behind a paywall), and any other helpful comments you may have. If you have multiple sources, feel free to provide all of them!
@@ -81,13 +88,16 @@ import comicApi from '../api/comicApi'
 import miscApi from '../api/miscApi'
 
 import BackToIndex from '@/components/BackToIndex.vue'
+import TextInput from '@/components/TextInput.vue'
 import Form from '../components/Form.vue'
 import { mapGetters } from 'vuex'
 import { fetchClear, doFetch } from '../utils/statefulFetch'
 export default {
   name: 'suggestComic',
 
-  components: { BackToIndex, Form },
+  components: {
+    BackToIndex, Form, TextInput,
+  },
 
   data: function () {
     return {

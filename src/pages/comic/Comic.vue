@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div>
     <div class="upperBodyDivComic">
       <div v-if="comic" id="comicUpperDiv">
 
@@ -99,10 +99,10 @@
     <div v-if="comic">
       <div id="comicSizingButtonsRow" class="margin-top-16 horizontalFlex" style="align-items: center;">
         <p style="margin-right: 4px;">Image fit:</p>
-        <button @click="setAllImagesFit('height')" class="y-button y-button-neutral">Height</button>
-        <button @click="setAllImagesFit('width')"  class="y-button y-button-neutral">Width</button>
-        <button @click="setAllImagesFit('big')"    class="y-button y-button-neutral">Full</button>
-        <button @click="setAllImagesFit('thumb')"  class="y-button y-button-neutral">Tiny</button>
+        <button @click="setAllImagesFit('height')" class="y-button y-button-small">Height</button>
+        <button @click="setAllImagesFit('width')"  class="y-button y-button-small">Width</button>
+        <button @click="setAllImagesFit('big')"    class="y-button y-button-small">Full</button>
+        <button @click="setAllImagesFit('thumb')"  class="y-button y-button-small">Tiny</button>
       </div>
       <p class="smaller-text">You may also click any one image to resize it</p>
 
@@ -126,24 +126,22 @@
         @click="cycleOneImageFit(pageNumber-1)"/>
     </div>
 
-    <div class="margin-top-8 margin-bottom-8" v-if="comic">
+    <div class="lowerLinksAndRating" v-if="comic">
       <p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
       <p v-if="comic.previousComic">
-        <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link" style="font-weight: 400;">
+        <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link">
           <LeftArrow/>
           {{comic.previousComic}}
         </router-link>
       </p>
       <p v-if="comic.nextComic">
-        <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link" style="font-weight: 400;">
+        <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link">
           {{comic.nextComic}} 
           <RightArrow/>
         </router-link>
       </p>
-    </div>
 
-    <span v-if="comic">
-      <p class="margin-top-8">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
+      <p class="mt-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
       <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
       <p v-else class="margin-bottom-16"> 
         <button class="underline-link text-button link-color" 
@@ -152,12 +150,15 @@
         </button> to rate comic
       </p>
 
-      <button class="y-button y-button-neutral margin-bottom-16" @click="scrollToTop()"><up-arrow/> to top</button>
-      <br>
-    </span>
+
+      <button class="y-button m-auto mb-16" @click="scrollToTop()">
+        <up-arrow/> to top
+      </button>
+    </div>
+
     <BackToIndex />
     <div style="margin-top: 16px;"> </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -400,7 +401,14 @@ export default {
 let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.lowerLinksAndRating {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: auto;
+}
+
 .comic-page {
   min-height: 90px;
 }

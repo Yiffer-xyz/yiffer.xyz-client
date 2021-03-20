@@ -40,6 +40,7 @@
 
         <button class="y-button ml-8"
                 :class="{'y-button-disabled': !addKeyword}"
+                style="height: fit-content; align-self: flex-end;"
                 @click="suggestKeywordChange(isAdding=true)">
           Submit
         </button>
@@ -54,6 +55,7 @@
 
         <button class="y-button ml-8"
                 :class="{'y-button-disabled': !removeKeyword}"
+                style="height: fit-content; align-self: flex-end;"
                 @click="suggestKeywordChange(isAdding=false)">
           Submit
         </button>

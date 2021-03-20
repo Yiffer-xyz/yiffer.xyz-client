@@ -57,13 +57,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .error-message, .success-message, .info-message {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
+  box-sizing: border-box;
   display: flex; 
   flex-direction: row;
-  padding: 22px 34px;
+  padding: 22px 28px;
   color: white !important;
   border-radius: 4px;
   p {
@@ -102,5 +102,11 @@ export default {
 }
 .info-message {
   background: linear-gradient(45deg, #57b5f3, #55c1e2);
+}
+.dark {
+  .success-message {
+    color: white;
+    background: linear-gradient(45deg, $themeGreen1Darker, $themeGreen2Darker);
+  }
 }
 </style>

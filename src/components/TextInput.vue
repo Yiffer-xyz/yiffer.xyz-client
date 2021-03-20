@@ -10,6 +10,7 @@
         <TagsIcon title="" v-if="startIconVariant === 'tags'"/>
       </span>
       <input v-model="localValue"
+             v-if="type !== 'textarea'"
              @input="changeEvent => $emit('change', changeEvent.target.value)"
              :type="type"
              :placeholder="placeholder"
@@ -28,6 +29,22 @@
             @click="clear">
         <CrossIcon title="Clear"/>
       </span>
+
+      <textarea v-else-if="type === 'textarea'" rows=4
+                v-model="localValue"
+                @input="changeEvent => $emit('change', changeEvent.target.value)"
+                class="paddedInput"
+                :placeholder="placeholder"
+                style="text-align: left"
+                :class="{
+                  inputWithIcon: startIconVariant,
+                  borderTheme1: borderTheme1,
+                  borderTheme2: borderTheme2
+                }"
+                @focus="$emit('focus')"
+                @blur="$emit('blur')"
+                @click="$emit('click')">
+      </textarea>
     </div>
   </div>
 </template>
