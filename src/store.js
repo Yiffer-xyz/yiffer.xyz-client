@@ -93,6 +93,7 @@ registerFetchNames(store,
   {name: 'changePasswordSubmit', defaultValue: {}},
   {name: 'addEmailSubmit', defaultValue: {}},
   {name: 'forgottenPasswordSubmit', defaultValue: {}},
+  {name: 'resetPasswordSubmit', defaultValue: {}},
   {name: 'advertisingApplySubmit', defaultValue: {}},
 )
 

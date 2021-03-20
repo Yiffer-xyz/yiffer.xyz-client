@@ -2,7 +2,7 @@
   <form class="yForm2"
         enctype="multipart/form-data"
         @submit.prevent="$emit('submit')"
-        :style="`width: min(${maxWidth || width}px, 95%); margin: 1rem auto;`">
+        :style="`width: min(${maxWidth || width}px, 95%); margin: 1rem auto; ${styles}`">
     <h3 style="text-align: left;">
       {{header}}
     </h3>
@@ -36,7 +36,7 @@
             class="y-button"
             style="align-self: flex-end;"
             @click="$emit('cancel')">
-      Close
+      {{closeButtonText}}
     </button>
   </form>
 </template>
@@ -72,7 +72,17 @@ export default {
       default: 600,
     },
     showCloseOnSuccess: Boolean,
+    closeButtonText: {
+      type: String,
+      required: false,
+      default: 'Close',
+    },
     buttonIconType: String,
+    styles: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
 
   data: function () {

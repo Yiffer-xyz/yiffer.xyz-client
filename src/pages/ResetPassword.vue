@@ -1,94 +1,71 @@
 <template>
-  <div style="width: 100%; padding-top: 2rem;">
-    <form class="yForm2"
-          enctype="multipart/form-data"
-          style="margin: 3rem auto; width: 14rem;">
+  <Form header="Reset password"
+        buttonText="Change password"
+        successText="Password changed successfully. You can now log in."
+        showCloseOnSuccess
+        closeButtonText="Back to main page"
+        styles="margin-top: 2rem;"
+        :width="320"
+        :errorText="resetPasswordSubmit.errorMessage"
+        :fetchState="resetPasswordSubmit"
+        :canSubmit="!!password1 && !!password2"
+        @cancel="onClose"
+        @submit="submit">
 
-      <h3>Reset password</h3>
+    <TextInput :value="password1"
+                @change="newVal => password1 = newVal"
+                title="Password, 6+ characters"
+                textAlign="left"
+                type="password"
+                classes="width100 mb-48"/>
 
-      <ResponseMessage :message="responseMessage" :messageType="responseMessageType" preventClose
-                       outsideStyle="margin-top: 1rem;"/>
-
-      <Loading v-if="isSubmitting" text="Submitting" class="mt-48 mb-32" />
-
-      <BigSuccess v-show="isSucess" text="Success! You may now log in with your new password."/>
-      <BackToIndex v-show="isSucess" classes="mt-16 mb-16"/>
-
-      <div class="yForm2Field" v-if="!isSubmitting && !isSucess">
-        <label for="password1">Password, 6+ characters:</label>
-        <input type="password" v-model="password1" id="password1" class="simpleInput" />
-      </div>
-
-      <div class="yForm2Field" v-if="!isSubmitting && !isSucess">
-        <label for="password2">Repeat password:</label>
-        <input type="password" v-model="password2" id="password2" class="simpleInput" />
-      </div>
-
-        <button @click.prevent="submit" 
-                class="y-button"
-                type="submit"
-                :class="{'y-button-disabled': !isReadyForSubmit}"
-                v-if="!isSubmitting && !isSucess">
-          Submit
-        </button>
-    </form>
-  </div>
+    <TextInput :value="password2"
+                @change="newVal => password2 = newVal"
+                title="Repeat password"
+                textAlign="left"
+                type="password"
+                classes="width100 mb-16"/>
+  </Form>
 </template>
 
 <script>
 import miscApi from '../api/miscApi'
-
-import BackToIndex from '@/components/BackToIndex.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
-import BigSuccess from '@/components/BigSuccessMessage.vue'
-import Loading from '@/components/LoadingIndicator.vue'
 import authApi from '../api/authApi'
-export default {
-  name: 'feedback',
+import { mapGetters } from 'vuex'
+import { fetchClear, doFetch } from '@/utils/statefulFetch'
+import Form from '@/components/Form.vue'
+import TextInput from '@/components/TextInput.vue'
 
-  components: { BackToIndex, ResponseMessage, Loading, BigSuccess },
+export default {
+  components: {
+    TextInput, Form,
+  },
+  
+  async mounted () {
+    miscApi.logRoute('forgot password')
+    fetchClear(this.$store.commit, 'resetPasswordSubmit')
+  },
+
+  computed: {
+    ...mapGetters(['resetPasswordSubmit']),
+  },
 
   data: function () {
     return {
       password1: '',
       password2: '',
-      responseMessage: '',
-      responseMessageType: 'info',
-      isSubmitting: false,
-      isSucess: false,
-    }
-  },
-  
-  async mounted () {
-    miscApi.logRoute('forgot password')
-  },
-
-  computed: {
-    isReadyForSubmit () {
-      return this.password1.length >= 6 && this.password2.length >= 6
     }
   },
 
   methods: {
     async submit () {
-      if (!this.isReadyForSubmit) { return }
-      this.responseMessage = ''
-      this.isSucess = false
-
-      this.isSubmitting = true
-      let response = await authApi.submitResetPassword(this.password1, this.password2, this.$route.params.token)
-      this.isSubmitting = false
-
-      if (response.success) {
-        this.isSucess = true
-      }
-      else {
-        this.responseMessage = response.message
-        this.responseMessageType = 'error'
-      }
+      doFetch(this.$store.commit, 'resetPasswordSubmit', 
+        authApi.submitResetPassword(this.password1, this.password2, this.$route.params.token))
     },
 
-    closeResponseMessage () { this.responseMessage = '' },
+    onClose () {
+      this.$router.replace('/')
+    },
   },
 }
 </script>
