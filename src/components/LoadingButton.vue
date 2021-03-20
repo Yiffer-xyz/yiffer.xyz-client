@@ -3,7 +3,7 @@
           class="yButtonSubmit"
           :class="{yBtnIconPadding: iconType || isLoading, yButtonDisabled: isDisabled, yButtonLoading: isLoading}"
           @click="$emit('click')"
-          :style="style">
+          :style="styles">
     <div style="width: 1rem; height: 1rem; margin-right: 0.25rem;" v-if="iconType || isLoading">
       <Spinner v-if="isLoading"
                size="12"
@@ -43,7 +43,7 @@ export default {
       required: false,
       validator: prop => ['check', 'save'].includes(prop),
     },
-    style: {
+    styles: {
       type: String,
       required: false,
     }

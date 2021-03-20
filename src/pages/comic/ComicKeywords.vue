@@ -43,7 +43,7 @@
                        :isDisabled="!addKeyword"
                        iconType="check"
                        @click="suggestKeywordChange(isAdding=true)"
-                       style="height: fit-content; align-self: flex-end; margin-left: 1rem;"/>
+                       styles="height: fit-content; align-self: flex-end; margin-left: 1rem;"/>
       </div>
 
       <div v-else-if="isRemovingKeywords" class="mt-8 horizontalFlex">
@@ -58,7 +58,7 @@
                        :isDisabled="!removeKeyword"
                        iconType="check"
                        @click="suggestKeywordChange(isAdding=false)"
-                       style="height: fit-content; align-self: flex-end; margin-left: 1rem;"/>
+                       styles="height: fit-content; align-self: flex-end; margin-left: 1rem;"/>
       </div>
     </div>
 

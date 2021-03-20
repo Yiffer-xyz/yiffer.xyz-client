@@ -1,38 +1,37 @@
 <template>
   <form class="yForm2"
         enctype="multipart/form-data"
+        @submit.prevent="$emit('submit')"
         :style="`width: min(${maxWidth || '600'}px, 95%); margin: 1rem auto;`">
     <h3>{{header}}</h3>
 
     <slot v-if="!fetchState.fetched"></slot>
 
-    <ResponseMessage :message="fetchState.failed ? errorText : (fetchState.fetched ? successText : null)"
+    <ResponseMessage :message="responseMessage"
                      :messageType="fetchState.failed ? 'error' : 'success'"
-                     preventClose
+                     :preventClose="fetchState.fetched"
+                     disableElevation
+                     @closeMessage="onCloseErrorMessage"
                      :style="fetchState.fetched ? 'margin-top: 0; width: 100%;' : 'margin-top: 2rem; width: 100%;'"/>
 
-    <div v-if="!fetchState.fetched && !hideSubmit">
-      <Loading v-if="fetchState.fetching" :text="fetchingText" classes="mb-16 mt-32"/>
-
-      <button @click.prevent="submit"
-              class="y-button"
-              :class="{'y-button-disabled': !canSubmit || fetchState.fetching}"
-              style="align-self: center;"
-              v-if="!fetchState.fetching && !fetchState.fetching">
-        {{buttonText}}
-      </button>
+    <div v-if="!hideSubmit && !fetchState.fetched">
+      <LoadingButton :text="buttonText"
+                     :iconType="buttonIconType"
+                     :isDisabled="!canSubmit"
+                     :isLoading="fetchState.fetching"
+                     styles="align-self: center;"/>
     </div>
   </form>
 </template>
 
 <script>
-import Loading from '@/components/LoadingIndicator.vue'
 import ResponseMessage from '@/components/ResponseMessage.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 
 export default {
   name: 'yifferForm',
 
-  components: { ResponseMessage, Loading, },
+  components: { ResponseMessage, LoadingButton, },
 
   props: {
     fetchState: Object,
@@ -44,13 +43,34 @@ export default {
     canSubmit: Boolean,
     hideSubmit: Boolean,
     maxWidth: String,
+    buttonIconType: String,
   },
 
   data: function () {
-    return {}
+    return {
+      responseMessage: '',
+    }
+  },
+  
+  watch: {
+    fetchState () {
+      if (this.fetchState.failed) {
+        this.responseMessage = this.fetchState.errorMessage
+      }
+      else if (this.fetchState.fetching) {
+        this.responseMessage = ''
+      }
+      else if (this.fetchState.fetched) {
+        this.responseMessage = this.successText
+      }
+    },
   },
 
   methods: {
+    onCloseErrorMessage () {
+      this.responseMessage = ''
+    },
+
     async submit () {
       if (!this.canSubmit) { return }
       this.$emit('submit')

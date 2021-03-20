@@ -3,6 +3,7 @@
           'error-message': messageType==='error',
           'success-message': messageType==='success',
           'info-message': messageType==='info',
+          disableElevation: disableElevation,
           [classes]: classes,
         }" 
        :style="outsideStyle"
@@ -30,6 +31,7 @@ export default {
     'preventClose': Boolean,
     'outsideStyle': String,
     'classes': String,
+    disableElevation: Boolean,
   },
 
   data: function () {
@@ -48,7 +50,7 @@ export default {
   },
 
   watch: {
-    message: function (newVal, oldVal) {
+    message: function (newVal) {
       if (newVal) {
         this.scrollMessageIntoView()
       }
@@ -59,9 +61,12 @@ export default {
 
 <style lang="scss" scoped>
 .error-message, .success-message, .info-message {
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  &:not(.disableElevation) {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
   box-sizing: border-box;
   display: flex; 
+  justify-content: space-between;
   flex-direction: row;
   padding: 22px 28px;
   color: white !important;

@@ -56,6 +56,9 @@ select {
   display: flex;
   flex-direction: row;
 }
+.inlineFlex {
+  display: inline-flex;
+}
 
 .flexWrap {
   flex-wrap: wrap;
