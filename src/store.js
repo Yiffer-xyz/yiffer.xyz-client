@@ -92,6 +92,7 @@ registerFetchNames(store,
   {name: 'comicSuggestionSubmit', defaultValue: {}},
   {name: 'changePasswordSubmit', defaultValue: {}},
   {name: 'addEmailSubmit', defaultValue: {}},
+  {name: 'forgottenPasswordSubmit', defaultValue: {}},
   {name: 'advertisingApplySubmit', defaultValue: {}},
 )
 

@@ -13,7 +13,7 @@
                      :messageType="fetchState.failed ? 'error' : 'success'"
                      :preventClose="fetchState.fetched"
                      disableElevation
-                     @closeMessage="onCloseErrorMessage"
+                     @closeMessage="responseMessage = ''"
                      :style="fetchState.fetched ? 'margin-top: 0; width: 100%;' : 'margin-top: 1rem; width: 100%;'"/>
 
     <div v-if="!hideSubmit && !fetchState.fetched" class="horizontalFlex inlineFlex buttonsContainer">
@@ -96,10 +96,6 @@ export default {
   },
 
   methods: {
-    onCloseErrorMessage () {
-      this.responseMessage = ''
-    },
-
     async submit () {
       if (!this.canSubmit) { return }
       this.$emit('submit')

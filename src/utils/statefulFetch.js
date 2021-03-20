@@ -32,6 +32,10 @@ export async function doFetch (commit, actionName, fetchPromise, transformFunc) 
       result = transformFunc(result)
     }
     commit(`set_${actionName}_fetched`, result)
+    
+    if (result === undefined) {
+      return true
+    }
     return result
   }
   catch (err) {

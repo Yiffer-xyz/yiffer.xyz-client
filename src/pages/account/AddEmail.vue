@@ -55,8 +55,9 @@ export default {
       let result = await doFetch(this.$store.commit, 'addEmailSubmit', 
         authApi.changeEmail(this.currentPassword, this.newEmail))
         
-      console.log(result);
-      this.$store.dispatch('refreshUserData')
+      if (result) {
+        this.$store.dispatch('refreshUserData')
+      }
     },
   },
 

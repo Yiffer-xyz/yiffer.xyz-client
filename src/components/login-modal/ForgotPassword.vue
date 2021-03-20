@@ -2,23 +2,26 @@
   <div class="login-modal-inner-wrapper">
     <p class="modal-header">Forgot password?</p>
 
-    <ResponseMessage :message="forgotPwResponseMessage"
-                     :messageType="forgotPwResponseMessageType"
-                     preventClose
-                     classes="mt-32 mb-32"/>
-
     <form @submit.prevent="forgotPasswordSubmit"
-          v-if="forgotPwResponseMessageType !== 'success'"
           class="login-register-form">
 
       <TextInput @change="newVal => forgotPwEmail = newVal"
-                  type="email"
-                  title="Email address"
-                  textAlign="left"
-                  classes="width100 mb-32"/>
-      
+                 v-if="!forgottenPasswordSubmit.fetched"
+                 type="email"
+                 title="Email address"
+                 textAlign="left"
+                 classes="width100 mb-16"/>
+
+      <ResponseMessage :message="responseMessage"
+                      :messageType="forgottenPasswordSubmit.failed ? 'error' : 'success'"
+                      :preventClose="forgottenPasswordSubmit.fetched"
+                      @closeMessage="responseMessage = ''"
+                      disableElevation
+                      :style="forgottenPasswordSubmit.fetched ? 'margin-top: 1rem; width: 100%;' : 'margin-bottom: 1rem; width: 100%;'"/>
+
       <LoadingButton text="Reset password"
-                     :isLoading="isForgotPasswordLoading"/>
+                     v-if="!forgottenPasswordSubmit.fetched"
+                     :isLoading="forgottenPasswordSubmit.fetching"/>
     </form>
 
     <button @click="setModalContext('login')"
@@ -38,18 +41,22 @@ import authApi from '../../api/authApi'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import TextInput from '@/components/TextInput.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
+import { fetchClear, doFetch } from '../../utils/statefulFetch'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ResponseMessage, LoadingButton, TextInput,
   },
 
+  computed: {
+    ...mapGetters(['forgottenPasswordSubmit'])
+  },
+
   data () {
     return { 
       forgotPwEmail: '',
-      isForgotPasswordLoading: false,
-      forgotPwResponseMessage: '',
-      forgotPwResponseMessageType: '',
+      responseMessage: '',
     }
   },
 
@@ -59,27 +66,27 @@ export default {
     },
 
     async forgotPasswordSubmit () {
-      this.forgotPwResponseMessage = ''
-      this.forgotPwResponseMessageType = 'error'
-      if (!this.forgotPwEmail || this.forgotPwEmail.length === 0) {
-        this.forgotPwResponseMessage = 'Please fill in email'
-        return
+      await doFetch(this.$store.commit, 'forgottenPasswordSubmit', 
+        authApi.submitForgotPassword(this.forgotPwEmail))
+    },
+  },
+  
+  watch: {
+    forgottenPasswordSubmit () {
+      if (this.forgottenPasswordSubmit.failed) {
+        this.responseMessage = this.forgottenPasswordSubmit.errorMessage
       }
-
-      this.isForgotPasswordLoading = true
-      let result = await authApi.submitForgotPassword(this.forgotPwEmail)
-      this.isForgotPasswordLoading = false
-
-      if (result.success) {
-        this.forgotPwResponseMessage = `We have sent a password reset link to this email, if it is connected with an account on Yiffer.xyz.`
-        this.forgotPwResponseMessageType = 'success'
-        this.forgotPwEmail = ''
+      else if (this.forgottenPasswordSubmit.fetching) {
+        this.responseMessage = ''
       }
-      else {
-        this.forgotPwResponseMessage = result.message
-        this.forgotPwResponseMessageType = 'error'
+      else if (this.forgottenPasswordSubmit.fetched) {
+        this.responseMessage = `We have sent a password reset link to ${this.forgotPwEmail}, if it is connected with an account on Yiffer.xyz.`
       }
     },
+  },
+
+  mounted () {
+    fetchClear(this.$store.commit, 'forgottenPasswordSubmit')
   }
 }
 </script>

@@ -31,7 +31,7 @@
                  type="password"
                  title="Repeat password"
                  textAlign="left"
-                 classes="width100 mb-32"/>
+                 classes="width100 mb-16"/>
 
       <LoadingButton text="Sign up"
                      :isLoading="signupLoading"/>

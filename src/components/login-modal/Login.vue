@@ -20,7 +20,7 @@
                  type="password"
                  title="Password"
                  textAlign="left"
-                 classes="width100 mb-32"/>
+                 classes="width100 mb-16"/>
 
       <LoadingButton text="Log in"
                      :isLoading="loginLoading"/>

@@ -55,26 +55,14 @@ export default {
   },
 
   async submitForgotPassword (email) {
-    try {
-      await axios.post(baseUrl + '/reset-password', {
-        email: email,
-      })
-      return {success: true}
-    }
-    catch (err) {
-      return {success: false, message: err.response.data}
-    }    
+    await axios.post(baseUrl + '/reset-password', {
+      email: email,
+    })
   },
 
   async submitResetPassword (password1, password2, token) {
-    try {
-      await axios.post(`${baseUrl}/reset-password-link/${token}`, {
-        password1, password2,
-      })
-      return {success: true}
-    }
-    catch (err) {
-      return {success: false, message: err.response.data}
-    }    
+    await axios.post(`${baseUrl}/reset-password-link/${token}`, {
+      password1, password2,
+    })
   }
 }
