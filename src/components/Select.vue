@@ -203,7 +203,7 @@ $darkThemeColor: #eee;
 }
 
 .placeholderStyle {
-  color: $themeGray7 !important;
+  color: $themeGray3p5 !important;
 }
 
 .dark {
@@ -211,6 +211,10 @@ $darkThemeColor: #eee;
   .items,
   .items div {
     color: $darkThemeColor;
+  }
+
+  .placeholderStyle {
+    color: $themeGray8 !important;
   }
 
   .customSelect .selected:after {

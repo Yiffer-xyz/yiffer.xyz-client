@@ -38,12 +38,12 @@
                 wrapperStyle="min-width: 13rem;"
                 :resetValue="responseMessage"/>
 
-        <button class="y-button ml-8"
-                :class="{'y-button-disabled': !addKeyword}"
-                style="height: fit-content; align-self: flex-end;"
-                @click="suggestKeywordChange(isAdding=true)">
-          Submit
-        </button>
+        <LoadingButton text="Submit"
+                       :isLoading="isSubmittingSuggestion"
+                       :isDisabled="!addKeyword"
+                       iconType="check"
+                       @click="suggestKeywordChange(isAdding=true)"
+                       style="height: fit-content; align-self: flex-end; margin-left: 1rem;"/>
       </div>
 
       <div v-else-if="isRemovingKeywords" class="mt-8 horizontalFlex">
@@ -53,16 +53,14 @@
                 wrapperStyle="min-width: 13rem;"
                 :resetValue="responseMessage"/>
 
-        <button class="y-button ml-8"
-                :class="{'y-button-disabled': !removeKeyword}"
-                style="height: fit-content; align-self: flex-end;"
-                @click="suggestKeywordChange(isAdding=false)">
-          Submit
-        </button>
+        <LoadingButton text="Submit"
+                       :isLoading="isSubmittingSuggestion"
+                       :isDisabled="!removeKeyword"
+                       iconType="check"
+                       @click="suggestKeywordChange(isAdding=false)"
+                       style="height: fit-content; align-self: flex-end; margin-left: 1rem;"/>
       </div>
     </div>
-
-    <Loading v-if="isSubmittingSuggestion" styles="margin-top: 1.5rem"/>
 
     <ResponseMessage :message="responseMessage" :messageType="responseMessageType" 
                      @closeMessage="closeResponseMessage" class="mt-16"/>
@@ -75,6 +73,7 @@ import { mapGetters } from 'vuex'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import Loading from '@/components/LoadingIndicator.vue'
 import Select from '../../components/Select.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 
 export default {
   props: {
@@ -82,7 +81,7 @@ export default {
   },
 
   components: {
-    ResponseMessage, Select, Loading,
+    ResponseMessage, Select, Loading, LoadingButton,
   },
 
   computed: {
