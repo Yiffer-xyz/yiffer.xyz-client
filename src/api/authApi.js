@@ -40,15 +40,11 @@ export default {
 
   async changePassword (oldPassword, newPassword1, newPassword2) {
     if (newPassword1 !== newPassword2) {
-      return {success: false, message: 'New passwords not equal'}
+      throw ({response: {data: 'New passwords are not equal'}})
     }
-    let response = await axios.post(baseUrl + '/changepassword', {
-      oldPassword: oldPassword,
-      newPassword: newPassword1
-    })
 
-    if (response.data.success) { return {success: true} }
-    else { return {success: false, message: response.data.error} }
+    await axios.post(baseUrl + '/changepassword', 
+      {oldPassword: oldPassword, newPassword: newPassword1})
   },
 
   async changeEmail (oldPassword, newEmail) {

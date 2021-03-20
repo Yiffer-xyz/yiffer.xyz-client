@@ -2,8 +2,10 @@
   <form class="yForm2"
         enctype="multipart/form-data"
         @submit.prevent="$emit('submit')"
-        :style="`width: min(${maxWidth || '600'}px, 95%); margin: 1rem auto;`">
-    <h3>{{header}}</h3>
+        :style="`width: min(${maxWidth || width}px, 95%); margin: 1rem auto;`">
+    <h3 style="text-align: left;">
+      {{header}}
+    </h3>
 
     <slot v-if="!fetchState.fetched"></slot>
 
@@ -12,26 +14,42 @@
                      :preventClose="fetchState.fetched"
                      disableElevation
                      @closeMessage="onCloseErrorMessage"
-                     :style="fetchState.fetched ? 'margin-top: 0; width: 100%;' : 'margin-top: 2rem; width: 100%;'"/>
+                     :style="fetchState.fetched ? 'margin-top: 0; width: 100%;' : 'margin-top: 1rem; width: 100%;'"/>
 
-    <div v-if="!hideSubmit && !fetchState.fetched">
+    <div v-if="!hideSubmit && !fetchState.fetched" class="horizontalFlex inlineFlex buttonsContainer">
+      <button class="y-button y-button-neutral button-with-icon mr-8"
+              type="button"
+              v-if="includeCancel"
+              @click="$emit('cancel')">
+        <CrossIcon title=""/>
+        Cancel
+      </button>
+
       <LoadingButton :text="buttonText"
                      :iconType="buttonIconType"
                      :isDisabled="!canSubmit"
                      :isLoading="fetchState.fetching"
                      styles="align-self: center;"/>
     </div>
+
+    <button v-if="showCloseOnSuccess && fetchState.fetched"
+            class="y-button"
+            style="align-self: flex-end;"
+            @click="$emit('cancel')">
+      Close
+    </button>
   </form>
 </template>
 
 <script>
+import CrossIcon from 'vue-material-design-icons/Close.vue'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
 
 export default {
   name: 'yifferForm',
 
-  components: { ResponseMessage, LoadingButton, },
+  components: { ResponseMessage, LoadingButton, CrossIcon, },
 
   props: {
     fetchState: Object,
@@ -40,9 +58,20 @@ export default {
     fetchingText: String,
     errorText: String,
     buttonText: String,
-    canSubmit: Boolean,
+    canSubmit: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    includeCancel: Boolean,
     hideSubmit: Boolean,
     maxWidth: String,
+    width: {
+      type: Number,
+      required: false,
+      default: 600,
+    },
+    showCloseOnSuccess: Boolean,
     buttonIconType: String,
   },
 
@@ -90,5 +119,8 @@ export default {
   .input-cell {
     width: 400px;
   }
+}
+.buttonsContainer {
+  margin: 1rem auto;
 }
 </style>

@@ -7,7 +7,7 @@
     <ResponseMessage :message="responseMessage" :messageType="responseMessageType" @closeMessage="closeResponseMessage"
                      class="margin-bottom-10 margin-top-10"/>
 
-    <div class="smaller-width-text">
+    <div class="smaller-width-text" v-if="!isChangingPassword">
       <div class="verticalFlex mt-16">
         <p v-if="$store.getters.userData.email">
           Your email: {{$store.getters.userData.email}}
@@ -25,7 +25,7 @@
         
         <button v-if="!isChangingPassword && !isChangingEmail"
                 @click="isChangingPassword=true"
-                class="y-button y-button mt-16 button-with-icon"
+                class="y-button y-button mt-32 mb-32 button-with-icon"
                 style="width: fit-content;">
           Change password
         </button>
@@ -63,42 +63,6 @@
         <Loading v-else text="Submitting" class="mt-16" />
       </form>
 
-      <!-- CHANGE PASSWORD -->
-      <form v-if="isChangingPassword" class="margin-top-16">
-        <p class="bold">Change password</p>
-        <table id="changePasswordTable">
-          <tr>
-            <td><label>Current password: </label> </td>
-            <td><input v-model="currentPassword" type="password" class="margin-top-4"/></td>
-          </tr>
-          <tr>
-            <td><label>New password: </label></td>
-            <td><input v-model="newPassword1" type="password" class="margin-top-4"/></td>
-          </tr>
-          <tr>
-            <td><label>Repeat new password: </label></td>
-            <td><input v-model="newPassword2" type="password" class="margin-top-4"/></td>
-          </tr>
-        </table>
-
-        <div v-if="!isSubmittingPassword" style="margin-top: 0.75rem;">
-          <button @click="cancelChangePassword"
-                  type="button"
-                  class="y-button y-button-neutral button-with-icon">
-            <CrossIcon title=""/> Cancel
-          </button>
-
-          <button @click="submitChangePassword"
-                  @submit.prevent="submitChangePassword"
-                  type="submit"
-                  class="y-button button-with-icon" 
-                  style="width: fit-content; margin-left: 8px;">
-            <CheckIcon title=""/> Change password
-          </button>
-        </div>
-        <Loading v-else text="Submitting" class="mt-16" />
-      </form>
-
       <div class="margin-top-16"
            v-show="showModApplicationStatus">
         <p class="bold">Mod application status</p>
@@ -120,23 +84,23 @@
         <RightArrow/>
       </router-link>
     </div>
+    
+    <ChangePassword v-if="isChangingPassword" @cancel="isChangingPassword = false"/>
   </div>
 </template>
 
 <script>
-import authApi from '../api/authApi'
-import miscApi from '../api/miscApi'
+import authApi from '@/api/authApi'
+import miscApi from '@/api/miscApi'
 import config from '@/config.json'
-import { doFetch } from '../utils/statefulFetch'
+import { doFetch } from '@/utils/statefulFetch'
 
+import ChangePassword from './ChangePassword.vue'
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
-import Loading from '@/components/LoadingIndicator.vue'
-import advertisingApi from '../api/advertisingApi'
+import advertisingApi from '@/api/advertisingApi'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
-import CrossIcon from 'vue-material-design-icons/Close.vue'
-import CheckIcon from 'vue-material-design-icons/Check.vue'
 import { format } from 'date-fns'
 
 import { mapGetters } from 'vuex'
@@ -153,7 +117,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, ResponseMessage, Loading, RightArrow, CrossIcon, CheckIcon,
+    BackToIndex, ResponseMessage, RightArrow, ChangePassword,
   },
 
   computed: {
@@ -177,10 +141,7 @@ export default {
     return {
       isChangingPassword: false,
       isChangingEmail: false,
-      currentPassword: '',
       newEmail: '',
-      newPassword1: '',
-      newPassword2: '',
       responseMessage: '',
       responseMessageType: 'info',
       isSubmittingPassword: false,
@@ -242,14 +203,6 @@ export default {
         this.responseMessage = `Error changing password: ${response.message}`
         this.responseMessageType = 'error'
       }
-    },
-
-    cancelChangePassword () {
-      this.currentPassword = ''
-      this.currentPassword = ''
-      this.newPassword1 = ''
-      this.newPassword2 = ''
-      this.isChangingPassword = false
     },
 
     cancelChangeEmail () {
