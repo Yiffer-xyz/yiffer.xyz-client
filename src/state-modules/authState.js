@@ -8,23 +8,6 @@ export default {
   },
 
   actions: {
-    async signup (context, {email, username, password, password2}) {
-      if (password != password2) {
-        return {success: false, message: 'Passwords do not match'}
-      }
-
-      return new Promise( async resolve => {
-        let response = await authApi.signup(username, email, password)
-        if (response.success) {
-          context.dispatch('setUserData', response.result)
-          resolve({success: true})
-        }
-        else {
-          resolve({success: false, message: response.message})
-        }
-      })
-    },
-
     async logout ({dispatch}) {
       dispatch('destroyUserData')
       authApi.logout()

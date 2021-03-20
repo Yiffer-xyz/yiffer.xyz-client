@@ -13,7 +13,8 @@
           Your account does not have an email. This is because your account was created before this website started using emails for accounts. We recommend that you connect your email address now, for account recovery purposes. Don't worry, we will never spam you.
         </p>
 
-        <button @click="isAddingEmail=true"
+        <button v-if="!$store.getters.userData.email"
+                @click="isAddingEmail=true"
                 class="y-button y-button mt-16"
                 style="width: fit-content;">
           Add email address

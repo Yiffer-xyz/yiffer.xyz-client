@@ -17,16 +17,12 @@ export default {
     return response.data
   },
 
-  async signup (username, email, password) {
+  async signup (username, email, password1, password2) {
     let response = await axios.post(baseUrl + '/register', {
-      username, password, email,
+      username, password1, password2, email,
     })
-    if (response.data.success) {
-      return {success: true, result: response.data.userData}
-    }
-    else {
-      return {success: false, message: response.data.error}
-    }
+
+    return response.data
   },
   
   logout () {

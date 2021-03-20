@@ -20,12 +20,11 @@
                  classes="width100 mb-16"/>
 
       <ResponseMessage :message="responseMessage"
-                      :messageType="fetchLogin.failed ? 'error' : 'success'"
-                      :preventClose="fetchLogin.fetched"
-                      @closeMessage="responseMessage = ''"
-                      disableElevation
-                      :style="fetchLogin.fetched ? 'margin-top: 1rem; width: 100%;' : 'margin-bottom: 1rem; width: 100%;'"/>
-
+                       :messageType="fetchLogin.failed ? 'error' : 'success'"
+                       :preventClose="fetchLogin.fetched"
+                       @closeMessage="responseMessage = ''"
+                       disableElevation
+                       :style="fetchLogin.fetched ? 'margin-top: 1rem; width: 100%;' : 'margin-bottom: 1rem; width: 100%;'"/>
 
       <LoadingButton text="Log in"
                      v-if="!fetchLogin.fetched"
