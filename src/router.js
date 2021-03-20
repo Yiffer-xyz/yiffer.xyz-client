@@ -58,6 +58,9 @@ export default new Router({
       path: '/',
       name: 'comicList',
       component: ComicList,
+      meta: {
+        reloadOnLogin: true,
+      }
     },
     {
       path: '/about',
@@ -74,12 +77,18 @@ export default new Router({
       name: 'admin',
       component: Admin,
       beforeEnter: rerouteIfNotLoggedIn,
+      meta: {
+        redirectOnLogout: true,
+      }
     },
     {
       path: '/account',
       name: 'account',
       component: Account,
       beforeEnter: rerouteIfNotLoggedIn,
+      meta: {
+        redirectOnLogout: true,
+      }
     },
     {
       path: '/suggestcomic',
@@ -101,6 +110,9 @@ export default new Router({
       name: 'joinUsApply',
       component: JoinUsApply,
       beforeEnter: rerouteIfNotLoggedIn,
+      meta: {
+        redirectOnLogout: true,
+      }
     },
     {
       path: '/blog/:id',
@@ -122,6 +134,9 @@ export default new Router({
       name: 'apply-advertising',
       component: AdvertisingApply,
       beforeEnter: rerouteIfNotLoggedIn,
+      meta: {
+        redirectOnLogout: true,
+      }
     },
     {
       path: '/join-us',
@@ -133,6 +148,9 @@ export default new Router({
       name: 'pendingComic',
       component: PendingComic,
       beforeEnter: rerouteIfNotLoggedIn,
+      meta: {
+        redirectOnLogout: true,
+      }
     },
     {
       path: '/reset-password-link/:token',
@@ -145,11 +163,17 @@ export default new Router({
       name: 'adsDashboard',
       component: AdsDashboard,
       beforeEnter: rerouteIfNotLoggedIn,
+      meta: {
+        redirectOnLogout: true,
+      }
     },
     {
       path: '/:comicName',
       name: 'comic',
       component: Comic,
+      meta: {
+        reloadOnLogin: true,
+      }
     },
   ],
   scrollBehavior ( to, from, savedPosition ) {

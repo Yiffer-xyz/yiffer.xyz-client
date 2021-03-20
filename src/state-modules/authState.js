@@ -1,8 +1,5 @@
+/* eslint-disable no-undef */
 import authApi from '../api/authApi';
-
-const avoidReloadLoginPages = [
-  '/advertising', 'suggestcomic', 'feedback', 'join-us'
-]
 
 export default {
   state: {
@@ -11,23 +8,6 @@ export default {
   },
 
   actions: {
-    async login (context, {username, password}) {
-      return new Promise( async resolve => {
-        let response = await authApi.login(username, password)
-        if (response.success) {
-          context.dispatch('setUserData', response.result)
-          resolve({success: true})
-          if (!avoidReloadLoginPages.includes(location.pathname)) {
-            // todo terrible - do a smooth fetch of user ratings instead
-            setTimeout(() => location.reload(), 200)
-          }
-        }
-        else {
-          resolve({success: false, message: response.message})
-        }
-      })
-    },
-
     async signup (context, {email, username, password, password2}) {
       if (password != password2) {
         return {success: false, message: 'Passwords do not match'}
@@ -45,38 +25,23 @@ export default {
       })
     },
 
-    async changePassword (context, {oldPassword, newPassword}) {
-      return new Promise( async resolve => {
-        let response = await authApi.changePassword(oldPassword, newPassword)
-        if (response.success) {
-          resolve({success: true})
-        }
-        else {
-          resolve({success: false, message: ''})
-        }
-      })
-    },
-
     async logout ({dispatch}) {
       dispatch('destroyUserData')
       authApi.logout()
-      window.location = '/'
     },
 
-    checkAndSetLoginStatus ({commit, dispatch}) {
-      return new Promise( async resolve => {
-        if ($cookies.isKey('user-data')) {
-          commit('setUserData', $cookies.get('user-data'))
-          commit('setIsAuthenticated', true)
-          dispatch('refreshUserData')
-          resolve(true)
-        }
-        else {
-          commit('setIsAuthenticated', false)
-          commit('setUserData', undefined)
-          resolve(false)
-        }
-      })
+    async checkAndSetLoginStatus ({commit, dispatch}) {
+      if ($cookies.isKey('user-data')) {
+        commit('setUserData', $cookies.get('user-data'))
+        commit('setIsAuthenticated', true)
+        dispatch('refreshUserData')
+        return true
+      }
+      else {
+        commit('setIsAuthenticated', false)
+        commit('setUserData', undefined)
+        return false
+      }
     },
 
     async refreshUserData ({commit}) {

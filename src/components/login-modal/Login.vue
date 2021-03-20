@@ -2,28 +2,34 @@
   <div class="login-modal-inner-wrapper">
     <p class="modal-header">Log in</p>
 
-    <ResponseMessage :message="loginErrorMessage"
-                     :messageType="'error'"
-                     @closeMessage="() => loginErrorMessage = ''"
-                     style="margin-top: 1rem;"/>
-
-    <form @submit.prevent="loginConfirmClicked"
+    <form @submit.prevent="submitLogin"
           class="login-register-form">
 
       <TextInput @change="newVal => loginUsername = newVal"
+                 v-if="!fetchLogin.fetched"
                  ref="loginUsernameInput"
                  title="Username or email"
                  textAlign="left"
                  classes="width100 mb-32"/>
 
       <TextInput @change="newVal => loginPassword = newVal"
+                 v-if="!fetchLogin.fetched"
                  type="password"
                  title="Password"
                  textAlign="left"
                  classes="width100 mb-16"/>
 
+      <ResponseMessage :message="responseMessage"
+                      :messageType="fetchLogin.failed ? 'error' : 'success'"
+                      :preventClose="fetchLogin.fetched"
+                      @closeMessage="responseMessage = ''"
+                      disableElevation
+                      :style="fetchLogin.fetched ? 'margin-top: 1rem; width: 100%;' : 'margin-bottom: 1rem; width: 100%;'"/>
+
+
       <LoadingButton text="Log in"
-                     :isLoading="loginLoading"/>
+                     v-if="!fetchLogin.fetched"
+                     :isLoading="fetchLogin.fetching"/>
     </form>
 
     <button @click="setModalContext('register')"
@@ -42,6 +48,9 @@
 import ResponseMessage from '@/components/ResponseMessage.vue'
 import TextInput from '@/components/TextInput.vue'
 import LoadingButton from '@/components/LoadingButton.vue'
+import authApi from '@/api/authApi'
+import { fetchClear, doFetch } from '../../utils/statefulFetch'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -55,12 +64,15 @@ export default {
     },
   },
 
+  computed: {
+    ...mapGetters(['fetchLogin'])
+  },
+
   data () {
     return { 
       loginUsername: '',
       loginPassword: '',
-      loginErrorMessage: '',
-      loginLoading: false,
+      responseMessage: '',
     }
   },
 
@@ -69,21 +81,33 @@ export default {
       this.$store.commit('setLoginModalContext', modalContext)
     },
 
-    async loginConfirmClicked () {
-      this.loginErrorMessage = ''
-      let loginData = {username: this.loginUsername, password: this.loginPassword}
-
-      this.loginLoading = true
-      let response = await this.$store.dispatch('login', loginData)
-      this.loginLoading = false
-
-      if (response.success) {
-        this.closeModal()
+    async submitLogin () {
+      await doFetch(this.$store.commit, 'fetchLogin', 
+        authApi.login(this.loginUsername, this.loginPassword))
+    },
+  },
+  
+  watch: {
+    fetchLogin () {
+      if (this.fetchLogin.failed) {
+        this.responseMessage = this.fetchLogin.errorMessage
       }
-      else {
-        this.loginErrorMessage = response.message
+      else if (this.fetchLogin.fetching) {
+        this.responseMessage = ''
+      }
+      else if (this.fetchLogin.fetched) {
+        this.$store.dispatch('setUserData', this.fetchLogin.payload)
+        if (this.$route.meta.reloadOnLogin) {
+          setTimeout(() => window.location.reload(), 150)
+        }
+        this.closeModal()
+        fetchClear(this.$store.commit, 'fetchLogin')
       }
     },
+  },
+
+  mounted () {
+    fetchClear(this.$store.commit, 'fetchLogin')
   },
 }
 </script>

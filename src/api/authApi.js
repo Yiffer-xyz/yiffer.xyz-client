@@ -14,12 +14,7 @@ export default {
       username, password
     })
 
-    if (response.data.success) {
-      return {success: true, result: response.data.userData }
-    }
-    else {
-      return {success: false, message: response.data.error}
-    }
+    return response.data
   },
 
   async signup (username, email, password) {

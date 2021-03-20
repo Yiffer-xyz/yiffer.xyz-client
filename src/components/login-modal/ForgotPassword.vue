@@ -87,7 +87,7 @@ export default {
 
   mounted () {
     fetchClear(this.$store.commit, 'forgottenPasswordSubmit')
-  }
+  },
 }
 </script>
 

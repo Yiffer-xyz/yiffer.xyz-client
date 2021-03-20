@@ -95,6 +95,7 @@ registerFetchNames(store,
   {name: 'forgottenPasswordSubmit', defaultValue: {}},
   {name: 'resetPasswordSubmit', defaultValue: {}},
   {name: 'advertisingApplySubmit', defaultValue: {}},
+  {name: 'fetchLogin', defaultValue: {}},
 )
 
 export default new Vuex.Store(store)

@@ -195,7 +195,7 @@ export default {
 
     logout () {
       this.$store.dispatch('logout')
-      if (this.$router.history.current.fullPath == '/profile' || this.$router.history.current.fullPath == '/admin') {
+      if (this.$route.meta.redirectOnLogout) {
         this.$router.replace('/')
       }
     }
