@@ -25,7 +25,7 @@
         The <span class="red-color">numbers</span> in the header mean (1) amount of pending comics, (2) how many are missing tags, and (3) how many are missing a thumbnail.</p>
 
         <div class="scrolling-table-container" style="margin: 8px auto 0 auto">
-          <table class="y-table">
+          <table class="yTable">
             <thead>
               <tr>
                 <th>Comic name</th>

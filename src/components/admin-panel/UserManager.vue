@@ -27,7 +27,7 @@
 
 			<!-- USER SEARCH RESULT TABLE -->
 			<div v-if="foundUsers.length > 0" class="scrolling-table-container">
-				<table class="y-table margin-top-8">
+				<table class="yTable margin-top-8">
 					<thead>
 						<tr>
 							<th>Username</th>
@@ -96,7 +96,7 @@
 						</button>
 
 						<div v-if="showComicRatings" class="scrolling-table-container margin-top-4">
-							<table class="y-table y-table-compact" style="margin: auto;">
+							<table class="yTable yTable-compact" style="margin: auto;">
 								<thead>
 									<tr>
 										<th>Comic name</th>

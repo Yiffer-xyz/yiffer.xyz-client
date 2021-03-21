@@ -63,7 +63,7 @@
 
       <div id="rejectedComics" class="margin-top-32 scrolling-table-container">
         <h2>Previously rejected comics</h2>
-        <table class="y-table" v-if="rejectedComics.length > 0">
+        <table class="yTable mt-8" v-if="rejectedComics.length > 0">
           <thead>
             <tr>
               <th>Comic name</th>

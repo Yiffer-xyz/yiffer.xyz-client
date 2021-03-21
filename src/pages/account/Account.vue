@@ -43,7 +43,7 @@
 
       <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
                    :to="{name: 'adsDashboard'}"
-                   class="adDashboardButton simpleShadow">
+                   class="adDashboardButton simpleShadow width100">
         Go to advertising dashboard
         <RightArrow/>
       </router-link>
@@ -153,17 +153,10 @@ export default {
 </script>
 
 <style lang="scss">
-#changePasswordTable {
-  border: none;
-  td {
-    text-align: left;
-  }
-}
-
 .adDashboardButton {
-  width: 100%;
+  width: 100% !important;
   border-radius: 4px;
-  color: white;
+  color: white !important;
   border: none;
   outline: none;
   height: 3rem;
@@ -175,6 +168,7 @@ export default {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  transition: all 100ms;
   
   &:hover {
     cursor: pointer;
@@ -183,6 +177,12 @@ export default {
   span {
     margin-bottom: 2px;
     margin-left: 0.25rem;
+  }
+}
+
+.dark {
+  .adDashboardButton {
+    background: linear-gradient(to right, $themeGreen1Darker, $themeGreen2Darker);
   }
 }
 </style>

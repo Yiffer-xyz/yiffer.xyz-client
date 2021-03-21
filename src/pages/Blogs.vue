@@ -119,7 +119,7 @@ export default {
 }
 .dark {
   .blog {
-    background: $comicCardDark;
+    background: $themeDark2;
   }
   .highlightedBlog {
     background-color: $themeGreen1VeryDark;

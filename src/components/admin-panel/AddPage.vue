@@ -51,12 +51,12 @@
       </button>
 
       <button class="y-button y-button-neutral" @click="toggleShowAllComics()" style="margin-top:16px;"
-        v-if="!showAllComics"> Show all WIP comics, with most recent page <DownArrow/></button>
+        v-if="!showAllComics"> Show all WIP comics, with most recent page</button>
       <button class="y-button y-button-neutral" @click="toggleShowAllComics()" style="margin-top:16px;"
-        v-if="showAllComics"> Hide this list <UpArrow/></button>
+        v-if="showAllComics"> Hide this list</button>
 
       <div v-if="showAllComics" class="scrolling-table-container">
-        <table class="y-table margin-top-4">
+        <table class="yTable margin-top-4">
           <thead>
             <tr>
               <th>Comic name</th>

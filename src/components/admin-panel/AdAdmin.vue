@@ -19,7 +19,7 @@
                         class="mb-16"/>
 
       <div class="scrolling-table-container" v-show="displayedAds.length>0">
-        <table v-if="displayedAds" class="y-table yTableLeft">
+        <table v-if="displayedAds" class="yTable yTableLeft">
           <thead>
             <tr>
               <th></th>

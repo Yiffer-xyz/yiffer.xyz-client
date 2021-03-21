@@ -38,7 +38,7 @@
       </p>
 
       <div v-else-if="data.length>0" class="scrolling-table-container mt-16">
-        <table class="y-table">
+        <table class="yTable">
           <thead>
             <tr>
               <th>{{dataTableKeyHead}}</th>

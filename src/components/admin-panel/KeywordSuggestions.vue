@@ -11,7 +11,7 @@
                        class="margin-bottom-10"/>
 
       <span v-if="keywordSuggestionList.length > 0">
-        <table class="y-table">
+        <table class="yTable">
           <thead>
             <tr>
               <th>Comic name</th>

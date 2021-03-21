@@ -33,7 +33,7 @@
       <p><span class="bold">*For the earliest advertisers, we are cutting the cost in half during the first few months!</span> So be sure to apply as soon as you're certain, or tell your creative friends!</p>
 
       <h3 v-if="$breakpoint.lgAndUp" class="mt-32">Pricing</h3>
-      <table v-if="$breakpoint.lgAndUp" class="y-table no-table-hover">
+      <table v-if="$breakpoint.lgAndUp" class="yTable no-table-hover">
         <thead>
           <tr>
             <th style="width: 7rem">Type</th>

@@ -308,24 +308,27 @@ select {
   }
 }
 
-.y-table {
+.yTable {
   border-collapse: collapse;
   td, th {
-    border: 1px solid #aaa; //todo
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+  }
+  thead>tr {
+    background-color: black;
   }
   th {
     font-family: 'Mulish', sans-serif;
     font-weight: 600;
-    padding: 8px 5px;
-    background-color: #e2e2e2;
-  }
-  td {
-    padding: 5px;
+    background-color: #f5f5f5;
   }
   tr {
     &:hover {
-      background: rgba(0, 0, 0, 0.05);
+      background: #aeecff33;
     }
+    border: 1px solid #aaaaaa44;
+    border-left: none;
+    border-right: none;
   }
 }
 
@@ -333,12 +336,6 @@ select {
   td {
     text-align: left;
   }
-}
-
-.y-table-compact {
-  td {
-    padding: 2px 5px;
-  } 
 }
 
 .admin-mini-header {
@@ -422,14 +419,14 @@ input, textarea, select {
 }
 
 .dark {
-  .y-table {
+  .yTable {
     tr {
       &:hover {
-        background: rgba(240, 255, 255, 0.1);
+        background: rgba(240, 249, 255, 0.08);
       }
     }
     th {
-      background-color: #444;
+      background-color: $themeDark2;
     }
   }
 

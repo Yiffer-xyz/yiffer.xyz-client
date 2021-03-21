@@ -13,7 +13,7 @@
       </div>
 
 			<div v-if="shownApplications.length > 0" class="scrolling-table-container">
-				<table class="y-table margin-top-8" style="text-align: left; table-layout: fixed">
+				<table class="yTable margin-top-8" style="text-align: left; table-layout: fixed">
 					<thead>
 						<tr>
 							<th>Username</th>

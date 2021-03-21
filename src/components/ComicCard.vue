@@ -428,7 +428,7 @@ export default {
 
   .triangle-wrapper-right {
     .triangle-inner {
-      border-color: transparent $comicCardDark transparent transparent;
+      border-color: transparent $themeDark2 transparent transparent;
       .triangle-label {
         color: inherit;
       }
@@ -436,12 +436,12 @@ export default {
   }
   .triangle-wrapper-left {
     .triangle-inner {
-      border-color: $comicCardDark transparent transparent transparent;
+      border-color: $themeDark2 transparent transparent transparent;
     }
   }
 
   .comic-card {
-    background-color: $comicCardDark;
+    background-color: $themeDark2;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
     &:after {
       box-shadow: 0 0 10px 2px rgba(0,0,0,0.5);

@@ -22,7 +22,7 @@
                        class="margin-bottom-10"/>
 
       <div v-if="unprocessedSuggestions.length > 0" class="scrolling-table-container">
-        <table class="y-table">
+        <table class="yTable">
           <thead>
             <tr>
               <th>Comic name</th>
@@ -93,7 +93,7 @@
         <button @click="showProcessedSuggestions = false" class="y-button y-button-neutral margin-top-32">Hide this list <UpArrow/></button>
       </span>
 
-      <table v-if="showProcessedSuggestions" class="y-table">
+      <table v-if="showProcessedSuggestions" class="yTable">
         <thead>
           <tr>
             <th>Comic name</th>
