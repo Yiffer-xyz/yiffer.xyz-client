@@ -140,12 +140,12 @@ $paddingSmall: 0.4rem;
 }
 
 .titleText {
-  position: absolute;
   font-size: 0.85rem;
-  top: 0;
-  left: $paddingBig;
+  margin-left: $paddingBig;
+  margin-right: $paddingBig;
   @media (max-width: 900px) {
-    left: $paddingSmall;
+    margin-left: $paddingSmall;
+    margin-right: $paddingSmall;
   }
 }
 
@@ -154,10 +154,7 @@ $paddingSmall: 0.4rem;
 }
 
 .innerInputWrapper {
-  margin-top: 0.9rem;
-  @media (max-width: 900px) {
-    margin-top: 1rem;
-  }
+  margin-top: -4px;
 }
 
 .inputIconWrapper {

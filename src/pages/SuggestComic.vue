@@ -53,7 +53,6 @@
                    ref="loginUsernameInput"
                    title="Links, comments"
                    type="textarea"
-                   textAlign="left"
                    classes="width100 mb-8"/>
 
         <p class="no-margin-top">

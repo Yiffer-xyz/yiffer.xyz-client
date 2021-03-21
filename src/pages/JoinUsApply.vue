@@ -14,22 +14,26 @@
             :fetchingText="'Submitting...'"
             :fetchState="modApplicationSubmit"
             :header="'Mod application form'"
-            :successText="'Success! We will contact you if we decide to take you in. Thank you!'"
+            :successText="'Success! We will contact you if we decide to take you in. You can see the status of your application on your Account page. Thank you!'"
             @submit="submitApplication">
-        <div class="yForm2Field">
-          <label for="adLinks">Tell us a little about why you want to be a mod, and what sources you use for finding comics (which websites):</label>
-          <textarea type="text" v-model="notes" id="adLinks" rows="4"/>
-        </div>
 
-        <div class="yForm2Field">
-          <label for="competentAnswerInput">Are you competent at cropping and resizing images (in order to make thumbnails)? MS Paint does not count, as it ruins the images.</label>
-          <input type="text" v-model="competentAnswer" id="competentAnswerInput"/>
-        </div>
+        <TextInput :value="notes"
+                   @change="newVal => notes = newVal"
+                   title="Tell us a little about why you want to be a mod, and what sources you use for finding comics (which websites):"
+                   type="textarea"
+                   classes="width100 mb-48"/>
 
-        <div class="yForm2Field">
-          <label for="telegramUsernameInput">Telegram username:</label>
-          <input type="text" v-model="telegramUsername" id="telegramUsernameInput"/>
-        </div>
+        <TextInput :value="competentAnswer"
+                   @change="newVal => competentAnswer = newVal"
+                   title="Are you competent at cropping and resizing images (in order to make thumbnails)? MS Paint does not count, as it ruins the images."
+                   textAlign="left"
+                   classes="width100 mb-48"/>
+
+        <TextInput :value="telegramUsername"
+                   @change="newVal => telegramUsername = newVal"
+                   title="Telegram username"
+                   textAlign="left"
+                   classes="width100 mb-16"/>
       </Form>
     </div>
   </div>
@@ -38,6 +42,7 @@
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
 import Form from '../components/Form.vue'
+import TextInput from '@/components/TextInput.vue'
 import { doFetch, fetchClear } from '../utils/statefulFetch'
 
 import miscApi from '../api/miscApi'
@@ -47,7 +52,7 @@ export default {
   name: 'joinUsApply',
   
   components: {
-    BackToIndex, Form,
+    BackToIndex, Form, TextInput,
   },
 
   data () {
