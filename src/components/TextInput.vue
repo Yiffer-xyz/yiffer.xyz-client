@@ -143,6 +143,7 @@ $paddingSmall: 0.4rem;
   font-size: 0.85rem;
   margin-left: $paddingBig;
   margin-right: $paddingBig;
+  text-align: left;
   @media (max-width: 900px) {
     margin-left: $paddingSmall;
     margin-right: $paddingSmall;

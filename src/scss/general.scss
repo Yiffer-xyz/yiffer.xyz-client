@@ -452,12 +452,15 @@ input, textarea, select {
   }
 
   .keyword, .keywordStatic {
-    background-color: $themeDark3;
+    background-color: $themeGray10;
     color: white !important;
     box-shadow: none;
   }
   .keyword:hover {
-    background-color: $themeBlueDarker;
+    background-color: $themeBlueDT;
+  }
+  .keywordStatic {
+    background-color: transparent;
   }
 }
 

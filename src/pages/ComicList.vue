@@ -117,7 +117,8 @@
     </p>
 
     <button v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
-            class="y-button mt-16 mb-16"
+            class="y-button"
+            style="margin: 1rem auto;"
             @click="scrollToTop()">
       <up-arrow/> to top
     </button>
