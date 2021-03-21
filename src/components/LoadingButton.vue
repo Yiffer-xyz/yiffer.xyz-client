@@ -81,7 +81,7 @@ $buttonBorderWidth: 2px;
   width: fit-content;
   word-break: keep-all;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, border-color 100ms, box-shadow 100ms, opacity 100ms;
 
   &:hover, &:focus {
     cursor: pointer;
@@ -100,6 +100,20 @@ $buttonBorderWidth: 2px;
   padding-right: $buttonPaddingSides+2px;
   padding-left: $buttonPaddingSides - 2px;
 }
+.yButtonDisabled {
+  opacity: 0.6;
+  box-shadow: none;
+  &:hover {
+    box-shadow: none;
+  }
+}
+.yButtonLoading {
+  opacity: 0.7;
+  box-shadow: none;
+  &:hover {
+    box-shadow: none;
+  }
+}
 
 .dark {
   .yButtonSubmit {
@@ -110,11 +124,8 @@ $buttonBorderWidth: 2px;
       border-color: $themeBlueDTDarker;
     }
   }
-}
-.yButtonDisabled {
-  opacity: 0.7;
-}
-.yButtonLoading {
-  opacity: 0.7;
+  .yButtonDisabled {
+    opacity: 0.7;
+  }
 }
 </style>

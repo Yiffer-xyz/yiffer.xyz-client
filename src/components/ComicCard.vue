@@ -26,7 +26,7 @@
         <picture @click="storeClickedComicData()" style="overflow: hidden;">
           <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
           <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
-          <img :src="`${config.comicDirectory}/s${comicNameUrlParsed}/thumbnail.jpg`" class="comicCardImg" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
+          <img :src="`${config.comicDirectory}/s${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
         </picture>
       </div>
     </router-link>
@@ -363,6 +363,9 @@ export default {
   .imgContainer {
     width: 100%;
     overflow: hidden;
+    img {
+      filter: blur(10px);
+    }
   }
   a {
     text-decoration: none;

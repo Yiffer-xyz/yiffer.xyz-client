@@ -49,7 +49,9 @@ import LoadingButton from '@/components/LoadingButton.vue'
 export default {
   name: 'yifferForm',
 
-  components: { ResponseMessage, LoadingButton, CrossIcon, },
+  components: {
+    ResponseMessage, LoadingButton, CrossIcon
+  },
 
   props: {
     fetchState: Object,
@@ -96,11 +98,11 @@ export default {
       if (this.fetchState.failed) {
         this.responseMessage = this.fetchState.errorMessage
       }
-      else if (this.fetchState.fetching) {
-        this.responseMessage = ''
-      }
       else if (this.fetchState.fetched) {
         this.responseMessage = this.successText
+      }
+      else {
+        this.responseMessage = ''
       }
     },
   },

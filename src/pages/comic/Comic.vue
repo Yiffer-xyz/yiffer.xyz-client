@@ -411,6 +411,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 .comic-page {
   min-height: 90px;
+  filter: blur(30px);
 }
 
 .shareIconContainer {
@@ -491,6 +492,8 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 
 #comicPageContainer {
+  overflow: hidden;
+
   img:not(.paidImageBanner) {
     margin: 0 auto 16px auto;
     display: block;

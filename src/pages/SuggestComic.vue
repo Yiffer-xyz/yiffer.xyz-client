@@ -31,6 +31,8 @@
             :fetchState="comicSuggestionSubmit"
             :header="'Suggest comic'"
             :successText="`Thank you for your suggestion of ${comicName+''}!`"
+            showCloseOnSuccess
+            @cancel="resetForm"
             @submit="submitSuggestion">
 
         <TextInput :value="comicName"
@@ -129,6 +131,13 @@ export default {
       doFetch(this.$store.commit, 'comicSuggestionSubmit', 
         comicApi.addComicSuggestion(this.comicName, this.artist, this.linksComments))
     },
+
+    resetForm () {
+      fetchClear(this.$store.commit, 'comicSuggestionSubmit')
+      this.comicName = ''
+      this.artist = ''
+      this.linksComments = ''
+    }
   },
 
   beforeDestroy () {
@@ -149,18 +158,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-#inputContainer {
-  input, textarea {
-    width: 100%;
-  }
-  textarea {
-    padding: 1px;
-    margin: 0;
-  }
-  .input-cell {
-    width: 400px;
-  }
-}
-</style>
