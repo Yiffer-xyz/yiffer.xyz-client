@@ -363,9 +363,6 @@ export default {
   .imgContainer {
     width: 100%;
     overflow: hidden;
-    img {
-      filter: blur(10px);
-    }
   }
   a {
     text-decoration: none;

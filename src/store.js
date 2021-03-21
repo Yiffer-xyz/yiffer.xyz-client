@@ -78,6 +78,7 @@ const store = {
     orderedKeywordListF: state => () => state.orderedKeywordList,
     orderedKeywordList: state => state.orderedKeywordList,
     isDarkTheme: state => state.darkTheme,
+    votingModalVisibility: state => state.votingModalVisibility,
   }
 }
 

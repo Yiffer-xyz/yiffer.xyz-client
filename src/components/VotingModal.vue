@@ -1,98 +1,179 @@
 <template>
-	<div id="modalAndBackdropWrapper">
-		<span class="modal-backdrop" @click="closeModal()"></span>
-		<div class="voting-modal">
-      <button class="y-button-close" @click="closeModal"><cross-icon :size="28"/></button>
+  <div id="modalAndBackdropWrapper">
+    <div class="votingModal"
+         id="votingModal"
+         :style="`${verticalOffset}; ${horizontalOffset}; height: ${modalHeight};`">
 
-			<p class="modal-header">Rate {{$store.getters.comicForVotingModal.name}}</p>
-			<p class="margin-top-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
+      <p>
+        Rate {{comicForVotingModal.name}}
+      </p>
 
-			<rating-slider/>
-		</div>
-	</div>
+      <RatingSlider @loading="isLoading = true"
+                    @updatedComic="onUpdatedComic"/>
+
+      <div class="horizontalFlex" style="justify-content: space-between; padding: 0 0.75rem;">
+        <div style="height: 1.5rem" class="horizontalFlex inlineFlex">
+          <p style="font-size: 0.85rem">
+            Average: 
+          </p>
+          <p v-if="!isLoading" style="font-size: 0.85rem; width: 2.5rem;">
+            {{formatRating(userRating)}}
+          </p>
+          <Spinner v-else
+                  size="12"
+                  :line-size="1"
+                  :line-bg-color="'transparent'"
+                  :line-fg-color="isDarkTheme ? 'white' : 'black'"
+                  style="margin-top: 0.3rem; width: 2.5rem;"/>
+        </div>
+
+        <p style="font-size: 0.85rem" class="link-color cursorPointer closeBtn" @click="closeModal">
+          Close
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import Spinner from 'vue-simple-spinner'
 import RatingSlider from '@/components/RatingSlider.vue'
-import CrossIcon from 'vue-material-design-icons/Close.vue'
+import { mapGetters } from 'vuex'
 
 export default {
-	name: 'voting-modal',
+  components: {
+    RatingSlider, Spinner,
+  },
 
-	components: {
-		'rating-slider': RatingSlider,
-		'cross-icon': CrossIcon,
-	},
+  computed: {
+    ...mapGetters([
+      'votingModalVisibility',
+      'comicForVotingModal',
+      'isDarkTheme',
+    ]),
 
-	methods: {
-		closeModal () {
-			this.$store.commit('setVotingModalVisibility', false)
-		},
-		
-		formatRating (number) {
-			if (!number) { return 'None' }
-			if (number > 8.5) { return Math.round(number * 100) / 100 }
-			else { return Math.round(number * 10) / 10 }
-		},
-	},
+    verticalOffset () {
+      if (this.votingModalVisibility.y + 8*16 > this.windowHeight) {
+        return `bottom: calc(${this.windowHeight}px - ${this.votingModalVisibility.y}px)`
+      }
+      else {
+        return `top: ${this.votingModalVisibility.y}px`
+      }
+    },
+
+    horizontalOffset () {
+      return 'left: min(' +
+        'max(' +
+          '0.5rem, ' +
+          `calc(${this.votingModalVisibility.x}px - 9rem)` +
+        '), ' +
+        `calc(${this.windowWidth}px - 20rem)` +
+        ')'
+    }
+  },
+
+  data () {
+    return {
+      isLoading: false,
+      userRating: this.comicForVotingModal?.userRating,
+      windowWidth: document.body.scrollWidth,
+      windowHeight: window.innerHeight,
+      modalHeight: '20px',
+      lastModalOpenedTime: 0,
+    }
+  },
+
+  watch: {
+    comicForVotingModal () {
+      this.isLoading = false
+      this.userRating = this.comicForVotingModal.userRating
+    },
+
+    votingModalVisibility () {
+      if (this.votingModalVisibility) {
+        this.lastModalOpenedTime = (new Date()).getTime()
+        setTimeout(() => this.modalHeight = '100px', 1)
+      }
+      else {
+        this.modalHeight = '20px'
+        this.isLoading = false
+      }
+    },
+  },
+
+  methods: {
+    onUpdatedComic (updatedComic) {
+      this.isLoading = false
+      this.userRating = updatedComic.userRating
+    },
+
+    closeModal () {
+      this.modalHeight='0px'
+      setTimeout(() => this.$store.commit('setVotingModalVisibility', false), 200)
+    },
+    
+    formatRating (number) {
+      if (!number) { return '-' }
+      if (number > 8.5) { return Math.round(number * 100) / 100 }
+      else { return Math.round(number * 10) / 10 }
+    },
+  },
+  
+  created() {
+    window.addEventListener("resize", () => {
+      this.windowWidth = document.body.scrollWidth
+      this.windowHeight = document.body.scrollHeight
+
+    });
+    window.addEventListener("scroll", () => {
+      if (this.votingModalVisibility) {
+        this.$store.commit('setVotingModalVisibility', false)
+      }
+    });
+    window.addEventListener("click", (e) => {
+      if (this.votingModalVisibility) {
+        const clickedInModal = e.path.some(el => el.id === 'votingModal')
+        const isOpenDelayPassed = (new Date()).getTime() - this.lastModalOpenedTime > 100
+        if (!clickedInModal && isOpenDelayPassed) {
+          this.closeModal()
+        }
+      }
+    });
+  },
 }
 </script>
 
 
-<style lang="scss">
-.voting-modal {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	z-index: 6;
-	transform: translateX(-50%) translateY(-50%);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding: 50px 0px 40px 0px;
-	width: 50%;
-	background-color: white;
-	box-shadow: rgba(0,0,0,0.3) 0px 5px 28px 3px;
-	transform: translateX(-50%) translateY(-50%);
-
-	&>span {
-		width: 100%;
-		padding: 0px 40px;
-	}
-
-	@media (max-width: 900px) {
-		width: 100%;
-	}
-
-	.y-button-close {
-		position: absolute;
-		right: 10px;
-		top: 14px;
-	}
-}
-
-.voting-modal:before {
-	height: 10px;
-	width: 100%;
-
-	position: absolute;
-	content: "";
-	background: linear-gradient(to right, $themeGreen1, $themeGreen2);
-	top: -3px;
-
+<style lang="scss" scoped>
+.votingModal {
+  position: fixed;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.6) 0px 7px 29px 0px;
+  width: 18rem;
+  border-radius: 8px;
+  padding: 0.5rem;
+  justify-content: center;
+  overflow: hidden;
+  transition: height 200ms;
 }
 
 .dark {
-	.voting-modal {
-		background-color: $themeDark3;
-		color: white;
-		input {
-			color: #ccc;
-		}
-		label {
-			color: #ccc;
-		}
-	}
+  .votingModal {
+    box-shadow: rgba(47, 48, 51, 0.6) 0px 7px 29px 0px;
+    background-color: $themeGray10;
+    color: white;
+    input {
+      color: white;
+    }
+    label {
+      color: white;
+    }
+    p:not(.closeBtn) {
+      color: white !important;
+    }
+  }
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="rating-slider">
-    <label>You</label>
     <input type="range" min="0" max="10" v-model="ratingSliderValue"
            :class="{'rating-slider-norating': ratingSliderValue==0}"
            @change="onNewRatingSet">
@@ -28,7 +27,7 @@ export default {
 
   methods: {
     convertSliderValue (sliderNumber) {
-      return sliderNumber==0 ? 'None' : sliderNumber
+      return sliderNumber==0 ? '-' : sliderNumber
     },
 
     setRatingSliderValue () {
@@ -61,10 +60,16 @@ export default {
     },
     
     async setNewRating (newRating) {
+      this.$emit('loading')
+      let comicNameToRefresh = this.$store.getters.comicForVotingModal.name
       await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, newRating)
-      let updatedComic = await this.$store.dispatch('refreshOneComicInList', this.$store.getters.comicForVotingModal.name)
+      let updatedComic = await this.$store.dispatch('refreshOneComicInList', comicNameToRefresh)
       this.$store.dispatch('refreshExpandedComicIfExpanded', updatedComic)
-      this.$store.commit('setComicForVotingModal', updatedComic)
+      
+      if (this.$store.getters.comicForVotingModal.id === updatedComic.id) {
+        this.$store.commit('setComicForVotingModal', updatedComic)
+        this.$emit('updatedComic', updatedComic)
+      }
     }
   },
   
@@ -85,7 +90,7 @@ export default {
 .rating-slider {
   max-width: 340px;
   height: 22px;
-  margin: 1rem auto;
+  margin: 0.5rem auto;
   padding: 4px;
   box-sizing: border-box;
   display: flex;
@@ -98,7 +103,7 @@ export default {
     cursor: pointer !important;
   }
   label {
-    width: 3rem;
+    width: 1.5rem;
     flex-shrink: 0;
   }
   .rating-number {

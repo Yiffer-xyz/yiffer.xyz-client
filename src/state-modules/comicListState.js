@@ -98,12 +98,10 @@ const store = {
       Vue.set(state.comicList, selectedComicIndex, comicData)
     },
 
-    refreshOneComicInList ({dispatch}, comicName) {
-      return new Promise (async (resolve) => {
-        let response = await comicApi.getComic(comicName)
-        dispatch('updateOneComicInList', response.result)
-        resolve(response.result)
-      })
+    async refreshOneComicInList ({dispatch}, comicName) {
+      let response = await comicApi.getComic(comicName)
+      dispatch('updateOneComicInList', response)
+      return response
     },
 
     refreshExpandedComicIfExpanded ({state, dispatch}, newComic) {

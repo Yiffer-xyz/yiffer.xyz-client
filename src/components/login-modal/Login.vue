@@ -7,7 +7,6 @@
 
       <TextInput @change="newVal => loginUsername = newVal"
                  v-if="!fetchLogin.fetched"
-                 ref="loginUsernameInput"
                  title="Username or email"
                  textAlign="left"
                  classes="width100 mb-32"/>

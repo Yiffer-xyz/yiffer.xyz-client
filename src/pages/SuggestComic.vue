@@ -43,14 +43,12 @@
 
         <TextInput :value="artist"
                    @change="newVal => artist = newVal"
-                   ref="loginUsernameInput"
                    title="Artist (if known)"
                    textAlign="left"
                    classes="width100 mb-48"/>
 
         <TextInput :value="linksComments"
                    @change="newVal => linksComments = newVal"
-                   ref="loginUsernameInput"
                    title="Links, comments"
                    type="textarea"
                    classes="width100 mb-8"/>

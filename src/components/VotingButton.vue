@@ -1,6 +1,6 @@
 <template>
 	<button class="y-button voting-button-todo" 
-					@click="showVotingOrLoginModal()" 
+					@click="e => showVotingOrLoginModal(e)" 
 					:class="{'disabled-voting-button': !$store.getters.isAuthenticated}">
 
 		<span v-if="$store.getters.isAuthenticated && comic.yourRating !== null && comic.yourRating !== 0"
@@ -29,14 +29,9 @@ export default {
 	},
 
 	methods: {
-		showVotingOrLoginModal () {
-			if (this.$store.getters.isAuthenticated) {
-				this.$store.commit('setComicForVotingModal', this.comic)
-				this.$store.commit('setVotingModalVisibility', true)
-			}
-			else {
-				this.$store.commit('setLoginModalVisibility', true)
-			}
+		showVotingOrLoginModal (e) {
+			this.$store.commit('setComicForVotingModal', this.comic)
+			this.$store.commit('setVotingModalVisibility', {visible: true, y: e.clientY, x: e.clientX})
 		}
 	}
 }
