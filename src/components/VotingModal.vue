@@ -114,15 +114,14 @@ export default {
     
     formatRating (number) {
       if (!number) { return '-' }
-      if (number > 8.5) { return Math.round(number * 100) / 100 }
-      else { return Math.round(number * 10) / 10 }
+			return Math.round(number * 100) / 100
     },
   },
   
   created() {
     window.addEventListener("resize", () => {
       this.windowWidth = document.body.scrollWidth
-      this.windowHeight = document.body.scrollHeight
+      this.windowHeight = document.body.innerHeight
 
     });
     window.addEventListener("scroll", () => {

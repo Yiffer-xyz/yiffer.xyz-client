@@ -3,7 +3,10 @@
     <input type="range" min="0" max="10" v-model="ratingSliderValue"
            :class="{'rating-slider-norating': ratingSliderValue==0}"
            @change="onNewRatingSet">
-    <label :class="{'rating-number': ratingSliderValue>0, 'none-text': ratingSliderValue==0}">
+
+    <label :class="{'rating-number': ratingSliderValue>0, 'none-text': ratingSliderValue==0}"
+           class="yourRatingValue"
+           :style="yourRatingStyle">
       {{convertSliderValue(ratingSliderValue)}}
     </label>
   </div>
@@ -18,6 +21,7 @@ export default {
   data: function () {
     return {
       ratingSliderValue: 0,
+      yourRatingStyle: 'font-size: 1rem;',
       isRecentlyOpened: false,
       lastRatingSetTime: new Date(),
       ratingSpamBlocked: undefined,
@@ -60,6 +64,11 @@ export default {
     },
     
     async setNewRating (newRating) {
+      this.yourRatingStyle = 'font-size: 1.35rem;'
+      setTimeout(() => {
+        this.yourRatingStyle = 'font-size: 1rem;'
+      }, 200)
+
       this.$emit('loading')
       let comicNameToRefresh = this.$store.getters.comicForVotingModal.name
       await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, newRating)
@@ -84,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../scss/colors.scss";
 
 .rating-slider {
@@ -103,13 +112,21 @@ export default {
     cursor: pointer !important;
   }
   label {
-    width: 1.5rem;
+    width: 1.75rem;
     flex-shrink: 0;
   }
   .rating-number {
     font-weight: 400;
     font-size: 16px;
   }
+}
+
+.yourRatingValue {
+  transition: all 200ms;
+  border: 1px solid $themeGreen1;
+  border-radius: 40px;
+  padding: 2px;
+  border-color: transparent;
 }
 
 $track-color: $themeDark1 !default;
