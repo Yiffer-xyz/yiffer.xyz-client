@@ -466,7 +466,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 .comic-page {
   min-height: 90px;
-  filter: blur(30px);
 }
 
 .shareIconContainer {
