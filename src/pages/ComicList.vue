@@ -685,6 +685,8 @@ export default {
 }
 
 .buttonSelected {
+  border-width: 0;
+  border-style: hidden;
   border-bottom-width: 6px;
   border-bottom-style: solid;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1;
