@@ -75,6 +75,9 @@ select {
 .alignItemsStart {
   align-items: flex-start;
 }
+.alignItemsCenter {
+  align-items: center;
+}
 
 .justifyCenter {
   justify-content: center;
@@ -387,10 +390,6 @@ select {
 }
 .simple-shadow-small {
   @include simpleshadowSmall;
-}
-input, textarea, select {
-  border: 1px solid #888;
-  padding: 2px;
 }
 
 .horizontal-wrapper-4 {

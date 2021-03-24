@@ -1,5 +1,5 @@
 <template>
-  <div class="rating-slider">
+  <div class="rating-slider" :style="styles">
     <input type="range" min="0" max="10" v-model="ratingSliderValue"
            :class="{'rating-slider-norating': ratingSliderValue==0}"
            @change="onNewRatingSet">
@@ -13,13 +13,24 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import comicApi from '../api/comicApi'
 
 export default {
   name: 'rating-slider',
 
+  props: {
+    styles: String,
+  },
+
+  computed: {
+    ...mapGetters(['comicForVotingModal'])
+  },
+
   data: function () {
     return {
+      comicName: '',
+      loadingCount: 0,
       ratingSliderValue: 0,
       yourRatingStyle: 'font-size: 1rem;',
       isRecentlyOpened: false,
@@ -35,12 +46,14 @@ export default {
     },
 
     setRatingSliderValue () {
-      this.ratingSliderValue = this.$store.getters.comicForVotingModal.yourRating || 0
+      if (this.loadingCount === 0) {
+        this.ratingSliderValue = this.comicForVotingModal.yourRating || 0
+      }
     },
 
     async onNewRatingSet (newRating) {
       newRating = Number(newRating.target.value)
-      if (new Date() - this.lastRatingSetTime > 500) {
+      if (new Date() - this.lastRatingSetTime > 200) {
         this.ratingSpamBlocked = undefined
         this.lastRatingSetTime = new Date()
         this.setNewRating(newRating)
@@ -49,7 +62,7 @@ export default {
         this.ratingSpamBlocked = newRating
         setTimeout(
           () => this.assignNewRatingFromTimeout(newRating), 
-          500
+          200
         )
       }
     },
@@ -70,20 +83,27 @@ export default {
       }, 200)
 
       this.$emit('loading')
-      let comicNameToRefresh = this.$store.getters.comicForVotingModal.name
-      await comicApi.rateComic(this.$store.getters.comicForVotingModal.id, newRating)
+      this.loadingCount += 1
+      let comicNameToRefresh = this.comicForVotingModal.name
+      await comicApi.rateComic(this.comicForVotingModal.id, newRating)
       let updatedComic = await this.$store.dispatch('refreshOneComicInList', comicNameToRefresh)
       this.$store.dispatch('refreshExpandedComicIfExpanded', updatedComic)
       
       if (this.$store.getters.comicForVotingModal.id === updatedComic.id) {
         this.$store.commit('setComicForVotingModal', updatedComic)
         this.$emit('updatedComic', updatedComic)
+        this.loadingCount -= 1
       }
     }
   },
-  
+
   mounted () {
-    this.vuexWatcher = this.$store.watch(this.$store.getters.getComicForVotingModal, this.setRatingSliderValue)
+    this.vuexWatcher = this.$store.watch(this.$store.getters.getComicForVotingModal, () => {
+      if (this.comicForVotingModal.name !== this.comicName || this.$route.name !== 'comicList') {
+        this.comicName = this.comicForVotingModal.name
+        this.setRatingSliderValue()
+      }
+    })
     this.setRatingSliderValue()
   },
 
@@ -97,10 +117,9 @@ export default {
 @import "../scss/colors.scss";
 
 .rating-slider {
-  max-width: 340px;
+  max-width: 272px;
   height: 22px;
   margin: 0.5rem auto;
-  padding: 4px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -108,7 +127,6 @@ export default {
   width: 100%;
   cursor: pointer !important;
   input {
-    margin: 0 6px;
     cursor: pointer !important;
   }
   label {

@@ -36,8 +36,8 @@
           Download started!
         </p>
 
-        <div class="verticalFlex" style="align-items: flex-start;">
-          <div class="margin-top-16 textAlignLeft" v-if="comic && (comic.previousComic || comic.nextComic)">
+        <div class="verticalFlex mt-32" style="align-items: flex-start; min-width: 13rem;">
+          <div class="textAlignLeft mb-32" v-if="comic && (comic.previousComic || comic.nextComic)">
             <p>This comic is part of a series!</p>
             <p v-if="comic.previousComic">
               <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
@@ -55,22 +55,33 @@
             </p>
           </div>
 
-          <p class="margin-top-16">
-            User rating: 
-            <span style="font-weight: 400;">{{formatRating($store.getters.comicForVotingModal.userRating)}}</span>
-          </p>
-          <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0.5rem;"/>
-          <p v-else class="margin-bottom-8"> 
-            <button class="underline-link text-button link-color" 
-                    @click="$store.commit('setLoginModalVisibility', true)">
-              <LoginIcon/> Log in
-            </button> to rate comic
-          </p>
+          <div class="horizontalFlex">
+            <p style="padding-left: 2px;">
+              Average rating: 
+            </p>
+            <p v-if="isLoading === 0" style="width: 2.75rem;">
+              {{formatRating(userRating)}}
+            </p>
+            <Spinner v-else
+                    size="12"
+                    :line-size="1"
+                    :line-bg-color="'transparent'"
+                    :line-fg-color="isDarkTheme ? 'white' : 'black'"
+                    style="margin-top: 0.3rem; width: 2.75rem;"/>
+          </div>
+
+          <RatingSlider v-if="Object.keys(comicForVotingModal).length !== 0 && isAuthenticated"
+                        @loading="isLoading = isLoading+1"
+                        @updatedComic="onUpdatedComic"/>
+
+          <button v-else-if="!isAuthenticated" class="y-button mt-8 button-with-icon loginButton" 
+                  @click="$store.commit('setLoginModalVisibility', true)">
+            <LoginIcon/> Log in to rate comic
+          </button>
         </div>
 
-
-        <ComicKeywords v-if="comic"
-                       :comicData="comic"/>
+      <ComicKeywords v-if="comic"
+                     :comicData="comic"/>
       </div>
     </div>
 
@@ -97,14 +108,16 @@
   
 
     <div v-if="comic">
-      <div id="comicSizingButtonsRow" class="margin-top-16 horizontalFlex" style="align-items: center;">
-        <p style="margin-right: 4px;">Image fit:</p>
-        <button @click="setAllImagesFit('height')" class="y-button y-button-small">Height</button>
-        <button @click="setAllImagesFit('width')"  class="y-button y-button-small">Width</button>
-        <button @click="setAllImagesFit('big')"    class="y-button y-button-small">Full</button>
-        <button @click="setAllImagesFit('thumb')"  class="y-button y-button-small">Tiny</button>
+      <div class="marginAuto margin-top-16 fitContent verticalFlex">
+        <div id="comicSizingButtonsRow" class="horizontalFlex" style="align-items: center;">
+          <p style="margin-right: 4px;">Image fit:</p>
+          <button @click="setAllImagesFit('height')" class="y-button y-button-small">Height</button>
+          <button @click="setAllImagesFit('width')"  class="y-button y-button-small">Width</button>
+          <button @click="setAllImagesFit('big')"    class="y-button y-button-small">Full</button>
+          <button @click="setAllImagesFit('thumb')"  class="y-button y-button-small">Tiny</button>
+        </div>
+        <p class="smaller-text textAlignLeft">You may also click any one image to resize it</p>
       </div>
-      <p class="smaller-text">You may also click any one image to resize it</p>
 
 
       <div class="paidImageBannerLink" style="max-height: 100px !important;">
@@ -127,28 +140,47 @@
     </div>
 
     <div class="lowerLinksAndRating" v-if="comic">
-      <p v-if="comic.previousComic || comic.nextComic">This comic is part of a series!</p>
-      <p v-if="comic.previousComic">
-        <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link">
-          <LeftArrow/>
-          {{comic.previousComic}}
-        </router-link>
-      </p>
-      <p v-if="comic.nextComic">
-        <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link">
-          {{comic.nextComic}} 
-          <RightArrow/>
-        </router-link>
-      </p>
+      <div v-if="comic.previousComic || comic.nextComic" class="mb-16 verticalFlex alignItemsStart">
+        <p>This comic is part of a series!</p>
+        <p v-if="comic.previousComic">
+          <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link">
+            <LeftArrow/>
+            {{comic.previousComic}}
+          </router-link>
+        </p>
+        <p v-if="comic.nextComic">
+          <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link">
+            {{comic.nextComic}} 
+            <RightArrow/>
+          </router-link>
+        </p>
+      </div>
 
-      <p class="mt-16">User rating: {{formatRating($store.getters.comicForVotingModal.userRating)}}</p>
-      <RatingSlider v-if="$store.getters.isAuthenticated" style="margin-top: 0;" class="margin-bottom-16"/>
-      <p v-else class="margin-bottom-16"> 
-        <button class="underline-link text-button link-color" 
-                @click="$store.commit('setLoginModalVisibility', true)">
-          <LoginIcon/> Log in
-        </button> to rate comic
-      </p>
+
+      <div class="horizontalFlex justifyStart" :style="isAuthenticated ? 'min-width: 13rem;' : ''">
+        <p style="padding-left: 2px;">
+          Average rating: 
+        </p>
+        <p v-if="isLoading === 0" style="width: 2.75rem;">
+          {{formatRating(userRating)}}
+        </p>
+        <Spinner v-else
+                size="12"
+                :line-size="1"
+                :line-bg-color="'transparent'"
+                :line-fg-color="isDarkTheme ? 'white' : 'black'"
+                style="margin-top: 0.3rem; width: 2.75rem;"/>
+      </div>
+
+      <RatingSlider v-if="Object.keys(comicForVotingModal).length !== 0 && isAuthenticated"
+                    @loading="isLoading = isLoading+1"
+                    @updatedComic="onUpdatedComic"
+                    styles="margin-bottom: 2rem;"/>
+
+      <button v-else-if="!isAuthenticated" class="y-button mt-8 mb-32 button-with-icon loginButton" 
+              @click="$store.commit('setLoginModalVisibility', true)">
+        <LoginIcon/> Log in to rate comic
+      </button>
 
 
       <button class="y-button m-auto mb-16" @click="scrollToTop()">
@@ -172,6 +204,7 @@ import LoginIcon from 'vue-material-design-icons/Login.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import DownloadIcon from 'vue-material-design-icons/Download.vue'
 import ComicKeywords from './ComicKeywords.vue'
+import Spinner from 'vue-simple-spinner'
 
 import comicApi from '../../api/comicApi'
 import miscApi from '../../api/miscApi'
@@ -186,13 +219,15 @@ export default {
   },
 
   components: {
-    BackToIndex, RatingSlider, Loading, ComicKeywords,
+    BackToIndex, RatingSlider, Loading, ComicKeywords, Spinner,
     LeftArrow, RightArrow, ShareIcon, LoginIcon, UpArrow, DownloadIcon,
   },
 
   data: function () {
     return {
       comic: this.$store.state.clickedComic || undefined,
+      userRating: this.comicForVotingModal?.userRating,
+      isLoading: 0,
       userIsDonator: true,
       comicNotFound: false,
       fetchComicError: undefined,
@@ -209,8 +244,15 @@ export default {
   computed: {
     ...mapGetters({
       paidImages: 'paidImagesBanner',
-      allPaidImages: 'paidImages'
+      allPaidImages: 'paidImages',
+      isDarkTheme: 'isDarkTheme',
+      comicForVotingModal: 'comicForVotingModal',
+      isAuthenticated: 'isAuthenticated',
     }),
+  },
+
+  created() {
+    console.log(this.comicForVotingModal.userRating, 'asdasd')
   },
 
   async mounted () {
@@ -248,12 +290,16 @@ export default {
       'loadActiveAds',
     ]),
 
+    onUpdatedComic (updatedComic) {
+      this.isLoading = Math.max(0, this.isLoading-1)
+      this.userRating = updatedComic.userRating
+    },
+
     formatPageNumber: pageNumber => pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber,
 
     formatRating: function (number) {
-      if (!number) { return 'None' }
-      if (number > 8.5) { return Math.round(number * 100) / 100 }
-      else { return Math.round(number * 10) / 10 }
+      if (!number) { return '-' }
+      return Math.round(number * 100) / 100
     },
 
     setAllImagesFit ( imageFit, avoidLog=false ) {
@@ -295,9 +341,17 @@ export default {
       try {
         let response = await comicApi.getComic(this.$route.params.comicName)
         this.comic = response
+        console.log('response gots')
         this.$store.commit('setComicForVotingModal', this.comic)
         this.initializeImageFitArray()
         this.fitImagesForMobile()
+        
+        if (this.comic.userRating) {
+          this.userRating = this.comic.userRating
+        }
+        if (this.comic.yourRating) {
+          this.userRating = this.comic.userRating
+        }
       }
       catch (err) {
         if (err.response?.status === 404) {
@@ -407,6 +461,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   flex-direction: column;
   align-items: flex-start;
   margin: auto;
+  margin-top: 1rem;
 }
 
 .comic-page {
@@ -432,10 +487,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   flex-direction: column;
   align-items: center;
   width: 90%;
-
-  .y-button {
-    margin-top: 16px;
-  }
 }
 
 .comicLoadingInfo {
@@ -450,6 +501,12 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   width: 100%;
   select {
     margin: 0 4px;
+  }
+}
+
+.loginButton {
+  span {
+    margin-right: 0.5rem;
   }
 }
 

@@ -1,36 +1,35 @@
 <template>
-  <div id="modalAndBackdropWrapper">
-    <div class="votingModal"
-         id="votingModal"
-         :style="`${verticalOffset}; ${horizontalOffset}; height: ${modalHeight};`">
+  <div class="votingModal"
+       id="votingModal"
+       :style="`${verticalOffset}; ${horizontalOffset}; height: ${modalHeight};`">
 
-      <p>
-        Rate {{comicForVotingModal.name}}
-      </p>
+    <p>
+      Rate {{comicForVotingModal.name}}
+    </p>
 
-      <RatingSlider @loading="isLoading = true"
-                    @updatedComic="onUpdatedComic"/>
+    <RatingSlider @loading="awaitingFechCallCount += 1"
+                  @updatedComic="onUpdatedComic
+									"/>
 
-      <div class="horizontalFlex" style="justify-content: space-between; padding: 0 0.75rem;">
-        <div style="height: 1.5rem" class="horizontalFlex inlineFlex">
-          <p style="font-size: 0.85rem">
-            Average: 
-          </p>
-          <p v-if="!isLoading" style="font-size: 0.85rem; width: 2.5rem;">
-            {{formatRating(userRating)}}
-          </p>
-          <Spinner v-else
-                  size="12"
-                  :line-size="1"
-                  :line-bg-color="'transparent'"
-                  :line-fg-color="isDarkTheme ? 'white' : 'black'"
-                  style="margin-top: 0.3rem; width: 2.5rem;"/>
-        </div>
-
-        <p style="font-size: 0.85rem" class="link-color cursorPointer closeBtn" @click="closeModal">
-          Close
+    <div class="horizontalFlex" style="justify-content: space-between; padding: 0 0.5rem;">
+      <div style="height: 1.5rem;" class="horizontalFlex inlineFlex">
+        <p style="font-size: 0.85rem">
+          Average: 
         </p>
+        <p v-if="awaitingFechCallCount === 0" style="font-size: 0.85rem; width: 2.5rem;">
+          {{formatRating(userRating)}}
+        </p>
+        <Spinner v-else
+                size="12"
+                :line-size="1"
+                :line-bg-color="'transparent'"
+                :line-fg-color="isDarkTheme ? 'white' : 'black'"
+                style="margin-top: 0.3rem; width: 2.5rem;"/>
       </div>
+
+      <p style="font-size: 0.85rem" class="link-color cursorPointer closeBtn" @click="closeModal">
+        Close
+      </p>
     </div>
   </div>
 </template>
@@ -74,7 +73,7 @@ export default {
 
   data () {
     return {
-      isLoading: false,
+      awaitingFechCallCount: 0,
       userRating: this.comicForVotingModal?.userRating,
       windowWidth: document.body.scrollWidth,
       windowHeight: window.innerHeight,
@@ -85,25 +84,26 @@ export default {
 
   watch: {
     comicForVotingModal () {
-      this.isLoading = false
+      this.awaitingFechCallCount = Math.max(0, this.awaitingFechCallCount - 1)
       this.userRating = this.comicForVotingModal.userRating
     },
 
     votingModalVisibility () {
+      this.awaitingFechCallCount = 0
       if (this.votingModalVisibility) {
         this.lastModalOpenedTime = (new Date()).getTime()
         setTimeout(() => this.modalHeight = '100px', 1)
       }
       else {
         this.modalHeight = '20px'
-        this.isLoading = false
+        this.awaitingFechCallCount = 0
       }
     },
   },
 
   methods: {
     onUpdatedComic (updatedComic) {
-      this.isLoading = false
+			this.$store.commit('setComicForVotingModal', updatedComic)
       this.userRating = updatedComic.userRating
     },
 
@@ -114,7 +114,7 @@ export default {
     
     formatRating (number) {
       if (!number) { return '-' }
-			return Math.round(number * 100) / 100
+      return Math.round(number * 100) / 100
     },
   },
   

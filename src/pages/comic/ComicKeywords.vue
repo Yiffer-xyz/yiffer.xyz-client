@@ -1,13 +1,12 @@
 <template>
   <span>
-    <div id="comicKeywords" class="mt-16 horizontalFlex flexWrap">
-      <span v-if="comicKeywords.length > 0" class="horizontalFlex flexWrap">
-        <div class="keywordStatic"
-              v-for="keyword in comicKeywords"
-              :key="keyword.name">
-          {{keyword.name}}
-        </div>
-      </span>
+    <div id="comicKeywords" class="mt-32 horizontalFlex flexWrap justifyCenter" style="max-width: 42.5rem;">
+      <div class="keywordStatic"
+            v-for="keyword in comicKeywords"
+            :key="keyword.name">
+        {{keyword.name}}
+      </div>
+
       <span v-if="comicKeywords.length===0" style="margin-right: 8px;">
         <p>No tags</p>
       </span>
@@ -15,7 +14,7 @@
       <div class="keywordStatic keywordButton" @click="toggleKeywordSuggestions('add')" v-if="!isSuggestingKeywords">
         add tags
       </div>
-      <div class="keywordStatic keywordButton" @click="toggleKeywordSuggestions('remove')" v-if="!isSuggestingKeywords">
+      <div class="keywordStatic keywordButton" @click="toggleKeywordSuggestions('remove')" v-if="!isSuggestingKeywords && comicKeywords.length > 0">
         remove tags
       </div>
       <div class="keywordStatic keywordButton" @click="toggleKeywordSuggestions()" v-if="isSuggestingKeywords">
@@ -183,13 +182,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#comicKeywords {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 .keywordButton {
   border-color: $themeBlueDark !important;
   color: $themeBlueDark !important;
