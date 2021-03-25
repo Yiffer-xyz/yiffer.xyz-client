@@ -243,6 +243,9 @@ nav {
   background: linear-gradient(to right, $themeGreen1, $themeGreen2);
   width: 100%;
   box-shadow: 0 0px 5px #0000001a;
+  span {
+    margin-bottom: 1px;
+  }
 }
 
 .navInner {

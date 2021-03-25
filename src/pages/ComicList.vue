@@ -680,7 +680,10 @@ export default {
   border-width: 0;
 
   @media screen and (max-width: 900px) {
-    padding: 3rem 0 2rem 0;
+    padding: 3rem 0 1rem 0;
+    a, .link-color {
+      font-weight: 400 !important;
+    }
   }
 }
 

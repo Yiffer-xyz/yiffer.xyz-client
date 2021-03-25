@@ -103,9 +103,10 @@
       </div>
 
       <!-- RATE -->
-      <VotingButton style="margin-top: 7px;"
-                     :comic="comic"
-                     v-if="$store.getters.isAuthenticated"/>
+      <VotingButton style="margin-bottom: 0.15rem;"
+                    class="mt-16"
+                    :comic="comic"
+                    v-if="$store.getters.isAuthenticated"/>
 
       <p v-if="detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
         <label title="Updated on" style="font-size: 0.8rem;">
@@ -458,7 +459,7 @@ export default {
 }
 
 .keywordContainer {
-  margin-top: 7px;
+  margin-top: 0.75rem;
   display: flex;
   flex-direction: row;
   flex-flow: row wrap;

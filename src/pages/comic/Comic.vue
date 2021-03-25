@@ -36,7 +36,7 @@
           Download started!
         </p>
 
-        <div class="verticalFlex mt-32" style="align-items: flex-start; min-width: 13rem;">
+        <div class="verticalFlex mt-32" style="align-items: flex-start;" :style="isAuthenticated ? 'min-width: 13rem;' : ''">
           <div class="textAlignLeft mb-32" v-if="comic && (comic.previousComic || comic.nextComic)">
             <p>This comic is part of a series!</p>
             <p v-if="comic.previousComic">
@@ -54,34 +54,11 @@
               </router-link>
             </p>
           </div>
-
-          <div class="horizontalFlex">
-            <p style="padding-left: 2px;">
-              Average rating: 
-            </p>
-            <p v-if="isLoading === 0" style="width: 2.75rem;">
-              {{formatRating(userRating)}}
-            </p>
-            <Spinner v-else
-                    size="12"
-                    :line-size="1"
-                    :line-bg-color="'transparent'"
-                    :line-fg-color="isDarkTheme ? 'white' : 'black'"
-                    style="margin-top: 0.3rem; width: 2.75rem;"/>
-          </div>
-
-          <RatingSlider v-if="Object.keys(comicForVotingModal).length !== 0 && isAuthenticated"
-                        @loading="isLoading = isLoading+1"
-                        @updatedComic="onUpdatedComic"/>
-
-          <button v-else-if="!isAuthenticated" class="y-button mt-8 button-with-icon loginButton" 
-                  @click="$store.commit('setLoginModalVisibility', true)">
-            <LoginIcon/> Log in to rate comic
-          </button>
         </div>
 
-      <ComicKeywords v-if="comic"
-                     :comicData="comic"/>
+        <RatingAndSlider :userRating="userRating" @updatedComic="onUpdatedComic"/>
+
+        <ComicKeywords v-if="comic" :comicData="comic"/>
       </div>
     </div>
 
@@ -140,48 +117,25 @@
     </div>
 
     <div class="lowerLinksAndRating" v-if="comic">
-      <div v-if="comic.previousComic || comic.nextComic" class="mb-16 verticalFlex alignItemsStart">
-        <p>This comic is part of a series!</p>
-        <p v-if="comic.previousComic">
-          <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link">
-            <LeftArrow/>
-            {{comic.previousComic}}
-          </router-link>
-        </p>
-        <p v-if="comic.nextComic">
-          <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link">
-            {{comic.nextComic}} 
-            <RightArrow/>
-          </router-link>
-        </p>
+      <div>
+        <div v-if="comic.previousComic || comic.nextComic" class="mb-24 verticalFlex alignItemsStart">
+          <p>This comic is part of a series!</p>
+          <p v-if="comic.previousComic">
+            <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" class="underline-link">
+              <LeftArrow/>
+              {{comic.previousComic}}
+            </router-link>
+          </p>
+          <p v-if="comic.nextComic">
+            <router-link :to="{ name: 'comic', params: { comicName: comic.nextComic } }" class="underline-link">
+              {{comic.nextComic}} 
+              <RightArrow/>
+            </router-link>
+          </p>
+        </div>
       </div>
 
-
-      <div class="horizontalFlex justifyStart" :style="isAuthenticated ? 'min-width: 13rem;' : ''">
-        <p style="padding-left: 2px;">
-          Average rating: 
-        </p>
-        <p v-if="isLoading === 0" style="width: 2.75rem;">
-          {{formatRating(userRating)}}
-        </p>
-        <Spinner v-else
-                size="12"
-                :line-size="1"
-                :line-bg-color="'transparent'"
-                :line-fg-color="isDarkTheme ? 'white' : 'black'"
-                style="margin-top: 0.3rem; width: 2.75rem;"/>
-      </div>
-
-      <RatingSlider v-if="Object.keys(comicForVotingModal).length !== 0 && isAuthenticated"
-                    @loading="isLoading = isLoading+1"
-                    @updatedComic="onUpdatedComic"
-                    styles="margin-bottom: 2rem;"/>
-
-      <button v-else-if="!isAuthenticated" class="y-button mt-8 mb-32 button-with-icon loginButton" 
-              @click="$store.commit('setLoginModalVisibility', true)">
-        <LoginIcon/> Log in to rate comic
-      </button>
-
+      <RatingAndSlider :userRating="userRating" @updatedComic="onUpdatedComic" styles="margin-bottom: 2rem;"/>
 
       <button class="y-button m-auto mb-16" @click="scrollToTop()">
         <up-arrow/> to top
@@ -195,16 +149,14 @@
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import RatingSlider from '@/components/RatingSlider.vue'
 import Loading from '@/components/LoadingIndicator.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
-import LoginIcon from 'vue-material-design-icons/Login.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import DownloadIcon from 'vue-material-design-icons/Download.vue'
 import ComicKeywords from './ComicKeywords.vue'
-import Spinner from 'vue-simple-spinner'
+import RatingAndSlider from './RatingAndSlider.vue'
 
 import comicApi from '../../api/comicApi'
 import miscApi from '../../api/miscApi'
@@ -219,15 +171,14 @@ export default {
   },
 
   components: {
-    BackToIndex, RatingSlider, Loading, ComicKeywords, Spinner,
-    LeftArrow, RightArrow, ShareIcon, LoginIcon, UpArrow, DownloadIcon,
+    BackToIndex, Loading, ComicKeywords, RatingAndSlider,
+    LeftArrow, RightArrow, ShareIcon, UpArrow, DownloadIcon,
   },
 
   data: function () {
     return {
       comic: this.$store.state.clickedComic || undefined,
       userRating: this.comicForVotingModal?.userRating,
-      isLoading: 0,
       userIsDonator: true,
       comicNotFound: false,
       fetchComicError: undefined,
@@ -249,10 +200,6 @@ export default {
       comicForVotingModal: 'comicForVotingModal',
       isAuthenticated: 'isAuthenticated',
     }),
-  },
-
-  created() {
-    console.log(this.comicForVotingModal.userRating, 'asdasd')
   },
 
   async mounted () {
@@ -291,16 +238,10 @@ export default {
     ]),
 
     onUpdatedComic (updatedComic) {
-      this.isLoading = Math.max(0, this.isLoading-1)
       this.userRating = updatedComic.userRating
     },
 
     formatPageNumber: pageNumber => pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber,
-
-    formatRating: function (number) {
-      if (!number) { return '-' }
-      return Math.round(number * 100) / 100
-    },
 
     setAllImagesFit ( imageFit, avoidLog=false ) {
       document.querySelectorAll('.comic-page').forEach(page => {
@@ -341,7 +282,6 @@ export default {
       try {
         let response = await comicApi.getComic(this.$route.params.comicName)
         this.comic = response
-        console.log('response gots')
         this.$store.commit('setComicForVotingModal', this.comic)
         this.initializeImageFitArray()
         this.fitImagesForMobile()

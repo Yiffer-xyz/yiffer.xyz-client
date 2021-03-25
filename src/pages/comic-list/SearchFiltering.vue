@@ -229,7 +229,7 @@ export default {
       categoryHighlightColors: ['#9aebe7', '#9df0e6', '#a1f5e5', '#a6fae3', '#adfee0'],
       tagHighlightColors: ['#9aebe7', '#9ceee7', '#9df1e6', '#a0f3e5', '#a2f6e4', '#a6f9e3', '#a9fbe2', '#adfee0'],
       detailHighlighColors: ['#9aebe7', '#adfee0'],
-      shouldShowOverflow: true,
+      shouldShowOverflow: false,
       detailOptions: [
         {value: 'minimum', text: 'Minimum'},
         {value: 'low', text: 'Simple'},
@@ -354,7 +354,7 @@ export default {
 .buttonsRow {
   width: 100%;
   display: grid;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .catButtonsRow {
@@ -402,7 +402,9 @@ $hoverBorderWidth: 6px;
     padding-bottom: $buttonPadding - $nonHighlightHeight - ($hoverBorderWidth - 2px);
   }
 
-  transition: border-bottom-width 100ms linear, padding-bottom 100ms linear;
+  @media screen and (min-width: 900px) {
+    transition: border-bottom-width 100ms linear, padding-bottom 100ms linear;
+  }
 }
 
 .buttonSelected {
@@ -430,7 +432,7 @@ $hoverBorderWidth: 6px;
   overflow: auto;
   flex-direction: column;
   justify-content: center;
-  z-index: 2;
+  z-index: 3;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 4px 13px 0px rgba(0,0,0,0.2);
 }
@@ -486,7 +488,7 @@ $hoverBorderWidth: 6px;
 }
 
 .filterSectionDeExpander {
-  padding-top: 2rem;
+  padding-top: 1rem;
   width: fit-content;
 }
 
@@ -496,7 +498,7 @@ $hoverBorderWidth: 6px;
 }
 
 .selectsGrid {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   @media screen and (max-width: 340px) {
