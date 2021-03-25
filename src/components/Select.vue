@@ -131,8 +131,10 @@ $darkThemeColor: #eee;
   color: $lightThemeColor;
   cursor: pointer;
   user-select: none;
+  border-width: 0;
+  border-style: hidden;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
-  border-width: 2px;
+  border-bottom-width: 2px;
   border-bottom-style: solid;
   padding-left: $paddingBig;
   @media (max-width: 900px) {

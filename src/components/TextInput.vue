@@ -191,10 +191,11 @@ $paddingSmall: 0.4rem;
   outline: none;
   color: #333;
   width: 100%;
-  border: none;
+  border-width: 0;
+  border-style: hidden;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
-  border-bottom-style: solid;
   border-bottom-width: 2px;
+  border-bottom-style: solid;
   @media (max-width: 900px) {
     padding: 9px $paddingSmall;
   }

@@ -68,10 +68,10 @@
 .yForm2 {
   @extend .simpleShadowNoHover;
   box-sizing: border-box;
-  border-width: 3px;
-  border-style: solid;
+  border-style: hidden;
   border-width: 0;
   border-top-width: 10px;
+  border-top-style: solid;
   border-image: linear-gradient(left, $themeGreen1, $themeGreen2) 1;
   padding: 2rem 2rem 1rem 2rem;
   background-color: white;

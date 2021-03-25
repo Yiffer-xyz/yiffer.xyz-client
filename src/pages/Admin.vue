@@ -252,10 +252,10 @@ export default {
 
 .admin-content-box-open {
   @include simpleshadow-active;
-
-  border-style: solid;
   border-width: 0;
+  border-style: hidden;
   border-top-width: 10px;
+  border-top-style: solid;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
 
   width: 95%;
