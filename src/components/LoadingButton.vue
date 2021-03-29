@@ -80,7 +80,6 @@ $buttonBorderWidth: 2px;
   border: 2px solid $themeBlueDark;
   width: fit-content;
   word-break: keep-all;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   transition: background-color 100ms, border-color 100ms, box-shadow 100ms, opacity 100ms;
 
   &:hover, &:focus {
@@ -91,7 +90,6 @@ $buttonBorderWidth: 2px;
 
   span {
     color: white;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin-bottom: 1px;
   }
 }

@@ -83,7 +83,7 @@
                      @resetAllFilters="resetAllFilters"
                      :isSearchFilteringActive="isSearchFilteringActive"/>
 
-    <Pagination v-if="!isErrorLoadingComics && comicList.length > 0"
+    <Pagination v-if="!isErrorLoadingComics && (!hasFetchedComics || comicList.length > 0)"
                 :isLoading="!hasFetchedComics"
                 :shouldHide="isErrorLoadingComics"
                 :showWhileLoading="showPaginationWhileLoading"
@@ -93,9 +93,9 @@
       There was an error fetching comics.
     </p>
 
-    <SkeletonTheme v-else-if="isLoadingComics"
+    <SkeletonTheme v-if="isLoadingComics"
                    :color="isDarkTheme ? '#383f45' : 'rgba(238,238,238,0.75)'"
-                   :highlight="isDarkTheme ? '#525456' : '#fbfbfb'"
+                   :highlight="isDarkTheme ? '#5f6163' : '#fbfbfb'"
                    class="comic-card-container">
       <div :class="['comicCardSkeleton', isAuthenticated ? 'loggedInSkeleton' : '']" v-for="i in 80" :key="i">
         <Skeleton width="100%" height="100%"/>
@@ -128,7 +128,8 @@
                 :isLoading="!hasFetchedComics"
                 :shouldHide="isErrorLoadingComics"
                 :showWhileLoading="showPaginationWhileLoading"
-                :onPaginate="paginate"/>
+                :onPaginate="paginate"
+                scrollToTop/>
 
     <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
   </div>
@@ -266,10 +267,15 @@ export default {
   },
 
   watch: {
+    comicList () {
+      console.log('new')
+    },
+
     selectedKeywords: function (newKws, oldKws) {
       let wasKwRemoved = newKws.length < oldKws.length
       this.onKeywordsChange(wasKwRemoved)
     },
+
     searchFiltering222: function () {
       this.showPaginationWhileLoading = false
 
@@ -598,6 +604,7 @@ export default {
     },
 
     scrollToTop () {
+      console.log('skroll')
       window.scrollTo(0, 0)
     },
   },
@@ -685,16 +692,6 @@ export default {
       font-weight: 400 !important;
     }
   }
-}
-
-.buttonSelected {
-  border-width: 0;
-  border-style: hidden;
-  border-bottom-width: 6px;
-  border-bottom-style: solid;
-  border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1;
-  padding-bottom: 3px !important;
-  font-weight: 400;
 }
 
 .comic-card-container {

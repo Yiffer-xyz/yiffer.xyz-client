@@ -448,7 +448,6 @@ $hoverBorderWidth: 6px;
 .selectedKeyword {
   background-color: $themeBlueDark;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 0.95rem;
   padding: 2px 12px 4px 10px;
   border-radius: 15px;

@@ -3,7 +3,7 @@
     <div v-if="!isLoading || showWhileLoading"
          class="upperBodyPagination simpleShadowNoHover"
          id="upperPaginationButtons">
-      <div @click="paginate('down', false, true)"
+      <div @click="paginate('down', scrollToTop, true)"
            class="paginationButton paginationButton2 paginateLeft"
            :class="{'disabledPagination': pageNumber===1}">
         <LeftArrow/>
@@ -13,18 +13,18 @@
           :key="index"
           :class="{'buttonSelected': pageNumber===pageNo, 'dot-dot-dot-button': pageNo==='...'}"
           class="paginationButton paginationButton2"
-          @click="paginate(pageNo, false, true)">
+          @click="paginate(pageNo, scrollToTop, true)">
         {{pageNo}}
       </div>
 
-      <div @click="paginate('up', false, true)"
+      <div @click="paginate('up', scrollToTop, true)"
            class="paginationButton paginationButton2 paginateRight"
            :class="{'disabledPagination': isOnLastPage}">
         <RightArrow/>
       </div>
     </div>
     <div v-else-if="!shouldHide"
-         style="margin-top: -3px; width: 30rem; margin-bottom: 1rem;">
+         style="margin-top: -3px; width: 30rem;">
       <SkeletonTheme :color="isDarkTheme ? '#383f45' : 'rgba(238,238,238,0.75)'"
                      :highlight="isDarkTheme ? '#525456' : '#fbfbfb'">
         <Skeleton height="35px" width="100%"/>
@@ -61,6 +61,11 @@ export default {
     onPaginate: {
       type: Function,
       required: true,
+    },
+    scrollToTop: {
+      type: Boolean,
+      required: false,
+      default: false,
     }
   },
 
@@ -122,6 +127,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.buttonSelected {
+  border-width: 0;
+  border-style: hidden;
+  border-bottom-width: 6px;
+  border-bottom-style: solid;
+  border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1;
+  padding-bottom: 3px !important;
+  font-weight: 400;
+}
+
 .paginationContainer {
   width: 100%;
   display: flex;
@@ -166,6 +181,9 @@ export default {
   width: calc(min(100%, 30rem));
 }
 .dark {
+  .buttonSelected {
+    border-image: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark) 1;
+  }
   .paginationButton {
     background: $filterPaginationDarkMain;
     &:hover {
