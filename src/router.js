@@ -13,6 +13,7 @@ import Feedback from '@/pages/Feedback.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
 import Advertising from '@/pages/Advertising.vue'
+import Advertising2 from '@/pages/Advertising2.vue'
 import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 import JoinUs from '@/pages/JoinUs.vue'
 import JoinUsApply from '@/pages/JoinUsApply.vue'
@@ -128,6 +129,11 @@ export default new Router({
       path: '/advertising',
       name: 'advertising',
       component: Advertising,
+    },
+    {
+      path: '/advertising2',
+      name: 'advertising2',
+      component: Advertising2,
     },
     {
       path: '/advertising-apply',

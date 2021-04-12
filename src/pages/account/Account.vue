@@ -43,7 +43,8 @@
 
       <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
                    :to="{name: 'adsDashboard'}"
-                   class="adDashboardButton simpleShadow width100">
+                   class="y-button-big"
+                   style="width: 100% !important;">
         Go to advertising dashboard
         <RightArrow/>
       </router-link>
@@ -55,7 +56,6 @@
 </template>
 
 <script>
-import authApi from '@/api/authApi'
 import miscApi from '@/api/miscApi'
 import config from '@/config.json'
 import { doFetch } from '@/utils/statefulFetch'
@@ -83,7 +83,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, ResponseMessage, RightArrow, ChangePassword, AddEmail,
+    BackToIndex, RightArrow, ChangePassword, AddEmail,
   },
 
   computed: {
@@ -151,38 +151,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.adDashboardButton {
-  width: 100% !important;
-  border-radius: 4px;
-  color: white !important;
-  border: none;
-  outline: none;
-  height: 3rem;
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  padding: 0 1rem;
-  background: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  transition: all 100ms;
-  
-  &:hover {
-    cursor: pointer;
-  }
-
-  span {
-    margin-bottom: 2px;
-    margin-left: 0.25rem;
-  }
-}
-
-.dark {
-  .adDashboardButton {
-    background: linear-gradient(to right, $themeGreen1Darker, $themeGreen2Darker);
-  }
-}
-</style>

@@ -48,7 +48,7 @@
       </div>
 
 
-      <div class="adDashboardBox simpleShadowNoHover">
+      <div class="adDashboardBox simpleShadowNoHover firstAdDashboardBox">
         <p v-if="!selectedAd">
           Select an ad from the list below to see its full details
         </p>
@@ -93,31 +93,25 @@
           <p v-if="selectedAd.adType.includes('card') && !isEditingAd">
             Main text: <i>{{selectedAd.mainText}}</i>
           </p>
-          <p v-if="selectedAd.adType.includes('card') && isEditingAd"
-             :class="{'red-color': remainingCharsMainText < 0}"
-             class="m-0">
-            Main text ({{remainingCharsMainText}} characters left)
-          </p>
-          <input v-model="editedAd.mainText"
-                 v-if="selectedAd.adType.includes('card') && isEditingAd"
-                 type="text"
-                 style="width: 100%;"
-                 class="mb-8"/>
+          <TextInput @change="newVal => editedAd.mainText = newVal"
+                     :value="editedAd.mainText"
+                     v-if="selectedAd.adType.includes('card') && isEditingAd"
+                     type="text"
+                     :title="`Main text (${remainingCharsMainText} characters left)`"
+                     textAlign="left"
+                     classes="mb-32"/>
 
           <!-- SECONDARY TEXT -->
           <p v-if="selectedAd.adType.includes('card') && !isEditingAd">
             Secondary text: <i>{{selectedAd.secondaryText || '-'}}</i>
           </p>
-          <p v-if="selectedAd.adType.includes('card') && isEditingAd"
-             :class="{'red-color': remainingCharsSecondaryText < 0}"
-             class="m-0">
-            Secondary text ({{remainingCharsSecondaryText}} characters left) 
-          </p>
-          <input v-model="editedAd.secondaryText"
-                 v-if="selectedAd.adType.includes('card') && isEditingAd"
-                 type="text"
-                 style="width: 100%;"
-                 class="mb-8"/>
+          <TextInput @change="newVal => editedAd.secondaryText = newVal"
+                     :value="editedAd.secondaryText"
+                     v-if="selectedAd.adType.includes('card') && isEditingAd"
+                     type="text"
+                     :title="`Secondary text (${remainingCharsSecondaryText} characters left)`"
+                     textAlign="left"
+                     classes="mb-32"/>
 
           <!-- LINK -->
           <p v-if="!isEditingAd">
@@ -125,9 +119,13 @@
               {{selectedAd.link}}
             </a>
           </p>
-          <p v-else>
-            Link: <input v-model="editedAd.link" type="text" style="width: 100%;"/>
-          </p>
+          <TextInput @change="newVal => editedAd.link = newVal"
+                     :value="editedAd.link"
+                     v-if="selectedAd.adType.includes('card') && isEditingAd"
+                     type="text"
+                     :title="`Link`"
+                     textAlign="left"
+                     classes="mb-32"/>
 
           <p style="margin-bottom: 0;">Media:</p>
           <img :src="`${config.paidImagesDirectory}/${selectedAd.id}.${selectedAd.filetype}`"
@@ -161,19 +159,25 @@
                             @closeMessage="() => {responseMessage = ''; isReactivateError = false}" />
 
           <!-- BUTTONS: EDIT, DEACTIVATE, REACTIVATE -->
-          <div class="horizontalFlexLeft mt-16" v-if="!isEditingAd && !isDeletingAd && !isLoadingRenewal">
+          <div class="horizontalFlexLeft mt-16" v-if="!isEditingAd && !isDeletingAd">
             <button v-if="adTypesThatCanCorrect.includes(selectedAd.status)"
                     @click="() => isEditingAd = true"
                     class="y-button mr-16">
               Edit ad
             </button>
 
-            <button v-if="selectedAd.status === 'ACTIVE'" @click="toggleRenewal(true)" class="y-button y-button-neutral mr-16">
-              Turn on renewal
-            </button>
-            <button v-else-if="selectedAd.status === 'ACTIVE, AWAITING RENEWAL PAYMENT'" @click="toggleRenewal(false)" class="y-button y-button-neutral mr-16">
-              Turn off renewal
-            </button>
+
+            <LoadingButton text="Turn on renewal"
+                           v-if="selectedAd.status === 'ACTIVE'"
+                           :isLoading="isLoadingRenewal"
+                           @click="toggleRenewal(true)"
+                           styles="margin-right: 1rem;"/>
+
+            <LoadingButton text="Turn off renewal"
+                           v-else-if="selectedAd.status === 'ACTIVE, AWAITING RENEWAL PAYMENT'"
+                           :isLoading="isLoadingRenewal"
+                           @click="toggleRenewal(false)"
+                           styles="margin-right: 1rem;"/>
 
             <button v-if="selectedAd.status !== 'ENDED'"
                     @click="startDeletingAd"
@@ -195,19 +199,20 @@
                              outsideStyle="margin-bottom: 1rem; margin-left: 0;"
                              @closeMessage="() => responseMessage = ''" />
 
-            <button @click="cancelEdit"
-                    v-if="!isSubmitting"
-                    class="y-button y-button-neutral mr-16">
-              Cancel editing
-            </button>
-            <button @click="saveEdit"
-                    v-if="!isSubmitting"
-                    :class="{'y-button-disabled': !isSavable}"
-                    class="y-button">
-              Save
-            </button>
+            <div class="horizontalFlex justifyStart">
+              <button @click="cancelEdit"
+                      class="y-button y-button-neutral mr-16"
+                      :class="{'yButtonDisabled': isSubmitting}">
+                Cancel editing
+              </button>
 
-            <Loading v-if="isSubmitting" text="Submitting" classes="editAdLoading"/>
+              <LoadingButton :text="'Save'"
+                             :iconType="'save'"
+                             :isDisabled="!isSavable"
+                             :isLoading="isSubmitting"
+                             @click="saveEdit"
+                             styles="align-self: center;"/>
+            </div>
           </div>
 
           <!-- DELETE -->
@@ -225,22 +230,18 @@
                              outsideStyle="margin-top: 1rem; margin-bottom: 1rem; margin-left: 0;"
                              @closeMessage="() => responseMessage = ''" />
 
-            <div class="mt-16 mb-16" v-if="!isSubmitting">
+            <div class="mt-16 mb-16 horizontalFlex justifyStart">
               <button @click="cancelDelete"
                       class="y-button y-button-neutral mr-16">
                 Cancel
               </button>
-              <button @click="deleteAd"
-                      :class="{'y-button-disabled': deleteAdConfirmText !== selectedAd.id}"
-                      class="y-button">
-                {{isDeletePermanent ? 'Delete' : 'Deactivate'}}
-              </button>
+
+              <LoadingButton :text="isDeletePermanent ? 'Delete' : 'Deactivate'"
+                             :isDisabled="deleteAdConfirmText !== selectedAd.id"
+                             :isLoading="isSubmitting"
+                             @click="deleteAd"/>
             </div>
-
-            <Loading v-else text="Submitting" classes="editAdLoading"/>
           </div>
-
-          <Loading v-if="isLoadingRenewal" text="Submitting" classes="editAdLoading"/>
         </span>
       </div>
 
@@ -315,6 +316,8 @@ import { doFetch } from '../utils/statefulFetch'
 import config from '@/config.json'
 import { mapGetters } from 'vuex'
 import { format } from 'date-fns'
+import TextInput from '@/components/TextInput.vue'
+import LoadingButton from '@/components/LoadingButton.vue'
 
 import CheckIcon from 'vue-material-design-icons/CheckCircle.vue'
 
@@ -322,7 +325,7 @@ export default {
   name: 'advertisingDashboard',
   
   components: {
-    BackToIndex, Loading, CheckIcon, ResponseMessage,
+    BackToIndex, Loading, CheckIcon, ResponseMessage, TextInput, LoadingButton,
   },
 
   mounted () {
@@ -609,7 +612,14 @@ export default {
 .adDashboardBox {
   background-color: white;
   padding: 2rem;
-  margin: 2rem 0;
+  margin: 2rem auto;
+  width: fit-content;
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.firstAdDashboardBox {
+  width: calc(min(95%, 30rem));
 }
 
 .paidImageDetail {
@@ -633,13 +643,13 @@ export default {
 @media screen and (max-width: 900px) {
   .adDashboardBox {
     padding: 1rem;
-    margin: 1rem 0;
+    margin: 1rem auto;
   }
 }
 
 .dark {
   .adDashboardBox {
-    background-color: $themeDark4;
+    background-color: $themeDark2;
   }
 
   .paidImageRow {

@@ -228,6 +228,43 @@ $buttonBorderWidth: 2px;
   }
 }
 
+
+.y-button-big {
+  @include simpleshadow;
+  border-radius: 4px;
+  color: white !important;
+  border: none;
+  outline: none;
+  height: 3rem;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  padding: 0 1rem;
+  background: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: all 200ms;
+  
+  &:hover {
+    cursor: pointer;
+  }
+
+  span {
+    margin-bottom: 2px;
+    margin-left: 0.25rem;
+  }
+}
+
+.dark {
+  .y-button-big {
+    background: linear-gradient(to right, $themeGreen1Darker, $themeGreen2Darker);
+    &:hover {
+      background: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark);
+    }
+  }
+}
+
 .dark {
   .y-button {
     background-color: $themeBlueDT;
