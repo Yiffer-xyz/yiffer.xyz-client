@@ -421,7 +421,7 @@ $hoverBorderWidth: 6px;
   padding: 5px 0px;
   font-weight: 300;
   &:hover {
-    background: linear-gradient(left, $themeGreen1, $themeGreen2);
+    background: linear-gradient(to left, $themeGreen1, $themeGreen2);
     cursor: pointer;
   }
 }

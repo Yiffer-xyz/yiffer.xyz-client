@@ -12,13 +12,9 @@ import Account from '@/pages/account/Account.vue'
 import Feedback from '@/pages/Feedback.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
 import Blog from '@/pages/Blogs.vue'
-import Advertising from '@/pages/Advertising.vue'
-import Advertising2 from '@/pages/Advertising2.vue'
-import AdvertisingApply from '@/pages/AdvertisingApply.vue'
 import JoinUs from '@/pages/JoinUs.vue'
 import JoinUsApply from '@/pages/JoinUsApply.vue'
 import ResetPassword from '@/pages/ResetPassword.vue'
-import AdsDashboard from '@/pages/AdvertisingDashboard.vue'
 
 Vue.use(Router)
 
@@ -126,25 +122,6 @@ export default new Router({
       component: Blog,
     },
     {
-      path: '/advertising',
-      name: 'advertising',
-      component: Advertising,
-    },
-    {
-      path: '/advertising2',
-      name: 'advertising2',
-      component: Advertising2,
-    },
-    {
-      path: '/advertising-apply',
-      name: 'apply-advertising',
-      component: AdvertisingApply,
-      beforeEnter: rerouteIfNotLoggedIn,
-      meta: {
-        redirectOnLogout: true,
-      }
-    },
-    {
       path: '/join-us',
       name: 'moderating',
       component: Blog,
@@ -163,15 +140,6 @@ export default new Router({
       name: 'resetPassword',
       component: ResetPassword,
       beforeEnter: rerouteIfLoggedIn,
-    },
-    {
-      path: '/ads-dashboard',
-      name: 'adsDashboard',
-      component: AdsDashboard,
-      beforeEnter: rerouteIfNotLoggedIn,
-      meta: {
-        redirectOnLogout: true,
-      }
     },
     {
       path: '/:comicName',

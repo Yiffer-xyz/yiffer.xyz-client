@@ -29,6 +29,12 @@
             @click="clear">
         <CrossIcon title="Clear"/>
       </span>
+      <label v-if="helperText"
+             class="helperText"
+             :class="{'red-color': helperTextError}" 
+             :style="`text-align: ${textAlign}`">
+        {{helperText}}
+      </label>
 
       <textarea v-else-if="type === 'textarea'" rows=4
                 v-model="localValue"
@@ -90,6 +96,14 @@ export default {
       type: Boolean,
       required: false,
     },
+    helperText: {
+      type: String,
+      required: false,
+    },
+    helperTextError: {
+      type: Boolean,
+      required: false,
+    },
     borderTheme1: {
       type: Boolean,
       required: false,
@@ -147,6 +161,16 @@ $paddingSmall: 0.4rem;
   @media (max-width: 900px) {
     margin-left: $paddingSmall;
     margin-right: $paddingSmall;
+  }
+}
+
+.helperText {
+  font-size: 0.8rem;
+  width: 100%;
+  display: block;
+  padding: 2px $paddingBig;
+  @media (max-width: 900px) {
+    padding: 2px $paddingSmall;
   }
 }
 

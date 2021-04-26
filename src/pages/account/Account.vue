@@ -41,13 +41,13 @@
         </p>
       </div>
 
-      <router-link v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
-                   :to="{name: 'adsDashboard'}"
-                   class="y-button-big"
-                   style="width: 100% !important;">
+      <a v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
+         href="https://advertising.yiffer.xyz/dashboard"
+         class="y-button-big"
+         style="width: 100% !important;">
         Go to advertising dashboard
         <RightArrow/>
-      </router-link>
+      </a>
     </div>
     
     <ChangePassword v-if="isChangingPassword" @cancel="isChangingPassword = false"/>

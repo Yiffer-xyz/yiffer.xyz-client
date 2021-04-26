@@ -23,9 +23,9 @@
       </p>
 
       <div class="top-links">
-        <router-link :to="{name: 'advertising'}" v-if="$breakpoint.smAndDown" class="underline-link mr-12" id="link1" style="width: 9rem;">
+        <a href="https://advertising.yiffer.xyz" v-if="$breakpoint.smAndDown" class="underline-link mr-12" id="link1" style="width: 9rem;">
           <ExclamationIcon title=""/> Your ad here?
-        </router-link>
+        </a>
 
         <DropdownMenu v-model="showDropdown" 
                       v-if="$breakpoint.smAndDown"
@@ -53,9 +53,9 @@
         </DropdownMenu>
 
         <span v-else class="allTopLinksContainer">
-          <router-link :to="{name: 'advertising'}" class="underline-link" id="link1" style="width: 9rem;">
+          <a href="https://advertising.yiffer.xyz" class="underline-link" id="link1" style="width: 9rem;">
             <ExclamationIcon title=""/> Your ad here?
-          </router-link>
+          </a>
 
           <router-link :to="{name: 'suggestComic'}" class="underline-link" id="link2">
             <plus-icon title=""/> Suggest comic
@@ -159,8 +159,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
 
 import Vue from 'vue'
-import VueRellax from 'vue-rellax'
-Vue.use(VueRellax)
 
 export default {
   name: 'comic-list',

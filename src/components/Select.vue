@@ -1,5 +1,5 @@
 <template>
-  <div class="customSelect" :tabindex="tabindex" @blur="isOpen = false" :style="wrapperStyle">
+  <div :class="`customSelect ${classes}`" :tabindex="tabindex" @blur="isOpen = false" :style="wrapperStyle">
     <p v-if="title && selected" class="titleText">
       {{ title }}
     </p>
@@ -71,7 +71,12 @@ export default {
     resetValue: {
       type: [String, Object],
       required: false,
-    }
+    },
+    classes: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
 
   mounted() {
@@ -187,7 +192,7 @@ $darkThemeColor: #eee;
 }
 
 .items div:hover {
-  background: linear-gradient(left, $themeGreen1, $themeGreen2);
+  background: linear-gradient(to left, $themeGreen1, $themeGreen2);
 }
 
 .selectHide {

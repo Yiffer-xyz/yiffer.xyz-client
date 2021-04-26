@@ -3,20 +3,13 @@
     <nav>
       <div class="navInner">
         <div class="navLeft">
-          <router-link 
-            :to="{ name: 'comicList' }"
-            v-if="$breakpoint.xs"
-            class="navlink">
-            <HomeIcon/>
-          </router-link>
-          <span v-else
-                class="smallYifferTitle"
+          <span class="smallYifferTitle"
                 style="padding: 0 1rem 0 0.5rem;">
             <router-link 
               :to="{ name: 'comicList' }"
               :class="{'coloredSmallYifferTitle': isDarkTheme && this.$route.path !== '/'}"
               class="shrikhand smallYifferTitleLink">
-              Yiffer.xyz
+              {{$breakpoint.xs ? 'Y' : 'Yiffer.xyz'}}
             </router-link>
           </span>
 
@@ -106,8 +99,8 @@
       </p>
       <p style="display: flex;">
         Made by
-        <a href="https://twitter.com/Malann_kitty" target="_blank" class="underline-link ml-4">
-          <TwitterIcon/>Malann
+        <a href="https://twitter.com/Melon_mow" target="_blank" class="underline-link ml-4">
+          <TwitterIcon/>Melon
         </a>
       </p>
     </footer>
@@ -341,7 +334,7 @@ nav {
     border-style: solid;
     border-width: 0;
     border-top-width: 4px;
-    border-image: linear-gradient(left, $themeGreen1, $themeGreen2) 1; 
+    border-image: linear-gradient(to left, $themeGreen1, $themeGreen2) 1; 
     background: $themeDark4;
     p {
       color: white;
