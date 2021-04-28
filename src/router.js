@@ -6,7 +6,6 @@ import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/comic/Comic.vue'
 import About from '@/pages/About.vue'
 import Artist from '@/pages/Artist.vue'
-import Admin from '@/pages/Admin.vue'
 import PendingComic from '@/pages/PendingComic.vue'
 import Account from '@/pages/account/Account.vue'
 import Feedback from '@/pages/Feedback.vue'
@@ -68,15 +67,6 @@ export default new Router({
       path: '/artist/:artistName',
       name: 'artist',
       component: Artist,
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: Admin,
-      beforeEnter: rerouteIfNotLoggedIn,
-      meta: {
-        redirectOnLogout: true,
-      }
     },
     {
       path: '/account',

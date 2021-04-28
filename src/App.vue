@@ -20,12 +20,11 @@
             Account
           </router-link>
 
-          <router-link 
-            v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
-            class="navlink"
-            :to="{ name: 'admin' }">
+          <a href="https://admin.yiffer.xyz"
+             v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
+             class="navlink">
             Admin
-          </router-link>
+          </a>
 
           <span
             v-show="!$store.getters.isAuthenticated" 
