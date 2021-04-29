@@ -39,7 +39,11 @@
         </div>
       </div>
       <div class="imgContainer">
-        <img :src="`${config.paidImagesDirectory}/${comic.id}.${comic.filetype}`">
+        <picture>
+          <source media="(min-width: 901px)" :srcset="`${config.paidImagesDirectory}/${comic.id}-big.${comic.filetype}`">
+          <source media="(max-width: 900px)" :srcset="`${config.paidImagesDirectory}/${comic.id}-small.${comic.filetype}`">
+          <img :src="`${config.paidImagesDirectory}/${comic.id}-big.${comic.filetype}`">
+        </picture>
       </div>
     </a>
 

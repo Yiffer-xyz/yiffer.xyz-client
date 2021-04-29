@@ -6,7 +6,6 @@ import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/comic/Comic.vue'
 import About from '@/pages/About.vue'
 import Artist from '@/pages/Artist.vue'
-import PendingComic from '@/pages/PendingComic.vue'
 import Account from '@/pages/account/Account.vue'
 import Feedback from '@/pages/Feedback.vue'
 import SuggestComic from '@/pages/SuggestComic.vue'
@@ -115,15 +114,6 @@ export default new Router({
       path: '/join-us',
       name: 'moderating',
       component: Blog,
-    },
-    {
-      path: '/pendingComics/:comicName',
-      name: 'pendingComic',
-      component: PendingComic,
-      beforeEnter: rerouteIfNotLoggedIn,
-      meta: {
-        redirectOnLogout: true,
-      }
     },
     {
       path: '/reset-password-link/:token',
