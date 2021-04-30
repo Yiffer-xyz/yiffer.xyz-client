@@ -77,12 +77,12 @@
     <login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
     <voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
 
-    <div v-if="!hasConsented" class="consent-overlay">
-      <div class="consent-content">
-        <p>Yiffer.xyz contains explicit imagery not suited for those under 18 years old.</p>
+    <div v-if="!hasConsented" class="consentOverlay">
+      <div class="consentContent">
+        <p>Yiffer.xyz contains adult content not suited for those under 18 years of age.</p>
         <p>We also use cookies to enhance your user experience.</p>
 
-        <button @click="setConsent">
+        <button @click="setConsent" class="y-button-big marginAuto mt-16 consentButton">
           I am 18+ and I consent to the use of cookies
         </button>
       </div>
@@ -348,21 +348,29 @@ nav {
   padding-bottom: $footerHeight + 1.5rem;
 }
 
-.consent-overlay {
+.consentButton {
+  @media (max-width: 400px) {
+    height: 4rem;
+  }
+}
+
+.consentOverlay {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1000;
   width: 100vw;
   height: 100vh;
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(8px);
 
-  .consent-content {
+  .consentContent {
     padding: 2rem;
-    background-color: $themeGray0;
+    background-color: white;
     border-style: solid;
     border-width: 0;
     border-top-width: 10px;
@@ -373,25 +381,9 @@ nav {
     font-size: 1.25rem;
     margin-top: 0.5rem;
   }
-  button {
-    @include simpleshadow;
-    margin-top: 1rem;
-    outline: none;
-    border: none;
-    font-size: 1.1rem;
-    padding: 1rem 1.5rem;
-    background-color: $themeBlueVeryLight;
-    color: $themeDark4;
-    border-radius: 4px;
-    font-weight: 400;
-    &:hover {
-      background-color: $themeBlueLight;
-      cursor: pointer;
-    }
-  }
 
   @media screen and (max-width: 900px) {
-    .consent-content {
+    .consentContent {
       padding: 2rem 1rem;
     }
     button {
