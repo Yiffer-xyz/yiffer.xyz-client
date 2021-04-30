@@ -81,7 +81,13 @@ const store = {
         }
         if (indexesOfAds.includes(i)) {
           let indexOfAd = Math.floor(Math.random() * paidImages.length)
-          let ad = paidImages.splice(indexOfAd, 1)[0]
+          let ad
+          if (paidImages.length === 1) {
+            ad = paidImages[0]
+          }
+          else {
+            ad = paidImages.splice(indexOfAd, 1)[0]
+          }
           finalList.push(ad)
         }
         else {

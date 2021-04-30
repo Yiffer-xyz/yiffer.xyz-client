@@ -102,7 +102,7 @@
           <img :src="`${config.paidImagesDirectory}/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
         </a>
 
-        <div v-else style="height: 100px; width: 680px;"/>
+        <div v-else style="height: 90px; width: 728px;"/>
       </div>
     </div>
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
