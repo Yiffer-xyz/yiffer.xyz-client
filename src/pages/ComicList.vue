@@ -102,11 +102,12 @@
       </div>
     </SkeletonTheme>
 
+
     <div v-else-if="comicList.length > 0"
          class="comic-card-container"
          id="comicCardContainerList">
-      <comic-card v-for="comic in comicList"
-                  :key="comic.id"
+      <comic-card v-for="(comic, index) in comicList"
+                  :key="index"
                   :comic="comic"
                   @image-load="onImageLoad">
       </comic-card>
@@ -265,10 +266,6 @@ export default {
   },
 
   watch: {
-    comicList () {
-      console.log('new')
-    },
-
     selectedKeywords: function (newKws, oldKws) {
       let wasKwRemoved = newKws.length < oldKws.length
       this.onKeywordsChange(wasKwRemoved)
