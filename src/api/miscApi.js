@@ -16,11 +16,21 @@ export default {
   },
 
   async logRoute (route, description) {
-    axios.post(baseUrl + '/log-route', {route, description})
+    try {
+      axios.post(baseUrl + '/log-route', {route, description})
+    }
+    catch (err) {
+      console.log('Failed to log route')
+    }
   },
 
   async logEvent (event, description) {
-    axios.post(baseUrl + '/log-event', {event, description: description || null})
+    try {
+      await axios.post(baseUrl + '/log-event', {event, description: description || null})
+    }
+    catch (err) {
+      console.log('Failed to log event')
+    }
   },
 
   async getVisitorStats (interval) {
@@ -49,9 +59,14 @@ export default {
   },
 
   async getModApplications () {
-    let response = await axios.get(`${baseUrl}/mod-applications`)
-    if (!response.data.error) { return response.data }
-    else { return [] }
+    try {
+      let response = await axios.get(`${baseUrl}/mod-applications`)
+      if (!response.data.error) { return response.data }
+      else { return [] }
+    }
+    catch (err) {
+      return []
+    }
   },
 
   async processModApplication (applicationId, isRemoved) {

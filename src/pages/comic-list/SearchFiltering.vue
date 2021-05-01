@@ -121,7 +121,7 @@
          }">
       <ChevronRightIcon class="mdi-arrow" title=""/>
       <p>Search &amp; filter</p>
-      <ChevronLeftIcon class="mdi-arrow" title=""/>
+      <ChevronLeftIcon class="mdi-arrow" title="" />
     </div>
   </div>
 </template>
@@ -474,6 +474,9 @@ $hoverBorderWidth: 6px;
   justify-content: center;
   margin: auto;
   width: fit-content;
+  span {
+    margin-top: 4px;
+  }
   &:hover {
     cursor: pointer;
   }

@@ -1,10 +1,11 @@
 <template>
   <div style="width: 100%">
 
-    <h1 class="margin-bottom-8">Account: {{$store.getters.userData.username}}</h1>
+    <h1 class="margin-bottom-8" v-if="$store.getters.isAuthenticated">Account: {{$store.getters.userData.username}}</h1>
+    <h1 class="margin-bottom-8" v-else>Account</h1>
     <BackToIndex style="margin: auto;"/>
 
-    <div class="smaller-width-text" v-if="!isChangingPassword && !isAddingEmail">
+    <div class="smaller-width-text" v-if="!isChangingPassword && !isAddingEmail && userData">
       <div class="verticalFlex mt-16">
         <p v-if="$store.getters.userData.email">
           Your email: {{$store.getters.userData.email}}
@@ -50,8 +51,12 @@
       </a>
     </div>
     
-    <ChangePassword v-if="isChangingPassword" @cancel="isChangingPassword = false"/>
-    <AddEmail v-if="isAddingEmail" @cancel="isAddingEmail = false"/>
+    <ChangePassword v-if="isChangingPassword && userData" @cancel="isChangingPassword = false"/>
+    <AddEmail v-if="isAddingEmail && userData" @cancel="isAddingEmail = false"/>
+
+    <p v-if="!userData" class="mt-32">
+      Something seems to have gone wrong.
+    </p>
   </div>
 </template>
 
@@ -62,9 +67,9 @@ import { doFetch } from '@/utils/statefulFetch'
 
 import ChangePassword from './ChangePassword.vue'
 import AddEmail from './AddEmail.vue'
-import ResponseMessage from '@/components/ResponseMessage.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import advertisingApi from '@/api/advertisingApi'
+import Loading from '@/components/LoadingIndicator.vue'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import { format } from 'date-fns'
@@ -83,7 +88,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, RightArrow, ChangePassword, AddEmail,
+    BackToIndex, RightArrow, ChangePassword, AddEmail, Loading,
   },
 
   computed: {
@@ -115,11 +120,14 @@ export default {
 
   methods: {
     async getModApplicationStatus () {
-      let { success, applicationStatus }  = await miscApi.getMyModApplicationStatus()
-      if (success) { 
-        this.modApplicationStatus = applicationStatus
+      try {
+        let { success, applicationStatus }  = await miscApi.getMyModApplicationStatus()
+        if (success) { 
+          this.modApplicationStatus = applicationStatus
+          return
+        }
       }
-      else {
+      finally {
         this.modApplicationStatus = MOD_APPLICATION_STATUSES.none
       }
     },

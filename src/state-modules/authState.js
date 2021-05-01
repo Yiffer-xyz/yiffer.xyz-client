@@ -28,14 +28,20 @@ export default {
     },
 
     async refreshUserData ({commit}) {
-      let response = await authApi.refreshAuth()
-      if (response === null) {
+      try {
+        let response = await authApi.refreshAuth()
+        if (response === null) {
+          commit('setIsAuthenticated', false)
+          commit('setUserData', undefined)
+        }
+        else {
+          commit('setUserData', response)
+          commit('setIsAuthenticated', true)
+        }
+      }
+      catch (err) {
         commit('setIsAuthenticated', false)
         commit('setUserData', undefined)
-      }
-      else {
-        commit('setUserData', response)
-        commit('setIsAuthenticated', true)
       }
     },
 

@@ -112,7 +112,7 @@
       </comic-card>
     </div>
 
-    <p v-else class="comicListMessage">
+    <p v-else-if="!isErrorLoadingComics" class="comicListMessage">
       There are no comics matching your search.
     </p>
 
