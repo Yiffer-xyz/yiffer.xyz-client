@@ -97,7 +97,7 @@
       </div>
 
 
-      <div class="paidImageBannerLink" style="max-height: 100px !important;">
+      <div class="paidImageBannerLink" style="max-height: 100px !important;" @click="savePaidImageClick">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
           <img :src="`${config.paidImagesDirectory}/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
         </a>
@@ -157,6 +157,7 @@ import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import DownloadIcon from 'vue-material-design-icons/Download.vue'
 import ComicKeywords from './ComicKeywords.vue'
 import RatingAndSlider from './RatingAndSlider.vue'
+import paidImageApi from '@/api/advertisingApi'
 
 import comicApi from '../../api/comicApi'
 import miscApi from '../../api/miscApi'
@@ -273,6 +274,10 @@ export default {
       if ( this.comic ) {
         for (var i=0; i<this.comic.numberOfPages; i++) { this.imageFitArray.push('height') }
       }
+    },
+
+    savePaidImageClick () {
+      paidImageApi.logAdClick(this.paidImage.id)
     },
 
     async loadComic (setCurrentUndefined=true) {

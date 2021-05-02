@@ -113,12 +113,12 @@
                     v-if="$store.getters.isAuthenticated"/>
 
       <p v-if="detailLevel === 'high'" class="margin-top-4" style="font-size: 12px;">
-        <label title="Updated on" style="font-size: 0.8rem;">
-          <RefreshIcon title="Updated on"/> {{prettyDate(comic.updated)}}
+        <label title="Updated" style="font-size: 0.8rem;">
+          <RefreshIcon title="Updated"/> {{prettyDate(comic.updated)}}
         </label>
         <br/>
-        <label title="Created on" style="font-size: 0.8rem;">
-          <PlusIcon title="Created on"/> {{prettyDate(comic.created)}}
+        <label title="Created" style="font-size: 0.8rem;">
+          <PlusIcon title="Created"/> {{prettyDate(comic.created)}}
         </label>
       </p>
     </div>
