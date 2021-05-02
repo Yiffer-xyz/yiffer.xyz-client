@@ -77,10 +77,8 @@
       </p>
     </div>
 
-    <div v-else-if="!comic">
-      <h2 class="comicLoadingInfo">
-        Loading comic...
-      </h2>
+    <div v-else-if="!comic" class="loadingContainer">
+      <Loading/>
     </div>
   
 
@@ -142,8 +140,7 @@
       </button>
     </div>
 
-    <BackToIndex />
-    <div style="margin-top: 16px;"> </div>
+    <div style="margin-top: 16px;" v-if="comic"/>
   </div>
 </template>
 
@@ -401,6 +398,14 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 </script>
 
 <style lang="scss" scoped>
+.loadingContainer {
+  height: 85vh;
+  margin-bottom: -2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .lowerLinksAndRating {
   display: inline-flex;
   flex-direction: column;

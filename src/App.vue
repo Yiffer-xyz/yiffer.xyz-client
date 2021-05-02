@@ -80,7 +80,7 @@
     <div v-if="!hasConsented" class="consentOverlay">
       <div class="consentContent">
         <p>Yiffer.xyz contains adult content not suited for those under 18 years of age.</p>
-        <p>We also use cookies to enhance your user experience.</p>
+        <p>We also use cookies to enhance your user experience (in a nice way).</p>
 
         <button @click="setConsent" class="y-button-big marginAuto mt-16 consentButton">
           I am 18+ and I consent to the use of cookies

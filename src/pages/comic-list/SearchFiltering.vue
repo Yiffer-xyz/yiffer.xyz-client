@@ -238,6 +238,18 @@ export default {
     }
   },
 
+  mounted () { 
+    if (this.isOpen) {
+      this.shouldShowOverflow = true
+    }
+
+    if (this.detailLevel) {
+      console.log(this.detailValue)
+      this.detailValue = this.detailLevel
+      console.log(this.detailLevel)
+    }
+  },
+
   methods: {
     onSearchChange (newSearch) {
       this.searchValue = newSearch

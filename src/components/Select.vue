@@ -89,6 +89,9 @@ export default {
       if (this.resetValue) {
         this.selected = this.defaultValue
       }
+    },
+    defaultValue () {
+      this.selected = this.defaultValue
     }
   },
 
