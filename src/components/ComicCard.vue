@@ -75,13 +75,13 @@
       </div>
 
       <!-- ALL KEYWORDS -->
-      <div class="keywordContainer" v-if="isShowingKeywords && detailLevel !== 'minimum'">
+      <div class="keywordContainer" v-if="shouldShowKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div 
           :class="{'keyword': clickableKeyword, 
                    'keywordStatic': !clickableKeyword}"
-          v-for="keyword in comicKeywords[comic.id]"
+          v-for="keyword in keywords"
           :key="keyword.id"
           @click="addSelectedKeyword(keyword)"
         >
@@ -98,7 +98,7 @@
       </div>
 
       <!-- KEYWORDS, CAT, TAG -->
-      <div class="keywordContainer" v-if="!isShowingKeywords && !isLoadingKeywords && detailLevel !== 'minimum'">
+      <div class="keywordContainer" v-if="!shouldShowKeywords && !isLoadingKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div class="keyword" v-if="!isShowingKeywords" @click="showKeywords()">
@@ -178,9 +178,24 @@ export default {
       'comicKeywords',
       'detailLevel',
     ]),
+
+    shouldShowKeywords () {
+      return this.detailLevel === 'high' || (this.isShowingKeywords && this.detailLevel !== 'minimum')
+    },
+
     comicNameUrlParsed () {
       return this.comic.name.replace(/ /g, '%20')
-    }
+    },
+
+    keywords () {
+      if (this.comic.keywords) {
+        return this.comic.keywords
+      }
+      if (this.comic.id in this.comicKeywords) {
+        return this.comicKeywords[this.comic.id]
+      }
+      return []
+    },
   },
 
   methods: {

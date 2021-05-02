@@ -3,7 +3,7 @@ import config from '@/config.json'
 let baseUrl = config.apiBaseUrl
 
 export default {
-  async getComicsPaginated ({categories, tags, keywordIds, search, order, page}) {
+  async getComicsPaginated ({categories, tags, keywordIds, search, order, page, shouldGetKeywords}) {
     let params = {
       page: page || 1,
       order,
@@ -12,6 +12,7 @@ export default {
     if (tags) { params.tags = tags }
     if (keywordIds && keywordIds.length>0) { params.keywordIds = keywordIds }
     if (search) { params.search = search }
+    if (shouldGetKeywords) { params.getKeywords = true }
 
     let response = await axios.get(baseUrl + '/comicsPaginated', { params })
     for (var comic of response.data.comics) {

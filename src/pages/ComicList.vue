@@ -221,6 +221,7 @@ export default {
       'wasKwSelectedFromList',
       'allKeywords',
       'isAuthenticated',
+      'detailLevel',
     ]),
 
     availableSortOptions () {
@@ -350,6 +351,8 @@ export default {
       if (this.selectedKeywords.length > 0) {
         searchParams.keywordIds = this.selectedKeywords.map(kw => kw.id)
       }
+      searchParams.shouldGetKeywords = this.detailLevel === 'high'
+
       this.$store.dispatch('fetchComics', searchParams)
     },
 
@@ -371,7 +374,7 @@ export default {
 
     onSortingButtonClick (sortButtonName) {
       if (this.sorting === sortButtonName) { return }
-      this.showPaginationWhileLoading = true
+      this.showPaginationWhileLoading = false
       this.setSorting(sortButtonName)
       this.setRouterQuery()
       this.fetchComics()
@@ -563,6 +566,10 @@ export default {
       this.$store.commit('setDetailLevel', detailLevel)
       this.$cookies.set('detail', detailLevel)
       if (!this.avoidLog) { miscApi.logEvent('detail', detailLevel) }
+
+      if (detailLevel === 'high') {
+        this.fetchComics()
+      }
     },
 
     clearSearchField () {
