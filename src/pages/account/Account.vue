@@ -35,7 +35,7 @@
           Pending review
         </p>
         <p class="mt-0" v-else-if="modApplicationStatus === modApplicationStatuses.waiting">
-          Your application looks promising, but we're full at the moment, or will take some time deciding. You can consider this a "waiting list" of sorts. We won't guarantee that you'll get a mod spot, but your application is not rejected. We will contact you on Telegram should we decide to include you as a mod.
+          Your application looks promising. We're either currently not in need of more mods, or we need some time deciding. You can consider this a "waiting list" of sorts. We won't guarantee that you'll get a mod spot, but your application is not rejected. We will contact you on Telegram should we decide to include you as a mod!
         </p>
         <p class="mt-0" v-else-if="modApplicationStatus === modApplicationStatuses.removed">
           Sorry, your application has been rejected. This is most likely because there were simply more mods with better capabilities applying. Thank you for wanting to contribute though!
@@ -69,7 +69,6 @@ import ChangePassword from './ChangePassword.vue'
 import AddEmail from './AddEmail.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import advertisingApi from '@/api/advertisingApi'
-import Loading from '@/components/LoadingIndicator.vue'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import { format } from 'date-fns'
@@ -77,7 +76,6 @@ import { format } from 'date-fns'
 import { mapGetters } from 'vuex'
 
 const MOD_APPLICATION_STATUSES = {
-  loading: 'loading',
   none: 'none',
   pending: 'pending',
   waiting: 'waiting',
@@ -88,14 +86,13 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, RightArrow, ChangePassword, AddEmail, Loading,
+    BackToIndex, RightArrow, ChangePassword, AddEmail,
   },
 
   computed: {
     showModApplicationStatus () {
       return !this.isChangingPassword
              && this.userData
-             && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.loading
              && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.none
     },
 
@@ -127,7 +124,7 @@ export default {
           return
         }
       }
-      finally {
+      catch (err) {
         this.modApplicationStatus = MOD_APPLICATION_STATUSES.none
       }
     },
