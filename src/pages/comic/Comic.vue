@@ -24,10 +24,14 @@
 
         <button @click="downloadZippedComic()"
                 v-if="$store.getters.isAuthenticated 
-                      && $store.getters.userData.donator 
+                      && (
+                        $store.getters.userData.donator 
+                        || $store.getters.userData.userType === 'moderator'
+                        || $store.getters.userData.userType === 'admin'
+                      )
                       && !isZipping 
                       && !downloadStarted" 
-                class="y-button">
+                class="y-button mt-16">
           <DownloadIcon/>  Download comic
         </button>
 
@@ -337,7 +341,7 @@ export default {
         var jsZipper = new JSZip()
         let imageFiles = document.getElementsByClassName('comic-page')
         for (var i=1; i<imageFiles.length+1; i++) {
-          let imageResponse = await fetch(`/comics/${this.comic.name}/${this.formatPageNumber(i)}.jpg`)
+          let imageResponse = await fetch(`${config.comicDirectory}/${this.comic.name}/${this.formatPageNumber(i)}.jpg`)
           jsZipper.file(this.formatPageNumber(i)+'.jpg', imageResponse.blob())
         }
   
