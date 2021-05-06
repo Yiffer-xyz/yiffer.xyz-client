@@ -33,9 +33,12 @@
       <div v-if="isAddingKeywords" class="mt-8 horizontalFlex">
         <Select :options="keywordsNotInComic"
                 title="Tag to add"
-                @change="onAddKeywordChange"
-                wrapperStyle="min-width: 13rem;"
-                :resetValue="responseMessage"/>
+                isSearchable
+                searchKeepSelected
+                :searchSelected="addKeyword ? addKeyword.name : null"
+                :resetValue="kwResetValue"
+                @searchSelectedClicked="addKeyword = null"
+                @change="onAddKeywordChange"/>
 
         <LoadingButton text="Submit"
                        :isLoading="isSubmittingSuggestion"
@@ -48,9 +51,12 @@
       <div v-else-if="isRemovingKeywords" class="mt-8 horizontalFlex">
         <Select :options="comicKeywordOptions"
                 title="Tag to remove"
-                @change="onRemoveKeywordChange"
-                wrapperStyle="min-width: 13rem;"
-                :resetValue="responseMessage"/>
+                isSearchable
+                searchKeepSelected
+                :searchSelected="removeKeyword ? removeKeyword.name : null"
+                :resetValue="kwResetValue"
+                @searchSelectedClicked="removeKeyword = null"
+                @change="onRemoveKeywordChange"/>
 
         <LoadingButton text="Submit"
                        :isLoading="isSubmittingSuggestion"
@@ -115,6 +121,7 @@ export default {
       isRemovingKeywords: false,
       responseMessage: '',
       responseMessageType: 'info',
+      kwResetValue: null,
     }
   },
 
@@ -127,10 +134,12 @@ export default {
   methods: {
     onAddKeywordChange (newKeyword) {
       this.addKeyword = newKeyword
+      this.kwResetValue = Math.random().toString()
     },
 
     onRemoveKeywordChange (newKeyword) {
       this.removeKeyword = newKeyword
+      this.kwResetValue = Math.random().toString()
     },
 
     async loadComicKeywords () {

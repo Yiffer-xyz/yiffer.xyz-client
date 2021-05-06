@@ -144,10 +144,13 @@ export default {
 }
 .paginationButton {
   flex: 1;
-  padding: 9px 10px;
   font-weight: 400;
   font-size: 14px;
   background: $filterPaginationLightMain;
+  padding: 9px 10px;
+  @media (max-width: 340px) {
+    padding: 9px 6px;
+  }
   &:hover {
     &:not(.disabledPagination) {
       cursor: pointer;

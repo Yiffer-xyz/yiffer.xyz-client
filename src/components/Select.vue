@@ -1,8 +1,13 @@
 <template>
-  <div :class="`customSelect ${classes}`" :tabindex="tabindex" @blur="isOpen = false" :style="wrapperStyle">
-    <p v-if="title && selected" class="titleText">
+  <div :class="`customSelect ${classes} ${isSearchable ? '' : 'cursorPointer'}`"
+       id="customSelect"
+       tabindex="0"
+       @blur="isOpen = false"
+       :style="`${wrapperStyle}; ${minWidthString}; ${widthString}`">
+    <p v-if="title && (selected || isSearchable)" class="titleText">
       {{ title }}
     </p>
+
     <div class="selected"
          :style="{'border-color': overrideBorderColor}"
          :class="{
@@ -11,19 +16,64 @@
            borderTheme1: borderTheme1,
            borderTheme2: borderTheme2,
            placeholderStyle: !selected,
+           selectWithIconRight: hasIconRight,
          }"
+         v-if="!isSearchable"
          @click="isOpen = !isOpen">
       {{ selected ? selected.text : title }}
     </div>
-    <div class="items" :class="{ selectHide: !isOpen }">
+    
+    <input type="text" v-else-if="!searchSelected"
+           class="selected"
+           ref="selectInput1"
+           autocomplete="off"
+           :style="{'border-color': overrideBorderColor}"
+           :placeholder="searchPlaceholder || ''"
+           :class="{
+             open: isOpen,
+             overrideBorderColor: (overrideBorderColor || borderTheme1 || borderTheme2),
+             borderTheme1: borderTheme1,
+             borderTheme2: borderTheme2,
+           }"
+           @click="isOpen = !isOpen || searchText"
+           v-model="searchText"/>    
+
+    <input type="text" v-else
+           ref="selectInput2"
+           class="selected cursorPointer"
+           autocomplete="off"
+           :style="{'border-color': overrideBorderColor}"
+           :placeholder="searchPlaceholder || ''"
+           :class="{
+             open: isOpen,
+             overrideBorderColor: (overrideBorderColor || borderTheme1 || borderTheme2),
+             borderTheme1: borderTheme1,
+             borderTheme2: borderTheme2,
+           }"
+           @click="() => {
+             $emit('searchSelectedClicked')
+             isOpen = true
+           }"
+           v-model="searchSelected"/>
+
+    <span class="clearContainer cursorPointer"
+          v-if="isSearchable && searchSelected"
+          @click="$emit('searchSelectedClicked')">
+      <CrossIcon/>
+    </span>
+
+    <div class="items"
+         :class="{
+           selectHide: !isOpen,
+         }"
+         :style="maxOptionWidthStyle"
+         ref="selectItemContainer">
       <div
-        v-for="option of options"
+        v-for="(option, index) of filteredOptions"
         :key="option.text"
-        @click="
-          selected = option
-          isOpen = false
-          $emit('change', option.value)
-        "
+        :class="{highlightedOption: highlightedIndex === index}"
+        :ref="`option${index}`"
+        @click="onOptionSelected(option)"
       >
         {{ option.text }}
       </div>
@@ -32,6 +82,8 @@
 </template>
 
 <script>
+import CrossIcon from 'vue-material-design-icons/Close.vue'
+
 export default {
   props: {
     title: {
@@ -46,6 +98,26 @@ export default {
       type: Object,
       required: false,
     },
+    isSearchable: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    searchKeepSelected: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    searchSelected: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    searchPlaceholder: {
+      type: String,
+      required: false,
+      default: null,
+    },
     overrideBorderColor: {
       type: String,
       required: false,
@@ -58,15 +130,15 @@ export default {
       type: Boolean,
       required: false,
     },
-    tabindex: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
     wrapperStyle: {
       type: String,
       required: false,
       default: '',
+    },
+    reducePadding: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     resetValue: {
       type: [String, Object],
@@ -77,10 +149,30 @@ export default {
       required: false,
       default: '',
     },
+    initialWidth: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    maxWidth: {
+      type: Number,
+      required: false,
+      default: 99999,
+    },
+    isFullWidth: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  components: {
+    CrossIcon,
   },
 
   mounted() {
     this.$emit("input", this.selected)
+    window.addEventListener('keydown', this.onKeyPress)
+    this.tryComputeWidth()
   },
 
   watch: {
@@ -88,18 +180,221 @@ export default {
     resetValue () {
       if (this.resetValue) {
         this.selected = this.defaultValue
+        this.searchText = ''
       }
     },
-    defaultValue () {
-      this.selected = this.defaultValue
-    }
+
+    searchText (newText) {
+      this.highlightedIndex = null
+
+      if (newText && !this.isopen) {
+        this.isOpen = true
+      }
+
+      this.scrollToTopIfPossible()
+    },
+
+    highlightedIndex (newIndex) {
+      if (newIndex !== null && this.$refs[`option${newIndex}`]) {
+        this.$refs[`option${newIndex}`][0].scrollIntoView({ block: 'nearest', inline: 'start' })
+      }
+    },
+
+    isOpen () {
+      this.highlightedIndex = null
+
+      if (this.isSearchable && this.isOpen) {
+        setTimeout(() => {
+          window.addEventListener('click', this.closeSearchableResults)
+        }, 15)
+
+        this.scrollToTopIfPossible()
+      }
+      else {
+        window.removeEventListener('click', this.closeSearchableResults)
+      }
+    },
+
+    options () {
+      this.tryComputeWidth()
+    },
+  },
+
+  methods: {
+    async waitMillisec (millisec) {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(), millisec)
+      })
+    },
+
+    async tryComputeWidth () {
+      let isFinished = false
+      while (!isFinished) {
+        await this.waitMillisec(25)
+        isFinished = this.computeWidth()
+      }
+    },  
+
+    scrollToTopIfPossible () {
+      if (this.isOpen
+        && this.filteredOptions.length > 0
+        && this.$refs[`option0`]
+        && this.$refs[`option0`][0]) {
+        this.$refs[`option0`][0].scrollIntoView({ block: 'nearest', inline: 'start' })
+      }
+    },
+
+    computeWidth () {
+      let container = this.$refs.selectItemContainer
+      if (container && container.children.length > 0) {
+        let maxChildWidth = 0
+        for (let child of container.children) {
+          if (child.clientWidth > maxChildWidth) {
+            maxChildWidth = child.clientWidth
+          }
+        }
+
+        if (this.minWidth > this.maxWidth) {
+          this.width = this.maxWidth
+        }
+        else {
+          this.minWidth = maxChildWidth
+        }
+
+        return true
+      }
+      else {
+        return false
+      }
+    },
+
+    closeSearchableResults () {
+      this.isOpen = false
+      this.searchText = ''
+    },
+
+    onOptionSelected (option) {
+      this.selected = option
+      this.isOpen = false
+      this.$emit('change', option.value)
+
+      if (this.isSearchable && this.searchKeepSelected) {
+        let relevantInputElement = this.$refs.selectInput1
+        if (!relevantInputElement) {
+          relevantInputElement = this.$refs.selectInput2
+        }
+        if (relevantInputElement) {
+          relevantInputElement.blur()
+        } 
+      }
+      
+    },
+
+    onKeyPress (e) {
+      if (this.isOpen) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault()
+          if (this.highlightedIndex !== null) {
+            if (this.highlightedIndex === this.filteredOptions.length - 1) {
+              this.highlightedIndex = 0
+            }
+            else {
+              this.highlightedIndex++
+            }
+          }
+          else {
+            this.highlightedIndex = 0
+          }
+        }
+        else if (e.key === 'ArrowUp') {
+          e.preventDefault()
+          if (this.highlightedIndex !== null) {
+            if (this.highlightedIndex === 0) {
+              this.highlightedIndex = this.filteredOptions.length-1
+            }
+            else {
+              this.highlightedIndex--
+            }
+          }
+          else {
+            this.highlightedIndex = this.filteredOptions.length-1
+          }
+        }
+        else if (e.key === 'Enter') {
+          if (this.highlightedIndex === null && this.filteredOptions.length > 0) {
+            this.onOptionSelected(this.filteredOptions[0])
+          }
+          else if (this.highlightedIndex !== null) {
+            this.onOptionSelected(this.filteredOptions[this.highlightedIndex])
+          }
+        }
+      }
+    },
+  },
+
+  computed: {
+    hasIconRight () {
+      return !(this.isSearchable && !this.searchKeepSelected)
+    },
+
+    minWidthString () {
+      if (this.width || this.isFullWidth) {
+        return ''
+      }
+      if (this.minWidth) {
+        return `min-width: ${this.minWidth + (this.hasIconRight ? 16 : 0)}px`
+      }
+      else if (this.initialWidth) {
+        return `min-width: ${this.initialWidth}`
+      }
+      return ''
+    },
+
+    widthString () {
+      if (this.isFullWidth) {
+        return 'width: 100%'
+      }
+      if (this.width) {
+        return `width: ${this.width}px`
+      }
+      return ''
+    },
+
+    maxOptionWidthStyle () {
+      if (this.maxWidth && window.matchMedia(`(max-width: ${this.maxWidth}px)`)) {
+        return `max-width: ${this.maxWidth}px`
+      }
+      return ''
+    },
+
+    filteredOptions () {
+      if (!this.isSearchable || this.searchText === '') {
+        return this.options
+      }
+      
+      return this.lowerCaseOptions.filter(opt => opt.lowerCaseText.includes(this.searchText.toLowerCase()))
+    },
+
+    lowerCaseOptions () {
+      return this.options.map(opt => ({...opt, lowerCaseText: opt.text.toLowerCase()}))
+    },
   },
 
   data() {
     return {
       selected: this.defaultValue,
+      searchText: '',
       isOpen: false,
+      clickListener: null,
+      highlightedIndex: null,
+      minWidth: 0,
+      width: undefined,
     }
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('click', this.closeSearchableResults)
+    window.removeEventListener('keypress', this.onKeyPress)
   },
 }
 </script>
@@ -114,6 +409,19 @@ $borderRadius: 0px;
 $lightThemeColor: #333;
 $darkThemeColor: #eee;
 
+input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+  &::placeholder {
+    filter: opacity(0.4);
+  }
+  background: transparent;
+}
+
 .titleText {
   position: absolute;
   font-size: 0.75rem;
@@ -126,19 +434,23 @@ $darkThemeColor: #eee;
 
 .customSelect {
   position: relative;
-  width: 100%;
+  width: fit-content;
   text-align: left;
   outline: none;
   height: $height;
   line-height: $height;
   padding-top: 0.75rem;
+
+  .clearContainer {
+    position: absolute;
+    right: 5px;
+    top: 12px;
+  }
 }
 
 .customSelect .selected {
   border-radius: $borderRadius;
   color: $lightThemeColor;
-  cursor: pointer;
-  user-select: none;
   border-width: 0;
   border-style: hidden;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
@@ -147,6 +459,9 @@ $darkThemeColor: #eee;
   padding-left: $paddingBig;
   @media (max-width: 900px) {
     padding-left: $paddingSmall
+  }
+  &.selectWithIconRight {
+    padding-right: 2rem;
   }
 }
 
@@ -174,32 +489,40 @@ $darkThemeColor: #eee;
   overflow: hidden;
   @include simpleshadowNoHover;
 
+  width: fit-content;
+  min-width: 100%;
   position: absolute;
   background-color: white;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 4;
 
   max-height: 20rem;
   overflow-y: auto;
 }
 
 .items div {
+  z-index: 4;
   color: $lightThemeColor;
   cursor: pointer;
-  user-select: none;
   padding-left: $paddingBig;
+  padding-right: $paddingBig;
+  white-space: nowrap;
   @media (max-width: 900px) {
     padding-left: $paddingSmall
   }
 }
 
 .items div:hover {
-  background: linear-gradient(to left, $themeGreen1, $themeGreen2);
+  background: linear-gradient(to right, scale-color($themeGreen1, $lightness: 50%), scale-color($themeGreen2, $lightness: 50%));
+}
+
+.highlightedOption {
+  background: linear-gradient(to right, $themeGreen1, $themeGreen2) !important;
 }
 
 .selectHide {
-  display: none;
+  visibility: hidden;
 }
 
 .overrideBorderColor {
@@ -223,6 +546,10 @@ $darkThemeColor: #eee;
     color: $darkThemeColor;
   }
 
+  input::placeholder {
+    filter: none;
+  }
+
   .placeholderStyle {
     color: $themeGray8 !important;
   }
@@ -235,7 +562,14 @@ $darkThemeColor: #eee;
     background-color: $themeDark1;
   }
 
+  
+  .highlightedOption {
+    background: linear-gradient(to right, $themeGreen1Dark, $themeGreen2Dark) !important;
+    color: #333 !important;
+  }
+
   .items div:hover {
+    background: linear-gradient(to right, scale-color($themeGreen1, $lightness: 25%), scale-color($themeGreen2, $lightness: 25%));
     color: #333;
   }
 }

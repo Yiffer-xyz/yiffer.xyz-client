@@ -41,12 +41,14 @@
         <div class="selectsGrid">
           <Select :options="availableSortOptions"
                   title="Order by"
+                  isFullWidth
                   :borderTheme1="true"
                   :defaultValue="availableSortOptions.find(opt => opt.value === this.sortingValue)"
                   @change="onSortingChange"/>
 
           <Select :options="detailOptions"
                   title="Detail level"
+                  isFullWidth
                   :borderTheme2="true"
                   :defaultValue="detailOptions.find(opt => opt.value === this.detailValue)"
                   @change="onDetailLevelChange"/>
@@ -244,9 +246,7 @@ export default {
     }
 
     if (this.detailLevel) {
-      console.log(this.detailValue)
       this.detailValue = this.detailLevel
-      console.log(this.detailLevel)
     }
   },
 

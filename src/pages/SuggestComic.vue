@@ -37,7 +37,7 @@
 
         <TextInput :value="comicName"
                     @change="newVal => comicName = newVal"
-                    title="Comic name"
+                    title="Comic name (required)"
                     textAlign="left"
                     classes="width100 mb-48"/>
 
@@ -49,7 +49,7 @@
 
         <TextInput :value="linksComments"
                    @change="newVal => linksComments = newVal"
-                   title="Links, comments"
+                   title="Links, comments (required)"
                    type="textarea"
                    classes="width100 mb-8"/>
 
