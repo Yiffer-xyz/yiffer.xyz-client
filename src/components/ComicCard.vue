@@ -26,7 +26,7 @@
         <picture @click="storeClickedComicData()" style="overflow: hidden;">
           <source media="(min-width: 901px)" :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
           <source media="(max-width: 900px)" :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
-          <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
+          <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
         </picture>
       </div>
     </router-link>

@@ -79,7 +79,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss">
 .modal-backdrop {
   width: 100%;
@@ -135,6 +134,7 @@ export default {
   content: "";
   background: linear-gradient(to right, $themeGreen1, $themeGreen2);
   top: -3px;
+  left: 0px;
 }
 
 .login-register-form {
@@ -155,16 +155,6 @@ export default {
   .loginModal {
     background-color: $themeDark3;
     color: white;
-    input {
-      color: #ccc;
-      background-color: transparent;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-    }
-    label {
-      color: #ccc;
-    }
   }
   
   .modal-backdrop {
