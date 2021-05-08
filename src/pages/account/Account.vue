@@ -93,6 +93,7 @@ export default {
     showModApplicationStatus () {
       return !this.isChangingPassword
              && this.userData
+             && this.modApplicationStatus
              && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.none
     },
 

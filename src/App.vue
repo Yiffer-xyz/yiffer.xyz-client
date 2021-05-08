@@ -144,7 +144,7 @@ export default {
   },
 
   methods: {
-    setTheme( themeColor ) {
+    setTheme(themeColor, avoidLog) {
       document.body.classList.remove('dark')
       document.body.classList.remove('redblue')
       document.body.classList.remove('pink')
@@ -168,7 +168,9 @@ export default {
         this.$cookies.set('theme', 'light')
       }
 
-      miscApi.logEvent('theme', themeColor)
+      if (!avoidLog) {
+        miscApi.logEvent('theme', themeColor)
+      }
     },
 
     setConsent () {
@@ -209,10 +211,10 @@ export default {
     this.$store.dispatch('checkAndSetLoginStatus')
     this.$store.dispatch('fetchKeywordList')
     if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
-      this.setTheme('dark')
+      this.setTheme('dark', true)
     }
     else {
-      this.setTheme('light')
+      this.setTheme('light', true)
     }
 
     if (!this.$cookies.get('hasConsented')) {

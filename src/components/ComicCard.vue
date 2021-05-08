@@ -88,7 +88,7 @@
           {{keyword.name}}
         </div>
       </div>
-      <div class="keyword" v-if="isShowingKeywords" @click="() => isShowingKeywords = false">
+      <div class="keyword" v-if="isShowingKeywords && shouldShowCatTagLoad" @click="() => isShowingKeywords = false">
         <HideTags/> Hide tags
       </div>
 
@@ -98,7 +98,7 @@
       </div>
 
       <!-- KEYWORDS, CAT, TAG -->
-      <div class="keywordContainer" v-if="!shouldShowKeywords && !isLoadingKeywords">
+      <div class="keywordContainer" v-if="!shouldShowKeywords && shouldShowCatTagLoad && !isLoadingKeywords">
         <div class="emphasized-keyword">{{convertTagName(comic.cat)}}</div>
         <div class="emphasized-keyword">{{comic.tag}}</div>
         <div class="keyword" v-if="!isShowingKeywords" @click="showKeywords()">
@@ -178,6 +178,10 @@ export default {
       'comicKeywords',
       'detailLevel',
     ]),
+
+    shouldShowCatTagLoad () {
+      return this.detailLevel !== 'minimum'
+    },
 
     shouldShowKeywords () {
       return this.detailLevel === 'high' || (this.isShowingKeywords && this.detailLevel !== 'minimum')
