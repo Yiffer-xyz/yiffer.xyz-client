@@ -24,9 +24,9 @@
       <!-- PIC -->
       <div class="imgContainer">
         <picture @click="storeClickedComicData()" style="overflow: hidden;">
-          <source media="(min-width: 901px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
-          <source media="(max-width: 900px)" :srcset="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
-          <img :src="`${config.comicDirectory}/${comicNameUrlParsed}/thumbnail.webp`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
+          <source media="(min-width: 901px)" :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
+          <source media="(max-width: 900px)" :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
+          <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
         </picture>
       </div>
     </router-link>
@@ -40,9 +40,9 @@
       </div>
       <div class="imgContainer">
         <picture>
-          <source media="(min-width: 901px)" :srcset="`${config.paidImagesDirectory}/${comic.id}-big.${comic.filetype}`">
-          <source media="(max-width: 900px)" :srcset="`${config.paidImagesDirectory}/${comic.id}-small.${comic.filetype}`">
-          <img :src="`${config.paidImagesDirectory}/${comic.id}-big.${comic.filetype}`">
+          <source media="(min-width: 901px)" :srcset="`${config.paidImagesBucketName}/${comic.id}-big.${comic.filetype}`">
+          <source media="(max-width: 900px)" :srcset="`${config.paidImagesBucketName}/${comic.id}-small.${comic.filetype}`">
+          <img :src="`${config.paidImagesBucketName}/${comic.id}-big.${comic.filetype}`">
         </picture>
       </div>
     </a>

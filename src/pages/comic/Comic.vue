@@ -101,7 +101,7 @@
 
       <div class="paidImageBannerLink" style="max-height: 100px !important;" @click="savePaidImageClick">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
-          <img :src="`${config.paidImagesDirectory}/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
+          <img :src="`${config.paidImagesBucketName}/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
         </a>
 
         <div v-else style="height: 90px; width: 728px;"/>
@@ -110,7 +110,7 @@
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
       <img 
         v-for="pageNumber in comic.numberOfPages" 
-        :src="`${config.comicDirectory}/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
+        :src="`${config.comicsBucketName}/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
         :alt="`${comic.name} page ${pageNumber}`"
         :id="'page' + (pageNumber-1)"
         :key="pageNumber"
@@ -341,7 +341,12 @@ export default {
         var jsZipper = new JSZip()
         let imageFiles = document.getElementsByClassName('comic-page')
         for (var i=1; i<imageFiles.length+1; i++) {
-          let imageResponse = await fetch(`${config.comicDirectory}/${this.comic.name}/${this.formatPageNumber(i)}.jpg`)
+          let imageResponse = await fetch(
+            `${config.comicsBucketName}/${this.comic.name}/${this.formatPageNumber(i)}.jpg`, {
+              mode: 'no-cors'
+            }
+          )
+          console.log(imageResponse)
           jsZipper.file(this.formatPageNumber(i)+'.jpg', imageResponse.blob())
         }
   

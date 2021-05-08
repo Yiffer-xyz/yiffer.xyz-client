@@ -2,6 +2,6 @@
   "comicsPerPage": 75,
   "adsPerPage": 5,
   "apiBaseUrl": "/api",
-  "comicDirectory": "https://storage.googleapis.com/yiffer-comics/comics",
-  "paidImagesDirectory": "https://storage.googleapis.com/yiffer-paid-images"
+  "comicsBucketName": "https://storage.googleapis.com/yiffer-comics-beta/comics",
+  "paidImagesBucketName": "https://storage.googleapis.com/yiffer-paid-images-beta"
 }

@@ -19,18 +19,16 @@ export default {
     try {
       axios.post(baseUrl + '/log-route', {route, description})
     }
-    catch (err) {
-      console.log('Failed to log route')
-    }
+    // eslint-disable-next-line no-empty
+    catch (err) {}
   },
 
   async logEvent (event, description) {
     try {
       await axios.post(baseUrl + '/log-event', {event, description: description || null})
     }
-    catch (err) {
-      console.log('Failed to log event')
-    }
+    // eslint-disable-next-line no-empty
+    catch (err) {}
   },
 
   async getVisitorStats (interval) {
