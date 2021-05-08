@@ -6,7 +6,7 @@
     <div class="full-width-text-container about-container">
       <h3>Contact</h3>
       <p>
-        If you wish to contact us, please do so by sending an email to contact@yiffer.xyz. If you are an artist who wants their content taken down, we will comply with your wishes.
+        If you wish to contact us, please do so by sending an email to contact@yiffer.xyz. If you are an artist who wants their content taken down, we will comply with your wishes. In the future, we plan to let artists take control of their own comics if they wish to, and publish updates themselves. Are you an artist who's interested in this feature? Let us know! This is on our roadmap already, but if people show interest, we might get to it quicker than intially planned.
       </p> 
 
       <h3>About the content</h3>
@@ -19,15 +19,9 @@
         As the site has grown in content size, visitor numbers, and availability, the cost of running it has increased. The owner has always funded what has been needed out-of-pocket (though with help from kind donators), but as of late 2020 a new approach is being taken. We do not wish to have those typical ugly porn site ads, so instead we choose an approach that, while being a little more work for us, can give something more to the community. Any advertiser on Yiffer.xyz is a creator of some kind of furry-related content themselves. This hopefully leads to benefits helping to run the site for the owner, as well as publicity for the advertisers, and ways of discovering creators for the average user.
       </p>
 
-      <h3>A brief history of the site and its maker</h3>
-      <p>
-        Yiffer.xyz was an idea formed in 2013 by an eager <a href="https://twitter.com/Malann_kitty" target="_blank"><TwitterIcon/>Malann</a>, who wanted a place to access his favorite furry comics. The idea was formed before I even knew basic HTML and CSS, let alone any programming. Nevertheless, the experimenting began. The following year, I started at a masters degree in materials science at the Norwegian University of Science and Technology, where I swapped to Computer Science half a year in. During the course of the next two years, I learnt programming through university, and web development through creating Yiffer.xyz. In the summer of 2016, the first version of Yiffer.xyz was released.
-        <br/><br/>The website had more or less the same look and functionality for four and a half years, until I finally finished with a major update of all the code in late 2020. During these years, the site has suffered DDoS-attacks, which prompted the use of Cloudflare for protection, which has worked very well. This update of 2020 was sorely needed, as the old version of the site was extremely vulnerable due to the developer having little idea of what he was actually doing (the code was not even minified, and "angularjs injections" could be made through the console, for those who know what that means). The update also introduced ads and a bunch of other stuff, including a much more pleasant mod panel. Today, the site's code standard is much more up-to-date, as I now work as a professional web developer and know my stuff.
-      </p>
-
       <h3>Technical</h3>
       <p>
-        The tech stack of Yiffer.xyz is a fairly common one for web these days: Vue.js, Node.js with Express, using a MySQL database, running on an Ubunutu VM with an Nginx reverse proxy. Almost all content is served via Cloudflare's DNS servers. Prior to late 2020, Angular.js (v1.6) was used for the front-end part of the site.
+        The tech stack of Yiffer.xyz is a fairly common one for web these days: Vue.js for the front-end, Node.js with Express for the api, and a MySQL database. An Nginx reverse proxy, served in docker containers on a Google Cloud Platform vm. Almost all content is served via Cloudflare's DNS servers. Prior to 2021, Angular.js (v1.6) was used for the front-end part of the site, and database and file storage were both running locally on a single VM without containers. Now, database and file storage are both GCP SaaS solutions.
       </p>
     </div>
   </span>
