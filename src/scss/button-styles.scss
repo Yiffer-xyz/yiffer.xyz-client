@@ -249,13 +249,13 @@ $buttonBorderWidth: 2px;
 
 .comic-card {
   .y-button {
-    background: linear-gradient(left, $themeGreen1Darker, $themeGreen2Darker);
+    background: linear-gradient(to right, $themeGreen1Darker, $themeGreen2Darker);
     color: white;
     span {
       color: white;
     }
     &:hover, &:focus {
-      background: linear-gradient(left, $themeGreen1Darker, $themeGreen2Darker);
+      background: linear-gradient(to right, $themeGreen1Darker, $themeGreen2Darker);
     }
   }
 }

@@ -7,7 +7,7 @@
 
       <div class="subtitleContainer" style="display: flex; flex-direction: column;">
         <p v-if="$breakpoint.smAndUp || $breakpoint.xl">
-          The internet's best collection of HQ furry porn comics,
+          The internet's best collection of quality furry comics,
         </p>
         <p v-if="$breakpoint.smAndUp || $breakpoint.xl">
           easily readable and free!
