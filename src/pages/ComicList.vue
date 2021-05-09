@@ -23,7 +23,7 @@
       </p>
 
       <div class="top-links">
-        <a href="https://paidimages.yiffer.xyz" v-if="$breakpoint.smAndDown" class="underline-link mr-12" id="link1" style="width: 9rem;">
+        <a href="https://pi.yiffer.xyz" v-if="$breakpoint.smAndDown" class="underline-link mr-12" id="link1" style="width: 9rem;">
           <ExclamationIcon title=""/> Your ad here?
         </a>
 
@@ -53,7 +53,7 @@
         </DropdownMenu>
 
         <span v-else class="allTopLinksContainer">
-          <a href="https://paidimages.yiffer.xyz" class="underline-link" id="link1" style="width: 9rem;">
+          <a href="https://pi.yiffer.xyz" class="underline-link" id="link1" style="width: 9rem;">
             <ExclamationIcon title=""/> Your ad here?
           </a>
 
