@@ -213,7 +213,6 @@ export default {
     var botRegex = new RegExp(botPattern, 'i')
     this.isBot = !!navigator?.userAgent && botRegex.test(navigator.userAgent)
     this.hasCheckedBot = true
-    console.log(!!navigator?.userAgent, botRegex.test(navigator.userAgent))
 
     this.$cookies.config('60d')
     this.$store.dispatch('checkAndSetLoginStatus')

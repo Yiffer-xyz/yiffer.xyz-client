@@ -606,7 +606,6 @@ export default {
     },
 
     scrollToTop () {
-      console.log('skroll')
       window.scrollTo(0, 0)
     },
   },

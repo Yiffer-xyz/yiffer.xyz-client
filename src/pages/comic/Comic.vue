@@ -350,7 +350,6 @@ export default {
               mode: 'no-cors'
             }
           )
-          console.log(imageResponse)
           jsZipper.file(this.formatPageNumber(i)+'.jpg', imageResponse.blob())
         }
   
