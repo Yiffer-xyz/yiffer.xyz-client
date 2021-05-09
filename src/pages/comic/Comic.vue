@@ -390,7 +390,7 @@ export default {
 
   metaInfo() {
     let title = `${this.$route.params.comicName} - Yiffer.xyz`
-    let description = "The internet's best collection of high quality furry porn comics, easily readable and free!"
+    let description = "The internet's best collection of high quality furry  comics, easily readable and free!"
     if (this.comic && this.comic.artist) {
       description = `${this.comic.numberOfPages}-page comic by ${this.comic.artist}, on the internet's best furry porn site.`
     }

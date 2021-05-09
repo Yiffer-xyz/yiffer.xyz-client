@@ -110,8 +110,8 @@ export default {
       meta: [
         {vmid: 'twitterTitle', name: 'twitter:title', content: title},
         {vmid: 'ogTitle', property: 'og:title', content: title},
-        {vmid: 'twitterDesc', name: 'twitter:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"},
-        {vmid: 'ogDesc', property: 'og:description', content: "The internet's best collection of high quality furry porn comics, easily readable and free!"}
+        {vmid: 'twitterDesc', name: 'twitter:description', content: "The internet's best collection of high quality furry  comics, easily readable and free!"},
+        {vmid: 'ogDesc', property: 'og:description', content: "The internet's best collection of high quality furry  comics, easily readable and free!"}
       ]
     }
   },
