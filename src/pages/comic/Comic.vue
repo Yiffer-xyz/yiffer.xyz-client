@@ -99,12 +99,13 @@
       </div>
 
 
-      <div class="paidImageBannerLink" style="max-height: 100px !important;" @click="savePaidImageClick">
+      <div class="paidImageBannerLink" style="max-height: 90px !important;" @click="savePaidImageClick">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
-          <img :src="`${config.paidImagesBucketName}/${paidImage.id}.${paidImage.filetype}`" class="paidImageBanner" />
+          <img :src="`${config.paidImagesBucketName}/${paidImage.id}.${paidImage.filetype}`" 
+               class="paidImageBanner"/>
         </a>
 
-        <div v-else style="height: 90px; width: 728px;"/>
+        <div v-else-if="!isNoPaidImage" style="height: 90px; width: 728px; background-color: red;"/>
       </div>
     </div>
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
@@ -149,7 +150,6 @@
 </template>
 
 <script>
-import BackToIndex from '@/components/BackToIndex.vue'
 import Loading from '@/components/LoadingIndicator.vue'
 import LeftArrow from 'vue-material-design-icons/ArrowLeft.vue'
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
@@ -173,7 +173,7 @@ export default {
   },
 
   components: {
-    BackToIndex, Loading, ComicKeywords, RatingAndSlider,
+    Loading, ComicKeywords, RatingAndSlider,
     LeftArrow, RightArrow, ShareIcon, UpArrow, DownloadIcon,
   },
 
@@ -202,6 +202,10 @@ export default {
       comicForVotingModal: 'comicForVotingModal',
       isAuthenticated: 'isAuthenticated',
     }),
+
+    isNoPaidImage () {
+      return this.allPaidImages.fetched && !this.paidImage
+    }
   },
 
   async mounted () {
@@ -324,9 +328,9 @@ export default {
       if (navigator.share === undefined) { return }
       let artist = this.comic ? this.comic.artist : 'Unknown'
       let shareDataObject = {
-        title: `Comic: ${this.$route.params.comicName} - beta.yiffer.xyz`,
+        title: `Comic: ${this.$route.params.comicName} - Yiffer.xyz`,
         text: `${this.$route.params.comicName}, a comic by ${artist}`,
-        url: `https://beta.yiffer.xyz${this.$route.path.replace(/%20/g, ' ')}`
+        url: `https://yiffer.xyz${this.$route.path.replace(/%20/g, ' ')}`
       }
       
       navigator.share(shareDataObject)
@@ -385,7 +389,7 @@ export default {
   },
 
   metaInfo() {
-    let title = `${this.$route.params.comicName} - beta.yiffer.xyz`
+    let title = `${this.$route.params.comicName} - Yiffer.xyz`
     let description = "The internet's best collection of high quality furry porn comics, easily readable and free!"
     if (this.comic && this.comic.artist) {
       description = `${this.comic.numberOfPages}-page comic by ${this.comic.artist}, on the internet's best furry porn site.`

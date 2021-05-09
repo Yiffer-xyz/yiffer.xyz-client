@@ -20,13 +20,22 @@
         </div>
       </div>
 
-
       <!-- PIC -->
       <div class="imgContainer">
         <picture @click="storeClickedComicData()" style="overflow: hidden;">
-          <source media="(min-width: 901px)" :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`" @load="onLoadFinished" >
-          <source media="(max-width: 900px)" :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp`" @load="onLoadFinished">
-          <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.jpg`" :alt="`${comic.name}, thumbnail`" @load="onLoadFinished">
+          <source media="(min-width: 901px)"
+                  type="image/webp"
+                  :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`"
+                  @load="onLoadFinished">
+
+          <source media="(max-width: 900px)"
+                  type="image/webp"
+                  :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp`"
+                  @load="onLoadFinished">
+
+          <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.jpg`"
+               :alt="`${comic.name}, thumbnail`"
+               @load="onLoadFinished">
         </picture>
       </div>
     </router-link>
@@ -386,6 +395,7 @@ export default {
   }
   img {
     height: 282px;
+    width: 200px;
   }
   .imgContainer {
     width: 100%;
@@ -437,6 +447,7 @@ export default {
     }
     img {
       height: 141px;
+      width: 100px;
     }
     .VotingButton {
       width: 76%;
