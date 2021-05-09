@@ -20,7 +20,7 @@
             Account
           </router-link>
 
-          <a href="https://admin.yiffer.xyz"
+          <a href="https://mod.yiffer.xyz"
              v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
              class="navlink">
             Admin
