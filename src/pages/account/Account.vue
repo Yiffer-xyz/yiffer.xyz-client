@@ -43,7 +43,7 @@
       </div>
 
       <a v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
-         href="https://advertising.yiffer.xyz/dashboard"
+         href="https://paidimages.yiffer.xyz/dashboard"
          class="y-button-big"
          style="width: 100% !important;">
         Go to advertising dashboard
