@@ -2,6 +2,10 @@
   <div class="login-modal-inner-wrapper">
     <p class="modal-header">Forgot password?</p>
 
+    <p class="mt-32 textAlignLeft">
+      You can recover your password only if you created your account with an email - if you created it prior to May 2021 (and have not added your email since), you cannot recover your password.
+    </p>
+
     <form @submit.prevent="forgotPasswordSubmit"
           class="login-register-form">
 
