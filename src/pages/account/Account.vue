@@ -30,7 +30,9 @@
 
       <div class="margin-top-16"
            v-show="showModApplicationStatus && !isChangingPassword && !isAddingEmail">
-        <p class="bold">Mod application status</p>
+        <p class="bold">
+          Mod application status
+        </p>
         <p class="mt-0" v-if="modApplicationStatus === modApplicationStatuses.pending">
           Pending review
         </p>
@@ -95,9 +97,14 @@ export default {
              && this.userData
              && this.modApplicationStatus
              && this.modApplicationStatus !== MOD_APPLICATION_STATUSES.none
+             && !this.isModOrAdmin
     },
 
     ...mapGetters(['userData', 'myPaidImages']),
+
+    isModOrAdmin () {
+      return this.userData && (this.userData.userType === 'moderator' || this.userData.userType === 'admin')
+    }
   },
 
   async mounted () {
