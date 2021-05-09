@@ -105,7 +105,7 @@
                class="paidImageBanner"/>
         </a>
 
-        <div v-else-if="!isNoPaidImage" style="height: 90px; width: 728px; background-color: red;"/>
+        <div v-else-if="!isNoPaidImage" style="height: 90px; width: 728px;"/>
       </div>
     </div>
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
@@ -510,8 +510,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 
 #comicPageContainer {
-  overflow: hidden;
-
   img:not(.paidImageBanner) {
     margin: 0 auto 16px auto;
     display: block;

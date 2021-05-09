@@ -75,6 +75,7 @@ const store = {
       }
 
       let comicCounter = 0
+      let isTooFewAds = paidImages.length < config.comicsPerPage
       for (let i=0; i<config.comicsPerPage + config.adsPerPage; i++) {
         if (comicCounter === state.paginatedComics.payload.comics.length) {
           break
@@ -82,8 +83,8 @@ const store = {
         if (indexesOfAds.includes(i)) {
           let indexOfAd = Math.floor(Math.random() * paidImages.length)
           let ad
-          if (paidImages.length === 1) {
-            ad = paidImages[0]
+          if (isTooFewAds) {
+            ad = paidImages[indexOfAd]
           }
           else {
             ad = paidImages.splice(indexOfAd, 1)[0]
