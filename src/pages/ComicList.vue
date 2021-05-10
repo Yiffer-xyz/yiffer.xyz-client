@@ -188,7 +188,6 @@ export default {
       keywordSearch: '',
       keywordSearchFocused: false,
       keywordResultHovered: undefined,
-      smallPagination: undefined,
       searchFiltering222: this.$store.getters.searchFiltering || '',
       suppressQueryUpdates: false,
       avoidLog: true,
@@ -307,8 +306,6 @@ export default {
     this.$store.commit('setLoginModalVisibility', false)
     this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
     this.$store.watch(this.$store.getters.getSelectedKeywords, this.onKeywordsChange)
-    this.handleResize()
-    window.addEventListener('resize', this.handleResize)
     miscApi.logRoute('index')
     this.avoidLog = false
     this.getDisplayedBlog()
@@ -594,10 +591,6 @@ export default {
       if (this.loadedImageCounter === this.config.comicsPerPage) {
         window.prerenderReady = true
       }
-    },
-
-    handleResize () {
-      this.smallPagination = document.body.clientWidth < 1200
     },
 
     listify ( input ) {

@@ -115,7 +115,8 @@
         :alt="`${comic.name} page ${pageNumber}`"
         :id="'page' + (pageNumber-1)"
         :key="pageNumber"
-        :class="['img-fit-height', 'comic-page']"
+        class="comic-page"
+        :class="`img-fit-${initialImageFit}`"
         @click="cycleOneImageFit(pageNumber-1)"/>
     </div>
 
@@ -205,7 +206,14 @@ export default {
 
     isNoPaidImage () {
       return this.allPaidImages.fetched && !this.paidImage
-    }
+    },
+
+    initialImageFit () {
+      if (window.innerWidth > 900) {
+        return 'height'
+      }
+      return 'width'
+    },
   },
 
   async mounted () {
@@ -228,7 +236,6 @@ export default {
     this.loadComic(false)
     if (this.comic) {
       this.initializeImageFitArray()
-      this.fitImagesForMobile()
     }
 
     if (navigator.share !== undefined) {
@@ -249,7 +256,7 @@ export default {
 
     formatPageNumber: pageNumber => pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber,
 
-    setAllImagesFit ( imageFit, avoidLog=false ) {
+    setAllImagesFit (imageFit, avoidLog=false) {
       document.querySelectorAll('.comic-page').forEach(page => {
         page.classList.remove('img-fit-big', 'img-fit-thumb', 'img-fit-width', 'img-fit-height')
         page.classList.add('img-fit-' + imageFit)
@@ -276,8 +283,10 @@ export default {
     },
 
     initializeImageFitArray () {
-      if ( this.comic ) {
-        for (var i=0; i<this.comic.numberOfPages; i++) { this.imageFitArray.push('height') }
+      if (this.comic) {
+        for (var i=0; i<this.comic.numberOfPages; i++) {
+          this.imageFitArray.push(this.initialImageFit)
+        }
       }
     },
 
@@ -294,7 +303,6 @@ export default {
         this.comic = response
         this.$store.commit('setComicForVotingModal', this.comic)
         this.initializeImageFitArray()
-        this.fitImagesForMobile()
         
         if (this.comic.userRating) {
           this.userRating = this.comic.userRating
@@ -310,17 +318,6 @@ export default {
         else {
           this.fetchComicError = err.response.data
         }
-      }
-    },
-
-    fitImagesForMobile () {
-      if (window.innerWidth < 900) {
-        let resizeIntervalHook = setInterval(() => {
-          if (this.comic && document.getElementById('comicPageContainer').childElementCount === this.comic.numberOfPages) {
-            this.setAllImagesFit('width', true)
-            clearInterval(resizeIntervalHook)
-          }
-        }, 30)
       }
     },
 
