@@ -165,6 +165,7 @@ import comicApi from '../../api/comicApi'
 import miscApi from '../../api/miscApi'
 import { mapGetters, mapActions } from 'vuex'
 import config from '@/config.json'
+import { isBot } from '@/utils/prerenderTools'
 
 export default {
   name: 'comic',
@@ -192,6 +193,7 @@ export default {
       downloadStarted: false,
       paidImage: null,
       config,
+      isBot: isBot(),
     }
   },
 
@@ -209,6 +211,9 @@ export default {
     },
 
     initialImageFit () {
+      if (this.isBot) {
+        return 'width'
+      }
       if (window.innerWidth > 900) {
         return 'height'
       }
