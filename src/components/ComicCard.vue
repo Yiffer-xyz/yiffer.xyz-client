@@ -30,7 +30,10 @@
 
           <source media="(max-width: 900px)"
                   type="image/webp"
-                  :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp`"
+                  :srcset="`
+                    ${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp 1x,
+                    ${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp 2x,
+                  `"
                   @load="onLoadFinished">
 
           <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.jpg`"
