@@ -25,18 +25,18 @@
         <picture @click="storeClickedComicData()" style="overflow: hidden;">
           <source media="(min-width: 901px)"
                   type="image/webp"
-                  :srcset="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp`"
+                  :srcset="`${config.comicsBaseUrl}/${comicNameUrlParsed}/thumbnail.webp`"
                   @load="onLoadFinished">
 
           <source media="(max-width: 900px)"
                   type="image/webp"
                   :srcset="`
-                    ${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail-small.webp 1x,
-                    ${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.webp 2x,
+                    ${config.comicsBaseUrl}/${comicNameUrlParsed}/thumbnail-small.webp 1x,
+                    ${config.comicsBaseUrl}/${comicNameUrlParsed}/thumbnail.webp 2x,
                   `"
                   @load="onLoadFinished">
 
-          <img :src="`${config.comicsBucketName}/${comicNameUrlParsed}/thumbnail.jpg`"
+          <img :src="`${config.comicsBaseUrl}/${comicNameUrlParsed}/thumbnail.jpg`"
                :alt="`${comic.name}, thumbnail`"
                @load="onLoadFinished">
         </picture>
@@ -52,9 +52,9 @@
       </div>
       <div class="imgContainer">
         <picture>
-          <source media="(min-width: 901px)" :srcset="`${config.paidImagesBucketName}/${comic.id}-big.${comic.filetype}`">
-          <source media="(max-width: 900px)" :srcset="`${config.paidImagesBucketName}/${comic.id}-small.${comic.filetype}`">
-          <img :src="`${config.paidImagesBucketName}/${comic.id}-big.${comic.filetype}`">
+          <source media="(min-width: 901px)" :srcset="`${config.paidImagesBaseUrl}/${comic.id}-big.${comic.filetype}`">
+          <source media="(max-width: 900px)" :srcset="`${config.paidImagesBaseUrl}/${comic.id}-small.${comic.filetype}`">
+          <img :src="`${config.paidImagesBaseUrl}/${comic.id}-big.${comic.filetype}`">
         </picture>
       </div>
     </a>

@@ -101,7 +101,7 @@
 
       <div class="paidImageBannerLink" style="max-height: 90px !important;" @click="savePaidImageClick">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
-          <img :src="`${config.paidImagesBucketName}/${paidImage.id}.${paidImage.filetype}`" 
+          <img :src="`${config.paidImagesBaseUrl}/${paidImage.id}.${paidImage.filetype}`" 
                class="paidImageBanner"/>
         </a>
 
@@ -111,7 +111,7 @@
     <div v-if="comic" id="comicPageContainer" class="margin-top-8 margin-bottom-8">
       <img 
         v-for="pageNumber in comic.numberOfPages" 
-        :src="`${config.comicsBucketName}/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
+        :src="`${config.comicsBaseUrl}/${comic.name}/${formatPageNumber(pageNumber)}.jpg`"
         :alt="`${comic.name} page ${pageNumber}`"
         :id="'page' + (pageNumber-1)"
         :key="pageNumber"
@@ -348,7 +348,7 @@ export default {
         let imageFiles = document.getElementsByClassName('comic-page')
         for (var i=1; i<imageFiles.length+1; i++) {
           let imageResponse = await fetch(
-            `${config.comicsBucketName}/${this.comic.name}/${this.formatPageNumber(i)}.jpg`, {
+            `${config.comicsBaseUrl}/${this.comic.name}/${this.formatPageNumber(i)}.jpg`, {
               mode: 'no-cors'
             }
           )

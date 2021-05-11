@@ -159,8 +159,6 @@ import blogApi from '../api/blogApi'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
 
-import Vue from 'vue'
-
 export default {
   name: 'comic-list',
 
