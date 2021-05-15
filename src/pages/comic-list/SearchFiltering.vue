@@ -169,7 +169,8 @@ export default {
     },
 
     keywordsMatchingSearch () {
-      return this.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearchValue))
+      return this.orderedKeywordList.filter(
+        keyword => keyword.name.startsWith(this.keywordSearchValue.toLowerCase()))
     },
 
     availableSortOptions () {
