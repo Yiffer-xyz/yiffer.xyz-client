@@ -48,6 +48,9 @@
     <p v-if="artistNotFound" class="margin-top-16">
       <sad-face/> Artist not found
     </p>
+    <p v-if="artistFetchError" class="margin-top-16">
+      <sad-face/> Error fetching artist
+    </p>
   </div>
 </template>
 
@@ -75,6 +78,7 @@ export default {
       artistData: undefined,
       modalIsVisible: false,
       artistNotFound: false,
+      artistFetchError: false,
     }
   },
 
@@ -82,8 +86,11 @@ export default {
     this.$store.commit('setLoginModalVisibility', false)
     this.clickableKeyword = false
     let apiResponse = await artistApi.getArtistByName(this.$route.params.artistName)
-    if (!apiResponse.success) {
+    if (apiResponse.notFound) {
       this.artistNotFound = true
+    }
+    else if (apiResponse.isError) {
+      this.artistFetchError = true
     }
     else {
       this.artistData = apiResponse.result

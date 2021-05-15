@@ -10,12 +10,17 @@ export default {
   },
 
   async getArtistByName (artistName) {
-    let response = await axios.get(`${baseUrl}/artists/${artistName}`)
-    if (response.status === 200) {
+    try {
+      let response = await axios.get(`${baseUrl}/artists/${artistName}`)
       return { success: true, result: response.data }
     }
-    else {
-      return { success: false, message: response.data }
+    catch (err) {
+      if (err.response?.status === 404) {
+        return { success: false, notFound: true }
+      }
+      else {
+        return { success: false, isError: true }
+      }
     }
   },
 
