@@ -75,7 +75,7 @@ const store = {
       }
 
       let comicCounter = 0
-      let isTooFewAds = paidImages.length < config.comicsPerPage
+      let isTooFewAds = paidImages.length < config.adsPerPage
       for (let i=0; i<config.comicsPerPage + config.adsPerPage; i++) {
         if (comicCounter === state.paginatedComics.payload.comics.length) {
           break
