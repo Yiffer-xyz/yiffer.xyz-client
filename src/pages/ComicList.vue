@@ -411,7 +411,12 @@ export default {
   
       if (shouldScrollToTopOfList) {
         let upperPaginationButtons = document.getElementById('upperPaginationButtons')
-        upperPaginationButtons.scrollIntoView()
+        if (upperPaginationButtons) {
+          upperPaginationButtons.scrollIntoView()
+        }
+        else {
+          window.scrollTo(0, 0)
+        }
       }
 
       this.fetchComics()
@@ -435,7 +440,12 @@ export default {
       
       if (!this.wasKwSelectedFromList && !wasKwRemoved) {
         let searchContainer = document.getElementById('searchInputsContainer')
-        searchContainer.scrollIntoView()
+        if (searchContainer) {
+          searchContainer.scrollIntoView()
+        }
+        else {
+          window.scrollTo(0, 300)
+        }
       }
     },
 
