@@ -103,18 +103,6 @@ select {
   position: relative;
 }
 
-.scrolling-table-container {
-  overflow-x: auto;
-  max-width: 100%;
-  td, th {
-    word-break: normal;
-    word-wrap: none;
-  }
-  table {
-    white-space: nowrap;
-  }
-}
-
 .no-margin-bot {
   p, select, button {
     margin-bottom: 0 !important;
@@ -321,6 +309,9 @@ select {
 }
 
 .yTable {
+  table-layout: fixed;
+  width: 100%;
+  white-space: normal;
   border-collapse: collapse;
   p {
     font-size: 1rem;
