@@ -22,6 +22,9 @@
         <li>
           The comic will not be accepted if it has censoring bars, dots, etc.
         </li>
+        <li>
+          The comic will not be accepted if it has cub content.
+        </li>
       </ul>
 
       <Form :buttonText="'Submit suggestion'"
@@ -58,7 +61,7 @@
         </p>
       </Form>
 
-      <div id="rejectedComics" class="margin-top-32 scrolling-table-container">
+      <div id="rejectedComics" class="margin-top-32">
         <h2>Previously rejected comics</h2>
         <table class="yTable mt-8" v-if="rejectedComics.length > 0">
           <thead>
