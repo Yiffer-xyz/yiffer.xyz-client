@@ -7,7 +7,6 @@
     :classes="classes"
     :disableElevation="disableElevation"
     @closeMessage="closeMessage"
-
   />
 </template>
 

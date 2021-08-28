@@ -30,7 +30,8 @@
                         || $store.getters.userData.userType === 'admin'
                       )
                       && !isZipping 
-                      && !downloadStarted" 
+                      && !downloadStarted
+                      && false" 
                 class="y-button mt-16">
           <DownloadIcon/>  Download comic
         </button>
@@ -41,7 +42,7 @@
         </p>
 
         <div class="verticalFlex mt-32" style="align-items: flex-start;" :style="isAuthenticated ? 'min-width: 13rem;' : ''">
-          <div class="textAlignLeft mb-32" v-if="comic && (comic.previousComic || comic.nextComic)">
+          <div class="textAlignLeft mb-24" v-if="comic && (comic.previousComic || comic.nextComic)">
             <p>This comic is part of a series!</p>
             <p v-if="comic.previousComic">
               <router-link :to="{ name: 'comic', params: { comicName: comic.previousComic } }" 
@@ -60,7 +61,7 @@
           </div>
         </div>
 
-        <RatingAndSlider :userRating="userRating" @updatedComic="onUpdatedComic"/>
+        <RatingAndSlider :userRating="userRating" :skipLoginButton="true" @updatedComic="onUpdatedComic"/>
 
         <ComicKeywords v-if="comic" :comicData="comic"/>
       </div>
@@ -76,7 +77,7 @@
       <h2 class="comicLoadingInfo">
         Comic fetch error
       </h2>
-      <p class="mb-32">
+      <p class="mb-24">
         {{fetchComicError}}
       </p>
     </div>
@@ -157,7 +158,7 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import DownloadIcon from 'vue-material-design-icons/Download.vue'
-import ComicKeywords from './ComicKeywords.vue'
+import ComicKeywords from './ComicKeywordsAndProblem.vue'
 import RatingAndSlider from './RatingAndSlider.vue'
 import paidImageApi from '@/api/advertisingApi'
 

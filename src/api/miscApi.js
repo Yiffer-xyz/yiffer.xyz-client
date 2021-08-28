@@ -121,4 +121,22 @@ export default {
       return { success: false }
     }
   },
+
+  async getProblemCategories () {
+    let response = await axios.get(`${baseUrl}/comic-problem-categories`)
+    return response.data
+  },
+
+  async getSingleComicProblemCategories (comicId) {
+    let response = await axios.get(`${baseUrl}/comic-problems/${comicId}`)
+    let categories = response.data.filter(p => p.categoryName !== 'Other')
+    return categories
+  },
+
+  async submitComicProblem (comicId, categoryId, description) {
+    let response = await axios.post(`${baseUrl}/comic-problems`, {
+      comicId, categoryId, description,
+    })
+    return response.data
+  }
 }

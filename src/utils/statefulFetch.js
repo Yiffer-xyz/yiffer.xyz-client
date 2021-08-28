@@ -2,7 +2,7 @@ const defaultState = {fetching: false, fetched: false, failed: false, payload: n
 
 export function registerFetchNames (store, ...namesWithDefaults) {
   namesWithDefaults.forEach(({name, defaultValue}) => {
-    let thisDefaultState = {...defaultState, payload: defaultValue}
+    let thisDefaultState = {...defaultState, payload: defaultValue, name: name}
     store.state[name] = thisDefaultState
   
     store.getters[name] = state => state[name]
@@ -33,7 +33,7 @@ export async function doFetch (commit, actionName, fetchPromise, transformFunc) 
     }
     commit(`set_${actionName}_fetched`, result)
     
-    if (result === undefined) {
+    if (result === undefined || result === '') {
       return true
     }
     return result

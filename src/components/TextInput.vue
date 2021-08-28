@@ -125,6 +125,10 @@ export default {
       type: String,
       required: false,
     },
+    resetValue: {
+      type: String,
+      required: false,
+    },
   },
 
   data: function () {
@@ -136,6 +140,13 @@ export default {
   watch: {
     value (newValue) {
       this.localValue = newValue
+    },
+
+    // THIS IS BAD. Change the number to reset the select value
+    resetValue () {
+      if (this.resetValue) {
+        this.clear()
+      }
     },
   },
 

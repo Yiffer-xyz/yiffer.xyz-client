@@ -20,7 +20,8 @@
                   @loading="isLoading = isLoading+1"
                   @updatedComic="onUpdatedComic"/>
 
-    <button v-else-if="!isAuthenticated" class="y-button mt-8 button-with-icon loginButton" 
+    <button v-else-if="!isAuthenticated && !skipLoginButton"
+            class="y-button mt-8 button-with-icon loginButton" 
             @click="$store.commit('setLoginModalVisibility', true)">
       <LoginIcon/> Log in to rate comic
     </button>
@@ -38,6 +39,7 @@ import { mapGetters } from 'vuex'
 export default {
   props: {
     userRating: Number,
+    skipLoginButton: Boolean,
     styles: {
       type: String,
       required: false,

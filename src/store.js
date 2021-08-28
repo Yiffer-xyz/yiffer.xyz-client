@@ -98,6 +98,9 @@ registerFetchNames(store,
   {name: 'advertisingApplySubmit', defaultValue: {}},
   {name: 'fetchLogin', defaultValue: {}},
   {name: 'fetchSignup', defaultValue: {}},
+  {name: 'comicProblemCategories', defaultValue: []},
+  {name: 'singleComicProblemCategories', defaultValue: []},
+  {name: 'submitComicProblem', defaultValue: []},
 )
 
 export default new Vuex.Store(store)
