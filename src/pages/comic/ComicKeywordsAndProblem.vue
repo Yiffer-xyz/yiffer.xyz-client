@@ -77,7 +77,7 @@
       </div>
     </div>
 
-    <div v-if="isReportingProblem" class="mt-16 comicUpperBox">
+    <div v-if="isReportingProblem" class="mt-16 mb-8 verticalFlex fitContent marginAuto comicUpperBox">
       <p class="bold textAlignLeft">
         Report a problem with this comic
       </p>
