@@ -3,5 +3,6 @@
   "adsPerPage": 5,
   "apiBaseUrl": "/api",
   "comicsBaseUrl": "https://static.yiffer.xyz/comics",
-  "paidImagesBaseUrl": "https://static.yiffer.xyz/pi"
+  "paidImagesBaseUrl": "https://static.yiffer.xyz/pi",
+  "cookieConfig": ["60d", "/", ".yiffer.xyz", true, "Strict"]
 }

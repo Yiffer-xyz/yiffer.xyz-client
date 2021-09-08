@@ -113,6 +113,9 @@ import TwitterIcon from 'vue-material-design-icons/Twitter.vue'
 import DarkIcon from 'vue-material-design-icons/LightbulbOutline.vue'
 import LightIcon from 'vue-material-design-icons/Lightbulb.vue'
 
+import config from '@/config.json'
+let cookieConfig = config.cookieConfig
+
 import miscApi from './api/miscApi'
 import { isBot } from './utils/prerenderTools.js'
 import { mapGetters } from 'vuex'
@@ -209,7 +212,7 @@ export default {
   },
 
   created: function () {
-    this.$cookies.config('60d')
+    this.$cookies.config(...cookieConfig)
     this.$store.dispatch('checkAndSetLoginStatus')
     this.$store.dispatch('fetchKeywordList')
     if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
