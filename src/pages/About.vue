@@ -7,7 +7,7 @@
       <h3>Contact</h3>
       <p>
         If you wish to contact us, please do so by sending an email to contact@yiffer.xyz. If you are an artist who wants their content taken down, we will comply with your wishes. In the future, we plan to let artists take control of their own comics if they wish to, and publish updates themselves. Are you an artist who's interested in this feature? Let us know! This is on our roadmap already, but if people show interest, we might get to it quicker than intially planned.
-      </p> 
+      </p>
 
       <h3>About the content</h3>
       <p>
@@ -29,16 +29,12 @@
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import VotingButton from '@/components/VotingButton.vue'
-import TwitterIcon from 'vue-material-design-icons/Twitter.vue'
 
 export default {
   name: 'about',
 
   components: {
     BackToIndex,
-    VotingButton,
-    TwitterIcon,
   },
 
   metaInfo() {

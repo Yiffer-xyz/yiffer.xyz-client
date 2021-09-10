@@ -15,7 +15,6 @@ Vue.component("menu-up-icon", MenuUp)
 Vue.config.productionTip = false
 
 Vue.use(VueCookies)
-
 Vue.use(Meta);
 
 Vue.use(breakpoint, {
