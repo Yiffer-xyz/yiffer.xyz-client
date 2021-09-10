@@ -49,9 +49,9 @@ export default {
     else { return [] }
   },
 
-  async submitModApplication (notes, competentAnswer, telegramUsername) {
+  async submitModApplication (notes, telegramUsername) {
     let response = await axios.post(`${baseUrl}/mod-applications`, {
-      notes, competentAnswer, telegramUsername
+      notes, telegramUsername
     })
     return response.data
   },

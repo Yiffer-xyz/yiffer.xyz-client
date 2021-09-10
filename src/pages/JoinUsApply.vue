@@ -23,12 +23,6 @@
                    type="textarea"
                    classes="width100 mb-48"/>
 
-        <TextInput :value="competentAnswer"
-                   @change="newVal => competentAnswer = newVal"
-                   title="Are you competent at cropping and resizing images (in order to make thumbnails)? MS Paint does not count, as it ruins the images."
-                   textAlign="left"
-                   classes="width100 mb-48"/>
-
         <TextInput :value="telegramUsername"
                    @change="newVal => telegramUsername = newVal"
                    title="Telegram username"
@@ -58,14 +52,13 @@ export default {
   data () {
     return {
       notes: '',
-      competentAnswer: '',
       telegramUsername: '',
     }
   },
 
   computed: {
     isReadyForSubmit () {
-      return this.notes.length > 0 && this.competentAnswer.length > 0 && this.telegramUsername.length > 0
+      return this.notes.length > 0 && this.telegramUsername.length > 0
     },
     ...mapGetters(['modApplicationSubmit']),
   },
@@ -83,7 +76,7 @@ export default {
       if (!this.isReadyForSubmit) { return }
 
       doFetch(this.$store.commit, 'modApplicationSubmit', 
-        miscApi.submitModApplication(this.notes, this.competentAnswer, this.telegramUsername))
+        miscApi.submitModApplication(this.notes, this.telegramUsername))
     },
   },
 
