@@ -23,6 +23,40 @@
       <p>
         The tech stack of Yiffer.xyz is a fairly common one for web these days: Vue.js for the front-end, Node.js with Express for the api, and a MySQL database. An Nginx reverse proxy, served in docker containers on a Google Cloud Platform vm. Almost all content is served via Cloudflare's DNS servers. Prior to 2021, Angular.js (v1.6) was used for the front-end part of the site, and database and file storage were both running locally on a single VM without containers. Now, database and file storage are both GCP SaaS solutions.
       </p>
+
+      <h3>Privacy Policy</h3>
+      <p>
+        Yiffer.xyz collects visitor data and analyzes traffic on our site. This information helps us understand customer interests and helps us improve our website. When you visit our site, the pages that you look at, and a short text file called a cookie, are downloaded to your computer. A cookie is used to store small amounts of information. This information is collected both for traffic analysis and to improve your experience by remembering certain choices you make regarding color themes and search settings. The cookie does not contain personal details. We do not sell, give, or trade the statistics we store to any 3rd parties for data-mining or marketing purposes. We also use Google Analytics to get visitor statistics - please see <a href="https://policies.google.com/technologies/partner-sites">https://policies.google.com/technologies/partner-sites</a> for more information on how Google uses cookies to process and collect data.
+      </p>
+      <br>
+      <p>
+        When you create an account at Yiffer.xyz, your email is connected to this account and stored on our website. This is purely to enable password resets in case you forget your password. Additionally, if you apply as an advertiser, you might receive emails regarding your active adverts. 
+      </p>
+
+      <h3>Terms of Use</h3>
+      <p>
+        By using this site, you represent and warrant that: (1) you have the legal capacity and you agree to comply with these Terms of Use; (2) you are above 18 years of age; (3) you will not access the site through automated or non-human means unless granted permission to do so; (4) you will not use the site for any illegal or unauthorized purpose; (5) your use of the sute will not violate any applicable law or regulation.
+      </p>
+      <br>
+      <p>
+        Yiffer.xyz is not responsible for any other websites that are linked to.
+      </p>
+      <br>
+      <p>
+        Most content management on Yiffer.xyz is handled by moderators. This includes all uploads of artwork, all managing of comic and artist information, as well as handling most types of feedback submitted by users. Some more important data is handled by the site's admins. This includes "feedback" submitted by users, as well as all advertising management.
+      </p>
+      <br>
+      <p>
+        By creating an account on Yiffer.xyz you accept responsibility that your account is not used by unauthorized parties, and that any action made by your account comply with these terms. Should you use your account in any way that does not comply with these terms, or to repeatedly provide incorrect suggestions to the moderator team, Yiffer.xyz may decide to terminate your account.
+      </p>
+      <br>
+      <p>
+        Yiffer.xyz does not own the rights to any artwork displayed on the website. All artwork is submitted by moderators, who, to the best of their ability, will only submit artwork that is publicly available. Moderators are instructed to always provide as many links to the original artists as possible. Should an artist wish some of their artwork to be taken down, they may contact us via email at contact@yiffer.xyz, and we will comply.
+      </p>
+      <br>
+      <p>
+        Users that have the possibility to upload artwork are prohibited from uploading artwork that is intended to be paid for, or that is otherwise not available for free online.
+      </p>
     </div>
   </span>
 </template>
