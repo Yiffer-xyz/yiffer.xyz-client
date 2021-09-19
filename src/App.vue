@@ -92,9 +92,9 @@
       <router-view/>
     </main>
 
-    <footer class="footer" style="display: flex;"> 
+    <footer class="footer" style="display: flex; flex-direction: column;"> 
       <p>
-        <router-link to="/about" class="underline-link">Contact/about</router-link>
+        <router-link to="/about" class="underline-link">About / Privacy Policy / Terms of Use</router-link>
       </p>
       <p style="display: flex;">
         Made by
@@ -236,7 +236,7 @@ export default {
 @import "@/scss/general.scss";
 @import "@/scss/shadows.scss";
 
-$footerHeight: 2.25rem;
+$footerHeight: 3.5rem;
 
 nav {
   background: linear-gradient(to right, $themeGreen1, $themeGreen2);

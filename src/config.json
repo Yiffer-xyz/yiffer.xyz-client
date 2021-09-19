@@ -4,5 +4,5 @@
   "apiBaseUrl": "/api",
   "comicsBaseUrl": "https://static.yiffer.xyz/comics",
   "paidImagesBaseUrl": "https://static.yiffer.xyz/pi",
-  "cookieConfig": ["60d", "/", ".yiffer.xyz", true, "Strict"]
+  "cookieConfig": ["60d"]
 }
