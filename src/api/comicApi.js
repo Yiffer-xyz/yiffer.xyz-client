@@ -39,4 +39,10 @@ export default {
       {comicName: comicName, artist: artist, comment: linksComments})
     return response.data
   },
+
+  async getRejectedComics () {
+    let response = await axios.get(baseUrl + '/comicsuggestions/rejected')
+    if (!response.data.error) { return response.data }
+    else { return [] }
+  },
 }
