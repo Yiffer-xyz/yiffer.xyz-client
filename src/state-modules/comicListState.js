@@ -105,8 +105,10 @@ const store = {
       Vue.set(state.comicList, selectedComicIndex, comicData)
     },
 
-    async refreshOneComicInList ({dispatch}, comicName) {
+    async refreshOneComicInList ({dispatch, getters}, comicName) {
+      let selectedComic = getters.comicList.find(c => c.name === comicName)
       let response = await comicApi.getComic(comicName)
+      response.keywords = selectedComic.keywords
       dispatch('updateOneComicInList', response)
       return response
     },
