@@ -1,11 +1,14 @@
 <template>
   <span>
     <div id="comicKeywords" class="mt-24 horizontalFlex flexWrap justifyCenter" style="max-width: 42.5rem;">
-      <div class="keywordStatic"
-            v-for="keyword in comicKeywords"
-            :key="keyword.name">
-        {{keyword.name}}
-      </div>
+      <router-link :to="`/?tags=${keyword.name}`"
+                   v-for="keyword in comicKeywords"
+                   :key="keyword.name"
+                   class="linkKeyword">
+        <div class="keyword">
+          {{keyword.name}}
+        </div>
+      </router-link>
 
       <span v-if="comicKeywords.length===0" style="margin-right: 8px;">
         <p>No tags</p>
@@ -342,6 +345,10 @@ export default {
 .comicUpperBox {
   padding: 1rem;
   border: 3px solid $themeGreen2;
+}
+
+.linkKeyword {
+  line-height: normal;
 }
 
 .dark {

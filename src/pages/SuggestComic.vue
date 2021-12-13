@@ -22,6 +22,9 @@
         <li>
           The comic will not be accepted if it has censoring bars, dots, etc.
         </li>
+        <li>
+          We do not accept cub comics, nor ones by artist Jay Naylor who has asked to to be represented here.
+        </li>
       </ul>
 
       <Form :buttonText="'Submit suggestion'"

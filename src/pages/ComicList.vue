@@ -49,6 +49,10 @@
             <router-link :to="{name: 'joinUs'}" class="underline-link">
               <ModIcon title=""/> Become a mod
             </router-link>
+
+            <a href="https://theporndude.com" class="underline-link">
+              <WebsiteIcon title=""/> ThePornDude
+            </a>
           </div>
         </DropdownMenu>
 
@@ -68,6 +72,10 @@
           <router-link :to="{name: 'joinUs'}" class="underline-link" id="link4">
             <ModIcon title=""/> Become a mod
           </router-link>
+
+          <a href="https://theporndude.com" class="underline-link" id="link4">
+            <WebsiteIcon title=""/> ThePornDude
+          </a>
         </span>
       </div>
     </div>
@@ -150,6 +158,7 @@ import SearchFiltering from './comic-list/SearchFiltering.vue'
 import Pagination from './comic-list/Pagination.vue'
 
 import ModIcon from 'vue-material-design-icons/AccountStar.vue'
+import WebsiteIcon from 'vue-material-design-icons/Web.vue'
 
 import DropdownMenu from '@innologica/vue-dropdown-menu'
 
@@ -171,6 +180,7 @@ export default {
     DropdownMenu,
     MenuDownIcon,
     ModIcon,
+    WebsiteIcon,
     FeedbackIcon,
     Skeleton, SkeletonTheme,
     SearchFiltering,
