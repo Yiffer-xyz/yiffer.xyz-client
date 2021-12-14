@@ -8,7 +8,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: `@import "@/scss/colors.scss";`
+        additionalData: `@import "@/scss/colors.scss";`
       }
     }
   },

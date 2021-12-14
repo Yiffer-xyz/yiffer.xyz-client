@@ -156,8 +156,9 @@ ul {
     color-stop(0.2, $themeGreen1Dark),
     color-stop(0.8, $themeGreen2Dark)
   );
-  color: transparent;
   background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   @media screen and (max-width: 900px) {
     font-size: 3rem;
   }
@@ -181,7 +182,7 @@ a {
   color: $themeBlueDarkText;
   width: fit-content;
   text-decoration: none;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .link-color {
@@ -301,12 +302,13 @@ label {
     color: $themeBlueDTText;
   }
   .coloredSmallYifferTitle {
-    background-clip: text;
     background-image: -webkit-gradient(
       linear, left top, right top, 
       color-stop(0.2, $themeGreen1Dark),
       color-stop(0.8, $themeGreen2Dark)
     );
+    background-clip: text;
+    -webkit-background-clip: text;
     color: transparent !important;
   }
 }
