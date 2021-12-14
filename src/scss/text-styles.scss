@@ -14,7 +14,6 @@ h3 {
 
 p, li, label, td, th, a {
   @media (max-width: 900px) {
-    // font-size: 14px;
     word-break: break-word;
   }
 }
@@ -56,17 +55,18 @@ ul {
   text-align: left;
 }
 
+
+.textCenter {
+  text-align: center;
+}
+.textLeft {
+  text-align: left;
+}
+
 .spaced-list {
   li {
     margin-top: 1rem;
   }
-}
-
-.textLeft {
-  text-align: left;
-}
-.textCenter {
-  text-align: center;
 }
 
 .full-width-text {

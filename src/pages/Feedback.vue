@@ -10,7 +10,7 @@
 
       <Form :header="'Submit feedback'"
             :buttonText="'Submit feedback'"
-            :errorText="'We apologize, there was an error saving your feedback'"
+            :errorText="'We apologize - there was an error saving your feedback'"
             :fetchingText="'Submitting...'"
             :fetchState="submitFeedback"
             :successText="'Thank you for your feedback!'"
