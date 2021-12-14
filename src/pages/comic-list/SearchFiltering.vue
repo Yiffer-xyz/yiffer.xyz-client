@@ -122,7 +122,7 @@
            }
          }">
       <ChevronRightIcon class="mdi-arrow" title=""/>
-      <p>Search / filter / tags</p>
+      <p>Search / filter / tags / order</p>
       <ChevronLeftIcon class="mdi-arrow" title="" />
     </div>
   </div>
