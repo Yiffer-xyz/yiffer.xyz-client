@@ -4,7 +4,9 @@
     <BackToIndex></BackToIndex>
 
     <div class="full-width-text margin-top-12">
-      <p>Thank you for taking the time to help improve our site! Enter your feedback below.</p>
+      <p>
+        Thank you for taking the time to help improve our site! Enter your feedback below.
+      </p>
 
       <Form :header="'Submit feedback'"
             :buttonText="'Submit feedback'"
