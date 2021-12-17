@@ -6,9 +6,10 @@
             yBtnIconPadding: iconType || isLoading,
             'y-button-disabled': isDisabled,
             yButtonLoading: isLoading,
-            yButtonSubmitRed: color === 'error',
+            yButtonSubmitRed: color === 'error' || color === 'error-outline',
+            yButtonSubmitRedNeutral: color === 'error-outline',
           }"
-          @click="$emit('click')"
+          @click="onClick"
           :style="styles">
     <div style="width: 1rem; height: 1rem; margin-right: 0.25rem;" v-if="iconType || isLoading">
       <Spinner v-if="isLoading"
@@ -19,6 +20,8 @@
                style="margin-left: -0.2rem;"/>
       <CheckIcon v-else-if="iconType === 'check'"/>
       <SaveIcon v-else-if="iconType === 'save'"/>
+      <UnlinkIcon v-else-if="iconType === 'unlink'"/>
+      <SyncIcon v-else-if="iconType === 'refresh'"/>
     </div>
     {{text}}
   </button>
@@ -28,6 +31,8 @@
 import Spinner from 'vue-simple-spinner'
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 import SaveIcon from 'vue-material-design-icons/ContentSave.vue'
+import UnlinkIcon from 'vue-material-design-icons/LinkVariantOff.vue'
+import SyncIcon from 'vue-material-design-icons/Sync.vue'
 
 export default {
   props: {
@@ -47,7 +52,6 @@ export default {
     iconType: {
       type: String,
       required: false,
-      validator: prop => ['check', 'save'].includes(prop),
     },
     color: {
       type: String,
@@ -62,7 +66,15 @@ export default {
   },
 
   components: {
-    Spinner, CheckIcon, SaveIcon,
+    Spinner, CheckIcon, SaveIcon, UnlinkIcon, SyncIcon,
+  },
+
+  methods: {
+    onClick () {
+      if (!this.isLoading) {
+        this.$emit('click')
+      }
+    }
   }
 }
 </script>
@@ -116,6 +128,21 @@ $buttonBorderWidth: 2px;
   }
 }
 
+.yButtonSubmitRedNeutral {
+  box-shadow: none !important;
+  background-color: transparent;
+  color: $themeRed;
+  span {
+    color: $themeRed;
+  }
+  &:hover {
+    color: white;
+    span {
+      color: white;
+    }
+  }
+}
+
 .yBtnIconPadding {
   padding-right: $buttonPaddingSides+2px;
   padding-left: $buttonPaddingSides - 2px;
@@ -145,6 +172,15 @@ $buttonBorderWidth: 2px;
     &:hover, &:focus {
         background-color: $themeRed3;
         border-color: $themeRed3;
+    }
+  }
+
+  .yButtonSubmitRedNeutral {
+    box-shadow: none !important;
+    background-color: transparent;
+    color: white;
+    span {
+      color: white;
     }
   }
 

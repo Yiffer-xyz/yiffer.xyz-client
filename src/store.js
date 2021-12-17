@@ -101,6 +101,17 @@ registerFetchNames(store,
   {name: 'comicProblemCategories', defaultValue: []},
   {name: 'singleComicProblemCategories', defaultValue: []},
   {name: 'submitComicProblem', defaultValue: []},
+  {name: 'patreonTiers', defaultValue: []},
+  {name: 'unlinkPatreonAccount', defaultValue: null},
+  {name: 'syncPatreonTier', defaultValue: null},
+  {name: 'updatePatreonDisplayName', defaultValue: null},
+  {name: 'removePatreonDisplayName', defaultValue: null},
+  {name: 'updatePatreonDisplayLink', defaultValue: null},
+  {name: 'removePatreonDisplayLink', defaultValue: null},
+  {name: 'updatePatreonPicture', defaultValue: null},
+  {name: 'removePatreonPicture', defaultValue: null},
+  {name: 'vipSupporter', defaultValue: []},
+  {name: 'supporterList', defaultValue: []},
 )
 
 export default new Vuex.Store(store)

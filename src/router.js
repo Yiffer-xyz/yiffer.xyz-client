@@ -4,6 +4,7 @@ import Router from 'vue-router'
 
 import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/comic/Comic.vue'
+import Support from '@/pages/Support.vue'
 import About from '@/pages/About.vue'
 import Artist from '@/pages/Artist.vue'
 import Account from '@/pages/account/Account.vue'
@@ -66,6 +67,11 @@ export default new Router({
       path: '/artist/:artistName',
       name: 'artist',
       component: Artist,
+    },
+    {
+      path: '/support',
+      name: 'support',
+      component: Support,
     },
     {
       path: '/account',
