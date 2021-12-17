@@ -108,7 +108,9 @@ const store = {
     async refreshOneComicInList ({dispatch, getters}, comicName) {
       let selectedComic = getters.comicList.find(c => c.name === comicName)
       let response = await comicApi.getComic(comicName)
-      response.keywords = selectedComic.keywords
+      if (selectedComic && Object.keys(selectedComic).includes('keywords')) {
+        response.keywords = selectedComic.keywords
+      }
       dispatch('updateOneComicInList', response)
       return response
     },

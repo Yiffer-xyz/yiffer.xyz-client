@@ -38,7 +38,7 @@
 
     <div id="keywordEditing"
          v-if="isSuggestingKeywords && !allKeywords.failed"
-         class="mt-16 mb-8 verticalFlex fitContent marginAuto comicUpperBox">
+         class="mt-16 mb-8 verticalFlex fitContent marginAuto themeBox">
       <p class="bold textAlignLeft">
         {{isAddingKeywords ? 'Add tag' : 'Remove tag'}}
       </p>
@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <div v-if="isReportingProblem" class="mt-16 mb-8 verticalFlex fitContent marginAuto comicUpperBox">
+    <div v-if="isReportingProblem" class="mt-16 mb-8 verticalFlex fitContent marginAuto themeBox">
       <p class="bold textAlignLeft">
         Report a problem with this comic
       </p>
@@ -340,11 +340,6 @@ export default {
   &:hover {
     cursor: pointer;
   }
-}
-
-.comicUpperBox {
-  padding: 1rem;
-  border: 3px solid $themeGreen2;
 }
 
 .linkKeyword {

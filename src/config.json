@@ -2,7 +2,9 @@
   "comicsPerPage": 75,
   "adsPerPage": 5,
   "apiBaseUrl": "/api",
-  "comicsBaseUrl": "https://static.yiffer.xyz/comics",
-  "paidImagesBaseUrl": "https://static.yiffer.xyz/pi",
-  "cookieConfig": ["60d"]
+  "comicsBaseUrl": "https://static.yiffer.xyz/comics-beta",
+  "paidImagesBaseUrl": "https://static.yiffer.xyz/pi-beta",
+  "patreonBaseUrl": "https://static.yiffer.xyz/patron-images-beta",
+  "cookieConfig": ["60d"],
+  "patreonClientId": "pAEni59hDLoaMS_wCiqOCNOEf2dXh63ff3QE2U9Wm-9YJKsFcaJuKCL04en3Br4g"
 }

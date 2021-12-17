@@ -5,10 +5,13 @@
     <h1 class="margin-bottom-8" v-else>Account</h1>
     <BackToIndex style="margin: auto;"/>
 
-    <div class="smaller-width-text" v-if="!isChangingPassword && !isAddingEmail && userData">
+    <div class="narrowContentWrapper mb-24" v-if="!isFetchingInitialData && !isChangingPassword && !isAddingEmail && userData">
       <div class="verticalFlex mt-16">
+        <h3>
+          Account info
+        </h3>
         <p v-if="$store.getters.userData.email">
-          Your email: {{$store.getters.userData.email}}
+          Email: {{$store.getters.userData.email}}
         </p>
         <p v-else>
           Your account does not have an email. This is because your account was created before this website started using emails for accounts. We recommend that you connect your email address now, for account recovery purposes. Don't worry, we will never spam you.
@@ -16,23 +19,22 @@
 
         <button v-if="!$store.getters.userData.email"
                 @click="isAddingEmail=true"
-                class="y-button y-button mt-16"
+                class="y-button y-button mt-4"
                 style="width: fit-content;">
           Add email address
         </button>
         
         <button @click="isChangingPassword=true"
-                class="y-button y-button mt-16 mb-16 button-with-icon"
-                style="width: fit-content;">
+                class="y-button y-button mt-4 button-with-icon">
           Change password
         </button>
       </div>
 
-      <div class="margin-top-16"
+      <div class="mt-24"
            v-show="showModApplicationStatus && !isChangingPassword && !isAddingEmail">
-        <p class="bold">
+        <h3>
           Mod application status
-        </p>
+        </h3>
         <p class="mt-0" v-if="modApplicationStatus === modApplicationStatuses.pending">
           Pending review
         </p>
@@ -44,17 +46,36 @@
         </p>
       </div>
 
-      <a v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail"
-         href="https://pi.yiffer.xyz/dashboard"
-         class="y-button-big"
-         style="width: 100% !important;">
-        Go to advertising dashboard
-        <RightArrow/>
-      </a>
+      <div v-if="myPaidImages.fetched && myPaidImages.payload.length > 0 && !isChangingPassword && !isAddingEmail" class="mt-24">
+        <h3>
+          Advertising
+        </h3>
+        <p>
+          You have active or inactive ads
+        </p>
+        <a href="https://pi.yiffer.xyz/dashboard"
+           class="fitContent" style="display: block;">
+          <button class="y-button button-with-icon-right mt-4">
+            Go to advertising dashboard
+            <RightArrow/>
+          </button>
+        </a>
+      </div>
+
+      <div class="mt-24">
+        <Patreon/>
+      </div>
     </div>
-    
+
     <ChangePassword v-if="isChangingPassword && userData" @cancel="isChangingPassword = false"/>
+
     <AddEmail v-if="isAddingEmail && userData" @cancel="isAddingEmail = false"/>
+
+    <div v-if="isFetchingInitialData"
+         class="horizontalFlex width100 justifyCenter alignItemsCenter"
+         style="height: 40vh;">
+      <Loading/>
+    </div>
 
     <p v-if="!userData" class="mt-32">
       Something seems to have gone wrong.
@@ -69,6 +90,8 @@ import { doFetch } from '@/utils/statefulFetch'
 
 import ChangePassword from './ChangePassword.vue'
 import AddEmail from './AddEmail.vue'
+import Patreon from './Patreon.vue'
+import Loading from '@/components/LoadingIndicator.vue'
 import BackToIndex from '@/components/BackToIndex.vue'
 import advertisingApi from '@/api/advertisingApi'
 
@@ -88,7 +111,7 @@ export default {
   name: 'account',
 
   components: {
-    BackToIndex, RightArrow, ChangePassword, AddEmail,
+    BackToIndex, RightArrow, ChangePassword, AddEmail, Loading, Patreon,
   },
 
   computed: {
@@ -104,6 +127,10 @@ export default {
 
     isModOrAdmin () {
       return this.userData && (this.userData.userType === 'moderator' || this.userData.userType === 'admin')
+    },
+
+    isFetchingInitialData () {
+      return this.userData?.fetching || this.myPaidImages?.fetching
     }
   },
 

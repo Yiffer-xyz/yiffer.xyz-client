@@ -319,7 +319,7 @@ export default {
 .buttonsContainer {
   width: 100%;
   padding: 0.5rem 0;
-  margin: 1rem auto;
+  margin: 0 auto 1rem auto;
   max-height: 27rem;
   transition:max-height 0.4s linear;
   overflow: hidden;

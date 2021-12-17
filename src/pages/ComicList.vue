@@ -14,30 +14,48 @@
         </p>
       </div>
 
-      <p v-if="blogLink" class="mt-16">
-        Blog: 
-        <router-link :to="{name: 'blogWithId', params: {id: blogLink.id}}"
-                           class="underline-link">
-          {{blogLink.title}}
-        </router-link>
-      </p>
+      <span v-if="blogLink || (vipSupporter.fetched && vipSupporter.payload)" class="mt-12 blogSupportContainer">
+        <p v-if="blogLink" class="mt-4 mb-4">
+          Blog: 
+          <router-link :to="{name: 'blogWithId', params: {id: blogLink.id}}"
+                            class="underline-link">
+            {{blogLink.title}}
+          </router-link>
+        </p>
+
+        <p v-if="vipSupporter.fetched && vipSupporter.payload" class="mt-4 mb-4">
+          VIP supporter: {{vipSupporter.payload.patreonDisplayName}} - thank you ❤️
+        </p>
+      </span>
+
+      <div class="dyingBox">
+        <p>
+          <span class="redText">Yiffer.xyz is dying</span> due to lack of funding. Please 
+          <router-link :to="{name: 'support'}" class="underline-link">
+            read more &amp; support us on Patreon <RightArrow title=""/>
+          </router-link>
+        </p>
+      </div>
 
       <div class="top-links">
-        <a href="https://pi.yiffer.xyz" v-if="$breakpoint.smAndDown" class="underline-link mr-12" id="link1" style="width: 9rem;">
-          <ExclamationIcon title=""/> Your ad here?
-        </a>
+        <!-- <a v-if="$breakpoint.smAndDown" href="https://pi.yiffer.xyz" class="underline-link mr-12" id="link1" style="width: 9rem;">
+          <ExclamationIcon title=""/> Support us on Patreon!
+        </a> -->
 
         <DropdownMenu v-model="showDropdown" 
                       v-if="$breakpoint.smAndDown"
                       :hover="true" 
                       :right="true" 
-                      class="dropdownElement ml-4" 
-                      style="width: 8rem;">
+                      class="dropdownElement">
           <p dropdown-toggle class="link-color" style="font-weight: 600;">
             More <MenuDownIcon/>
           </p>
 
           <div slot="dropdown" class="linkDropdown simpleShadowNoHover">
+            <a href="https://pi.yiffer.xyz" class="underline-link">
+              <ExclamationIcon title=""/> Your ad here?
+            </a>
+
             <router-link :to="{name: 'suggestComic'}" class="underline-link">
               <plus-icon title=""/> Suggest comic
             </router-link>
@@ -153,6 +171,7 @@ import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import ExclamationIcon from 'vue-material-design-icons/Bullhorn.vue'
 import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
 import FeedbackIcon from 'vue-material-design-icons/CommentText.vue'
+import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 
 import SearchFiltering from './comic-list/SearchFiltering.vue'
 import Pagination from './comic-list/Pagination.vue'
@@ -167,6 +186,8 @@ import miscApi from '../api/miscApi'
 import blogApi from '../api/blogApi'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
+import { doFetch } from '@/utils/statefulFetch'
+import patreonApi from '@/api/patreonApi'
 
 export default {
   name: 'comic-list',
@@ -182,6 +203,7 @@ export default {
     ModIcon,
     WebsiteIcon,
     FeedbackIcon,
+    RightArrow,
     Skeleton, SkeletonTheme,
     SearchFiltering,
     Pagination,
@@ -229,6 +251,7 @@ export default {
       'allKeywords',
       'isAuthenticated',
       'detailLevel',
+      'vipSupporter',
     ]),
 
     availableSortOptions () {
@@ -323,6 +346,9 @@ export default {
     }
     if (!this.paidImages.fetching && !this.paidImages.fetched) {
       this.loadActiveAds()
+    }
+    if (!this.vipSupporter.fetching && !this.vipSupporter.fetched) {
+      doFetch(this.$store.commit, 'vipSupporter', patreonApi.fetchVIPSupporter())
     }
     window.prerenderReady = false
   },
@@ -731,6 +757,31 @@ export default {
   @media (max-width: 900px) {
     width: 100%;
   }
+}
+.dyingBox {
+  @include simpleshadowNoHover;
+  background: linear-gradient(to right, #49ded722, #5df1ba22);
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: fit-content;
+  margin: 0 1rem;
+  a {
+    font-weight: 600 !important;
+  }
+  @media (min-width: 500px) {
+    margin-top: 1rem;
+  }
+}
+.blogSupportContainer {
+  margin-bottom: 0.75rem;
+  @media (min-width: 500px) {
+    margin-bottom: 0;
+  }
+}
+
+.redText {
+  // color: red;
+  font-weight: 600;
 }
 .dropdownElement {
   &:hover {

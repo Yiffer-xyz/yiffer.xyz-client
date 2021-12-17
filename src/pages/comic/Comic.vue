@@ -61,7 +61,17 @@
           </div>
         </div>
 
+
         <RatingAndSlider :userRating="userRating" :skipLoginButton="true" @updatedComic="onUpdatedComic"/>
+
+        <div class="verticalFlex">
+          <p style="font-size: 0.8rem">
+            Added {{prettyDate(comic.created)}}
+          </p>
+          <p style="font-size: 0.8rem">
+            Updated {{prettyDate(comic.updated)}}
+          </p>
+        </div>
 
         <ComicKeywords v-if="comic" :comicData="comic"/>
       </div>
@@ -259,6 +269,8 @@ export default {
     onUpdatedComic (updatedComic) {
       this.userRating = updatedComic.userRating
     },
+
+    prettyDate: inputDateString => (new Date(inputDateString)).toDateString().substring(4),
 
     formatPageNumber: pageNumber => pageNumber<100 ? (pageNumber<10 ? '00'+pageNumber : '0'+pageNumber) : pageNumber,
 
