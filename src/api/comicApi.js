@@ -18,6 +18,7 @@ export default {
     for (var comic of response.data.comics) {
       comic.created = new Date(comic.created)
       comic.updated = new Date(comic.updated)
+      comic.indexId = comic.id
     }
 
     return response.data

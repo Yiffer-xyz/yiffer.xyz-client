@@ -89,7 +89,7 @@ const store = {
           else {
             ad = paidImages.splice(indexOfAd, 1)[0]
           }
-          finalList.push(ad)
+          finalList.push({...ad, indexId: 'ad-'+i})
         }
         else {
           finalList.push(state.paginatedComics.payload.comics[comicCounter])
