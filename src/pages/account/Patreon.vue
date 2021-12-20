@@ -8,7 +8,7 @@
         You can connect your Yiffer.xyz account to your Patreon account. If you have subscribed to Yiffer.xyz on Patreon (<router-link :to="{ name: 'support'}" class="underline-link">read more here</router-link>), you will automatically receive the benefits according to your tier. If you are not a patron, connecting will not have any effect.
       </p>
 
-      <a :href="`https://www.patreon.com/oauth2/authorize?response_type=code&client_id=${config.patreonClientId}&redirect_uri=https://beta2.yiffer.xyz/api/patreon/callback&state=${userData.id}`"
+      <a :href="`https://www.patreon.com/oauth2/authorize?response_type=code&client_id=${config.patreonClientId}&redirect_uri=https://yiffer.xyz/api/patreon/callback&state=${userData.id}`"
           class="fitContent" style="display: block;">
         <button class="y-button mt-4">
           Connect to Patreon account
