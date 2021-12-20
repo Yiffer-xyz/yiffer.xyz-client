@@ -132,8 +132,8 @@
     <div v-else-if="comicList.length > 0"
          class="comic-card-container"
          id="comicCardContainerList">
-      <comic-card v-for="(comic, index) in comicList"
-                  :key="index"
+      <comic-card v-for="comic in comicList"
+                  :key="comic.indexId"
                   :comic="comic"
                   @image-load="onImageLoad">
       </comic-card>

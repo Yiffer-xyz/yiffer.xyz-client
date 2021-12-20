@@ -177,7 +177,7 @@ export default {
 
   data: function () {
     return {
-      isNewComic: new Date() - new Date(this.comic.created) < 2*604800000,  // todo 1 week = 604800000
+      isNewComic: new Date() - new Date(this.comic.created) < 2*604800000,
       recentlyFinished: this.comic.finished && (new Date() - new Date(this.comic.updated) < 200*604800000),
       isShowingKeywords: false,
       isLoadingKeywords: false,
