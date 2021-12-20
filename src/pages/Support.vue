@@ -97,6 +97,7 @@ import { mapGetters } from 'vuex'
 import patreonApi from '@/api/patreonApi'
 import BackToIndex from '@/components/BackToIndex.vue'
 import config from '@/config.json'
+import miscApi from '@/api/miscApi'
 
 export default {
   name: 'support',
@@ -160,6 +161,8 @@ export default {
   },
 
   mounted () {
+    miscApi.logRoute('support')
+
     if (!this.supporterList.fetched && !this.supporterList.fetching) {
       doFetch(
         this.$store.commit,
