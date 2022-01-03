@@ -7,7 +7,6 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@innologica/vue-dropdown-menu": "^0.1.4",
     "axios": "^0.24.0",
     "better-vue-breakpoints": "^0.1.4",
     "core-js": "^3.20.0",

@@ -38,20 +38,17 @@
       </div>
 
       <div class="top-links">
-        <!-- <a v-if="$breakpoint.smAndDown" href="https://pi.yiffer.xyz" class="underline-link mr-12" id="link1" style="width: 9rem;">
-          <ExclamationIcon title=""/> Support us on Patreon!
-        </a> -->
-
-        <DropdownMenu v-model="showDropdown" 
-                      v-if="$breakpoint.smAndDown"
-                      :hover="true" 
-                      :right="true" 
-                      class="dropdownElement">
-          <p dropdown-toggle class="link-color" style="font-weight: 600;">
+        <div v-if="$breakpoint.smAndDown"
+             @mouseleave="onDropdownMouseLeave"
+             @mouseenter="onDropdownMouseEnter">
+          <p class="link-color cursorPointer"
+             style="font-weight: 600;">
             More <MenuDownIcon/>
           </p>
 
-          <div slot="dropdown" class="linkDropdown simpleShadowNoHover">
+          <div class="linkDropdown simpleShadowNoHover"
+               v-show="isDropdownVisible"
+               id="linkDropdown">
             <a href="https://pi.yiffer.xyz" class="underline-link">
               <ExclamationIcon title=""/> Your ad here?
             </a>
@@ -72,7 +69,7 @@
               <WebsiteIcon title=""/> ThePornDude
             </a>
           </div>
-        </DropdownMenu>
+        </div>
 
         <span v-else class="allTopLinksContainer">
           <a href="https://pi.yiffer.xyz" class="underline-link" id="link1" style="width: 9rem;">
@@ -179,8 +176,6 @@ import Pagination from './comic-list/Pagination.vue'
 import ModIcon from 'vue-material-design-icons/AccountStar.vue'
 import WebsiteIcon from 'vue-material-design-icons/Web.vue'
 
-import DropdownMenu from '@innologica/vue-dropdown-menu'
-
 import keywordApi from '../api/keywordApi'
 import miscApi from '../api/miscApi'
 import blogApi from '../api/blogApi'
@@ -198,7 +193,6 @@ export default {
     'plus-icon': PlusIcon,
     'up-arrow': UpArrow,
     ExclamationIcon,
-    DropdownMenu,
     MenuDownIcon,
     ModIcon,
     WebsiteIcon,
@@ -229,6 +223,8 @@ export default {
       loadedImageCounter: 0,
       lastClosedSearchFilteringTime: new Date(),
       deferFetchingComics: false,
+      isDropdownVisible: false,
+      hideDropdownTimeout: null,
     }
   },
 
@@ -364,6 +360,18 @@ export default {
       'setSorting',
       'setSearchFiltering',
     ]),
+
+    onDropdownMouseEnter () {
+      if (this.hideDropdownTimeout) {
+        clearTimeout(this.hideDropdownTimeout)
+      }
+      this.isDropdownVisible = true
+    },
+    onDropdownMouseLeave () {
+      this.hideDropdownTimeout = setTimeout(() => {
+        this.isDropdownVisible = false
+      }, 250)
+    },
     
     fetchComics () {
       if (this.deferFetchingComics) { return }
@@ -710,7 +718,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  p, h1, div {
+  h1, div {
     color: #333;
   }
   h1 {

@@ -4,16 +4,17 @@ import Router from 'vue-router'
 
 import ComicList from '@/pages/ComicList.vue'
 import Comic from '@/pages/comic/Comic.vue'
-import Support from '@/pages/Support.vue'
-import About from '@/pages/About.vue'
 import Artist from '@/pages/Artist.vue'
-import Account from '@/pages/account/Account.vue'
-import Feedback from '@/pages/Feedback.vue'
-import SuggestComic from '@/pages/SuggestComic.vue'
-import Blog from '@/pages/Blogs.vue'
-import JoinUs from '@/pages/JoinUs.vue'
-import JoinUsApply from '@/pages/JoinUsApply.vue'
-import ResetPassword from '@/pages/ResetPassword.vue'
+
+const Support = () => import('@/pages/Support.vue')
+const Feedback = () => import('@/pages/Feedback.vue')
+const Account = () => import('@/pages/account/Account.vue')
+const About = () => import('@/pages/About.vue')
+const SuggestComic = () => import('@/pages/SuggestComic.vue')
+const Blog = () => import('@/pages/Blogs.vue')
+const JoinUs = () => import('@/pages/JoinUs.vue')
+const JoinUsApply = () => import('@/pages/JoinUsApply.vue')
+const ResetPassword = () => import('@/pages/ResetPassword.vue')
 
 Vue.use(Router)
 
