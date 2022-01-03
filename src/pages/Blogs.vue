@@ -35,7 +35,6 @@
 
 <script>
 import BackToIndex from '@/components/BackToIndex.vue'
-import { format } from 'date-fns'
 import Loading from '@/components/LoadingIndicator.vue'
 import { doFetch } from '../utils/statefulFetch'
 import { mapGetters } from 'vuex'
@@ -90,7 +89,7 @@ export default {
     },
 
     formatTimestamp (timestamp) {
-      return format(new Date(timestamp), 'MMM do yyyy')
+      return (new Date(timestamp)).toDateString()
     }
   },
 

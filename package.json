@@ -1,6 +1,6 @@
 {
   "name": "yifferxyz-client",
-  "version": "3.0.0",
+  "version": "3.6.2",
   "description": "Front-end for yiffer.xyz, now in Vue.js!",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,7 +10,6 @@
     "axios": "^0.24.0",
     "better-vue-breakpoints": "^0.1.4",
     "core-js": "^3.20.0",
-    "date-fns": "^2.27.0",
     "jszip": "^3.7.1",
     "multer": "^1.4.4",
     "scroll-into-view-if-needed": "^2.2.28",

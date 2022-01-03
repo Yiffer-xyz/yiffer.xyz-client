@@ -102,7 +102,6 @@ import BackToIndex from '@/components/BackToIndex.vue'
 import advertisingApi from '@/api/advertisingApi'
 
 import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
-import { format } from 'date-fns'
 
 import { mapGetters } from 'vuex'
 
@@ -172,11 +171,11 @@ export default {
     
     formatTimestamp (timestamp) {
       if (!timestamp) { return '' }
-      return format(new Date(timestamp), 'MMM do yyyy')
+      return (new Date(timestamp)).toDateString().substr(4)
     },
 
     formatShortTimestamp (timestamp) {
-      return format(new Date(timestamp), 'MMM do')
+      return (new Date(timestamp)).toDateString().substr(4, 6)
     },
 
     closeResponseMessage () { this.responseMessage = '' },
