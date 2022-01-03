@@ -87,7 +87,6 @@ export default {
       let comicNameToRefresh = this.comicForVotingModal.name
       await comicApi.rateComic(this.comicForVotingModal.id, newRating)
       let updatedComic = await this.$store.dispatch('refreshOneComicInList', comicNameToRefresh)
-      this.$store.dispatch('refreshExpandedComicIfExpanded', updatedComic)
       
       if (this.$store.getters.comicForVotingModal.id === updatedComic.id) {
         this.$store.commit('setComicForVotingModal', updatedComic)

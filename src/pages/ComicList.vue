@@ -154,14 +154,11 @@
                 :showWhileLoading="showPaginationWhileLoading"
                 :onPaginate="paginate"
                 scrollToTop/>
-
-    <expanded-comic-card v-show="$store.getters.isComicCardExpanded"/>
   </div>
 </template>
 
 <script>
 import ComicCard from '@/components/ComicCard.vue'
-import ExpandedComicCard from '@/components/ExpandedComicCard.vue'
 import config from '@/config.json'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
@@ -189,7 +186,6 @@ export default {
 
   components: {
     'comic-card': ComicCard,
-    'expanded-comic-card': ExpandedComicCard,
     'plus-icon': PlusIcon,
     'up-arrow': UpArrow,
     ExclamationIcon,
