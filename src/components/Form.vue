@@ -117,17 +117,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#inputContainer {
-  input, textarea {
-    width: 100%;
-  }
-  textarea {
-    padding: 1px;
-  }
-  .input-cell {
-    width: 400px;
-  }
-}
 .buttonsContainer {
   margin: 1rem auto;
 }
