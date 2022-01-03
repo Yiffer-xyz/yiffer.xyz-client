@@ -133,7 +133,7 @@ export default {
     flex-shrink: 0;
   }
   .rating-number {
-    font-weight: 400;
+    font-weight: 600;
     font-size: 16px;
   }
 }

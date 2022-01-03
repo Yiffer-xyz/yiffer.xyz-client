@@ -37,24 +37,6 @@ const store = {
         commit('setOrderedKeywordList', keywords)
       }
     },
-
-    findKeywordDataFromName (context, keywordName) {
-      return context.state.keywordList.find(kw => kw.name === keywordName)
-    },
-
-    async getFeedback ({commit}) {
-      return doFetch(commit, 'feedback', miscApi.getFeedback())
-    },
-
-    async markFeedbackRead ({commit}, feedbackId) {
-      await miscApi.markFeedbackRead(feedbackId)
-      doFetchSilent(commit, 'feedback', miscApi.getFeedback())
-    },
-
-    async deleteFeedback ({commit}, feedbackId) {
-      await miscApi.deleteFeedback(feedbackId)
-      doFetchSilent(commit, 'feedback', miscApi.getFeedback())
-    },
   },
 
   mutations: {

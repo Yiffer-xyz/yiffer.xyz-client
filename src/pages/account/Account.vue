@@ -84,6 +84,12 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueCroppie from "vue-croppie"
+import 'croppie/croppie.css'
+
+Vue.use(VueCroppie);
+
 import miscApi from '@/api/miscApi'
 import config from '@/config.json'
 import { doFetch } from '@/utils/statefulFetch'

@@ -17,10 +17,4 @@ export default {
       return { shouldDisplay: false }
     }
   },
-
-  async addBlog (title, isImportant, content, displayDays) {
-    let response = await axios.post(baseUrl + '/blogs', {title, isImportant, content, displayDays})
-    if (!response.data.error) { return {success: true} }
-    else { return {success: false, message: response.data.error} }
-  }
 }

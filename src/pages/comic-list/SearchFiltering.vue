@@ -106,11 +106,11 @@
 
         <div class="filterSectionExpander filterSectionDeExpander"
               @click="() => {$emit(isSearchFilteringActive ? 'resetAllFilters' : 'toggleShowSearchFiltering', false)}">
-          <menu-up-icon class="mdi-arrow" title=""/>
+          <MenuUpIcon class="mdi-arrow" title=""/>
           <p>
             {{isSearchFilteringActive ? 'Reset and minimize' : 'Minimize'}}
           </p>
-          <menu-up-icon class="mdi-arrow" title=""/>
+          <MenuUpIcon class="mdi-arrow" title=""/>
         </div>
       </div>
     </span>
@@ -132,6 +132,7 @@
 import CrossIcon from 'vue-material-design-icons/Close.vue'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue'
+import MenuUpIcon from 'vue-material-design-icons/ChevronUp.vue'
 
 import Select from '../../components/Select.vue'
 import TextInput from '../../components/TextInput.vue'
@@ -143,7 +144,7 @@ export default {
 
   components: {
     Select, TextInput,
-    CrossIcon, ChevronRightIcon, ChevronLeftIcon,
+    CrossIcon, ChevronRightIcon, ChevronLeftIcon, MenuUpIcon,
   },
 
   props: {
@@ -339,6 +340,9 @@ export default {
 .closedFilterContent {
   padding: 0.5rem 0;
   max-height: 3rem;
+  @media (min-width: 901px) {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .openFilterContent {
@@ -465,6 +469,7 @@ $hoverBorderWidth: 6px;
   padding: 2px 12px 4px 10px;
   border-radius: 15px;
   margin: 2px;
+  font-weight: 300;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
   &:hover {
@@ -498,7 +503,7 @@ $hoverBorderWidth: 6px;
   }
   p, svg {
     color: $themeBlueDark;
-    font-weight: 400;
+    font-weight: 300;
   }
 }
 
@@ -538,7 +543,7 @@ $hoverBorderWidth: 6px;
   .selectedKeyword {
     background-color: $themeBlueDT;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    font-weight: 400;
+    font-weight: 600;
     &:hover {
       background-color: $themeBlueDTDarker;
     }

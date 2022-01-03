@@ -193,7 +193,6 @@ const store = {
 
   getters: {
     comicList: state => state.comicList,
-    comicListF: state => () => state.comicList,
     displayedComics: state => state.displayedComics,
     filteredComics: state => state.filteredComics,
     getFilteredComics: () => state => state.filteredComics,

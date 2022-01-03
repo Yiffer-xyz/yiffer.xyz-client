@@ -400,31 +400,6 @@ select {
   }
 }
 
-.yTableLeft {
-  td {
-    text-align: left;
-  }
-}
-
-.admin-mini-header {
-  font-weight: 400;
-  margin-bottom: 6px;
-}
-
-.selected-add-keyword {
-  &:hover {
-    cursor: pointer;
-    text-decoration: line-through;
-    color: $themeRed;
-  }
-  font-size: 14px;
-}
-
-.keyword-to-be-deleted {
-  color: $themeRed !important;
-  text-decoration: line-through;
-}
-
 .keyword, .keywordStatic {
   font-size: 12px;
   border: 0.5px solid #ccc;
@@ -455,16 +430,6 @@ select {
 }
 .simple-shadow-small {
   @include simpleshadowSmall;
-}
-
-.horizontal-wrapper-4 {
-  display: grid;
-  gap: 4px;
-  justify-items: center;
-  grid-auto-flow: row;
-  @media (min-width: 900px) {
-    grid-auto-flow: column;
-  }
 }
 
 .fitContent {

@@ -17,11 +17,13 @@
           Apply as a mod here <RightArrow/>
         </router-link>
         <div v-else>
-          <p class="semiBold">
-            To apply as a mod,
-            <button class="underline-link text-button link-color" @click.prevent="showLoginModal">
-              <LoginIcon/> Log in
-            </button> 
+          <p>
+            <b>
+              To apply as a mod,
+              <button class="underline-link text-button link-color" @click.prevent="showLoginModal">
+                <LoginIcon/> Log in
+              </button> 
+            </b>
           </p>
         </div>
       </div>
@@ -69,11 +71,13 @@
           Apply as a mod here <RightArrow/>
         </router-link>
         <div v-else>
-          <p class="semiBold">
-            To apply as a mod,
-            <button class="underline-link text-button link-color" @click.prevent="showLoginModal">
-              <LoginIcon/> Log in
-            </button> 
+          <p>
+            <b>
+              To apply as a mod,
+              <button class="underline-link text-button link-color" @click.prevent="showLoginModal">
+                <LoginIcon/> Log in
+              </button> 
+            </b>
           </p>
         </div>
       </div>

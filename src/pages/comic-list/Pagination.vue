@@ -134,7 +134,6 @@ export default {
   border-bottom-style: solid;
   border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1;
   padding-bottom: 3px !important;
-  font-weight: 400;
 }
 
 .paginationContainer {
@@ -144,7 +143,7 @@ export default {
 }
 .paginationButton {
   flex: 1;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
   background: $filterPaginationLightMain;
   padding: 9px 10px;

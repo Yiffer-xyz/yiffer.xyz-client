@@ -317,7 +317,7 @@ nav {
   bottom: 0;
   p, a {
     font-size: 0.85rem !important;
-    font-weight: 400;
+    font-weight: 600;
     color: $themeDark1;
   }
   p {

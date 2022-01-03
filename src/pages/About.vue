@@ -88,10 +88,6 @@ export default {
 </script>
 
 <style lang="scss">
-.mini-header {
-  font-weight: 400;
-  margin-top: 15px;
-}
 .full-width-text-container {
   margin-right: 10%;
   margin-left: 10%;

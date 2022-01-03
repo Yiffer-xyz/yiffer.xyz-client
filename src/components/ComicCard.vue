@@ -280,7 +280,7 @@ export default {
       top: 10px;
       transform: rotate(-45deg);
       left: 2px;
-      font-weight: 400;
+      font-weight: 600;
     }
   }
 }
@@ -294,7 +294,7 @@ export default {
       color: $themeDark1;
       top: 10px;
       right: 5px;
-      font-weight: 400;
+      font-weight: 600;
       transform: rotate(45deg);
     }
     .triangle-label-cancelled {
@@ -366,7 +366,7 @@ export default {
   display: block;
   width: fit-content;
   margin: 4px auto 0 auto;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .comic-card {
@@ -427,7 +427,7 @@ export default {
     }
   }
   .comic-card-comic-title {
-    font-weight: 400;
+    font-weight: 600;
     margin: 0px 10px;
     text-align: center;
     color: $cardTextColorLight;

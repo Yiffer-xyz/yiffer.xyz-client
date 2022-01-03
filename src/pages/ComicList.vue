@@ -40,9 +40,9 @@
       <div class="top-links">
         <div v-if="$breakpoint.smAndDown"
              @mouseleave="onDropdownMouseLeave"
-             @mouseenter="onDropdownMouseEnter">
-          <p class="link-color cursorPointer"
-             style="font-weight: 600;">
+             @mouseenter="onDropdownMouseEnter"
+             class="moreDropdownContainer">
+          <p class="link-color cursorPointer" style="font-weight: 300;">
             More <MenuDownIcon/>
           </p>
 
@@ -724,15 +724,12 @@ export default {
     margin: 45px 0px;
   }
 
-  padding: 5rem 0 3rem 0;
+  padding: 4rem 0 2rem 0;
   border-style: solid;
   border-width: 0;
 
   @media screen and (max-width: 900px) {
-    padding: 3rem 0 1rem 0;
-    a, .link-color {
-      font-weight: 400 !important;
-    }
+    padding: 3rem 0 0.5rem 0;
   }
 }
 
@@ -790,6 +787,11 @@ export default {
 .dropdownElement {
   &:hover {
     cursor: pointer;
+  }
+}
+.moreDropdownContainer {
+  @media screen and (max-width: 900px) {
+    margin-top: 0.5rem,
   }
 }
 .linkDropdown {

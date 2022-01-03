@@ -1,20 +1,5 @@
 @import "shadows.scss";
 
-.blueButton {
-  border: none;
-  background: #00aaff;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 2px;
-  a, p, span, svg {
-    color: white;
-  }
-  @include simpleshadowSmall;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
 $buttonPaddingSides: 12px;
 $buttonPaddingTopBot: 6px;
 $buttonBorderWidth: 2px;
@@ -55,7 +40,6 @@ $buttonBorderWidth: 2px;
   padding: 3px 8px;
   background-color: $themeBlueDark;
   color: white;
-  font-weight: 400;
   &:hover {
     background-color: $themeBlueDarker;
   }
@@ -154,7 +138,6 @@ $buttonBorderWidth: 2px;
 }
 
 .y-button-close {
-  font-weight: 400;
   border-radius: 40px;
   border: none;
   color: $themeGray7;
@@ -170,7 +153,7 @@ $buttonBorderWidth: 2px;
 .text-button {
   font-size: 1rem;
   text-align: center;
-  font-weight: 400;
+  font-weight: 600;
   font-family: 'Mulish', sans-serif;
   background: transparent;
   border: none;
@@ -244,7 +227,7 @@ $buttonBorderWidth: 2px;
   p {
     font-size: 14px;
     color: white;
-    font-weight: 400;
+    font-weight: 600;
   }
 
   &:hover, &:focus {

@@ -20,7 +20,7 @@
       </div>
 
       <div class="artist-link-container" v-if="artistData.links.length > 0">
-        <p style="font-weight: 400;">
+        <p style="font-weight: 600;">
           {{(artistData.patreonName || artistData.e621Name) ? 'Other links:' : 'Links:'}}
         </p>
         <div v-for="link in artistData.links" :key="link.linkUrl" class="artist-link">

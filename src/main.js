@@ -7,21 +7,11 @@ import "vue-material-design-icons/styles.css"
 import breakpoint from 'better-vue-breakpoints'
 import Meta from 'vue-meta';
 
-import MenuDown from "vue-material-design-icons/ChevronDown.vue"
-import MenuUp from "vue-material-design-icons/ChevronUp.vue"
-Vue.component("menu-down-icon", MenuDown)
-Vue.component("menu-up-icon", MenuUp)
-
-import VueCroppie from "vue-croppie"
-import 'croppie/croppie.css'
-
 Vue.config.productionTip = false
 
 Vue.use(VueCookies)
 
 Vue.use(Meta);
-
-Vue.use(VueCroppie);
 
 Vue.use(breakpoint, {
   xs: 500,

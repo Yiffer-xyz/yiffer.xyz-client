@@ -502,7 +502,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 
 .artistNameLink {
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 600;
   @media (max-width: 900px) {
     font-size: 22px;
   }

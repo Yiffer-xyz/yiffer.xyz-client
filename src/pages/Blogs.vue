@@ -115,7 +115,7 @@ export default {
   padding: 1rem 1.5rem;
 }
 .blogTitle {
-  font-weight: 400;
+  font-weight: 300;
   font-size: 1.5rem !important;
   margin-top: 0 !important;
   margin-bottom: 0.5rem;
