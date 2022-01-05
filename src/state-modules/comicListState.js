@@ -28,7 +28,7 @@ const store = {
     async fetchComics ({commit, dispatch}, searchParams) {
       await doFetch(commit, 'paginatedComics', comicApi.getComicsPaginated(searchParams))
       commit('setHasFetchedComicListOnce')
-        dispatch('addAdsToComicList')
+      dispatch('addAdsToComicList')
     },
     
     async loadActiveAds ({state, commit, dispatch}) {
@@ -205,13 +205,16 @@ const store = {
     getSelectedKeywords: () => state => state.selectedKeywords,
     detailLevel: state => state.detailLevel,
     paidImagesCard: state => () => state.paidImages.payload
-      .filter(ad => ad.adType.includes('card'))
+      .filter(ad => ad.adType === 'card')
       .map(ad => ({
         ...ad,
         isPaidImage: true,
       })),
     paidImagesBanner: state => () => {
-      return state.paidImages.payload.filter(ad => ad.adType.includes('banner'))
+      return state.paidImages.payload.filter(ad => ad.adType === 'banner')
+    },
+    paidImagesTopSmall: state => () => {
+      return state.paidImages.payload.filter(ad => ad.adType === 'topSmall')
     },
     hasFetchedComicListOnce: state => state.hasFetchedComicListOnce,
     comicKeywords: state => state.comicKeywords,

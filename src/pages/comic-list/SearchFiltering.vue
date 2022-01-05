@@ -341,7 +341,7 @@ export default {
   padding: 0.5rem 0;
   max-height: 3rem;
   @media (min-width: 901px) {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 

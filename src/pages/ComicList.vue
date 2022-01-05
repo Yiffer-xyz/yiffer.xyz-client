@@ -28,16 +28,38 @@
         </p>
       </span>
 
-      <div class="dyingBox">
-        <p>
-          <span class="redText">Yiffer.xyz is dying</span> due to lack of funding. Please 
-          <router-link :to="{name: 'support'}" class="underline-link">
-            read more &amp; support us on Patreon <RightArrow title=""/>
-          </router-link>
-        </p>
+      <div class="dyingAndPaidImgContainer">
+        <div class="dyingBox">
+          <p>
+            We are struggling economically. Please 
+            <router-link :to="{name: 'support'}" class="underline-link">
+              read more &amp; support us on Patreon <RightArrow title=""/>
+            </router-link>
+          </p>
+        </div>
+
+        <a :href="topSmallAd.link"
+           target="_blank"
+           v-if="topSmallAd"
+           rel="noopener">
+          <img :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.${topSmallAd.filetype}`"
+               width="300" height="90" alt="Creative link" title="" border="0"
+               style="border-radius: 4px;">
+        </a>
+
+        <div v-else-if="!paidImages.fetched" style="width: 300px; height: 90px;">
+        </div>
       </div>
 
+
       <div class="top-links">
+        <router-link :to="{name: 'joinUs'}"
+                     v-if="$breakpoint.smAndDown"
+                     class="underline-link mr-24"
+                     style="font-weight: 300; margin-bottom: -1px;">
+          <ModIcon title=""/> Become a mod
+        </router-link>
+        
         <div v-if="$breakpoint.smAndDown"
              @mouseleave="onDropdownMouseLeave"
              @mouseenter="onDropdownMouseEnter"
@@ -49,20 +71,17 @@
           <div class="linkDropdown simpleShadowNoHover"
                v-show="isDropdownVisible"
                id="linkDropdown">
+
             <a href="https://pi.yiffer.xyz" class="underline-link">
-              <ExclamationIcon title=""/> Your ad here?
+              <ExclamationIcon title=""/> Advertise
             </a>
 
-            <router-link :to="{name: 'suggestComic'}" class="underline-link">
+            <router-link :to="{name: 'suggestComic'}" class="underline-link ">
               <plus-icon title=""/> Suggest comic
-            </router-link>
+            </router-link> 
 
             <router-link :to="{name: 'feedback'}" class="underline-link">
               <FeedbackIcon title=""/> Feedback
-            </router-link>
-
-            <router-link :to="{name: 'joinUs'}" class="underline-link">
-              <ModIcon title=""/> Become a mod
             </router-link>
 
             <a href="https://theporndude.com" class="underline-link">
@@ -72,8 +91,12 @@
         </div>
 
         <span v-else class="allTopLinksContainer">
+          <router-link :to="{name: 'joinUs'}" class="underline-link" id="link4">
+            <ModIcon title=""/> Become a mod
+          </router-link>
+
           <a href="https://pi.yiffer.xyz" class="underline-link" id="link1" style="width: 9rem;">
-            <ExclamationIcon title=""/> Your ad here?
+            <ExclamationIcon title=""/> Advertise
           </a>
 
           <router-link :to="{name: 'suggestComic'}" class="underline-link" id="link2">
@@ -82,10 +105,6 @@
 
           <router-link :to="{name: 'feedback'}" class="underline-link" id="link3">
             <FeedbackIcon title=""/> Feedback
-          </router-link>
-
-          <router-link :to="{name: 'joinUs'}" class="underline-link" id="link4">
-            <ModIcon title=""/> Become a mod
           </router-link>
 
           <a href="https://theporndude.com" class="underline-link" id="link4">
@@ -221,6 +240,7 @@ export default {
       deferFetchingComics: false,
       isDropdownVisible: false,
       hideDropdownTimeout: null,
+      topSmallAd: null,
     }
   },
 
@@ -244,6 +264,7 @@ export default {
       'isAuthenticated',
       'detailLevel',
       'vipSupporter',
+      'paidImagesTopSmall',
     ]),
 
     availableSortOptions () {
@@ -343,6 +364,13 @@ export default {
       doFetch(this.$store.commit, 'vipSupporter', patreonApi.fetchVIPSupporter())
     }
     window.prerenderReady = false
+
+    if (this.paidImages.fetched) {
+      this.setTopImageSmall()
+    }
+    else {
+      this.$store.watch(this.$store.getters.paidImagesTopSmall, this.setTopImageSmall)
+    }
   },
 
   methods: {
@@ -530,6 +558,14 @@ export default {
       setTimeout(() => this.deferFetchingComics = false, 1500)
     },
 
+    setTopImageSmall () {
+      let numberOfAds = this.$store.getters.paidImagesTopSmall().length
+      if (numberOfAds > 0) {
+        let adIndex = Math.floor(Math.random() * numberOfAds)
+        this.topSmallAd = this.$store.getters.paidImagesTopSmall()[adIndex]
+      }
+    },
+
     setRouterQuery () {
       if (this.suppressQueryUpdates) { return }
 
@@ -673,6 +709,7 @@ export default {
   display: flex;
   flex-direction: row;
   width: fit-content;
+  align-items: center;
   margin: 2rem auto 0 auto;
   @media (max-width: 900px) {
     margin-top: 1rem;
@@ -724,7 +761,7 @@ export default {
     margin: 45px 0px;
   }
 
-  padding: 4rem 0 2rem 0;
+  padding: 3rem 0 1rem 0;
   border-style: solid;
   border-width: 0;
 
@@ -759,24 +796,28 @@ export default {
     width: 100%;
   }
 }
-.dyingBox {
-  @include simpleshadowNoHover;
-  background: linear-gradient(to right, #49ded722, #5df1ba22);
-  padding: 0.5rem;
-  border-radius: 4px;
-  width: fit-content;
-  margin: 0 1rem;
-  a {
-    font-weight: 600 !important;
-  }
-  @media (min-width: 500px) {
-    margin-top: 1rem;
+
+.dyingAndPaidImgContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  @media (max-width: 900px) {
+    margin-top: 0.5rem;
   }
 }
-.blogSupportContainer {
-  margin-bottom: 0.75rem;
-  @media (min-width: 500px) {
-    margin-bottom: 0;
+.dyingBox {
+  background: linear-gradient(to right, #49ded722, #5df1ba22);
+  border-radius: 4px;
+  width: 300px;
+  height: 90px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  a {
+    font-weight: 600 !important;
   }
 }
 
@@ -789,14 +830,10 @@ export default {
     cursor: pointer;
   }
 }
-.moreDropdownContainer {
-  @media screen and (max-width: 900px) {
-    margin-top: 0.5rem,
-  }
-}
 .linkDropdown {
   display: flex;
   flex-direction: column;
+  margin-left: -3rem;
   &>* {
     width: fit-content;
     text-align: left;
