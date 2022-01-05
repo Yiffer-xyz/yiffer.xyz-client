@@ -4,7 +4,7 @@
     <BackToIndex/>
 
     <p>
-      The costs of running Yiffer.xyz are significant. As of early fall 2021, the total monthly sum is around $400. We had hoped to balance these costs with the money paid by advertisers, but we've not received nearly as many of those as we had hoped. Until now, all expenses have been paid by the creator/owner of Yiffer.xyz himself. But it cannot continue like this.
+      The costs of running Yiffer.xyz are significant. As of January 2022, the total monthly sum is around $500. We had hoped to balance these costs with the money paid by advertisers, but we've not received nearly as many of those as we had hoped. Until now, all expenses have been paid by the creator/owner of Yiffer.xyz himself - thousands of dollars every year. But it cannot continue like this. I truly want to provide something good to the community, and I've put so much time, effort, and money into it throughout the years. If you are able to, please help keep this website alive.
     </p>
 
     <a href="https://www.patreon.com/bePatron?u=61346131">

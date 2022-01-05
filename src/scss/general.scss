@@ -304,22 +304,22 @@ select {
   margin-left: 0;
 }
 .ml-4 {
-  margin-left: 4px;
+  margin-left: 0.25rem;
 }
 .ml-8 {
-  margin-left: 8px;
+  margin-left: 0.5rem;
 }
 .ml-10 {
   margin-left: 10px;
 }
 .ml-12 {
-  margin-left: 12px;
+  margin-left: 0.75rem;
 }
 .ml-16 {
-  margin-left: 16px;
+  margin-left: 1rem;
 }
 .ml-32 {
-  margin-left: 32px;
+  margin-left: 2rem;
 }
 .mr-4 {
   margin-right: 4px;
@@ -331,10 +331,13 @@ select {
   margin-right: 0.75rem;
 }
 .mr-16 {
-  margin-right: 16px;
+  margin-right: 1rem;
+}
+.mr-24 {
+  margin-right: 1.5rem;
 }
 .mr-32 {
-  margin-right: 32px;
+  margin-right: 2rem;
 }
 .mr-40 {
   margin-right: 2.5rem;
