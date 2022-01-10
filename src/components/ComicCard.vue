@@ -51,11 +51,24 @@
         </div>
       </div>
       <div class="imgContainer">
-        <picture>
-          <source media="(min-width: 901px)" :srcset="`${config.paidImagesBaseUrl}/${comic.id}-big.${comic.filetype}`">
-          <source media="(max-width: 900px)" :srcset="`${config.paidImagesBaseUrl}/${comic.id}-small.${comic.filetype}`">
-          <img :src="`${config.paidImagesBaseUrl}/${comic.id}-big.${comic.filetype}`">
+        <picture v-if="comic.filetype === 'webp' || comic.filetype === 'jpg'">
+          <source :srcset="`${config.paidImagesBaseUrl}/${comic.id}.webp`"
+                  type="image/webp">
+          <img :src="`${config.paidImagesBaseUrl}/${comic.id}.jpg`"
+                type="image/jpeg"
+                border="0">
         </picture>
+
+        <video v-else-if="comic.filetype === 'webm'" autoplay muted loop>
+          <source :src="`${config.paidImagesBaseUrl}/${comic.id}.webm`"
+                  type="video/webm">
+          <source :src="`${config.paidImagesBaseUrl}/${comic.id}.mp4`"
+                  type="video/mp4">
+        </video>
+
+        <img v-else
+              :src="`${config.paidImagesBaseUrl}/${comic.id}.${comic.filetype}`"
+              border="0">
       </div>
     </a>
 

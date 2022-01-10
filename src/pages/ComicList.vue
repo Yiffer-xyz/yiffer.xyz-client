@@ -41,10 +41,28 @@
         <a :href="topSmallAd.link"
            target="_blank"
            v-if="topSmallAd"
-           rel="noopener">
-          <img :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.${topSmallAd.filetype}`"
-               width="300" height="90" alt="Creative link" title="" border="0"
-               style="border-radius: 4px;">
+           rel="noopener"
+           @click="() => savePaidImageClick(topSmallAd.id)">
+          <picture v-if="topSmallAd.filetype === 'webp' || topSmallAd.filetype === 'jpg'"
+                   alt="Creative link">
+            <source :srcset="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webp`"
+                    type="image/webp">
+            <img :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.jpg`"
+                  style="border-radius: 4px" width="300" height="90"
+                  border="0">
+          </picture>
+
+          <video v-else-if="topSmallAd.filetype === 'webm'" autoplay muted loop style="border-radius: 4px;">
+            <source :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webm`"
+                    type="video/webm">
+            <source :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.mp4`"
+                    type="video/mp4">
+          </video>
+
+          <img v-else
+               :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.${topSmallAd.filetype}`"
+               style="border-radius: 4px" width="300" height="90"
+               border="0">
         </a>
 
         <div v-else-if="!paidImages.fetched" style="width: 300px; height: 90px;">
@@ -199,6 +217,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
 import { doFetch } from '@/utils/statefulFetch'
 import patreonApi from '@/api/patreonApi'
+import paidImageApi from '../api/advertisingApi'
 
 export default {
   name: 'comic-list',
@@ -395,6 +414,10 @@ export default {
       this.hideDropdownTimeout = setTimeout(() => {
         this.isDropdownVisible = false
       }, 250)
+    },
+    
+    async savePaidImageClick (adId) {
+      paidImageApi.logAdClick(adId)
     },
     
     fetchComics () {
@@ -766,7 +789,7 @@ export default {
   border-width: 0;
 
   @media screen and (max-width: 900px) {
-    padding: 3rem 0 0.5rem 0;
+    padding: 2rem 0 0.5rem 0;
   }
 }
 

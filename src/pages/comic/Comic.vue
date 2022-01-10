@@ -112,8 +112,26 @@
 
       <div class="paidImageBannerLink" style="max-height: 90px !important;" @click="savePaidImageClick">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
-          <img :src="`${config.paidImagesBaseUrl}/${paidImage.id}.${paidImage.filetype}`" 
-               class="paidImageBanner"/>
+          <picture v-if="paidImage.filetype === 'webp' || paidImage.filetype === 'jpg'">
+            <source :srcset="`${config.paidImagesBaseUrl}/${paidImage.id}.webp`"
+                    type="image/webp">
+            <img :src="`${config.paidImagesBaseUrl}/${paidImage.id}.jpg`"
+                  type="image/jpeg"
+                  border="0"
+                  style="max-width: 100%;">
+          </picture>
+
+          <video v-else-if="paidImage.filetype === 'webm'" autoplay muted loop style="max-width: 100%;">
+            <source :src="`${config.paidImagesBaseUrl}/${paidImage.id}.webm`"
+                    type="video/webm">
+            <source :src="`${config.paidImagesBaseUrl}/${paidImage.id}.mp4`"
+                    type="video/mp4">
+          </video>
+
+          <img v-else
+                :src="`${config.paidImagesBaseUrl}/${paidImage.id}.${paidImage.filetype}`"
+                border="0"
+                style="max-width: 100%;">
         </a>
 
         <div v-else-if="!isNoPaidImage" style="height: 90px; width: 728px;"/>
