@@ -121,7 +121,8 @@
                   style="max-width: 100%;">
           </picture>
 
-          <video v-else-if="paidImage.filetype === 'webm'" autoplay muted loop style="max-width: 100%;">
+          <video v-else-if="paidImage.filetype === 'webm'" autoplay muted loop
+                 style="max-width: 100%;">
             <source :src="`${config.paidImagesBaseUrl}/${paidImage.id}.webm`"
                     type="video/webm">
             <source :src="`${config.paidImagesBaseUrl}/${paidImage.id}.mp4`"
