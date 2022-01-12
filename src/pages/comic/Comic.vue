@@ -110,7 +110,7 @@
       </div>
 
 
-      <div class="paidImageBannerLink" style="max-height: 90px !important;" @click="savePaidImageClick">
+      <div style="max-height: 90px !important; margin: 1rem 0;" @click="savePaidImageClick">
         <a v-if="paidImage" :href="paidImage.link" target="_blank">
           <picture v-if="paidImage.filetype === 'webp' || paidImage.filetype === 'jpg'">
             <source :srcset="`${config.paidImagesBaseUrl}/${paidImage.id}.webp`"
@@ -527,15 +527,6 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
   }
 }
 
-.paidImageBannerLink {
-  margin: 1rem 0;
-}
-.paidImageBanner {
-  @media (max-width: 900px) {
-    max-width: 100%;
-  }
-}
-
 .loadedComicHeader {
   margin: 0.25rem 0 0.5rem 0;
   @media (max-width: 900px) {
@@ -544,7 +535,7 @@ let imageFitCycleOrder = ['height', 'width', 'big', 'thumb']
 }
 
 #comicPageContainer {
-  img:not(.paidImageBanner) {
+  img {
     margin: 0 auto 16px auto;
     display: block;
   }
