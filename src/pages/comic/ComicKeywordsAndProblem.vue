@@ -285,18 +285,26 @@ export default {
       if (!relevantKeyword) { return }
 
       this.isSubmittingSuggestion = true
-      let suggestionResponse = await keywordApi.addKeywordSuggestion(this.comicData.id, relevantKeyword.id, isAdding)
+      let suggestionResponse = await keywordApi.addKeywordSuggestion(
+        this.comicData.id, relevantKeyword.id, isAdding,
+      )
       this.isSubmittingSuggestion = false
 
       if (suggestionResponse.success) {
-        this.responseMessage = `Thank you! Your suggestion will be reviewed soon (${isAdding ? 'Add' : 'Remove'} ${relevantKeyword.name})`
+        if (suggestionResponse.modOrAdminAdded) {
+          this.responseMessage = `Suggestion approved directly, because you're a mod (${isAdding ? 'Add' : 'Remove'} ${relevantKeyword.name})`
+          this.comicKeywords = await keywordApi.getComicKeywords(this.comicData.id)
+        }
+        else {
+          this.responseMessage = `Thank you! Your suggestion will be reviewed soon (${isAdding ? 'Add' : 'Remove'} ${relevantKeyword.name})`
+        }
         this.responseMessageType = 'success'
 
         this.addKeyword = undefined
         this.removeKeyword = undefined
       }
       else {
-        this.responseMessage = suggestionResponse.message
+        this.responseMessage = suggestionResponse.error
         this.responseMessageType = 'error'
       }
     },

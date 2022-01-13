@@ -73,7 +73,7 @@
           </p>
         </div>
 
-        <ComicKeywords v-if="comic" :comicData="comic"/>
+        <ComicKeywordsAndProblem v-if="comic" :comicData="comic"/>
       </div>
     </div>
 
@@ -187,7 +187,7 @@ import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
 import ShareIcon from 'vue-material-design-icons/ShareVariant.vue'
 import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
 import DownloadIcon from 'vue-material-design-icons/Download.vue'
-import ComicKeywords from './ComicKeywordsAndProblem.vue'
+import ComicKeywordsAndProblem from './ComicKeywordsAndProblem.vue'
 import RatingAndSlider from './RatingAndSlider.vue'
 import paidImageApi from '@/api/advertisingApi'
 
@@ -205,7 +205,7 @@ export default {
   },
 
   components: {
-    Loading, ComicKeywords, RatingAndSlider,
+    Loading, ComicKeywordsAndProblem, RatingAndSlider,
     LeftArrow, RightArrow, ShareIcon, UpArrow, DownloadIcon,
   },
 

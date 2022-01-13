@@ -15,11 +15,16 @@ export default {
   },
 
   async addKeywordSuggestion (comicId, keywordId, isAdding) {
-    let response = await axios.post(baseUrl + '/keywordsuggestions', 
-      {comicId: comicId, keywordId: keywordId, isAdding: isAdding})
+    try {
+      let response = await axios.post(baseUrl + '/keywordsuggestions', {
+        comicId: comicId, keywordId: keywordId, isAdding: isAdding
+      })
 
-    if (!response.data.error) { return {success: true} }
-    else { return {success: false, message: response.data.error} }  
+      return { success: true, modOrAdminAdded: response.status === 204 }
+    }
+    catch (err) {
+      return { error: err.response?.data }
+    }
   },
 
   logKeywordSearch (keywordId, isFromCard) {
