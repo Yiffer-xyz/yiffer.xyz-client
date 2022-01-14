@@ -59,7 +59,7 @@
                 border="0">
         </picture>
 
-        <video v-else-if="comic.filetype === 'webm'" autoplay muted loop>
+        <video v-else-if="comic.filetype === 'webm'" autoplay muted loop playsinline webkit-playsinline>
           <source :src="`${config.paidImagesBaseUrl}/${comic.id}.webm`"
                   type="video/webm">
           <source :src="`${config.paidImagesBaseUrl}/${comic.id}.mp4`"

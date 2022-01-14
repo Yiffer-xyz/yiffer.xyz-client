@@ -52,7 +52,7 @@
                   border="0">
           </picture>
 
-          <video v-else-if="topSmallAd.filetype === 'webm'" autoplay muted loop
+          <video v-else-if="topSmallAd.filetype === 'webm'" autoplay muted loop playsinline webkit-playsinline
                  style="border-radius: 4px;" height="90" width="300">
             <source :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webm`"
                     type="video/webm">
