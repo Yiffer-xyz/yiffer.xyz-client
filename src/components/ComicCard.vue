@@ -461,7 +461,7 @@ export default {
       font-size: 15px;
       margin: 0px 2px;
     }
-    img {
+    img, video {
       height: 141px;
       width: 100px;
     }

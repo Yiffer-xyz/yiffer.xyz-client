@@ -3,7 +3,7 @@
         :errorText="changePasswordSubmit.errorMessage"
         :fetchState="changePasswordSubmit"
         header="Change password"
-        :canSubmit="currentPassword && newPassword1 && newPassword2"
+        :canSubmit="!!(currentPassword && newPassword1 && newPassword2)"
         successText="Password changed successfully"
         includeCancel
         showCloseOnSuccess
