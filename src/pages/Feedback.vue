@@ -5,7 +5,7 @@
 
     <div class="full-width-text margin-top-12">
       <p>
-        Thank you for taking the time to help improve our site! Enter your feedback below.
+        Thank you for taking the time to help improve our site! Note that we can not reply to your message - if you need assistance or have any questions, you should send an email to contact@yiffer.xyz instead.
       </p>
 
       <Form :header="'Submit feedback'"

@@ -1,17 +1,21 @@
 <template>
   <div style="width: 100%">
-    <h1>Suggest new comic</h1>
+    <h1>
+      Suggest new comic
+    </h1>
     <BackToIndex />
 
     <div class="full-width-text margin-top-12">
-      <p>Thank you for wanting to improve our collection! Here are a few things to keep in mind:</p>
+      <p>
+        Thank you for wanting to improve our collection! Here are a few things to keep in mind:
+      </p>
 
       <ul>
         <li>
           The comic should be at least 4 pages long. If the pages have lots of panels or if the comic is of very high quality, 3-page comics might be accepted.
         </li>
         <li>
-          The comic will not be accepted if it is of low quality ("poorly drawn").
+          The comic will not be accepted if it is of low quality (poorly drawn).
         </li>
         <li>
           The comic <i>might</i> not be accepted if it is uncolored.
@@ -23,7 +27,7 @@
           The comic will not be accepted if it has censoring bars, dots, etc.
         </li>
         <li>
-          We do not accept cub comics, nor ones by artist Jay Naylor who has asked to to be represented here.
+          We do not accept cub comics, nor ones by artists Jay Naylor and Voregence who have asked not to be represented here.
         </li>
       </ul>
 
@@ -62,7 +66,10 @@
       </Form>
 
       <div id="rejectedComics" class="margin-top-32 scrolling-table-container">
-        <h2>Previously rejected comics</h2>
+        <h2>
+          Previously rejected comics
+        </h2>
+
         <table class="yTable mt-8" v-if="rejectedComics.length > 0">
           <thead>
             <tr>
@@ -79,7 +86,10 @@
             </tr>
           </tbody>
         </table>
-        <p v-else>None yet!</p>
+
+        <p v-else>
+          None yet!
+        </p>
       </div>
     </div>
   </div>

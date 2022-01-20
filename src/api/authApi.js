@@ -6,7 +6,6 @@ const baseUrl = config.apiBaseUrl
 export default {
   async refreshAuth () {
     let response = await axios.get(`${baseUrl}/refresh-auth`)
-    // return {...response.data, patreonTier: 2, }
     return response.data
   },
 
