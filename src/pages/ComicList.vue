@@ -14,7 +14,8 @@
         </p>
       </div>
 
-      <span v-if="blogLink || (vipSupporter.fetched && vipSupporter.payload)" class="mt-12 blogSupportContainer">
+      <span v-if="blogLink || (vipSupporter.fetched && vipSupporter.payload) || !vipSupporter.fetched"
+            class="mt-12 blogSupportContainer">
         <p v-if="blogLink" class="mt-4 mb-4">
           Blog: 
           <router-link :to="{name: 'blogWithId', params: {id: blogLink.id}}"
@@ -26,6 +27,7 @@
         <p v-if="vipSupporter.fetched && vipSupporter.payload" class="mt-4 mb-4">
           VIP supporter: {{vipSupporter.payload.patreonDisplayName}} - thank you ❤️
         </p>
+        <div v-if="!vipSupporter.fetched" style="height: 32px; width: 100px;"/>
       </span>
 
       <div class="dyingAndPaidImgContainer">
