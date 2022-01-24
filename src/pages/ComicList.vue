@@ -25,7 +25,7 @@
         </p>
 
         <p v-if="vipSupporter.fetched && vipSupporter.payload" class="mt-4 mb-4">
-          VIP supporter: {{vipSupporter.payload.patreonDisplayName}} - thank you ❤️
+          VIP patron: {{vipSupporter.payload.patreonDisplayName}} ❤️
         </p>
         <div v-if="!vipSupporter.fetched" style="height: 32px; width: 100px;"/>
       </span>
