@@ -5,10 +5,6 @@
 
     <div class="full-width-text">
       <p>
-        Yiffer.xyz would not be what it is without our wonderful mods. Being a mod is voluntary work - in addition to getting the feeling of helping our comic-loving community, a reward is the ability to <u>download any comic</u> at the click of a button. It's the least we could do.
-      </p>
-
-      <p>
         If we feel satisfied with the amount of mods we currently have, you may be put on a waiting list. While it might be the case that more is better, we believe it wise to keep the number from being too high.
       </p>
 

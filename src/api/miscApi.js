@@ -4,11 +4,11 @@ let baseUrl = config.apiBaseUrl
 
 export default {
   async logRoute (route, description) {
-    try {
-      axios.post(baseUrl + '/log-route', {route, description})
-    }
-    // eslint-disable-next-line no-empty
-    catch (err) {}
+    // try {
+    //   axios.post(baseUrl + '/log-route', {route, description})
+    // }
+    // // eslint-disable-next-line no-empty
+    // catch (err) {}
   },
 
   async logEvent (event, description) {
