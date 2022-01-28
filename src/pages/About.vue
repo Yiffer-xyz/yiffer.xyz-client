@@ -35,7 +35,7 @@
 
       <h3>Terms of Use</h3>
       <p>
-        By using this site, you represent and warrant that: (1) you have the legal capacity and you agree to comply with these Terms of Use; (2) you are above 18 years of age; (3) you will not access the site through automated or non-human means unless granted permission to do so; (4) you will not use the site for any illegal or unauthorized purpose; (5) your use of the sute will not violate any applicable law or regulation.
+        By using this site, you represent and warrant that: (1) you have the legal capacity and you agree to comply with these Terms of Use; (2) you are above 18 years of age; (3) you will not access the site through automated or non-human means unless granted permission to do so; (4) you will not use the site for any illegal or unauthorized purpose; (5) your use of the site will not violate any applicable law or regulation.
       </p>
       <br>
       <p>
