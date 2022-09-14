@@ -349,6 +349,12 @@ nav {
       color: $themeBlueDTText;
     }
   }
+  .consentContent {
+    background-color: $themeDark3;
+    p {
+      color: #fff;
+    }
+  }
 }
 
 .main {
@@ -381,7 +387,7 @@ nav {
     border-style: solid;
     border-width: 0;
     border-top-width: 10px;
-    border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1; 
+    border-image: linear-gradient(to right, $themeGreen1, $themeGreen2) 1;
   }
 
   p {
