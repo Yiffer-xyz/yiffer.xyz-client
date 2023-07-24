@@ -3,103 +3,124 @@
     <nav>
       <div class="navInner">
         <div class="navLeft">
-          <span class="smallYifferTitle"
-                style="padding: 0 1rem 0 0.5rem;">
-            <router-link 
+          <span class="smallYifferTitle" style="padding: 0 1rem 0 0.5rem">
+            <router-link
               :to="{ name: 'comicList' }"
-              :class="{'coloredSmallYifferTitle': isDarkTheme && this.$route.path !== '/'}"
-              class="shrikhand smallYifferTitleLink">
-              {{$breakpoint.xs ? 'Y' : 'Yiffer.xyz'}}
+              :class="{
+                coloredSmallYifferTitle:
+                  isDarkTheme && this.$route.path !== '/',
+              }"
+              class="shrikhand smallYifferTitleLink"
+            >
+              {{ $breakpoint.xs ? "Y" : "Yiffer.xyz" }}
             </router-link>
           </span>
 
-          <router-link 
+          <router-link
             v-if="$store.getters.isAuthenticated"
             class="navlink"
-            :to="{ name: 'account' }">
+            :to="{ name: 'account' }"
+          >
             Account
           </router-link>
 
-          <a href="https://mod.yiffer.xyz"
-             v-if="$store.getters.isAuthenticated && ($store.getters.userData.userType === 'moderator' || $store.getters.userData.userType === 'admin')"
-             class="navlink">
+          <a
+            href="https://mod.yiffer.xyz"
+            v-if="
+              $store.getters.isAuthenticated &&
+              ($store.getters.userData.userType === 'moderator' ||
+                $store.getters.userData.userType === 'admin')
+            "
+            class="navlink"
+          >
             Admin
           </a>
 
           <span
-            v-show="!$store.getters.isAuthenticated" 
+            v-show="!$store.getters.isAuthenticated"
             class="navlink"
-            @click="showLoginModal()">
+            @click="showLoginModal()"
+          >
             Log in
           </span>
 
           <span
-            v-show="!$store.getters.isAuthenticated" 
+            v-show="!$store.getters.isAuthenticated"
             class="navlink"
-            @click="showSignupModal()">
+            @click="showSignupModal()"
+          >
             Sign up
           </span>
 
-          <span 
-            v-show="$store.getters.isAuthenticated" 
+          <span
+            v-show="$store.getters.isAuthenticated"
             class="navlink"
-            @click="logout()">
+            @click="logout()"
+          >
             Log out
           </span>
         </div>
 
         <div class="navRight">
-          <span @click="setTheme('light')"
-                v-if="$breakpoint.xs"
-                class="navlink">
-            <LightIcon/>
+          <span
+            @click="setTheme('light')"
+            v-if="$breakpoint.xs"
+            class="navlink"
+          >
+            <LightIcon />
           </span>
-          <span @click="setTheme('light')"
-                v-else
-                class="navlink">
-            Light
-          </span>
+          <span @click="setTheme('light')" v-else class="navlink"> Light </span>
 
-          <span @click="setTheme('dark')"
-                v-if="$breakpoint.xs"
-                class="navlink">
-            <DarkIcon/>
+          <span @click="setTheme('dark')" v-if="$breakpoint.xs" class="navlink">
+            <DarkIcon />
           </span>
-          <span @click="setTheme('dark')"
-                v-else
-                class="navlink">
-            Dark
-          </span>
+          <span @click="setTheme('dark')" v-else class="navlink"> Dark </span>
         </div>
       </div>
     </nav>
 
-    <login-modal v-show="$store.getters.getLoginModalVisibility()"></login-modal>
+    <login-modal
+      v-show="$store.getters.getLoginModalVisibility()"
+    ></login-modal>
     <voting-modal v-show="$store.state.votingModalVisibility"></voting-modal>
 
     <div v-if="!hasConsented && !isBot" class="consentOverlay">
       <div class="consentContent">
-        <p>Yiffer.xyz contains adult content not suited for those under 18 years of age.</p>
-        <p>We also use cookies to enhance your user experience (in a nice way).</p>
+        <p>
+          Yiffer.xyz contains adult content not suited for those under 18 years
+          of age.
+        </p>
+        <p>
+          We also use cookies to enhance your user experience (in a nice way).
+        </p>
 
-        <button @click="setConsent" class="y-button-big marginAuto mt-16 consentButton">
+        <button
+          @click="setConsent"
+          class="y-button-big marginAuto mt-16 consentButton"
+        >
           I am 18+ and I consent to the use of cookies
         </button>
       </div>
     </div>
 
     <main class="main">
-      <router-view/>
+      <router-view />
     </main>
 
-    <footer class="footer" style="display: flex; flex-direction: column;"> 
+    <footer class="footer" style="display: flex; flex-direction: column">
       <p>
-        <router-link to="/about" class="underline-link">About / Privacy Policy / Terms of Use</router-link>
+        <router-link to="/about" class="underline-link"
+          >About / Privacy Policy / Terms of Use</router-link
+        >
       </p>
-      <p style="display: flex;">
+      <p style="display: flex">
         Made by
-        <a href="https://twitter.com/LewdMalann" target="_blank" class="underline-link ml-4">
-          <TwitterIcon/>Malann
+        <a
+          href="https://twitter.com/Melon_mow"
+          target="_blank"
+          class="underline-link ml-4"
+        >
+          <TwitterIcon />Melon
         </a>
       </p>
     </footer>
@@ -107,99 +128,114 @@
 </template>
 
 <script>
-import LoginModal from '@/components/login-modal/LoginModal.vue'
-import VotingModal from '@/components/VotingModal.vue'
-import TwitterIcon from 'vue-material-design-icons/Twitter.vue'
-import DarkIcon from 'vue-material-design-icons/LightbulbOutline.vue'
-import LightIcon from 'vue-material-design-icons/Lightbulb.vue'
+import LoginModal from "@/components/login-modal/LoginModal.vue";
+import VotingModal from "@/components/VotingModal.vue";
+import TwitterIcon from "vue-material-design-icons/Twitter.vue";
+import DarkIcon from "vue-material-design-icons/LightbulbOutline.vue";
+import LightIcon from "vue-material-design-icons/Lightbulb.vue";
 
-import config from '@/config.json'
-let cookieConfig = config.cookieConfig
+import config from "@/config.json";
+let cookieConfig = config.cookieConfig;
 
-import miscApi from './api/miscApi'
-import { isBot } from './utils/prerenderTools.js'
-import { mapGetters } from 'vuex'
+import miscApi from "./api/miscApi";
+import { isBot } from "./utils/prerenderTools.js";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    'login-modal': LoginModal,
-    'voting-modal': VotingModal,
-    TwitterIcon, DarkIcon, LightIcon,
+    "login-modal": LoginModal,
+    "voting-modal": VotingModal,
+    TwitterIcon,
+    DarkIcon,
+    LightIcon,
   },
 
   metaInfo() {
     return {
       meta: [
-        {name: 'theme-color', content: '#a4f5e4'},
-        {name: 'twitter:card', content: 'summary'},
-        {vmid: 'twitterTitle', name: 'twitter:title', content: 'Yiffer.xyz'},
-        {vmid: 'twitterDesc', name: 'twitter:description', content: "The internet's best collection of high quality furry  comics, easily readable and free!"},
+        { name: "theme-color", content: "#a4f5e4" },
+        { name: "twitter:card", content: "summary" },
+        { vmid: "twitterTitle", name: "twitter:title", content: "Yiffer.xyz" },
+        {
+          vmid: "twitterDesc",
+          name: "twitter:description",
+          content:
+            "The internet's best collection of high quality furry  comics, easily readable and free!",
+        },
         // image must be an absolute path
-        {name: 'twitter:image', content: 'https://yiffer.xyz/preload-icon.jpg'},
-        
-        {vmid: 'ogTitle', property: 'og:title', content: 'Yiffer.xyz'},
-        {property: 'og:site_name', content: 'Yiffer.xyz'},
-        {property: 'og:type', content: 'website'},
-        {property: 'og:image', content: 'https://yiffer.xyz/preload-icon.jpg'},
-        {vmid: 'ogDesc', property: 'og:description', content: "The internet's best collection of high quality furry  comics, easily readable and free!"}
-      ]
-    }
+        {
+          name: "twitter:image",
+          content: "https://yiffer.xyz/preload-icon.jpg",
+        },
+
+        { vmid: "ogTitle", property: "og:title", content: "Yiffer.xyz" },
+        { property: "og:site_name", content: "Yiffer.xyz" },
+        { property: "og:type", content: "website" },
+        {
+          property: "og:image",
+          content: "https://yiffer.xyz/preload-icon.jpg",
+        },
+        {
+          vmid: "ogDesc",
+          property: "og:description",
+          content:
+            "The internet's best collection of high quality furry  comics, easily readable and free!",
+        },
+      ],
+    };
   },
 
   methods: {
     setTheme(themeColor, avoidLog) {
-      document.body.classList.remove('dark')
-      document.body.classList.remove('redblue')
-      document.body.classList.remove('pink')
-      if ( themeColor === 'dark' ) {
-        document.body.classList.add('dark')
-        this.$store.commit('setDarkTheme', true)
-        this.$cookies.set('theme', 'dark')
-      }
-      else if ( themeColor === 'redblue') {
-        document.body.classList.add('redblue')
-        this.$store.commit('setDarkTheme', false)
-        this.$cookies.set('theme', 'light')
-      }
-      else if ( themeColor === 'pink') {
-        document.body.classList.add('pink')
-        this.$store.commit('setDarkTheme', false)
-        this.$cookies.set('theme', 'light')
-      }
-      else {
-        this.$store.commit('setDarkTheme', false)
-        this.$cookies.set('theme', 'light')
+      document.body.classList.remove("dark");
+      document.body.classList.remove("redblue");
+      document.body.classList.remove("pink");
+      if (themeColor === "dark") {
+        document.body.classList.add("dark");
+        this.$store.commit("setDarkTheme", true);
+        this.$cookies.set("theme", "dark");
+      } else if (themeColor === "redblue") {
+        document.body.classList.add("redblue");
+        this.$store.commit("setDarkTheme", false);
+        this.$cookies.set("theme", "light");
+      } else if (themeColor === "pink") {
+        document.body.classList.add("pink");
+        this.$store.commit("setDarkTheme", false);
+        this.$cookies.set("theme", "light");
+      } else {
+        this.$store.commit("setDarkTheme", false);
+        this.$cookies.set("theme", "light");
       }
 
       if (!avoidLog) {
-        miscApi.logEvent('theme', themeColor)
+        miscApi.logEvent("theme", themeColor);
       }
     },
 
-    setConsent () {
-      this.hasConsented = true
-      this.$cookies.set('hasConsented', '1')
+    setConsent() {
+      this.hasConsented = true;
+      this.$cookies.set("hasConsented", "1");
     },
 
-    showLoginModal () {
-      this.$store.commit('setLoginModalVisibility', true)
+    showLoginModal() {
+      this.$store.commit("setLoginModalVisibility", true);
     },
 
-    showSignupModal () {
-      this.$store.commit('setLoginModalContext', 'register')
-      this.showLoginModal()
+    showSignupModal() {
+      this.$store.commit("setLoginModalContext", "register");
+      this.showLoginModal();
     },
 
-    logout () {
-      this.$store.dispatch('logout')
+    logout() {
+      this.$store.dispatch("logout");
       if (this.$route.meta.redirectOnLogout) {
-        this.$router.replace('/')
+        this.$router.replace("/");
       }
-    }
+    },
   },
 
   computed: {
-    ...mapGetters(['isDarkTheme']),
+    ...mapGetters(["isDarkTheme"]),
   },
 
   data: function () {
@@ -208,25 +244,24 @@ export default {
       hasConsented: true,
       hasCheckedBot: false,
       isBot: isBot(),
-    }
+    };
   },
 
   created: function () {
-    this.$cookies.config(...cookieConfig)
-    this.$store.dispatch('checkAndSetLoginStatus')
-    this.$store.dispatch('fetchKeywordList')
-    if (this.$cookies.get('theme') && this.$cookies.get('theme')==='dark') {
-      this.setTheme('dark', true)
-    }
-    else {
-      this.setTheme('light', true)
+    this.$cookies.config(...cookieConfig);
+    this.$store.dispatch("checkAndSetLoginStatus");
+    this.$store.dispatch("fetchKeywordList");
+    if (this.$cookies.get("theme") && this.$cookies.get("theme") === "dark") {
+      this.setTheme("dark", true);
+    } else {
+      this.setTheme("light", true);
     }
 
-    if (!this.$cookies.get('hasConsented')) {
-      this.hasConsented = false
+    if (!this.$cookies.get("hasConsented")) {
+      this.hasConsented = false;
     }
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -263,7 +298,8 @@ nav {
   }
 }
 
-.navLeft, .navRight {
+.navLeft,
+.navRight {
   padding: 0.5rem 4rem;
   @media screen and (max-width: 1000px) {
     padding: 0.5rem 0rem;
@@ -315,7 +351,8 @@ nav {
   margin-top: 2rem;
   position: absolute;
   bottom: 0;
-  p, a {
+  p,
+  a {
     font-size: 0.85rem !important;
     font-weight: 600;
     color: $themeDark1;
@@ -329,7 +366,8 @@ nav {
   nav {
     background: transparent;
     box-shadow: none;
-    a, span {
+    a,
+    span {
       color: $themeBlueDTText;
       &:hover {
         color: $themeBlueDTText;
@@ -340,7 +378,7 @@ nav {
     border-style: solid;
     border-width: 0;
     border-top-width: 4px;
-    border-image: linear-gradient(to left, $themeGreen1, $themeGreen2) 1; 
+    border-image: linear-gradient(to left, $themeGreen1, $themeGreen2) 1;
     background: $themeDark4;
     p {
       color: white;
@@ -378,7 +416,7 @@ nav {
   z-index: 1000;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(8px);
 
   .consentContent {

@@ -1,11 +1,16 @@
 <template>
   <div style="width: 100%">
     <div class="upperBodyDiv">
-      <span :class="{'coloredYifferTitle': isDarkTheme, 'yifferTitle': !isDarkTheme}" >
+      <span
+        :class="{ coloredYifferTitle: isDarkTheme, yifferTitle: !isDarkTheme }"
+      >
         Yiffer.xyz
       </span>
 
-      <div class="subtitleContainer" style="display: flex; flex-direction: column;">
+      <div
+        class="subtitleContainer"
+        style="display: flex; flex-direction: column"
+      >
         <p v-if="$breakpoint.smAndUp || $breakpoint.xl">
           The internet's best collection of quality furry comics,
         </p>
@@ -14,165 +19,234 @@
         </p>
       </div>
 
-      <span v-if="blogLink || (vipSupporter.fetched && vipSupporter.payload) || !vipSupporter.fetched"
-            class="mt-12 blogSupportContainer">
+      <span
+        v-if="
+          blogLink ||
+          (vipSupporter.fetched && vipSupporter.payload) ||
+          !vipSupporter.fetched
+        "
+        class="mt-12 blogSupportContainer"
+      >
         <p v-if="blogLink" class="mt-4 mb-4">
-          Blog: 
-          <router-link :to="{name: 'blogWithId', params: {id: blogLink.id}}"
-                            class="underline-link">
-            {{blogLink.title}}
+          Blog:
+          <router-link
+            :to="{ name: 'blogWithId', params: { id: blogLink.id } }"
+            class="underline-link"
+          >
+            {{ blogLink.title }}
           </router-link>
         </p>
 
-        <p v-if="vipSupporter.fetched && vipSupporter.payload" class="mt-4 mb-4">
-          VIP patron: {{vipSupporter.payload.patreonDisplayName}} ❤️
+        <p
+          v-if="vipSupporter.fetched && vipSupporter.payload"
+          class="mt-4 mb-4"
+        >
+          VIP patron: {{ vipSupporter.payload.patreonDisplayName }} ❤️
         </p>
-        <div v-if="!vipSupporter.fetched" style="height: 32px; width: 100px;"/>
+        <div v-if="!vipSupporter.fetched" style="height: 32px; width: 100px" />
       </span>
 
       <div class="dyingAndPaidImgContainer">
         <div class="dyingBox">
           <p>
-            We are struggling economically. Please 
-            <router-link :to="{name: 'support'}" class="underline-link">
-              read more &amp; support us on Patreon <RightArrow title=""/>
+            We are struggling economically. Please
+            <router-link :to="{ name: 'support' }" class="underline-link">
+              read more &amp; support us on Patreon <RightArrow title="" />
             </router-link>
           </p>
         </div>
 
-        <a :href="topSmallAd.link"
-           target="_blank"
-           v-if="topSmallAd"
-           rel="noopener"
-           @click="() => savePaidImageClick(topSmallAd.id)">
-          <picture v-if="topSmallAd.filetype === 'webp' || topSmallAd.filetype === 'jpg'"
-                   alt="Creative link">
-            <source :srcset="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webp`"
-                    type="image/webp">
-            <img :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.jpg`"
-                  style="border-radius: 4px" width="300" height="90"
-                  border="0">
+        <a
+          :href="topSmallAd.link"
+          target="_blank"
+          v-if="topSmallAd"
+          rel="noopener"
+          @click="() => savePaidImageClick(topSmallAd.id)"
+        >
+          <picture
+            v-if="
+              topSmallAd.filetype === 'webp' || topSmallAd.filetype === 'jpg'
+            "
+            alt="Creative link"
+          >
+            <source
+              :srcset="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webp`"
+              type="image/webp"
+            />
+            <img
+              :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.jpg`"
+              style="border-radius: 4px"
+              width="300"
+              height="90"
+              border="0"
+            />
           </picture>
 
-          <video v-else-if="topSmallAd.filetype === 'webm'" autoplay muted loop playsinline webkit-playsinline
-                 style="border-radius: 4px;" height="90" width="300">
-            <source :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webm`"
-                    type="video/webm">
-            <source :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.mp4`"
-                    type="video/mp4">
+          <video
+            v-else-if="topSmallAd.filetype === 'webm'"
+            autoplay
+            muted
+            loop
+            playsinline
+            webkit-playsinline
+            style="border-radius: 4px"
+            height="90"
+            width="300"
+          >
+            <source
+              :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.webm`"
+              type="video/webm"
+            />
+            <source
+              :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.mp4`"
+              type="video/mp4"
+            />
           </video>
 
-          <img v-else
-               :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.${topSmallAd.filetype}`"
-               style="border-radius: 4px" width="300" height="90"
-               border="0">
+          <img
+            v-else
+            :src="`${config.paidImagesBaseUrl}/${topSmallAd.id}.${topSmallAd.filetype}`"
+            style="border-radius: 4px"
+            width="300"
+            height="90"
+            border="0"
+          />
         </a>
 
-        <div v-else-if="!paidImages.fetched" style="width: 300px; height: 90px;">
-        </div>
+        <div
+          v-else-if="!paidImages.fetched"
+          style="width: 300px; height: 90px"
+        ></div>
       </div>
 
-
       <div class="top-links">
-        <router-link :to="{name: 'joinUs'}"
-                     v-if="$breakpoint.smAndDown"
-                     class="underline-link mr-24"
-                     style="font-weight: 300; margin-bottom: -1px;">
-          <ModIcon title=""/> Become a mod
-        </router-link>
-        
-        <div v-if="$breakpoint.smAndDown"
-             @mouseleave="onDropdownMouseLeave"
-             @mouseenter="onDropdownMouseEnter"
-             class="moreDropdownContainer">
-          <p class="link-color cursorPointer" style="font-weight: 300;">
-            More <MenuDownIcon/>
+        <a
+          href="https://pi.yiffer.xyz"
+          v-if="$breakpoint.smAndDown"
+          class="underline-link mr-24"
+          style="font-weight: 300; margin-bottom: -1px"
+        >
+          <ExclamationIcon title="" /> Advertise
+        </a>
+
+        <div
+          v-if="$breakpoint.smAndDown"
+          @mouseleave="onDropdownMouseLeave"
+          @mouseenter="onDropdownMouseEnter"
+          class="moreDropdownContainer"
+        >
+          <p class="link-color cursorPointer" style="font-weight: 300">
+            More <MenuDownIcon />
           </p>
 
-          <div class="linkDropdown simpleShadowNoHover"
-               v-show="isDropdownVisible"
-               id="linkDropdown">
+          <div
+            class="linkDropdown simpleShadowNoHover"
+            v-show="isDropdownVisible"
+            id="linkDropdown"
+          >
+            <!-- <router-link :to="{ name: 'joinUs' }" class="underline-link">
+              <ModIcon title="" /> Become a mod
+            </router-link> -->
 
-            <a href="https://pi.yiffer.xyz" class="underline-link">
-              <ExclamationIcon title=""/> Advertise
-            </a>
-
-            <router-link :to="{name: 'suggestComic'}" class="underline-link ">
-              <plus-icon title=""/> Suggest comic
-            </router-link> 
-
-            <router-link :to="{name: 'feedback'}" class="underline-link">
-              <FeedbackIcon title=""/> Feedback
+            <router-link :to="{ name: 'suggestComic' }" class="underline-link">
+              <plus-icon title="" /> Suggest comic
             </router-link>
 
-            <a href="https://theporndude.com" class="underline-link">
-              <WebsiteIcon title=""/> ThePornDude
-            </a>
+            <router-link :to="{ name: 'feedback' }" class="underline-link">
+              <FeedbackIcon title="" /> Feedback
+            </router-link>
           </div>
         </div>
 
         <span v-else class="allTopLinksContainer">
-          <router-link :to="{name: 'joinUs'}" class="underline-link" id="link4">
+          <!-- <router-link :to="{name: 'joinUs'}" class="underline-link" id="link4">
             <ModIcon title=""/> Become a mod
-          </router-link>
+          </router-link> -->
 
-          <a href="https://pi.yiffer.xyz" class="underline-link" id="link1" style="width: 9rem;">
-            <ExclamationIcon title=""/> Advertise
+          <a
+            href="https://pi.yiffer.xyz"
+            class="underline-link"
+            id="link1"
+            style="width: 9rem"
+          >
+            <ExclamationIcon title="" /> Advertise
           </a>
 
-          <router-link :to="{name: 'suggestComic'}" class="underline-link" id="link2">
-            <plus-icon title=""/> Suggest comic
+          <router-link
+            :to="{ name: 'suggestComic' }"
+            class="underline-link"
+            id="link2"
+          >
+            <plus-icon title="" /> Suggest comic
           </router-link>
 
-          <router-link :to="{name: 'feedback'}" class="underline-link" id="link3">
-            <FeedbackIcon title=""/> Feedback
+          <router-link
+            :to="{ name: 'feedback' }"
+            class="underline-link"
+            id="link3"
+          >
+            <FeedbackIcon title="" /> Feedback
           </router-link>
-
-          <a href="https://theporndude.com" class="underline-link" id="link4">
-            <WebsiteIcon title=""/> ThePornDude
-          </a>
         </span>
       </div>
     </div>
 
-    <SearchFiltering @categoryFilter="onCategoryFilterClick"
-                     @tagFilter="onTagFilterClick"
-                     @setSort="onSortingButtonClick"
-                     @searchChanged="onSearchChanged"
-                     @addKeyword="addSelectedKeyword"
-                     @removeKeyword="removeSelectedKeyword"
-                     @setDetailLevel="setDetailLevel"
-                     @toggleShowSearchFiltering="toggleShowSearchFiltering"
-                     @resetAllFilters="resetAllFilters"
-                     :isSearchFilteringActive="isSearchFilteringActive"/>
+    <SearchFiltering
+      @categoryFilter="onCategoryFilterClick"
+      @tagFilter="onTagFilterClick"
+      @setSort="onSortingButtonClick"
+      @searchChanged="onSearchChanged"
+      @addKeyword="addSelectedKeyword"
+      @removeKeyword="removeSelectedKeyword"
+      @setDetailLevel="setDetailLevel"
+      @toggleShowSearchFiltering="toggleShowSearchFiltering"
+      @resetAllFilters="resetAllFilters"
+      :isSearchFilteringActive="isSearchFilteringActive"
+    />
 
-    <Pagination v-if="!isErrorLoadingComics && (!hasFetchedComics || comicList.length > 0)"
-                :isLoading="!hasFetchedComics"
-                :shouldHide="isErrorLoadingComics"
-                :showWhileLoading="showPaginationWhileLoading"
-                :onPaginate="paginate"/>
+    <Pagination
+      v-if="
+        !isErrorLoadingComics && (!hasFetchedComics || comicList.length > 0)
+      "
+      :isLoading="!hasFetchedComics"
+      :shouldHide="isErrorLoadingComics"
+      :showWhileLoading="showPaginationWhileLoading"
+      :onPaginate="paginate"
+    />
 
     <p v-if="isErrorLoadingComics" class="comicListMessage">
       There was an error fetching comics.
     </p>
 
-    <SkeletonTheme v-if="isLoadingComics"
-                   :color="isDarkTheme ? '#383f45' : 'rgba(238,238,238,0.75)'"
-                   :highlight="isDarkTheme ? '#5f6163' : '#fbfbfb'"
-                   class="comic-card-container">
-      <div :class="['comicCardSkeleton', isAuthenticated ? 'loggedInSkeleton' : '']" v-for="i in 80" :key="i">
-        <Skeleton width="100%" height="100%"/>
+    <SkeletonTheme
+      v-if="isLoadingComics"
+      :color="isDarkTheme ? '#383f45' : 'rgba(238,238,238,0.75)'"
+      :highlight="isDarkTheme ? '#5f6163' : '#fbfbfb'"
+      class="comic-card-container"
+    >
+      <div
+        :class="[
+          'comicCardSkeleton',
+          isAuthenticated ? 'loggedInSkeleton' : '',
+        ]"
+        v-for="i in 80"
+        :key="i"
+      >
+        <Skeleton width="100%" height="100%" />
       </div>
     </SkeletonTheme>
 
-
-    <div v-else-if="comicList.length > 0"
-         class="comic-card-container"
-         id="comicCardContainerList">
-      <comic-card v-for="comic in comicList"
-                  :key="comic.indexId"
-                  :comic="comic"
-                  @image-load="onImageLoad">
+    <div
+      v-else-if="comicList.length > 0"
+      class="comic-card-container"
+      id="comicCardContainerList"
+    >
+      <comic-card
+        v-for="comic in comicList"
+        :key="comic.indexId"
+        :comic="comic"
+        @image-load="onImageLoad"
+      >
       </comic-card>
     </div>
 
@@ -180,62 +254,66 @@
       There are no comics matching your search.
     </p>
 
-    <button v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
-            class="y-button"
-            style="margin: 1rem auto;"
-            @click="scrollToTop()">
-      <up-arrow/> to top
+    <button
+      v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
+      class="y-button"
+      style="margin: 1rem auto"
+      @click="scrollToTop()"
+    >
+      <up-arrow /> to top
     </button>
 
-
-    <Pagination v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
-                :isLoading="!hasFetchedComics"
-                :shouldHide="isErrorLoadingComics"
-                :showWhileLoading="showPaginationWhileLoading"
-                :onPaginate="paginate"
-                scrollToTop/>
+    <Pagination
+      v-if="hasFetchedComics && !isErrorLoadingComics && comicList.length > 0"
+      :isLoading="!hasFetchedComics"
+      :shouldHide="isErrorLoadingComics"
+      :showWhileLoading="showPaginationWhileLoading"
+      :onPaginate="paginate"
+      scrollToTop
+    />
   </div>
 </template>
 
 <script>
-import ComicCard from '@/components/ComicCard.vue'
-import config from '@/config.json'
-import PlusIcon from 'vue-material-design-icons/Plus.vue'
-import UpArrow from 'vue-material-design-icons/ArrowUp.vue'
-import ExclamationIcon from 'vue-material-design-icons/Bullhorn.vue'
-import MenuDownIcon from 'vue-material-design-icons/MenuDown.vue'
-import FeedbackIcon from 'vue-material-design-icons/CommentText.vue'
-import RightArrow from 'vue-material-design-icons/ArrowRight.vue'
+import ComicCard from "@/components/ComicCard.vue";
+import config from "@/config.json";
+import PlusIcon from "vue-material-design-icons/Plus.vue";
+import UpArrow from "vue-material-design-icons/ArrowUp.vue";
+import ExclamationIcon from "vue-material-design-icons/Bullhorn.vue";
+import MenuDownIcon from "vue-material-design-icons/MenuDown.vue";
+import FeedbackIcon from "vue-material-design-icons/CommentText.vue";
+import RightArrow from "vue-material-design-icons/ArrowRight.vue";
 
-import SearchFiltering from './comic-list/SearchFiltering.vue'
-import Pagination from './comic-list/Pagination.vue'
+import SearchFiltering from "./comic-list/SearchFiltering.vue";
+import Pagination from "./comic-list/Pagination.vue";
 
-import ModIcon from 'vue-material-design-icons/AccountStar.vue'
-import WebsiteIcon from 'vue-material-design-icons/Web.vue'
+import ModIcon from "vue-material-design-icons/AccountStar.vue";
+import WebsiteIcon from "vue-material-design-icons/Web.vue";
 
-import keywordApi from '../api/keywordApi'
-import miscApi from '../api/miscApi'
-import blogApi from '../api/blogApi'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { Skeleton, SkeletonTheme } from 'vue-loading-skeleton'
-import { doFetch } from '@/utils/statefulFetch'
-import patreonApi from '@/api/patreonApi'
-import paidImageApi from '../api/advertisingApi'
+import keywordApi from "../api/keywordApi";
+import miscApi from "../api/miscApi";
+import blogApi from "../api/blogApi";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import { Skeleton, SkeletonTheme } from "vue-loading-skeleton";
+import { doFetch } from "@/utils/statefulFetch";
+import patreonApi from "@/api/patreonApi";
+import paidImageApi from "../api/advertisingApi";
 
 export default {
-  name: 'comic-list',
+  name: "comic-list",
 
   components: {
-    'comic-card': ComicCard,
-    'plus-icon': PlusIcon,
-    'up-arrow': UpArrow,
+    "comic-card": ComicCard,
+    "plus-icon": PlusIcon,
+    "up-arrow": UpArrow,
     ExclamationIcon,
     MenuDownIcon,
     ModIcon,
     WebsiteIcon,
     FeedbackIcon,
     RightArrow,
-    Skeleton, SkeletonTheme,
+    Skeleton,
+    SkeletonTheme,
     SearchFiltering,
     Pagination,
   },
@@ -246,10 +324,10 @@ export default {
     return {
       config: config,
       displayedComics: this.$store.getters.displayedComics,
-      keywordSearch: '',
+      keywordSearch: "",
       keywordSearchFocused: false,
       keywordResultHovered: undefined,
-      searchFiltering222: this.$store.getters.searchFiltering || '',
+      searchFiltering222: this.$store.getters.searchFiltering || "",
       suppressQueryUpdates: false,
       avoidLog: true,
       blogLink: undefined,
@@ -263,469 +341,531 @@ export default {
       isDropdownVisible: false,
       hideDropdownTimeout: null,
       topSmallAd: null,
-    }
+    };
   },
 
   computed: {
     ...mapGetters([
-      'isDarkTheme',
-      'paginatedComics',
-      'paidImages',
-      'comicList',
-      'searchFiltering',
-      'pageNumber',
-      'tagFilter',
-      'categoryFilter',
-      'sorting',
-      'selectedKeywords',
-      'hasFetchedComicListOnce',
-      'orderedKeywordList',
-      'isFilterSectionExpanded',
-      'wasKwSelectedFromList',
-      'allKeywords',
-      'isAuthenticated',
-      'detailLevel',
-      'vipSupporter',
-      'paidImagesTopSmall',
+      "isDarkTheme",
+      "paginatedComics",
+      "paidImages",
+      "comicList",
+      "searchFiltering",
+      "pageNumber",
+      "tagFilter",
+      "categoryFilter",
+      "sorting",
+      "selectedKeywords",
+      "hasFetchedComicListOnce",
+      "orderedKeywordList",
+      "isFilterSectionExpanded",
+      "wasKwSelectedFromList",
+      "allKeywords",
+      "isAuthenticated",
+      "detailLevel",
+      "vipSupporter",
+      "paidImagesTopSmall",
     ]),
 
-    availableSortOptions () {
+    availableSortOptions() {
       if (this.isAuthenticated) {
         return [
-          {id: 'updated', text: 'Recently updated'},
-          {id: 'userRating', text: 'User rating'},
-          {id: 'yourRating', text: 'Your rating'},
-        ]
+          { id: "updated", text: "Recently updated" },
+          { id: "userRating", text: "User rating" },
+          { id: "yourRating", text: "Your rating" },
+        ];
       }
       return [
-        {id: 'updated', text: 'Recently updated'},
-        {id: 'userRating', text: 'User rating'},
-      ]
+        { id: "updated", text: "Recently updated" },
+        { id: "userRating", text: "User rating" },
+      ];
     },
 
-    isLoadingComics () {
-      return !this.paidImages.failed && !this.paginatedComics.failed && 
-        (this.paidImages.fetching || !this.paidImages.fetched
-        || this.paginatedComics.fetching || !this.paginatedComics.fetched)
+    isLoadingComics() {
+      return (
+        !this.paidImages.failed &&
+        !this.paginatedComics.failed &&
+        (this.paidImages.fetching ||
+          !this.paidImages.fetched ||
+          this.paginatedComics.fetching ||
+          !this.paginatedComics.fetched)
+      );
     },
 
-    isSearchFilteringActive () {
-      if (!this.categoryFilter.includes('All')) { return true }
-      if (!this.tagFilter.includes('All')) { return true }
-      if (this.searchFiltering) { return true }
-      if (this.sorting !== 'updated') { return true }
-      if (this.selectedKeywords.length > 0) { return true }
+    isSearchFilteringActive() {
+      if (!this.categoryFilter.includes("All")) {
+        return true;
+      }
+      if (!this.tagFilter.includes("All")) {
+        return true;
+      }
+      if (this.searchFiltering) {
+        return true;
+      }
+      if (this.sorting !== "updated") {
+        return true;
+      }
+      if (this.selectedKeywords.length > 0) {
+        return true;
+      }
       return false;
     },
 
-    isErrorLoadingComics () {
-      return this.paginatedComics.failed || this.paidImages.failed
+    isErrorLoadingComics() {
+      return this.paginatedComics.failed || this.paidImages.failed;
     },
 
-    hasFetchedComics () {
-      return this.paginatedComics.fetched && this.paidImages.fetched
+    hasFetchedComics() {
+      return this.paginatedComics.fetched && this.paidImages.fetched;
     },
 
-    keywordsMatchingSearch () {
-      return this.orderedKeywordList.filter(keyword => keyword.name.startsWith(this.keywordSearch))
+    keywordsMatchingSearch() {
+      return this.orderedKeywordList.filter((keyword) =>
+        keyword.name.startsWith(this.keywordSearch)
+      );
     },
   },
 
   watch: {
     selectedKeywords: function (newKws, oldKws) {
-      let wasKwRemoved = newKws.length < oldKws.length
-      this.onKeywordsChange(wasKwRemoved)
+      let wasKwRemoved = newKws.length < oldKws.length;
+      this.onKeywordsChange(wasKwRemoved);
     },
 
     searchFiltering222: function () {
-      this.showPaginationWhileLoading = false
+      this.showPaginationWhileLoading = false;
 
       if (!this.hasFetchedComicListOnce) {
-        return
+        return;
       }
       if (this.searchFilteringHook) {
-        clearTimeout(this.searchFilteringHook)
+        clearTimeout(this.searchFilteringHook);
       }
-      if (this.searchFiltering222 === '') {
-        this.setSearchFiltering('')
-        this.setRouterQuery()
-        this.fetchComics()
-      }
-      else {
+      if (this.searchFiltering222 === "") {
+        this.setSearchFiltering("");
+        this.setRouterQuery();
+        this.fetchComics();
+      } else {
         this.searchFilteringHook = setTimeout(() => {
-          this.setSearchFiltering(this.searchFiltering222)
-          this.setRouterQuery()
-          this.fetchComics()
-        }, 1000)
+          this.setSearchFiltering(this.searchFiltering222);
+          this.setRouterQuery();
+          this.fetchComics();
+        }, 1000);
       }
     },
   },
 
-  async mounted () {
-    if (this.$cookies.get('detail')) { this.setDetailLevel(this.$cookies.get('detail')) }
+  async mounted() {
+    if (this.$cookies.get("detail")) {
+      this.setDetailLevel(this.$cookies.get("detail"));
+    }
     if (this.$route.query && Object.keys(this.$route.query).length !== 0) {
-      this.setFiltersFromRouterQuery()
+      this.setFiltersFromRouterQuery();
+    } else {
+      this.setRouterQuery();
     }
-    else {
-      this.setRouterQuery()
-    }
-    this.$store.commit('setLoginModalVisibility', false)
-    this.$store.watch(this.$store.getters.getFilteredComics, this.paginate)
-    this.$store.watch(this.$store.getters.getSelectedKeywords, this.onKeywordsChange)
-    miscApi.logRoute('index')
-    this.avoidLog = false
-    this.getDisplayedBlog()
+    this.$store.commit("setLoginModalVisibility", false);
+    this.$store.watch(this.$store.getters.getFilteredComics, this.paginate);
+    this.$store.watch(
+      this.$store.getters.getSelectedKeywords,
+      this.onKeywordsChange
+    );
+    miscApi.logRoute("index");
+    this.avoidLog = false;
+    this.getDisplayedBlog();
 
     if (!this.paginatedComics.fetching && !this.paginatedComics.fetched) {
-      this.fetchComics()
+      this.fetchComics();
     }
     if (!this.paidImages.fetching && !this.paidImages.fetched) {
-      this.loadActiveAds()
+      this.loadActiveAds();
     }
     if (!this.vipSupporter.fetching && !this.vipSupporter.fetched) {
-      doFetch(this.$store.commit, 'vipSupporter', patreonApi.fetchVIPSupporter())
+      doFetch(
+        this.$store.commit,
+        "vipSupporter",
+        patreonApi.fetchVIPSupporter()
+      );
     }
-    window.prerenderReady = false
+    window.prerenderReady = false;
 
     if (this.paidImages.fetched) {
-      this.setTopImageSmall()
-    }
-    else {
-      this.$store.watch(this.$store.getters.paidImagesTopSmall, this.setTopImageSmall)
+      this.setTopImageSmall();
+    } else {
+      this.$store.watch(
+        this.$store.getters.paidImagesTopSmall,
+        this.setTopImageSmall
+      );
     }
   },
 
   methods: {
-    ...mapMutations([
-      'setPageNumber',
-    ]),
+    ...mapMutations(["setPageNumber"]),
     ...mapActions([
-      'loadActiveAds',
-      'addCategoryFilter',
-      'addTagFilter',
-      'setSorting',
-      'setSearchFiltering',
+      "loadActiveAds",
+      "addCategoryFilter",
+      "addTagFilter",
+      "setSorting",
+      "setSearchFiltering",
     ]),
 
-    onDropdownMouseEnter () {
+    onDropdownMouseEnter() {
       if (this.hideDropdownTimeout) {
-        clearTimeout(this.hideDropdownTimeout)
+        clearTimeout(this.hideDropdownTimeout);
       }
-      this.isDropdownVisible = true
+      this.isDropdownVisible = true;
     },
-    onDropdownMouseLeave () {
+    onDropdownMouseLeave() {
       this.hideDropdownTimeout = setTimeout(() => {
-        this.isDropdownVisible = false
-      }, 250)
+        this.isDropdownVisible = false;
+      }, 250);
     },
-    
-    async savePaidImageClick (adId) {
-      paidImageApi.logAdClick(adId)
+
+    async savePaidImageClick(adId) {
+      paidImageApi.logAdClick(adId);
     },
-    
-    fetchComics () {
-      if (this.deferFetchingComics) { return }
+
+    fetchComics() {
+      if (this.deferFetchingComics) {
+        return;
+      }
 
       let searchParams = {
         search: this.searchFiltering222 || null,
         order: this.sorting,
         page: this.pageNumber,
+      };
+      if (!this.tagFilter.includes("All")) {
+        searchParams.tags = this.tagFilter;
       }
-      if (!this.tagFilter.includes('All')) {
-        searchParams.tags = this.tagFilter
-      }
-      if (!this.categoryFilter.includes('All')) {
-        searchParams.categories = this.categoryFilter
+      if (!this.categoryFilter.includes("All")) {
+        searchParams.categories = this.categoryFilter;
       }
       if (this.selectedKeywords.length > 0) {
-        searchParams.keywordIds = this.selectedKeywords.map(kw => kw.id)
+        searchParams.keywordIds = this.selectedKeywords.map((kw) => kw.id);
       }
-      searchParams.shouldGetKeywords = this.detailLevel === 'high'
+      searchParams.shouldGetKeywords = this.detailLevel === "high";
 
-      this.$store.dispatch('fetchComics', searchParams)
+      this.$store.dispatch("fetchComics", searchParams);
     },
 
-    onCategoryFilterClick (filter) {
-      this.showPaginationWhileLoading = false
-      this.addCategoryFilter(filter)
-      this.setRouterQuery()
-      this.fetchComics()
-      miscApi.logEvent('categoryfilter', filter)
+    onCategoryFilterClick(filter) {
+      this.showPaginationWhileLoading = false;
+      this.addCategoryFilter(filter);
+      this.setRouterQuery();
+      this.fetchComics();
+      miscApi.logEvent("categoryfilter", filter);
     },
 
-    onTagFilterClick (filter) {
-      this.showPaginationWhileLoading = false
-      this.addTagFilter(filter)
-      this.setRouterQuery()
-      this.fetchComics()
-      miscApi.logEvent('tagfilter', filter)
+    onTagFilterClick(filter) {
+      this.showPaginationWhileLoading = false;
+      this.addTagFilter(filter);
+      this.setRouterQuery();
+      this.fetchComics();
+      miscApi.logEvent("tagfilter", filter);
     },
 
-    onSortingButtonClick (sortButtonName) {
-      if (this.sorting === sortButtonName) { return }
-      this.showPaginationWhileLoading = false
-      this.setSorting(sortButtonName)
-      this.setRouterQuery()
-      this.fetchComics()
-      miscApi.logEvent('sort', sortButtonName)
+    onSortingButtonClick(sortButtonName) {
+      if (this.sorting === sortButtonName) {
+        return;
+      }
+      this.showPaginationWhileLoading = false;
+      this.setSorting(sortButtonName);
+      this.setRouterQuery();
+      this.fetchComics();
+      miscApi.logEvent("sort", sortButtonName);
     },
 
-    onSearchChanged (newSearch) {
-      this.searchFiltering222 = newSearch
+    onSearchChanged(newSearch) {
+      this.searchFiltering222 = newSearch;
     },
 
-    paginate (pageNumber, shouldScrollToTopOfList=false, showPaginationWhileLoading=false) {
-      if ( pageNumber === '...' ) { return }
+    paginate(
+      pageNumber,
+      shouldScrollToTopOfList = false,
+      showPaginationWhileLoading = false
+    ) {
+      if (pageNumber === "...") {
+        return;
+      }
 
-      if (pageNumber === 'down') {
+      if (pageNumber === "down") {
         if (this.paginatedComics.payload.page > 1) {
-          this.setPageNumber(this.paginatedComics.payload.page-1)
+          this.setPageNumber(this.paginatedComics.payload.page - 1);
+        } else {
+          return;
         }
-        else { return }
-      }
-      else if (pageNumber === 'up') {
-        if (this.paginatedComics.payload.page < this.paginatedComics.payload.numberOfPages) {
-          this.setPageNumber(this.paginatedComics.payload.page+1)
+      } else if (pageNumber === "up") {
+        if (
+          this.paginatedComics.payload.page <
+          this.paginatedComics.payload.numberOfPages
+        ) {
+          this.setPageNumber(this.paginatedComics.payload.page + 1);
+        } else {
+          return;
         }
-        else { return }
-      }
-      else if (typeof(pageNumber) !== 'number') {
-        pageNumber = 1
-      }
-      else if (pageNumber === this.pageNumber) {
-        return
-      }
-      else {
-        this.setPageNumber(pageNumber)
+      } else if (typeof pageNumber !== "number") {
+        pageNumber = 1;
+      } else if (pageNumber === this.pageNumber) {
+        return;
+      } else {
+        this.setPageNumber(pageNumber);
       }
 
-      this.showPaginationWhileLoading = showPaginationWhileLoading
+      this.showPaginationWhileLoading = showPaginationWhileLoading;
 
-      this.setRouterQuery()
-  
+      this.setRouterQuery();
+
       if (shouldScrollToTopOfList) {
-        let upperPaginationButtons = document.getElementById('upperPaginationButtons')
+        let upperPaginationButtons = document.getElementById(
+          "upperPaginationButtons"
+        );
         if (upperPaginationButtons) {
-          upperPaginationButtons.scrollIntoView()
-        }
-        else {
-          window.scrollTo(0, 0)
+          upperPaginationButtons.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
         }
       }
 
-      this.fetchComics()
+      this.fetchComics();
     },
 
-    addSelectedKeyword (keyword) {
-      this.showPaginationWhileLoading = false
+    addSelectedKeyword(keyword) {
+      this.showPaginationWhileLoading = false;
 
-      this.$store.commit('setWasKwSelectedFromList', true)
-      this.$store.dispatch('addSelectedKeyword', keyword)
-      this.keywordSearchFocused = undefined
-      this.keywordSearch = ''
+      this.$store.commit("setWasKwSelectedFromList", true);
+      this.$store.dispatch("addSelectedKeyword", keyword);
+      this.keywordSearchFocused = undefined;
+      this.keywordSearch = "";
 
-      keywordApi.logKeywordSearch(keyword.id, false)
+      keywordApi.logKeywordSearch(keyword.id, false);
     },
 
-    onKeywordsChange (wasKwRemoved) {
-      this.showPaginationWhileLoading = false
-      this.setRouterQuery()
-      this.fetchComics()
-      
+    onKeywordsChange(wasKwRemoved) {
+      this.showPaginationWhileLoading = false;
+      this.setRouterQuery();
+      this.fetchComics();
+
       if (!this.wasKwSelectedFromList && !wasKwRemoved) {
-        let searchContainer = document.getElementById('searchInputsContainer')
+        let searchContainer = document.getElementById("searchInputsContainer");
         if (searchContainer) {
-          searchContainer.scrollIntoView()
-        }
-        else {
-          window.scrollTo(0, 300)
+          searchContainer.scrollIntoView();
+        } else {
+          window.scrollTo(0, 300);
         }
       }
     },
 
-    removeSelectedKeyword (keyword) {
-      this.showPaginationWhileLoading = false
+    removeSelectedKeyword(keyword) {
+      this.showPaginationWhileLoading = false;
 
-      this.$store.dispatch('removeSelectedKeyword', keyword)
-      this.setRouterQuery()
-      this.fetchComics()
+      this.$store.dispatch("removeSelectedKeyword", keyword);
+      this.setRouterQuery();
+      this.fetchComics();
     },
 
-    toggleShowSearchFiltering (shouldShow) {
-      if (new Date() - this.lastClosedSearchFilteringTime < 200) { return }
-      this.lastClosedSearchFilteringTime = new Date()
-
-      if (shouldShow && (new Date()).getTime() - this.lastClosedTime.getTime() < 100) {
-        return
+    toggleShowSearchFiltering(shouldShow) {
+      if (new Date() - this.lastClosedSearchFilteringTime < 200) {
+        return;
       }
-      this.$store.commit('setIsFilterSectionExpanded', shouldShow)
+      this.lastClosedSearchFilteringTime = new Date();
+
+      if (
+        shouldShow &&
+        new Date().getTime() - this.lastClosedTime.getTime() < 100
+      ) {
+        return;
+      }
+      this.$store.commit("setIsFilterSectionExpanded", shouldShow);
 
       if (!shouldShow) {
-        this.lastClosedTime = new Date()
+        this.lastClosedTime = new Date();
       }
-      this.$cookies.set('isSearchFilteringExpanded', shouldShow ? 1 : 0)
+      this.$cookies.set("isSearchFilteringExpanded", shouldShow ? 1 : 0);
     },
 
-    minimizeSearchFiltering () {
-      this.toggleShowSearchFiltering(false)
+    minimizeSearchFiltering() {
+      this.toggleShowSearchFiltering(false);
     },
 
-    resetAllFilters () {
-      this.showPaginationWhileLoading = false
-      this.$store.commit('setCategoryFilter', ['All'])
-      this.$store.commit('setTagFilter', ['All'])
-      this.$store.commit('setSelectedKeywords', [])
-      this.$store.commit('setSorting', 'updated')
-      this.searchFiltering222 = ''
-      this.paginate(1)
-      this.fetchComics()
-      this.deferFetchingComics = true
-      this.toggleShowSearchFiltering(false)
-      setTimeout(() => this.deferFetchingComics = false, 1500)
+    resetAllFilters() {
+      this.showPaginationWhileLoading = false;
+      this.$store.commit("setCategoryFilter", ["All"]);
+      this.$store.commit("setTagFilter", ["All"]);
+      this.$store.commit("setSelectedKeywords", []);
+      this.$store.commit("setSorting", "updated");
+      this.searchFiltering222 = "";
+      this.paginate(1);
+      this.fetchComics();
+      this.deferFetchingComics = true;
+      this.toggleShowSearchFiltering(false);
+      setTimeout(() => (this.deferFetchingComics = false), 1500);
     },
 
-    setTopImageSmall () {
-      let numberOfAds = this.$store.getters.paidImagesTopSmall().length
+    setTopImageSmall() {
+      let numberOfAds = this.$store.getters.paidImagesTopSmall().length;
       if (numberOfAds > 0) {
-        let adIndex = Math.floor(Math.random() * numberOfAds)
-        this.topSmallAd = this.$store.getters.paidImagesTopSmall()[adIndex]
+        let adIndex = Math.floor(Math.random() * numberOfAds);
+        this.topSmallAd = this.$store.getters.paidImagesTopSmall()[adIndex];
       }
     },
 
-    setRouterQuery () {
-      if (this.suppressQueryUpdates) { return }
+    setRouterQuery() {
+      if (this.suppressQueryUpdates) {
+        return;
+      }
 
-      let queryObj = {}
-      if (!this.$store.getters.categoryFilter.includes('All')) {
-        queryObj.category = this.$store.getters.categoryFilter
+      let queryObj = {};
+      if (!this.$store.getters.categoryFilter.includes("All")) {
+        queryObj.category = this.$store.getters.categoryFilter;
       }
-      if (!this.$store.getters.tagFilter.includes('All')) {
-        queryObj.classification = this.$store.getters.tagFilter
+      if (!this.$store.getters.tagFilter.includes("All")) {
+        queryObj.classification = this.$store.getters.tagFilter;
       }
-      if (this.$store.getters.sorting === 'updated') {
-        delete queryObj.orderBy
-      }
-      else {
-        queryObj.orderBy = this.$store.getters.sorting
+      if (this.$store.getters.sorting === "updated") {
+        delete queryObj.orderBy;
+      } else {
+        queryObj.orderBy = this.$store.getters.sorting;
       }
       if (this.$store.getters.searchFiltering) {
-        queryObj.search = this.$store.getters.searchFiltering
+        queryObj.search = this.$store.getters.searchFiltering;
       }
-      if (this.selectedKeywords.length > 0) { 
-        queryObj.tags = this.selectedKeywords.map(kw => kw.name)
+      if (this.selectedKeywords.length > 0) {
+        queryObj.tags = this.selectedKeywords.map((kw) => kw.name);
       }
 
       if (Object.keys(queryObj).length > 0) {
-        this.$router.push({path: '/', query: queryObj})
-      }
-      else if (this.$router.history.current.fullPath !== '/') {
-        this.$router.push({path: '/'})
+        this.$router.push({ path: "/", query: queryObj });
+      } else if (this.$router.history.current.fullPath !== "/") {
+        this.$router.push({ path: "/" });
       }
     },
 
-    setFiltersFromRouterQuery () {
-      this.suppressQueryUpdates = true
-      
-      if (!this.$route || !this.$route.query) { return }
+    setFiltersFromRouterQuery() {
+      this.suppressQueryUpdates = true;
+
+      if (!this.$route || !this.$route.query) {
+        return;
+      }
       if (this.$route.query.category) {
-        this.$store.commit('setCategoryFilter', this.listify(this.$route.query.category))
+        this.$store.commit(
+          "setCategoryFilter",
+          this.listify(this.$route.query.category)
+        );
       }
       if (this.$route.query.classification) {
-        this.$store.commit('setTagFilter', this.listify(this.$route.query.classification))
+        this.$store.commit(
+          "setTagFilter",
+          this.listify(this.$route.query.classification)
+        );
       }
       if (this.$route.query.orderBy) {
-        this.setSorting(this.$route.query.orderBy)
+        this.setSorting(this.$route.query.orderBy);
       }
       if (this.$route.query.search) {
-        this.setSearchFiltering(this.$route.query.search)
-        this.searchFiltering222 = this.$route.query.search
+        this.setSearchFiltering(this.$route.query.search);
+        this.searchFiltering222 = this.$route.query.search;
       }
       if (this.$route.query.tags) {
-        if (this.orderedKeywordList 
-            && this.orderedKeywordList.length > 0) {
-          this.setKeywordsFromQuery()
-        }
-        else {
+        if (this.orderedKeywordList && this.orderedKeywordList.length > 0) {
+          this.setKeywordsFromQuery();
+        } else {
           this.$store.watch(this.$store.getters.orderedKeywordListF, () => {
-            this.setKeywordsFromQuery()
-          })
+            this.setKeywordsFromQuery();
+          });
         }
-      }
-      else {
-        this.suppressQueryUpdates = false
+      } else {
+        this.suppressQueryUpdates = false;
       }
     },
 
-    setKeywordsFromQuery () {
-      let selectedKeywords = []
+    setKeywordsFromQuery() {
+      let selectedKeywords = [];
       for (let keywordName of this.listify(this.$route.query.tags)) {
-        let keyword = this.orderedKeywordList.find(kw => kw.name === keywordName)
+        let keyword = this.orderedKeywordList.find(
+          (kw) => kw.name === keywordName
+        );
         if (keyword) {
-          selectedKeywords.push(keyword)
+          selectedKeywords.push(keyword);
         }
       }
-      
-      this.suppressQueryUpdates = false
-      this.$store.commit('setSelectedKeywords', selectedKeywords)
+
+      this.suppressQueryUpdates = false;
+      this.$store.commit("setSelectedKeywords", selectedKeywords);
     },
 
-    setDetailLevel (detailLevel) {
-      this.$store.commit('setDetailLevel', detailLevel)
-      this.$cookies.set('detail', detailLevel)
-      if (!this.avoidLog) { miscApi.logEvent('detail', detailLevel) }
+    setDetailLevel(detailLevel) {
+      this.$store.commit("setDetailLevel", detailLevel);
+      this.$cookies.set("detail", detailLevel);
+      if (!this.avoidLog) {
+        miscApi.logEvent("detail", detailLevel);
+      }
 
-      if (detailLevel === 'high') {
-        this.fetchComics()
+      if (detailLevel === "high") {
+        this.fetchComics();
       }
     },
 
-    clearSearchField () {
-      this.searchFiltering222 = ''
-      this.setRouterQuery()
+    clearSearchField() {
+      this.searchFiltering222 = "";
+      this.setRouterQuery();
     },
 
-    clearKeywordSearchField () {
-      this.keywordSearch = ''
-      this.setKeywordSearchFocused(false)
+    clearKeywordSearchField() {
+      this.keywordSearch = "";
+      this.setKeywordSearchFocused(false);
     },
 
-    async getDisplayedBlog () {
-      let blog = await blogApi.getDisplayedBlog()
+    async getDisplayedBlog() {
+      let blog = await blogApi.getDisplayedBlog();
       if (blog && blog.shouldDisplay) {
-        this.blogLink = blog
+        this.blogLink = blog;
       }
     },
 
-    onImageLoad () {
-      this.loadedImageCounter++
+    onImageLoad() {
+      this.loadedImageCounter++;
       if (this.loadedImageCounter === this.config.comicsPerPage) {
-        window.prerenderReady = true
+        window.prerenderReady = true;
       }
     },
 
-    listify ( input ) {
-      if (typeof(input) === 'string') { return [input] }
-      else { return input }
+    listify(input) {
+      if (typeof input === "string") {
+        return [input];
+      } else {
+        return input;
+      }
     },
 
-    scrollToTop () {
-      window.scrollTo(0, 0)
+    scrollToTop() {
+      window.scrollTo(0, 0);
     },
   },
 
-  metaInfo () {
-    let title = `Yiffer.xyz`
+  metaInfo() {
+    let title = `Yiffer.xyz`;
     return {
       title: title,
       meta: [
-        {vmid: 'twitterTitle', name: 'twitter:title', content: title},
-        {vmid: 'ogTitle', property: 'og:title', content: title},
-        {vmid: 'twitterDesc', name: 'twitter:description', content: "The internet's best collection of high quality furry  comics, easily readable and free!"},
-        {vmid: 'ogDesc', property: 'og:description', content: "The internet's best collection of high quality furry  comics, easily readable and free!"},
-      ]
-    }
+        { vmid: "twitterTitle", name: "twitter:title", content: title },
+        { vmid: "ogTitle", property: "og:title", content: title },
+        {
+          vmid: "twitterDesc",
+          name: "twitter:description",
+          content:
+            "The internet's best collection of high quality furry  comics, easily readable and free!",
+        },
+        {
+          vmid: "ogDesc",
+          property: "og:description",
+          content:
+            "The internet's best collection of high quality furry  comics, easily readable and free!",
+        },
+      ],
+    };
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -777,11 +917,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  h1, div {
+  h1,
+  div {
     color: #333;
   }
   h1 {
-    font-family: 'Shrikhand', cursive;
+    font-family: "Shrikhand", cursive;
   }
   h2 {
     margin: 45px 0px;
@@ -811,7 +952,8 @@ export default {
 
 .dark {
   .upperBodyDiv {
-    h1, p {
+    h1,
+    p {
       color: white !important;
     }
   }
@@ -860,7 +1002,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin-left: -3rem;
-  &>* {
+  & > * {
     width: fit-content;
     text-align: left;
   }
@@ -873,7 +1015,7 @@ export default {
   background-color: white;
 }
 .allTopLinksContainer {
-  &>* {
+  & > * {
     font-size: 1.15rem;
     margin: 0 0.75rem;
   }
