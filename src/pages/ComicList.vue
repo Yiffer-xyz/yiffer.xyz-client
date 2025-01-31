@@ -271,6 +271,21 @@
       :onPaginate="paginate"
       scrollToTop
     />
+
+    <div
+      style="
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.75rem;
+        background-color: #1e2224;
+      "
+    >
+      <p style="color: #fff"><b>Yiffer.xyz v3 beta 👀</b></p>
+      <a :href="'https://new.testyiffer.xyz'" class="underline-link"
+        >Check it out!</a
+      >
+    </div>
   </div>
 </template>
 
